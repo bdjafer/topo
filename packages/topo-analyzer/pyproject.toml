@@ -1,0 +1,21 @@
+[project]
+name = "topo-analyzer"
+version = "0.1.0"
+description = "Graph → structural intelligence via spectral analysis"
+requires-python = ">=3.11"
+dependencies = [
+    "topo-parser",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "networkx>=3.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/topo_analyzer"]
+
+[tool.uv.sources]
+topo-parser = { workspace = true }

@@ -1,0 +1,30 @@
+[project]
+name = "topo"
+version = "0.1.0"
+description = "Structural intelligence for codebases — spectral analysis of code topology"
+requires-python = ">=3.11"
+dependencies = [
+    "topo-parser",
+    "topo-analyzer",
+    "topo-cli",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0",
+]
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+topo-parser = { workspace = true }
+topo-analyzer = { workspace = true }
+topo-cli = { workspace = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
