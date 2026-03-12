@@ -295,14 +295,8 @@ def test_duplicate_self_calls_deduplicated(tmp_path: Path):
     assert len(matching) == 1, f"Expected 1 edge, got {len(matching)}"
 
 
-def test_inherited_method_call_is_dropped(tmp_path: Path):
-    """self.method() where method is only on a parent class is not resolved.
-
-    This is a known limitation: the parser resolves self.method() by looking
-    up ClassName.method in the graph. If the method is inherited (exists on
-    Base but not on Child), it won't be found. Fixing this would require
-    walking the inheritance chain during resolution.
-    """
+def test_inherited_method_call_resolved(tmp_path: Path):
+    """self.method() where method is on a parent class should resolve via PyCG."""
     (tmp_path / "mod.py").write_text(textwrap.dedent("""\
         class Base:
             def base_method(self):
@@ -315,12 +309,11 @@ def test_inherited_method_call_is_dropped(tmp_path: Path):
 
     graph = parse_python_project(tmp_path)
     calls = graph.edges_by_kind(EdgeKind.CALLS)
-    # base_method is on Base, not Child. self.base_method() in Child emits
-    # "Child.base_method" which won't resolve. This documents the limitation.
-    assert len(calls) == 0, (
-        f"Inherited method calls shouldn't resolve yet (known limitation), "
-        f"got: {[(e.source, e.target) for e in calls]}"
-    )
+    # PyCG resolves inherited method calls through assignment tracking
+    assert any(
+        e.source == "mod.Child.run" and e.target == "mod.Base.base_method"
+        for e in calls
+    ), f"Expected inherited call to resolve, got: {[(e.source, e.target) for e in calls]}"
 
 
 def test_staticmethod_not_affected(tmp_path: Path):

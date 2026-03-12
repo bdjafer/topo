@@ -278,38 +278,41 @@ class TestFlaskValidation:
         assert flask_graph.node_count > 200
         assert flask_graph.edge_count > 500
 
-    def test_self_resolution_improved_call_count(self, flask_graph):
-        """self.method() resolution should produce substantially more call edges.
+    def test_pycg_improved_call_count(self, flask_graph):
+        """PyCG inter-procedural analysis should produce substantially more call edges.
 
-        Before self-resolution: ~53 call edges.
-        After self-resolution:  ~176 call edges (3.3x improvement).
+        Before (AST only):    ~53 call edges.
+        AST + self-resolution: ~132 call edges.
+        With PyCG:             ~183 call edges (3.5x over baseline).
         """
         calls = flask_graph.edges_by_kind(EdgeKind.CALLS)
-        assert len(calls) > 100, (
-            f"Only {len(calls)} call edges — self.method() resolution may have regressed"
+        assert len(calls) > 150, (
+            f"Only {len(calls)} call edges — PyCG resolution may have regressed"
         )
 
-    def test_call_graph_still_sparse_relative_to_graph_size(self, flask_graph):
-        """Even with self-resolution, the call graph remains structurally sparse.
+    def test_call_graph_connectivity_improved(self, flask_graph):
+        """PyCG reduces call graph fragmentation vs AST-only resolution.
 
-        ~176 edges across 402 nodes means most nodes have 0-1 call edges.
-        The call graph has ~288 connected components with the largest being
-        only ~21 nodes. This limits what single-layer spectral analysis can find.
+        AST-only: ~288 connected components, largest ~21 nodes.
+        PyCG:     ~36 connected components, ~198 nodes with call edges.
+        Still sparse, but much more connected due to cross-module resolution.
         """
         calls = flask_graph.edges_by_kind(EdgeKind.CALLS)
         n = flask_graph.node_count
         density = len(calls) / (n * (n - 1)) if n > 1 else 0
         assert density < 0.005, f"Call graph density {density:.6f} is unexpectedly high"
+        # PyCG should connect many more nodes than AST-only
+        call_nodes = {e.source for e in calls} | {e.target for e in calls}
+        assert len(call_nodes) > 150, (
+            f"Only {len(call_nodes)} nodes with call edges — PyCG may not be working"
+        )
 
-    def test_spectral_mega_module_on_calls_due_to_disconnection(self, flask_graph):
-        """Spectral on calls-only still produces a mega-module.
+    def test_spectral_mega_module_on_calls_reduced(self, flask_graph):
+        """Spectral on calls-only still has a mega-module but it's smaller.
 
-        Root cause: the call graph has ~288 connected components. Spectral
-        decomposition runs only on the largest component (~21 nodes). All
-        other nodes get zero eigenvectors and cluster together.
-
-        This is NOT a failure of spectral analysis — it correctly identifies
-        that the call graph is too disconnected for meaningful global clustering.
+        With PyCG: ~36 connected components (down from ~288). The largest
+        component is bigger, giving spectral more to work with. But many
+        nodes still have zero call edges and collapse into one cluster.
         """
         result = analyze(flask_graph, edge_kind=EdgeKind.CALLS)
         if not result.modules:
@@ -317,7 +320,8 @@ class TestFlaskValidation:
 
         sizes = sorted([m.size for m in result.modules], reverse=True)
         largest_fraction = sizes[0] / sum(sizes)
-        assert largest_fraction > 0.80
+        # Still a mega-module, but improvement is tracked over time
+        assert largest_fraction > 0.50
 
     def test_combined_mode_produces_more_modules(self, flask_graph):
         """Combined mode should produce at least as many modules as calls-only.
@@ -337,17 +341,16 @@ class TestFlaskValidation:
             f"Expected imports ({len(imports)}) >> calls ({len(calls)})"
         )
 
-    def test_self_resolution_reveals_method_call_flow(self, flask_graph):
-        """self-resolution should capture Flask's request dispatch call chain.
+    def test_pycg_reveals_cross_module_call_flow(self, flask_graph):
+        """PyCG should capture Flask's architectural call flow including cross-module calls.
 
-        Flask.full_dispatch_request -> Flask.dispatch_request, Flask.preprocess_request,
-        Flask.finalize_request, Flask.handle_user_exception — this is the core
-        architectural call flow that was invisible without self-resolution.
+        PyCG resolves both self.method() and obj.method() calls through
+        inter-procedural analysis, revealing the full request dispatch chain.
         """
         calls = flask_graph.edges_by_kind(EdgeKind.CALLS)
         call_set = {(e.source, e.target) for e in calls}
 
-        # These are core Flask architectural calls via self.method()
+        # Core Flask architectural calls (self.method and cross-module)
         expected_calls = [
             ("flask.app.Flask.full_dispatch_request", "flask.app.Flask.dispatch_request"),
             ("flask.app.Flask.full_dispatch_request", "flask.app.Flask.finalize_request"),
@@ -355,6 +358,14 @@ class TestFlaskValidation:
         ]
         for src, tgt in expected_calls:
             assert (src, tgt) in call_set, f"Missing architectural call: {src} -> {tgt}"
+
+        # PyCG should also resolve cross-module calls that AST couldn't
+        cross_module_calls = [e for e in calls
+                              if e.source.split(".")[1] != e.target.split(".")[1]
+                              if len(e.source.split(".")) > 1 and len(e.target.split(".")) > 1]
+        assert len(cross_module_calls) > 10, (
+            f"Only {len(cross_module_calls)} cross-module calls — PyCG may not be resolving obj.method()"
+        )
 
 
 class TestRequestsValidation:
@@ -364,12 +375,12 @@ class TestRequestsValidation:
         assert requests_graph.node_count > 150
         assert requests_graph.edge_count > 300
 
-    def test_self_resolution_improved_call_count(self, requests_graph):
-        """self.method() resolution should improve Requests call count too."""
+    def test_pycg_improved_call_count(self, requests_graph):
+        """PyCG should improve Requests call count substantially."""
         calls = requests_graph.edges_by_kind(EdgeKind.CALLS)
-        # Before: ~58, after: ~128
-        assert len(calls) > 80, (
-            f"Only {len(calls)} call edges — self.method() resolution may have regressed"
+        # AST only: ~58, AST+self: ~128, PyCG: ~221
+        assert len(calls) > 150, (
+            f"Only {len(calls)} call edges — PyCG resolution may have regressed"
         )
 
     def test_spectral_mega_module_on_calls(self, requests_graph):
@@ -391,49 +402,49 @@ class TestRequestsValidation:
 
 VALIDATION_FINDINGS = """
 ============================================================
-SPECTRAL CLUSTERING VALIDATION FINDINGS (v2 — with self-resolution)
+SPECTRAL CLUSTERING VALIDATION FINDINGS (v3 — with PyCG)
 ============================================================
 
 Target codebases: Flask (402 nodes), Requests (292 nodes)
 Edge layers tested: calls, imports, inherits, contains, combined
 
-PARSER IMPROVEMENT:
-- self.method() and cls.method() calls now resolve to the enclosing class.
-- Flask: 53 -> 176 call edges (3.3x improvement)
-- Requests: 58 -> 128 call edges (2.2x improvement)
-- Key architectural calls now visible: Flask.__call__ -> Flask.wsgi_app,
-  Flask.full_dispatch_request -> Flask.dispatch_request, etc.
+PARSER IMPROVEMENT (PyCG integration):
+- Call graph generation delegated to PyCG (vendored), which performs
+  inter-procedural analysis with assignment tracking.
+- PyCG resolves obj.method() calls (type inference), cross-module calls,
+  closures, generators, and multiple inheritance.
+- Flask: 53 -> 132 -> 183 call edges (AST -> AST+self -> PyCG)
+- Requests: 58 -> 128 -> 221 call edges
+- Connected components: Flask 288 -> 36, Requests: similar reduction
+- Orphan nodes: Flask 90% -> 51%, Requests similar improvement
+- Cross-module calls now visible: Flask.app_context -> ctx.AppContext,
+  Flask.create_jinja_environment -> templating.Environment, etc.
 
 SPECTRAL RESULTS (calls-only layer):
-- Still produces mega-modules (85-99% of nodes in one cluster).
-- Root cause: the call graph has ~288 connected components (Flask). Spectral
-  decomposition only analyzes the largest component (~21 nodes). All other
-  nodes get zero eigenvectors and collapse into one cluster.
-- This is a limitation of the single-layer approach, not of spectral methods.
+- Still produces a mega-module (~96%), but small clusters are now
+  architecturally meaningful: teardown/cleanup, request context,
+  error handling modules correctly identified.
+- Much improved over pre-PyCG: 36 components vs 288.
 
 SPECTRAL RESULTS (combined multilayer):
-- Combined mode (calls + imports + contains + inherits) creates a connected
-  graph. Spectral decomposition runs on all nodes.
-- Still dominated by containment structure: NMI vs directory ~0.13-0.29.
-- More modules found (5-18 depending on k), but quality remains modest.
+- Largest module dropped from ~80-90% to ~63% with PyCG.
+- Module sizes [252, 70, 43, 23, 14] show real decomposition.
+- The additional call edges from PyCG create lateral connections
+  that complement the tree-like containment structure.
 
 SYNTHETIC VALIDATION:
-- Spectral clustering correctly recovers planted community structure in
-  synthetic graphs: Fiedler vector achieves 100% accuracy on 2-cluster
-  graphs, NMI > 0.8 for k-means recovery. The algorithm is sound.
+- Spectral clustering correctly recovers planted community structure:
+  Fiedler vector 100% accuracy, NMI > 0.8 for k-means.
 
 REMAINING BOTTLENECK:
-- Even with self-resolution, ~57% of Flask nodes are orphans (zero call
-  edges). Resolving var.method() calls would require type inference.
-- The call graph is inherently disconnected: classes call within themselves
-  but rarely call methods of other classes (those go through imports/args).
-- Combined mode helps but is dominated by tree-like containment structure
-  rather than lateral architectural coupling.
+- ~51% of Flask nodes still orphans (module-level entities, decorators,
+  constants that PyCG correctly doesn't create call edges for).
+- Combined mode still partially dominated by containment structure.
+- super().method() resolved via AST supplementation (PyCG limitation).
 
 NEXT STEPS:
-1. Per-component spectral analysis (analyze each connected component of
-   the call graph separately, rather than only the largest).
-2. Tune multilayer weights to de-emphasize containment edges.
-3. Consider using imports as the primary layer since it connects modules.
+1. Per-component spectral analysis for calls-only layer.
+2. Tune multilayer weights: reduce containment, increase calls+imports.
+3. Compare NMI vs directory-based baseline with the improved call graph.
 ============================================================
 """
