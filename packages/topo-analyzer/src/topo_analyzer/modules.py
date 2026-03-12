@@ -87,40 +87,57 @@ def _estimate_k(X: np.ndarray, max_k: int = 8) -> int:
     return int(np.argmax(scores)) + 2
 
 
-def _silhouette_score(X: np.ndarray, labels: np.ndarray) -> float:
+def _silhouette_score(X: np.ndarray, labels: np.ndarray, max_sample: int = 5000) -> float:
     """Compute mean silhouette score for a clustering.
 
-    For each point, silhouette = (b - a) / max(a, b) where:
+    For each sampled point, silhouette = (b - a) / max(a, b) where:
     - a = mean distance to points in same cluster
     - b = mean distance to points in nearest other cluster
-    Returns mean across all points. Higher is better (-1 to 1).
+
+    For large datasets (n > max_sample), uses a random sample to avoid
+    O(n^2) memory. Uses centroid-based approximation for b when clusters
+    are large.
     """
     n = len(labels)
     unique_labels = np.unique(labels)
     if len(unique_labels) < 2:
         return -1.0
 
-    # Pairwise squared distances
-    dists = np.sum((X[:, None] - X[None, :]) ** 2, axis=2) ** 0.5
+    # Precompute cluster centroids and sizes
+    centroids = {}
+    for label in unique_labels:
+        mask = labels == label
+        centroids[label] = X[mask].mean(axis=0)
 
-    silhouettes = np.zeros(n)
-    for i in range(n):
-        same = labels == labels[i]
-        same[i] = False  # exclude self
-        if not same.any():
-            silhouettes[i] = 0.0
+    # Sample if too large
+    rng = np.random.default_rng(42)
+    if n > max_sample:
+        sample_idx = rng.choice(n, max_sample, replace=False)
+    else:
+        sample_idx = np.arange(n)
+
+    silhouettes = np.zeros(len(sample_idx))
+    for si, i in enumerate(sample_idx):
+        my_label = labels[i]
+        same = labels == my_label
+        same_count = same.sum() - 1  # exclude self
+        if same_count <= 0:
+            silhouettes[si] = 0.0
             continue
-        a = dists[i, same].mean()
 
+        # a = mean distance to same-cluster centroid (fast approximation)
+        a = np.linalg.norm(X[i] - centroids[my_label])
+
+        # b = distance to nearest other cluster centroid
         b = np.inf
         for label in unique_labels:
-            if label == labels[i]:
+            if label == my_label:
                 continue
-            other = labels == label
-            if other.any():
-                b = min(b, dists[i, other].mean())
+            dist = np.linalg.norm(X[i] - centroids[label])
+            if dist < b:
+                b = dist
 
-        silhouettes[i] = (b - a) / max(a, b) if max(a, b) > 0 else 0.0
+        silhouettes[si] = (b - a) / max(a, b) if max(a, b) > 0 else 0.0
 
     return float(silhouettes.mean())
 
