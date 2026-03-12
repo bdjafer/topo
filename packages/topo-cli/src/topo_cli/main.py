@@ -32,6 +32,10 @@ def main(argv: list[str] | None = None) -> None:
         "--n-modules", type=int, default=None,
         help="Number of structural modules to detect (auto-detected if omitted)",
     )
+    parser.add_argument(
+        "--exclude", type=str, default=None,
+        help="Comma-separated directory names to exclude (e.g. pycg,.venv,node_modules)",
+    )
 
     args = parser.parse_args(argv)
 
@@ -40,7 +44,8 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(1)
 
     # Parse
-    graph = parse_python_project(args.path)
+    exclude_patterns = args.exclude.split(",") if args.exclude else None
+    graph = parse_python_project(args.path, exclude_patterns=exclude_patterns)
 
     # Analyze
     from topo_parser.graph import EdgeKind

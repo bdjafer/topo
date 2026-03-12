@@ -20,18 +20,18 @@
 #
 import os
 
-from topo_parser._vendor.pycg import utils
-from topo_parser._vendor.pycg.machinery.callgraph import CallGraph
-from topo_parser._vendor.pycg.machinery.classes import ClassManager
-from topo_parser._vendor.pycg.machinery.definitions import DefinitionManager
-from topo_parser._vendor.pycg.machinery.imports import ImportManager
-from topo_parser._vendor.pycg.machinery.key_err import KeyErrors
-from topo_parser._vendor.pycg.machinery.modules import ModuleManager
-from topo_parser._vendor.pycg.machinery.scopes import ScopeManager
-from topo_parser._vendor.pycg.processing.cgprocessor import CallGraphProcessor
-from topo_parser._vendor.pycg.processing.keyerrprocessor import KeyErrProcessor
-from topo_parser._vendor.pycg.processing.postprocessor import PostProcessor
-from topo_parser._vendor.pycg.processing.preprocessor import PreProcessor
+from pycg import utils
+from pycg.machinery.callgraph import CallGraph
+from pycg.machinery.classes import ClassManager
+from pycg.machinery.definitions import DefinitionManager
+from pycg.machinery.imports import ImportManager
+from pycg.machinery.key_err import KeyErrors
+from pycg.machinery.modules import ModuleManager
+from pycg.machinery.scopes import ScopeManager
+from pycg.processing.cgprocessor import CallGraphProcessor
+from pycg.processing.keyerrprocessor import KeyErrProcessor
+from pycg.processing.postprocessor import PostProcessor
+from pycg.processing.preprocessor import PreProcessor
 
 
 class CallGraphGenerator(object):

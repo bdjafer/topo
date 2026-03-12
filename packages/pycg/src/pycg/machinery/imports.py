@@ -24,7 +24,7 @@ import os
 import sys
 from importlib import abc
 
-from topo_parser._vendor.pycg import utils
+from pycg import utils
 
 
 def get_custom_loader(ig_obj):

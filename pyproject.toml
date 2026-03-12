@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Structural intelligence for codebases — spectral analysis of code topology"
 requires-python = ">=3.11"
 dependencies = [
+    "pycg",
     "topo-parser",
     "topo-analyzer",
     "topo-cli",
@@ -18,6 +19,7 @@ dev = [
 members = ["packages/*"]
 
 [tool.uv.sources]
+pycg = { workspace = true }
 topo-parser = { workspace = true }
 topo-analyzer = { workspace = true }
 topo-cli = { workspace = true }

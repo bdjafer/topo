@@ -18,8 +18,8 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from topo_parser._vendor.pycg import utils
-from topo_parser._vendor.pycg.machinery.pointers import LiteralPointer, NamePointer
+from pycg import utils
+from pycg.machinery.pointers import LiteralPointer, NamePointer
 
 
 class DefinitionManager(object):

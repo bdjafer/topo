@@ -22,8 +22,8 @@ import ast
 import os
 import re
 
-from topo_parser._vendor.pycg import utils
-from topo_parser._vendor.pycg.processing.base import ProcessingBase
+from pycg import utils
+from pycg.processing.base import ProcessingBase
 
 
 class KeyErrProcessor(ProcessingBase):
