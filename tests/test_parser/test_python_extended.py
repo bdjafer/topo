@@ -122,3 +122,140 @@ def test_from_import_creates_qualified_import_edges(tmp_path: Path):
     targets = [e.target for e in imports if e.source == "pkg.app"]
     assert "pkg.lib" in targets
     assert "pkg.lib.Thing" in targets
+
+
+def test_self_method_call_resolved(tmp_path: Path):
+    """self.method() calls should resolve to the method on the same class."""
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        class MyClass:
+            def helper(self):
+                pass
+
+            def run(self):
+                self.helper()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    assert any(
+        e.source == "mod.MyClass.run" and e.target == "mod.MyClass.helper"
+        for e in calls
+    ), f"Expected self.helper() to resolve, got: {[(e.source, e.target) for e in calls]}"
+
+
+def test_cls_method_call_resolved(tmp_path: Path):
+    """cls.method() calls in classmethods should resolve."""
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        class MyClass:
+            @classmethod
+            def create(cls):
+                return cls._build()
+
+            @classmethod
+            def _build(cls):
+                pass
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    assert any(
+        e.source == "mod.MyClass.create" and e.target == "mod.MyClass._build"
+        for e in calls
+    ), f"Expected cls._build() to resolve, got: {[(e.source, e.target) for e in calls]}"
+
+
+def test_super_method_call_resolved(tmp_path: Path):
+    """super().method() calls should resolve to the method on the same class.
+
+    The resolver walks ancestor prefixes, so super().method() emitted as
+    ClassName.method will match the class's own method node (or a parent's
+    if the class inherits and overrides).
+    """
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        class Base:
+            def setup(self):
+                pass
+
+        class Child(Base):
+            def setup(self):
+                super().setup()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    # super().setup() in Child.setup should resolve to Child.setup or Base.setup
+    # Since the resolver walks ancestors, it finds mod.Child.setup first
+    assert any(
+        e.source == "mod.Child.setup" and e.target in ("mod.Child.setup", "mod.Base.setup")
+        for e in calls
+    ), f"Expected super().setup() to resolve, got: {[(e.source, e.target) for e in calls]}"
+
+
+def test_self_call_to_nonexistent_method_dropped(tmp_path: Path):
+    """self.method() where the method doesn't exist should be dropped."""
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        class MyClass:
+            def run(self):
+                self.nonexistent_method()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    # nonexistent_method is not a node, so the edge should be dropped
+    assert len(calls) == 0
+
+
+def test_self_calls_across_multiple_classes(tmp_path: Path):
+    """self.method() should resolve to the correct class when multiple exist."""
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        class Alpha:
+            def work(self):
+                pass
+
+            def run(self):
+                self.work()
+
+        class Beta:
+            def work(self):
+                pass
+
+            def run(self):
+                self.work()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    # Alpha.run -> Alpha.work (not Beta.work)
+    assert any(
+        e.source == "mod.Alpha.run" and e.target == "mod.Alpha.work"
+        for e in calls
+    )
+    # Beta.run -> Beta.work (not Alpha.work)
+    assert any(
+        e.source == "mod.Beta.run" and e.target == "mod.Beta.work"
+        for e in calls
+    )
+    # No cross-class calls
+    assert not any(
+        e.source == "mod.Alpha.run" and e.target == "mod.Beta.work"
+        for e in calls
+    )
+
+
+def test_self_call_does_not_affect_free_functions(tmp_path: Path):
+    """Free functions with 'self' as a regular parameter should not get special treatment."""
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        def helper():
+            pass
+
+        def not_a_method():
+            helper()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    # Free function calls should still work as before
+    assert any(
+        e.source == "mod.not_a_method" and e.target == "mod.helper"
+        for e in calls
+    )

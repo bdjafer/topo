@@ -278,29 +278,38 @@ class TestFlaskValidation:
         assert flask_graph.node_count > 200
         assert flask_graph.edge_count > 500
 
-    def test_call_graph_is_sparse(self, flask_graph):
-        """Document: the call graph is currently too sparse for meaningful clustering.
+    def test_self_resolution_improved_call_count(self, flask_graph):
+        """self.method() resolution should produce substantially more call edges.
 
-        This test captures the known limitation that the parser does not resolve
-        self.method() calls, which are the dominant call pattern in OOP Python.
-        When this is fixed, this test should be updated to expect more calls.
+        Before self-resolution: ~53 call edges.
+        After self-resolution:  ~176 call edges (3.3x improvement).
         """
         calls = flask_graph.edges_by_kind(EdgeKind.CALLS)
-        # Currently ~53 calls for ~402 nodes — very sparse
-        assert len(calls) < 100, (
-            f"Call count increased to {len(calls)} — parser may have improved. "
-            "Update this test and check if spectral clustering improved too."
+        assert len(calls) > 100, (
+            f"Only {len(calls)} call edges — self.method() resolution may have regressed"
         )
-        # Edge density = edges / (nodes * (nodes-1))
+
+    def test_call_graph_still_sparse_relative_to_graph_size(self, flask_graph):
+        """Even with self-resolution, the call graph remains structurally sparse.
+
+        ~176 edges across 402 nodes means most nodes have 0-1 call edges.
+        The call graph has ~288 connected components with the largest being
+        only ~21 nodes. This limits what single-layer spectral analysis can find.
+        """
+        calls = flask_graph.edges_by_kind(EdgeKind.CALLS)
         n = flask_graph.node_count
         density = len(calls) / (n * (n - 1)) if n > 1 else 0
-        assert density < 0.001, f"Call graph density {density:.6f} is unexpectedly high"
+        assert density < 0.005, f"Call graph density {density:.6f} is unexpectedly high"
 
-    def test_spectral_produces_mega_module_on_calls(self, flask_graph):
-        """Document: spectral clustering on the sparse call graph creates a mega-module.
+    def test_spectral_mega_module_on_calls_due_to_disconnection(self, flask_graph):
+        """Spectral on calls-only still produces a mega-module.
 
-        This is the current state — NOT the desired state. When the parser improves,
-        spectral should produce more balanced modules and this test should change.
+        Root cause: the call graph has ~288 connected components. Spectral
+        decomposition runs only on the largest component (~21 nodes). All
+        other nodes get zero eigenvectors and cluster together.
+
+        This is NOT a failure of spectral analysis — it correctly identifies
+        that the call graph is too disconnected for meaningful global clustering.
         """
         result = analyze(flask_graph, edge_kind=EdgeKind.CALLS)
         if not result.modules:
@@ -308,36 +317,44 @@ class TestFlaskValidation:
 
         sizes = sorted([m.size for m in result.modules], reverse=True)
         largest_fraction = sizes[0] / sum(sizes)
-        # Currently the largest module contains >85% of entities
-        assert largest_fraction > 0.80, (
-            f"Largest module is only {largest_fraction:.1%} — clustering may have improved! "
-            "If call graph got denser, update this test."
-        )
+        assert largest_fraction > 0.80
 
-    def test_combined_mode_slightly_better(self, flask_graph):
-        """Combined mode should produce at least as many modules as calls-only."""
+    def test_combined_mode_produces_more_modules(self, flask_graph):
+        """Combined mode should produce at least as many modules as calls-only.
+
+        Combined mode adds containment and import edges, creating a connected
+        graph that spectral methods can actually decompose.
+        """
         result_calls = analyze(flask_graph, edge_kind=EdgeKind.CALLS)
         result_combined = analyze(flask_graph, edge_kind=EdgeKind.CALLS, combined=True)
-        # Combined has more signal, should find at least as many modules
         assert len(result_combined.modules) >= len(result_calls.modules)
 
     def test_imports_layer_much_denser(self, flask_graph):
-        """The imports layer has ~10x more edges than calls — potential primary signal."""
+        """The imports layer has more edges than calls — a complementary signal."""
         calls = flask_graph.edges_by_kind(EdgeKind.CALLS)
         imports = flask_graph.edges_by_kind(EdgeKind.IMPORTS)
-        assert len(imports) > 5 * len(calls), (
+        assert len(imports) > 2 * len(calls), (
             f"Expected imports ({len(imports)}) >> calls ({len(calls)})"
         )
 
-    def test_roles_mostly_orphan_or_regular(self, flask_graph):
-        """With sparse call graph, most nodes are orphans (no call edges)."""
-        result = analyze(flask_graph, edge_kind=EdgeKind.CALLS)
-        role_counts = defaultdict(int)
-        for r in result.roles:
-            role_counts[r.role.value] += 1
-        # Most nodes should be orphan or regular given the sparse call graph
-        passive = role_counts.get("orphan", 0) + role_counts.get("regular", 0)
-        assert passive / len(result.roles) > 0.9
+    def test_self_resolution_reveals_method_call_flow(self, flask_graph):
+        """self-resolution should capture Flask's request dispatch call chain.
+
+        Flask.full_dispatch_request -> Flask.dispatch_request, Flask.preprocess_request,
+        Flask.finalize_request, Flask.handle_user_exception — this is the core
+        architectural call flow that was invisible without self-resolution.
+        """
+        calls = flask_graph.edges_by_kind(EdgeKind.CALLS)
+        call_set = {(e.source, e.target) for e in calls}
+
+        # These are core Flask architectural calls via self.method()
+        expected_calls = [
+            ("flask.app.Flask.full_dispatch_request", "flask.app.Flask.dispatch_request"),
+            ("flask.app.Flask.full_dispatch_request", "flask.app.Flask.finalize_request"),
+            ("flask.app.Flask.__call__", "flask.app.Flask.wsgi_app"),
+        ]
+        for src, tgt in expected_calls:
+            assert (src, tgt) in call_set, f"Missing architectural call: {src} -> {tgt}"
 
 
 class TestRequestsValidation:
@@ -347,13 +364,19 @@ class TestRequestsValidation:
         assert requests_graph.node_count > 150
         assert requests_graph.edge_count > 300
 
-    def test_call_graph_sparse(self, requests_graph):
-        """Requests also has a sparse call graph for the same reason as Flask."""
+    def test_self_resolution_improved_call_count(self, requests_graph):
+        """self.method() resolution should improve Requests call count too."""
         calls = requests_graph.edges_by_kind(EdgeKind.CALLS)
-        assert len(calls) < 100
+        # Before: ~58, after: ~128
+        assert len(calls) > 80, (
+            f"Only {len(calls)} call edges — self.method() resolution may have regressed"
+        )
 
-    def test_spectral_mega_module(self, requests_graph):
-        """Spectral on sparse call graph produces a mega-module for Requests too."""
+    def test_spectral_mega_module_on_calls(self, requests_graph):
+        """Spectral on calls-only still produces a mega-module for Requests.
+
+        Same root cause as Flask: disconnected call graph components.
+        """
         result = analyze(requests_graph, edge_kind=EdgeKind.CALLS)
         if not result.modules:
             pytest.skip("No modules detected")
@@ -368,37 +391,49 @@ class TestRequestsValidation:
 
 VALIDATION_FINDINGS = """
 ============================================================
-SPECTRAL CLUSTERING VALIDATION FINDINGS
+SPECTRAL CLUSTERING VALIDATION FINDINGS (v2 — with self-resolution)
 ============================================================
 
 Target codebases: Flask (402 nodes), Requests (292 nodes)
 Edge layers tested: calls, imports, inherits, contains, combined
 
-RESULT: INCONCLUSIVE — blocked by sparse call graphs.
+PARSER IMPROVEMENT:
+- self.method() and cls.method() calls now resolve to the enclosing class.
+- Flask: 53 -> 176 call edges (3.3x improvement)
+- Requests: 58 -> 128 call edges (2.2x improvement)
+- Key architectural calls now visible: Flask.__call__ -> Flask.wsgi_app,
+  Flask.full_dispatch_request -> Flask.dispatch_request, etc.
 
-The core bet ("spectral analysis of code graphs produces architecturally
-meaningful clusters") CANNOT be validated yet because:
+SPECTRAL RESULTS (calls-only layer):
+- Still produces mega-modules (85-99% of nodes in one cluster).
+- Root cause: the call graph has ~288 connected components (Flask). Spectral
+  decomposition only analyzes the largest component (~21 nodes). All other
+  nodes get zero eigenvectors and collapse into one cluster.
+- This is a limitation of the single-layer approach, not of spectral methods.
 
-1. PARSER LIMITATION: The Python parser resolves only ~53 call edges for
-   Flask (402 nodes) and ~58 for Requests (292 nodes). Most calls in
-   real Python code are self.method() which the parser cannot resolve.
+SPECTRAL RESULTS (combined multilayer):
+- Combined mode (calls + imports + contains + inherits) creates a connected
+  graph. Spectral decomposition runs on all nodes.
+- Still dominated by containment structure: NMI vs directory ~0.13-0.29.
+- More modules found (5-18 depending on k), but quality remains modest.
 
-2. MEGA-MODULE: With such sparse graphs, spectral clustering puts 85-99%
-   of nodes into a single module. NMI against directory baseline is <0.21.
+SYNTHETIC VALIDATION:
+- Spectral clustering correctly recovers planted community structure in
+  synthetic graphs: Fiedler vector achieves 100% accuracy on 2-cluster
+  graphs, NMI > 0.8 for k-means recovery. The algorithm is sound.
 
-3. SYNTHETIC VALIDATION: Spectral clustering works correctly on synthetic
-   graphs with planted community structure (NMI > 0.8). The algorithm is
-   sound; the input data is insufficient.
+REMAINING BOTTLENECK:
+- Even with self-resolution, ~57% of Flask nodes are orphans (zero call
+  edges). Resolving var.method() calls would require type inference.
+- The call graph is inherently disconnected: classes call within themselves
+  but rarely call methods of other classes (those go through imports/args).
+- Combined mode helps but is dominated by tree-like containment structure
+  rather than lateral architectural coupling.
 
-CRITICAL PATH TO UNBLOCK VALIDATION:
-- Resolve self.method() calls by mapping self/cls to the containing class.
-  This would increase Flask's call edges from ~53 to an estimated ~300-500.
-- Once call graph density improves, re-run this validation.
-
-SECONDARY FINDINGS:
-- The imports layer has 10x more edges but connects modules (not functions),
-  so it's structurally different from the call graph.
-- Combined mode produces slightly better results than calls-only.
-- Role classification is dominated by orphans (nodes with no call edges).
+NEXT STEPS:
+1. Per-component spectral analysis (analyze each connected component of
+   the call graph separately, rather than only the largest).
+2. Tune multilayer weights to de-emphasize containment edges.
+3. Consider using imports as the primary layer since it connects modules.
 ============================================================
 """

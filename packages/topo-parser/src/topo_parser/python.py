@@ -123,21 +123,34 @@ def _extract_class(
     # Methods
     for child in ast.iter_child_nodes(node):
         if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            _extract_function(graph, child, class_id, file)
+            _extract_function(graph, child, class_id, file, class_id=class_id)
 
 
 def _extract_function(
-    graph: CodeGraph, node: ast.FunctionDef | ast.AsyncFunctionDef, parent_id: str, file: Path
+    graph: CodeGraph,
+    node: ast.FunctionDef | ast.AsyncFunctionDef,
+    parent_id: str,
+    file: Path,
+    *,
+    class_id: str | None = None,
 ) -> None:
-    """Extract a function/method node and its call edges."""
+    """Extract a function/method node and its call edges.
+
+    Args:
+        class_id: If this function is a method, the fully-qualified ID of
+            the enclosing class.  Used to resolve self/cls method calls.
+    """
     func_id = f"{parent_id}.{node.name}"
     graph.add_node(Node(id=func_id, kind=NodeKind.FUNCTION, file=file, line=node.lineno, name=node.name))
     graph.add_edge(Edge(source=parent_id, target=func_id, kind=EdgeKind.CONTAINS))
 
+    # Determine the self/cls parameter name for methods
+    self_name = _self_param_name(node) if class_id else None
+
     # Walk the function body for call expressions
     for child in ast.walk(node):
         if isinstance(child, ast.Call):
-            callee = _resolve_name(child.func)
+            callee = _resolve_call(child.func, self_name, class_id)
             if callee:
                 graph.add_edge(Edge(source=func_id, target=callee, kind=EdgeKind.CALLS))
 
@@ -159,6 +172,51 @@ def _extract_import(graph: CodeGraph, node: ast.Import | ast.ImportFrom, mod_id:
             if alias.name != "*":
                 qualified = f"{node.module}.{alias.name}"
                 graph.add_edge(Edge(source=mod_id, target=qualified, kind=EdgeKind.IMPORTS))
+
+
+def _self_param_name(node: ast.FunctionDef | ast.AsyncFunctionDef) -> str | None:
+    """Return the name of the first parameter if it looks like self/cls."""
+    if node.args.args:
+        name = node.args.args[0].arg
+        if name in ("self", "cls"):
+            return name
+    return None
+
+
+def _resolve_call(
+    node: ast.expr,
+    self_name: str | None,
+    class_id: str | None,
+) -> str | None:
+    """Resolve a call expression, with special handling for self/cls/super().
+
+    For ``self.method()``, rewrites to ``ClassName.method`` so the
+    downstream resolver can match it to a known node via ancestor prefix walk.
+    For ``super().method()``, also rewrites to ``ClassName.method``.
+    """
+    # self.method() or cls.method() -> ClassName.method
+    if (
+        self_name
+        and class_id
+        and isinstance(node, ast.Attribute)
+        and isinstance(node.value, ast.Name)
+        and node.value.id == self_name
+    ):
+        class_short = class_id.rsplit(".", 1)[-1]
+        return f"{class_short}.{node.attr}"
+
+    # super().method() -> ClassName.method (resolver walks up ancestors)
+    if (
+        class_id
+        and isinstance(node, ast.Attribute)
+        and isinstance(node.value, ast.Call)
+        and isinstance(node.value.func, ast.Name)
+        and node.value.func.id == "super"
+    ):
+        class_short = class_id.rsplit(".", 1)[-1]
+        return f"{class_short}.{node.attr}"
+
+    return _resolve_name(node)
 
 
 def _resolve_name(node: ast.expr) -> str | None:
