@@ -56,7 +56,7 @@ def test_parse_inheritance(tmp_path: Path):
 
     graph = parse_python_project(tmp_path)
     inherit_edges = graph.edges_by_kind(EdgeKind.INHERITS)
-    assert any(e.source == "animals.Dog" and e.target == "Animal" for e in inherit_edges)
+    assert any(e.source == "animals.Dog" and e.target == "animals.Animal" for e in inherit_edges)
 
 
 def test_parse_empty_dir(tmp_path: Path):

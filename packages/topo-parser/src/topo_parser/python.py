@@ -40,7 +40,7 @@ def parse_python_project(root: Path) -> CodeGraph:
         pkg_root = _best_package_root(py_file, package_roots)
         _extract_from_file(graph, tree, py_file, pkg_root or root)
 
-    _resolve_calls(graph)
+    _resolve_edges(graph)
     return graph
 
 
@@ -172,43 +172,41 @@ def _resolve_name(node: ast.expr) -> str | None:
     return None
 
 
-def _resolve_calls(graph: CodeGraph) -> None:
-    """Resolve raw call targets to actual graph node IDs.
+def _resolve_edges(graph: CodeGraph) -> None:
+    """Resolve raw targets in CALLS and INHERITS edges to actual graph node IDs.
 
-    Raw call edges have targets like 'helper' or 'graph.add_node'. This pass
-    replaces them with fully qualified node IDs where possible, and drops
-    edges that can't be resolved to known nodes.
+    Raw edges have targets like 'helper' or 'Enum'. This pass replaces them
+    with fully qualified node IDs where possible, and drops edges that can't
+    be resolved to known nodes.
     """
     node_ids = set(graph.nodes)
+    resolve_kinds = {EdgeKind.CALLS, EdgeKind.INHERITS}
 
     # Build import map: for each module, map imported short names to full targets.
-    # e.g., in module topo_cli.main: "parse_python_project" -> "topo_parser.python"
     import_map: dict[str, dict[str, str]] = {}
     for edge in graph.edges_by_kind(EdgeKind.IMPORTS):
         mod = edge.source
         target = edge.target
-        # Short name is the last segment: "topo_parser.graph" -> "graph"
         short = target.rsplit(".", 1)[-1]
         import_map.setdefault(mod, {})[short] = target
 
-    # Separate call edges from non-call edges
-    call_edges = graph.edges_by_kind(EdgeKind.CALLS)
-    other_edges = [e for e in graph.edges if e.kind != EdgeKind.CALLS]
-
-    resolved: list[Edge] = []
-    for edge in call_edges:
-        target = _try_resolve_call(edge.source, edge.target, node_ids, import_map)
+    keep: list[Edge] = []
+    for edge in graph.edges:
+        if edge.kind not in resolve_kinds:
+            keep.append(edge)
+            continue
+        target = _try_resolve(edge.source, edge.target, node_ids, import_map)
         if target:
-            resolved.append(Edge(source=edge.source, target=target, kind=EdgeKind.CALLS))
+            keep.append(Edge(source=edge.source, target=target, kind=edge.kind))
 
-    graph.edges = other_edges + resolved
+    graph.edges = keep
 
 
-def _try_resolve_call(
+def _try_resolve(
     source: str, raw_target: str, node_ids: set[str],
     import_map: dict[str, dict[str, str]],
 ) -> str | None:
-    """Try to resolve a raw call target to a known node ID."""
+    """Try to resolve a raw edge target to a known node ID."""
     # 1. Already a known node ID (fully qualified call)
     if raw_target in node_ids:
         return raw_target

@@ -60,7 +60,64 @@ def spectral_decomposition(
         if edge.source in graph.nodes and edge.target in graph.nodes:
             nx_graph.add_edge(edge.source, edge.target)
 
-    # Need sufficient nodes and edges for meaningful decomposition
+    return _decompose(nx_graph, k)
+
+
+# Default weights for multi-layer analysis. Calls are the strongest
+# signal, imports and containment provide context, inheritance is rare
+# but structurally meaningful.
+DEFAULT_LAYER_WEIGHTS: dict[EdgeKind, float] = {
+    EdgeKind.CALLS: 1.0,
+    EdgeKind.IMPORTS: 0.5,
+    EdgeKind.CONTAINS: 0.3,
+    EdgeKind.INHERITS: 0.8,
+}
+
+
+def spectral_decomposition_multilayer(
+    graph: CodeGraph,
+    layer_weights: dict[EdgeKind, float] | None = None,
+    k: int = 8,
+) -> SpectralResult | None:
+    """
+    Compute spectral decomposition over multiple graph layers combined.
+
+    Builds a single weighted adjacency matrix by summing contributions
+    from each layer scaled by its weight. This gives every node a
+    structural fingerprint that reflects calls, imports, containment,
+    and inheritance simultaneously.
+
+    Args:
+        graph: The code graph to analyze.
+        layer_weights: Weight per EdgeKind. Defaults to DEFAULT_LAYER_WEIGHTS.
+        k: Number of eigenvectors to compute.
+
+    Returns:
+        SpectralResult, or None if the graph is too small.
+    """
+    if layer_weights is None:
+        layer_weights = DEFAULT_LAYER_WEIGHTS
+
+    nx_graph = nx.Graph()
+    for node_id in graph.nodes:
+        nx_graph.add_node(node_id)
+
+    for edge_kind, weight in layer_weights.items():
+        if weight <= 0:
+            continue
+        for edge in graph.edges_by_kind(edge_kind):
+            if edge.source in graph.nodes and edge.target in graph.nodes:
+                src, tgt = edge.source, edge.target
+                if nx_graph.has_edge(src, tgt):
+                    nx_graph[src][tgt]["weight"] += weight
+                else:
+                    nx_graph.add_edge(src, tgt, weight=weight)
+
+    return _decompose(nx_graph, k)
+
+
+def _decompose(nx_graph: nx.Graph, k: int) -> SpectralResult | None:
+    """Run eigendecomposition on a NetworkX graph."""
     n = nx_graph.number_of_nodes()
     n_edges = nx_graph.number_of_edges()
     if n < 3 or n_edges == 0:

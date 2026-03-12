@@ -10,10 +10,16 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from topo_parser.graph import CodeGraph, EdgeKind
-from topo_analyzer.spectral import SpectralResult, spectral_decomposition
+from topo_analyzer.spectral import (
+    SpectralResult,
+    spectral_decomposition,
+    spectral_decomposition_multilayer,
+)
 from topo_analyzer.modules import Module, detect_modules
 from topo_analyzer.roles import RoleAssignment, classify_roles
 from topo_analyzer.anomalies import Anomaly, detect_anomalies
+
+ALL_EDGE_KINDS = [EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.CONTAINS, EdgeKind.INHERITS]
 
 
 @dataclass
@@ -56,21 +62,33 @@ class StructuralAnalysis:
         return "\n".join(lines)
 
 
-def analyze(graph: CodeGraph, edge_kind: EdgeKind = EdgeKind.CALLS) -> StructuralAnalysis:
+def analyze(
+    graph: CodeGraph,
+    edge_kind: EdgeKind = EdgeKind.CALLS,
+    combined: bool = False,
+) -> StructuralAnalysis:
     """
     Run the full structural analysis pipeline.
 
     Args:
         graph: Parsed code graph.
-        edge_kind: Primary relationship layer to analyze.
+        edge_kind: Primary relationship layer to analyze (ignored if combined=True).
+        combined: If True, use all edge layers weighted together.
 
     Returns:
         Complete structural analysis.
     """
-    spectral = spectral_decomposition(graph, edge_kind=edge_kind)
-    modules = detect_modules(spectral) if spectral else []
-    roles = classify_roles(graph, edge_kind=edge_kind)
-    anomalies = detect_anomalies(graph, spectral, modules, edge_kind=edge_kind)
+    if combined:
+        spectral = spectral_decomposition_multilayer(graph)
+        modules = detect_modules(spectral) if spectral else []
+        roles = classify_roles(graph, edge_kinds=ALL_EDGE_KINDS)
+        # Use CALLS layer for cycle/cross-module anomaly detection
+        anomalies = detect_anomalies(graph, spectral, modules, edge_kind=EdgeKind.CALLS)
+    else:
+        spectral = spectral_decomposition(graph, edge_kind=edge_kind)
+        modules = detect_modules(spectral) if spectral else []
+        roles = classify_roles(graph, edge_kind=edge_kind)
+        anomalies = detect_anomalies(graph, spectral, modules, edge_kind=edge_kind)
 
     return StructuralAnalysis(
         graph=graph,

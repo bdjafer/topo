@@ -44,25 +44,30 @@ class RoleAssignment:
 def classify_roles(
     graph: CodeGraph,
     edge_kind: EdgeKind = EdgeKind.CALLS,
+    edge_kinds: list[EdgeKind] | None = None,
 ) -> list[RoleAssignment]:
     """
     Classify structural roles for all nodes based on graph position.
 
     Args:
         graph: The code graph.
-        edge_kind: Which relationship layer to use for role classification.
+        edge_kind: Which relationship layer to use (ignored if edge_kinds is set).
+        edge_kinds: Multiple layers to combine for role classification.
 
     Returns:
         List of role assignments for each node.
     """
-    # Build directed NetworkX graph
+    kinds = edge_kinds if edge_kinds is not None else [edge_kind]
+
+    # Build directed NetworkX graph from all specified layers
     nx_graph = nx.DiGraph()
     for node_id in graph.nodes:
         nx_graph.add_node(node_id)
 
-    for edge in graph.edges_by_kind(edge_kind):
-        if edge.source in graph.nodes and edge.target in graph.nodes:
-            nx_graph.add_edge(edge.source, edge.target)
+    for ek in kinds:
+        for edge in graph.edges_by_kind(ek):
+            if edge.source in graph.nodes and edge.target in graph.nodes:
+                nx_graph.add_edge(edge.source, edge.target)
 
     betweenness = nx.betweenness_centrality(nx_graph)
 

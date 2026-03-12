@@ -24,7 +24,10 @@ def main(argv: list[str] | None = None) -> None:
     )
     parser.add_argument("path", type=Path, help="Path to Python project root")
     parser.add_argument("--json", action="store_true", dest="as_json", help="Output as JSON")
-    parser.add_argument("--edge-kind", default="calls", help="Edge layer to analyze (calls, imports, inherits, contains)")
+    parser.add_argument(
+        "--edge-kind", default="combined",
+        help="Edge layer to analyze (calls, imports, inherits, contains, combined)",
+    )
 
     args = parser.parse_args(argv)
 
@@ -37,8 +40,11 @@ def main(argv: list[str] | None = None) -> None:
 
     # Analyze
     from topo_parser.graph import EdgeKind
-    edge_kind = EdgeKind(args.edge_kind)
-    result = analyze(graph, edge_kind=edge_kind)
+    if args.edge_kind == "combined":
+        result = analyze(graph, combined=True)
+    else:
+        edge_kind = EdgeKind(args.edge_kind)
+        result = analyze(graph, edge_kind=edge_kind)
 
     # Output
     if args.as_json:
