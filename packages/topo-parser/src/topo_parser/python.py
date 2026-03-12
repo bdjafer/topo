@@ -120,10 +120,18 @@ def _extract_class(
         if base_name:
             graph.add_edge(Edge(source=class_id, target=base_name, kind=EdgeKind.INHERITS))
 
+    # Extract the first base class name for super() resolution
+    first_base_name: str | None = None
+    if node.bases:
+        first_base_name = _resolve_name(node.bases[0])
+
     # Methods
     for child in ast.iter_child_nodes(node):
         if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            _extract_function(graph, child, class_id, file, class_id=class_id)
+            _extract_function(
+                graph, child, class_id, file,
+                class_id=class_id, base_name=first_base_name,
+            )
 
 
 def _extract_function(
@@ -133,12 +141,15 @@ def _extract_function(
     file: Path,
     *,
     class_id: str | None = None,
+    base_name: str | None = None,
 ) -> None:
     """Extract a function/method node and its call edges.
 
     Args:
         class_id: If this function is a method, the fully-qualified ID of
             the enclosing class.  Used to resolve self/cls method calls.
+        base_name: The unresolved name of the first base class, used to
+            resolve super().method() calls.
     """
     func_id = f"{parent_id}.{node.name}"
     graph.add_node(Node(id=func_id, kind=NodeKind.FUNCTION, file=file, line=node.lineno, name=node.name))
@@ -148,10 +159,12 @@ def _extract_function(
     self_name = _self_param_name(node) if class_id else None
 
     # Walk the function body for call expressions
+    seen_calls: set[str] = set()
     for child in ast.walk(node):
         if isinstance(child, ast.Call):
-            callee = _resolve_call(child.func, self_name, class_id)
-            if callee:
+            callee = _resolve_call(child.func, self_name, class_id, base_name)
+            if callee and callee not in seen_calls:
+                seen_calls.add(callee)
                 graph.add_edge(Edge(source=func_id, target=callee, kind=EdgeKind.CALLS))
 
 
@@ -187,12 +200,14 @@ def _resolve_call(
     node: ast.expr,
     self_name: str | None,
     class_id: str | None,
+    base_name: str | None = None,
 ) -> str | None:
     """Resolve a call expression, with special handling for self/cls/super().
 
     For ``self.method()``, rewrites to ``ClassName.method`` so the
     downstream resolver can match it to a known node via ancestor prefix walk.
-    For ``super().method()``, also rewrites to ``ClassName.method``.
+    For ``super().method()``, rewrites to ``BaseName.method`` using the
+    first declared base class.
     """
     # self.method() or cls.method() -> ClassName.method
     if (
@@ -205,7 +220,7 @@ def _resolve_call(
         class_short = class_id.rsplit(".", 1)[-1]
         return f"{class_short}.{node.attr}"
 
-    # super().method() -> ClassName.method (resolver walks up ancestors)
+    # super().method() -> BaseName.method
     if (
         class_id
         and isinstance(node, ast.Attribute)
@@ -213,8 +228,12 @@ def _resolve_call(
         and isinstance(node.value.func, ast.Name)
         and node.value.func.id == "super"
     ):
-        class_short = class_id.rsplit(".", 1)[-1]
-        return f"{class_short}.{node.attr}"
+        if base_name:
+            # Use the declared base class name so the resolver can find
+            # the parent's method rather than creating a self-loop.
+            return f"{base_name}.{node.attr}"
+        # No base class declared (implicit object) — drop the call
+        return None
 
     return _resolve_name(node)
 

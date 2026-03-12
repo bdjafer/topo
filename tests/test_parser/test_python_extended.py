@@ -164,13 +164,8 @@ def test_cls_method_call_resolved(tmp_path: Path):
     ), f"Expected cls._build() to resolve, got: {[(e.source, e.target) for e in calls]}"
 
 
-def test_super_method_call_resolved(tmp_path: Path):
-    """super().method() calls should resolve to the method on the same class.
-
-    The resolver walks ancestor prefixes, so super().method() emitted as
-    ClassName.method will match the class's own method node (or a parent's
-    if the class inherits and overrides).
-    """
+def test_super_method_call_resolves_to_base(tmp_path: Path):
+    """super().method() should resolve to the BASE class's method, not create a self-loop."""
     (tmp_path / "mod.py").write_text(textwrap.dedent("""\
         class Base:
             def setup(self):
@@ -183,12 +178,32 @@ def test_super_method_call_resolved(tmp_path: Path):
 
     graph = parse_python_project(tmp_path)
     calls = graph.edges_by_kind(EdgeKind.CALLS)
-    # super().setup() in Child.setup should resolve to Child.setup or Base.setup
-    # Since the resolver walks ancestors, it finds mod.Child.setup first
+    # Must resolve to Base.setup, NOT Child.setup (which would be a self-loop)
     assert any(
-        e.source == "mod.Child.setup" and e.target in ("mod.Child.setup", "mod.Base.setup")
+        e.source == "mod.Child.setup" and e.target == "mod.Base.setup"
         for e in calls
-    ), f"Expected super().setup() to resolve, got: {[(e.source, e.target) for e in calls]}"
+    ), f"Expected super().setup() -> Base.setup, got: {[(e.source, e.target) for e in calls]}"
+    # Must NOT create a self-loop
+    assert not any(
+        e.source == "mod.Child.setup" and e.target == "mod.Child.setup"
+        for e in calls
+    ), "super().setup() should not create a self-loop"
+
+
+def test_super_with_no_base_class_dropped(tmp_path: Path):
+    """super() in a class with no explicit base should be dropped."""
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        class MyClass:
+            def run(self):
+                super().__init__()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    assert len(calls) == 0, (
+        f"super() with no base class should produce no calls, got: "
+        f"{[(e.source, e.target) for e in calls]}"
+    )
 
 
 def test_self_call_to_nonexistent_method_dropped(tmp_path: Path):
@@ -259,3 +274,67 @@ def test_self_call_does_not_affect_free_functions(tmp_path: Path):
         e.source == "mod.not_a_method" and e.target == "mod.helper"
         for e in calls
     )
+
+
+def test_duplicate_self_calls_deduplicated(tmp_path: Path):
+    """Calling self.method() multiple times should produce only one edge."""
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        class MyClass:
+            def helper(self):
+                pass
+
+            def run(self):
+                self.helper()
+                self.helper()
+                self.helper()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    matching = [e for e in calls if e.source == "mod.MyClass.run" and e.target == "mod.MyClass.helper"]
+    assert len(matching) == 1, f"Expected 1 edge, got {len(matching)}"
+
+
+def test_inherited_method_call_is_dropped(tmp_path: Path):
+    """self.method() where method is only on a parent class is not resolved.
+
+    This is a known limitation: the parser resolves self.method() by looking
+    up ClassName.method in the graph. If the method is inherited (exists on
+    Base but not on Child), it won't be found. Fixing this would require
+    walking the inheritance chain during resolution.
+    """
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        class Base:
+            def base_method(self):
+                pass
+
+        class Child(Base):
+            def run(self):
+                self.base_method()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    # base_method is on Base, not Child. self.base_method() in Child emits
+    # "Child.base_method" which won't resolve. This documents the limitation.
+    assert len(calls) == 0, (
+        f"Inherited method calls shouldn't resolve yet (known limitation), "
+        f"got: {[(e.source, e.target) for e in calls]}"
+    )
+
+
+def test_staticmethod_not_affected(tmp_path: Path):
+    """Static methods (no self/cls param) should not get self-resolution."""
+    (tmp_path / "mod.py").write_text(textwrap.dedent("""\
+        class MyClass:
+            def helper(self):
+                pass
+
+            @staticmethod
+            def run():
+                pass
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    assert len(calls) == 0
