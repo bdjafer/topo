@@ -35,9 +35,9 @@ def test_parse_simple_module(tmp_path: Path):
     import_edges = graph.edges_by_kind(EdgeKind.IMPORTS)
     assert any(e.target == "os" for e in import_edges)
 
-    # Should have call edge from method to helper
+    # Should have call edge from method to helper (fully qualified)
     call_edges = graph.edges_by_kind(EdgeKind.CALLS)
-    assert any(e.target == "helper" for e in call_edges)
+    assert any(e.target == "example.helper" for e in call_edges)
 
     # Should have containment edges
     contain_edges = graph.edges_by_kind(EdgeKind.CONTAINS)

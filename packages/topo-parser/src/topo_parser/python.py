@@ -19,9 +19,16 @@ def parse_python_project(root: Path) -> CodeGraph:
     Parse a Python project directory into a CodeGraph.
 
     Walks all .py files under `root`, extracts entities and relationships.
+    Detects src-layout packages and uses the Python package root for module IDs.
     """
     graph = CodeGraph()
+    root = root.resolve()
     py_files = sorted(root.rglob("*.py"))
+
+    # Detect Python package roots: directories containing __init__.py that
+    # aren't nested inside another package. Handles both flat layout
+    # (root/pkg/__init__.py) and src layout (root/src/pkg/__init__.py).
+    package_roots = _find_package_roots(root, py_files)
 
     for py_file in py_files:
         try:
@@ -30,9 +37,46 @@ def parse_python_project(root: Path) -> CodeGraph:
         except (SyntaxError, UnicodeDecodeError):
             continue
 
-        _extract_from_file(graph, tree, py_file, root)
+        pkg_root = _best_package_root(py_file, package_roots)
+        _extract_from_file(graph, tree, py_file, pkg_root or root)
 
+    _resolve_calls(graph)
     return graph
+
+
+def _find_package_roots(root: Path, py_files: list[Path]) -> list[Path]:
+    """Find directories that serve as Python package roots.
+
+    A package root is the parent of a top-level Python package. For example,
+    in a src layout (proj/src/pkg/__init__.py), the package root is proj/src/.
+    In a flat layout (proj/pkg/__init__.py), the package root is proj/.
+    """
+    # Find all directories containing __init__.py
+    init_dirs: set[Path] = set()
+    for f in py_files:
+        if f.name == "__init__.py":
+            init_dirs.add(f.parent.resolve())
+
+    # A package root is the parent of a package dir whose parent is NOT itself a package.
+    # This gives us the directory from which Python module IDs should be computed.
+    package_roots: set[Path] = set()
+    for pkg_dir in init_dirs:
+        parent = pkg_dir.parent
+        if parent not in init_dirs:
+            package_roots.add(parent)
+
+    return sorted(package_roots)
+
+
+def _best_package_root(file: Path, package_roots: list[Path]) -> Path | None:
+    """Find the most specific package root that contains this file."""
+    file = file.resolve()
+    best: Path | None = None
+    for pr in package_roots:
+        if file.is_relative_to(pr):
+            if best is None or len(pr.parts) > len(best.parts):
+                best = pr
+    return best
 
 
 def _module_id(file: Path, root: Path) -> str:
@@ -115,4 +159,82 @@ def _resolve_name(node: ast.expr) -> str | None:
         value = _resolve_name(node.value)
         if value:
             return f"{value}.{node.attr}"
+    return None
+
+
+def _resolve_calls(graph: CodeGraph) -> None:
+    """Resolve raw call targets to actual graph node IDs.
+
+    Raw call edges have targets like 'helper' or 'graph.add_node'. This pass
+    replaces them with fully qualified node IDs where possible, and drops
+    edges that can't be resolved to known nodes.
+    """
+    node_ids = set(graph.nodes)
+
+    # Build import map: for each module, map imported short names to full targets.
+    # e.g., in module topo_cli.main: "parse_python_project" -> "topo_parser.python"
+    import_map: dict[str, dict[str, str]] = {}
+    for edge in graph.edges_by_kind(EdgeKind.IMPORTS):
+        mod = edge.source
+        target = edge.target
+        # Short name is the last segment: "topo_parser.graph" -> "graph"
+        short = target.rsplit(".", 1)[-1]
+        import_map.setdefault(mod, {})[short] = target
+
+    # Separate call edges from non-call edges
+    call_edges = graph.edges_by_kind(EdgeKind.CALLS)
+    other_edges = [e for e in graph.edges if e.kind != EdgeKind.CALLS]
+
+    resolved: list[Edge] = []
+    for edge in call_edges:
+        target = _try_resolve_call(edge.source, edge.target, node_ids, import_map)
+        if target:
+            resolved.append(Edge(source=edge.source, target=target, kind=EdgeKind.CALLS))
+
+    graph.edges = other_edges + resolved
+
+
+def _try_resolve_call(
+    source: str, raw_target: str, node_ids: set[str],
+    import_map: dict[str, dict[str, str]],
+) -> str | None:
+    """Try to resolve a raw call target to a known node ID."""
+    # 1. Already a known node ID (fully qualified call)
+    if raw_target in node_ids:
+        return raw_target
+
+    # Find the module that contains the calling function
+    # e.g., source="topo_cli.main.main" -> module="topo_cli.main"
+    parts = source.split(".")
+    for i in range(len(parts), 0, -1):
+        candidate_mod = ".".join(parts[:i])
+        if candidate_mod in node_ids:
+            from topo_parser.graph import NodeKind
+            node = None
+            # We need to check the kind but we only have node_ids set
+            # Just use the module prefix approach
+            break
+
+    # 2. Qualify with each ancestor prefix of the source
+    # source="pkg.mod.Class.method", try "pkg.mod.Class.helper", "pkg.mod.helper", "pkg.helper"
+    for i in range(len(parts) - 1, 0, -1):
+        candidate = ".".join(parts[:i]) + "." + raw_target
+        if candidate in node_ids:
+            return candidate
+
+    # 3. Handle dotted targets via imports: "EdgeKind.CALLS" where EdgeKind was imported
+    first_part = raw_target.split(".")[0]
+    rest = raw_target.split(".")[1:]
+    for i in range(len(parts), 0, -1):
+        mod_candidate = ".".join(parts[:i])
+        if mod_candidate in import_map:
+            if first_part in import_map[mod_candidate]:
+                imported_target = import_map[mod_candidate][first_part]
+                if rest:
+                    full = imported_target + "." + ".".join(rest)
+                else:
+                    full = imported_target
+                if full in node_ids:
+                    return full
+
     return None

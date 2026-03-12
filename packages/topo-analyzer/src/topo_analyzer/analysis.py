@@ -7,12 +7,13 @@ a unified StructuralAnalysis result.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from topo_parser.graph import CodeGraph, EdgeKind
 from topo_analyzer.spectral import SpectralResult, spectral_decomposition
 from topo_analyzer.modules import Module, detect_modules
 from topo_analyzer.roles import RoleAssignment, classify_roles
+from topo_analyzer.anomalies import Anomaly, detect_anomalies
 
 
 @dataclass
@@ -23,6 +24,7 @@ class StructuralAnalysis:
     spectral: SpectralResult | None
     modules: list[Module]
     roles: list[RoleAssignment]
+    anomalies: list[Anomaly] = field(default_factory=list)
 
     def summary(self) -> str:
         """Human-readable summary of structural analysis."""
@@ -45,6 +47,12 @@ class StructuralAnalysis:
         for role, count in sorted(role_counts.items()):
             lines.append(f"  {role}: {count}")
 
+        if self.anomalies:
+            lines.append("")
+            lines.append(f"Anomalies: {len(self.anomalies)}")
+            for a in self.anomalies:
+                lines.append(f"  [{a.severity:.1f}] {a.kind.value}: {a.description}")
+
         return "\n".join(lines)
 
 
@@ -62,10 +70,12 @@ def analyze(graph: CodeGraph, edge_kind: EdgeKind = EdgeKind.CALLS) -> Structura
     spectral = spectral_decomposition(graph, edge_kind=edge_kind)
     modules = detect_modules(spectral) if spectral else []
     roles = classify_roles(graph, edge_kind=edge_kind)
+    anomalies = detect_anomalies(graph, spectral, modules, edge_kind=edge_kind)
 
     return StructuralAnalysis(
         graph=graph,
         spectral=spectral,
         modules=modules,
         roles=roles,
+        anomalies=anomalies,
     )

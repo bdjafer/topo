@@ -71,6 +71,15 @@ def _to_dict(result) -> dict:
             }
             for r in result.roles
         ],
+        "anomalies": [
+            {
+                "kind": a.kind.value,
+                "node_ids": a.node_ids,
+                "description": a.description,
+                "severity": round(a.severity, 2),
+            }
+            for a in result.anomalies
+        ],
     }
 
 
