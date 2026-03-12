@@ -35,9 +35,9 @@ def test_parse_simple_module(tmp_path: Path):
     import_edges = graph.edges_by_kind(EdgeKind.IMPORTS)
     assert any(e.target == "os" for e in import_edges)
 
-    # Should have call edge from method to helper
+    # Should have call edge from method to helper (fully qualified)
     call_edges = graph.edges_by_kind(EdgeKind.CALLS)
-    assert any(e.target == "helper" for e in call_edges)
+    assert any(e.target == "example.helper" for e in call_edges)
 
     # Should have containment edges
     contain_edges = graph.edges_by_kind(EdgeKind.CONTAINS)
@@ -56,7 +56,7 @@ def test_parse_inheritance(tmp_path: Path):
 
     graph = parse_python_project(tmp_path)
     inherit_edges = graph.edges_by_kind(EdgeKind.INHERITS)
-    assert any(e.source == "animals.Dog" and e.target == "Animal" for e in inherit_edges)
+    assert any(e.source == "animals.Dog" and e.target == "animals.Animal" for e in inherit_edges)
 
 
 def test_parse_empty_dir(tmp_path: Path):
