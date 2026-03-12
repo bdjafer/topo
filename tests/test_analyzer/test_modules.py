@@ -54,7 +54,19 @@ def test_detect_modules_auto_k():
     assert len(modules) >= 2
 
 
-def test_estimate_k_single_eigenvalue():
-    """With a single eigenvalue, should return 2."""
+def test_estimate_k_small_input():
+    """With very few data points, should return 2."""
     import numpy as np
-    assert _estimate_k(np.array([0.5])) == 2
+    # 3 points in 2D — too small for more than 2 clusters
+    X = np.array([[0.0, 0.0], [1.0, 0.0], [0.5, 1.0]])
+    assert _estimate_k(X) == 2
+
+
+def test_n_modules_override():
+    """Explicit n_modules should override auto-detection."""
+    g = _make_two_cluster_graph()
+    spectral = spectral_decomposition(g, edge_kind=EdgeKind.CALLS, k=4)
+    assert spectral is not None
+
+    modules = detect_modules(spectral, n_modules=3)
+    assert len(modules) == 3

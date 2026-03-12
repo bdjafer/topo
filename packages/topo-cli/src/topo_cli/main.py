@@ -28,6 +28,10 @@ def main(argv: list[str] | None = None) -> None:
         "--edge-kind", default="combined",
         help="Edge layer to analyze (calls, imports, inherits, contains, combined)",
     )
+    parser.add_argument(
+        "--n-modules", type=int, default=None,
+        help="Number of structural modules to detect (auto-detected if omitted)",
+    )
 
     args = parser.parse_args(argv)
 
@@ -41,10 +45,10 @@ def main(argv: list[str] | None = None) -> None:
     # Analyze
     from topo_parser.graph import EdgeKind
     if args.edge_kind == "combined":
-        result = analyze(graph, combined=True)
+        result = analyze(graph, combined=True, n_modules=args.n_modules)
     else:
         edge_kind = EdgeKind(args.edge_kind)
-        result = analyze(graph, edge_kind=edge_kind)
+        result = analyze(graph, edge_kind=edge_kind, n_modules=args.n_modules)
 
     # Output
     if args.as_json:
