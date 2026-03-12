@@ -150,8 +150,13 @@ def _kmeans(X: np.ndarray, k: int, max_iter: int = 100) -> np.ndarray:
     centroids = [X[rng.integers(n)]]
     for _ in range(k - 1):
         dists = np.min([np.sum((X - c) ** 2, axis=1) for c in centroids], axis=0)
-        probs = dists / dists.sum()
-        centroids.append(X[rng.choice(n, p=probs)])
+        dist_sum = dists.sum()
+        if dist_sum == 0:
+            # All points are at existing centroids; fall back to uniform selection
+            centroids.append(X[rng.integers(n)])
+        else:
+            probs = dists / dist_sum
+            centroids.append(X[rng.choice(n, p=probs)])
     centroids_arr = np.array(centroids)
 
     labels = np.zeros(n, dtype=int)
