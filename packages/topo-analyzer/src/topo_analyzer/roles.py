@@ -10,6 +10,7 @@ centrality) and spectral fingerprint properties.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from enum import Enum
 
@@ -49,6 +50,10 @@ def classify_roles(
     """
     Classify structural roles for all nodes based on graph position.
 
+    Uses only graph-local properties (degree, betweenness) — does not
+    require spectral decomposition.  For large graphs, betweenness is
+    approximated via random sampling to keep the cost manageable.
+
     Args:
         graph: The code graph.
         edge_kind: Which relationship layer to use (ignored if edge_kinds is set).
@@ -69,7 +74,7 @@ def classify_roles(
             if edge.source in graph.nodes and edge.target in graph.nodes:
                 nx_graph.add_edge(edge.source, edge.target)
 
-    betweenness = nx.betweenness_centrality(nx_graph)
+    betweenness = _compute_betweenness(nx_graph)
 
     assignments = []
     for node_id in graph.nodes:
@@ -91,6 +96,23 @@ def classify_roles(
     return assignments
 
 
+# Threshold above which we switch to approximate betweenness centrality.
+# Exact betweenness is O(V*E); for a 49K-node / 375K-edge graph that is
+# ~18 billion operations — too slow in practice.
+_BETWEENNESS_APPROX_THRESHOLD = 5000
+
+
+def _compute_betweenness(nx_graph: nx.DiGraph) -> dict[str, float]:
+    """Compute betweenness centrality, using approximation for large graphs."""
+    n = nx_graph.number_of_nodes()
+    if n <= _BETWEENNESS_APPROX_THRESHOLD:
+        return nx.betweenness_centrality(nx_graph)
+    # Sample sqrt(n) pivot nodes — gives a good accuracy/speed trade-off
+    # while keeping cost at O(k * E) where k = sqrt(n).
+    k = max(50, int(n ** 0.5))
+    return nx.betweenness_centrality(nx_graph, k=k)
+
+
 def _classify_single(
     degree: int,
     in_degree: int,
@@ -98,16 +120,26 @@ def _classify_single(
     betweenness: float,
     n_nodes: int,
 ) -> StructuralRole:
-    """Classify a single node based on its metrics. Thresholds are initial heuristics."""
+    """Classify a single node based on its metrics.
+
+    Thresholds are initial heuristics.  The hub threshold uses a log-scale
+    cap so it remains meaningful on large graphs (the old linear 15%
+    threshold would require degree > 7 000 on a 49K-node graph, making
+    hub detection impossible in practice).
+    """
     if degree == 0:
         return StructuralRole.ORPHAN
 
     # High betweenness + moderate degree = bridge
-    if betweenness > 0.1 and degree < n_nodes * 0.3:
+    if betweenness > 0.05 and degree < n_nodes * 0.3:
         return StructuralRole.BRIDGE
 
-    # High degree = hub
-    if degree > max(5, n_nodes * 0.15):
+    # High degree = hub.
+    # Use log-scale cap: for small graphs the threshold is ~15% of nodes,
+    # for large graphs it plateaus so that well-connected nodes are still
+    # detected as hubs.
+    hub_threshold = max(5, min(n_nodes * 0.15, 10 * math.log2(max(n_nodes, 2))))
+    if degree > hub_threshold:
         return StructuralRole.HUB
 
     # High in-degree, low out-degree = utility
