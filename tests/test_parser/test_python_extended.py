@@ -83,3 +83,42 @@ def test_recursive_call_resolution(tmp_path: Path):
         e.source == "mod.recurse" and e.target == "mod.recurse"
         for e in calls
     )
+
+
+def test_cross_module_call_via_import(tmp_path: Path):
+    """Calls to imported functions from another module should resolve."""
+    pkg = tmp_path / "pkg"
+    pkg.mkdir()
+    (pkg / "__init__.py").write_text("")
+    (pkg / "utils.py").write_text(textwrap.dedent("""\
+        def do_stuff():
+            pass
+    """))
+    (pkg / "main.py").write_text(textwrap.dedent("""\
+        from pkg.utils import do_stuff
+
+        def run():
+            do_stuff()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    assert any(
+        e.source == "pkg.main.run" and e.target == "pkg.utils.do_stuff"
+        for e in calls
+    ), f"Expected cross-module call, got: {[(e.source, e.target) for e in calls]}"
+
+
+def test_from_import_creates_qualified_import_edges(tmp_path: Path):
+    """'from foo import bar' should create import edges to both foo and foo.bar."""
+    pkg = tmp_path / "pkg"
+    pkg.mkdir()
+    (pkg / "__init__.py").write_text("")
+    (pkg / "lib.py").write_text("class Thing: pass\n")
+    (pkg / "app.py").write_text("from pkg.lib import Thing\n")
+
+    graph = parse_python_project(tmp_path)
+    imports = graph.edges_by_kind(EdgeKind.IMPORTS)
+    targets = [e.target for e in imports if e.source == "pkg.app"]
+    assert "pkg.lib" in targets
+    assert "pkg.lib.Thing" in targets

@@ -143,12 +143,22 @@ def _extract_function(
 
 
 def _extract_import(graph: CodeGraph, node: ast.Import | ast.ImportFrom, mod_id: str) -> None:
-    """Extract import edges."""
+    """Extract import edges.
+
+    For `import foo.bar`, creates an edge to `foo.bar`.
+    For `from foo.bar import baz, qux`, creates edges to both
+    `foo.bar` (the module) and `foo.bar.baz`, `foo.bar.qux` (the names).
+    This allows call resolution to map `baz()` -> `foo.bar.baz`.
+    """
     if isinstance(node, ast.Import):
         for alias in node.names:
             graph.add_edge(Edge(source=mod_id, target=alias.name, kind=EdgeKind.IMPORTS))
     elif node.module:
         graph.add_edge(Edge(source=mod_id, target=node.module, kind=EdgeKind.IMPORTS))
+        for alias in node.names:
+            if alias.name != "*":
+                qualified = f"{node.module}.{alias.name}"
+                graph.add_edge(Edge(source=mod_id, target=qualified, kind=EdgeKind.IMPORTS))
 
 
 def _resolve_name(node: ast.expr) -> str | None:
@@ -203,17 +213,7 @@ def _try_resolve_call(
     if raw_target in node_ids:
         return raw_target
 
-    # Find the module that contains the calling function
-    # e.g., source="topo_cli.main.main" -> module="topo_cli.main"
     parts = source.split(".")
-    for i in range(len(parts), 0, -1):
-        candidate_mod = ".".join(parts[:i])
-        if candidate_mod in node_ids:
-            from topo_parser.graph import NodeKind
-            node = None
-            # We need to check the kind but we only have node_ids set
-            # Just use the module prefix approach
-            break
 
     # 2. Qualify with each ancestor prefix of the source
     # source="pkg.mod.Class.method", try "pkg.mod.Class.helper", "pkg.mod.helper", "pkg.helper"
