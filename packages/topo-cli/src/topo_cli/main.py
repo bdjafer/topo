@@ -24,7 +24,14 @@ def main(argv: list[str] | None = None) -> None:
     )
     parser.add_argument("path", type=Path, help="Path to Python project root")
     parser.add_argument("--json", action="store_true", dest="as_json", help="Output as JSON")
-    parser.add_argument("--edge-kind", default="calls", help="Edge layer to analyze (calls, imports, inherits, contains)")
+    parser.add_argument(
+        "--edge-kind", default="combined",
+        help="Edge layer to analyze (calls, imports, inherits, contains, combined)",
+    )
+    parser.add_argument(
+        "--n-modules", type=int, default=None,
+        help="Number of structural modules to detect (auto-detected if omitted)",
+    )
 
     args = parser.parse_args(argv)
 
@@ -37,8 +44,11 @@ def main(argv: list[str] | None = None) -> None:
 
     # Analyze
     from topo_parser.graph import EdgeKind
-    edge_kind = EdgeKind(args.edge_kind)
-    result = analyze(graph, edge_kind=edge_kind)
+    if args.edge_kind == "combined":
+        result = analyze(graph, combined=True, n_modules=args.n_modules)
+    else:
+        edge_kind = EdgeKind(args.edge_kind)
+        result = analyze(graph, edge_kind=edge_kind, n_modules=args.n_modules)
 
     # Output
     if args.as_json:
@@ -70,6 +80,15 @@ def _to_dict(result) -> dict:
                 "betweenness": round(r.betweenness, 4),
             }
             for r in result.roles
+        ],
+        "anomalies": [
+            {
+                "kind": a.kind.value,
+                "node_ids": a.node_ids,
+                "description": a.description,
+                "severity": round(a.severity, 2),
+            }
+            for a in result.anomalies
         ],
     }
 
