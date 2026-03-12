@@ -20,9 +20,9 @@
 #
 import ast
 
-from topo_parser._vendor.pycg import utils
-from topo_parser._vendor.pycg.machinery.definitions import Definition
-from topo_parser._vendor.pycg.processing.base import ProcessingBase
+from pycg import utils
+from pycg.machinery.definitions import Definition
+from pycg.processing.base import ProcessingBase
 
 
 class PostProcessor(ProcessingBase):

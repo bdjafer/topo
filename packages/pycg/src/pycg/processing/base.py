@@ -21,8 +21,8 @@
 import ast
 import os
 
-from topo_parser._vendor.pycg import utils
-from topo_parser._vendor.pycg.machinery.definitions import Definition
+from pycg import utils
+from pycg.machinery.definitions import Definition
 
 
 class ProcessingBase(ast.NodeVisitor):

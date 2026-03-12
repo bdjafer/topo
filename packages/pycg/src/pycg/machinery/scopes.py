@@ -20,7 +20,7 @@
 #
 import symtable
 
-from topo_parser._vendor.pycg import utils
+from pycg import utils
 
 
 class ScopeManager(object):

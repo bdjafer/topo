@@ -22,7 +22,7 @@ import os
 
 from pkg_resources import Requirement
 
-from topo_parser._vendor.pycg import utils
+from pycg import utils
 
 from .base import BaseFormatter
 
