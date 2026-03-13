@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import sys
 from collections import defaultdict
-from math import comb, log
+from math import log
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "packages" / "topo-parser" / "src"))
@@ -51,30 +51,6 @@ def compute_nmi(labels_a: list[object], labels_b: list[object]) -> float:
     return 2 * mi / (h_a + h_b)
 
 
-def compute_ari(labels_a: list[object], labels_b: list[object]) -> float:
-    n = len(labels_a)
-    assert n == len(labels_b) and n > 0
-    if n < 2:
-        return 1.0
-    joint: dict[tuple, int] = defaultdict(int)
-    count_a: dict[object, int] = defaultdict(int)
-    count_b: dict[object, int] = defaultdict(int)
-    for la, lb in zip(labels_a, labels_b):
-        joint[(la, lb)] += 1
-        count_a[la] += 1
-        count_b[lb] += 1
-    total_pairs = comb(n, 2)
-    sum_joint = sum(comb(c, 2) for c in joint.values() if c >= 2)
-    sum_a = sum(comb(c, 2) for c in count_a.values() if c >= 2)
-    sum_b = sum(comb(c, 2) for c in count_b.values() if c >= 2)
-    expected = (sum_a * sum_b) / total_pairs if total_pairs else 0.0
-    max_index = 0.5 * (sum_a + sum_b)
-    denom = max_index - expected
-    if denom == 0:
-        return 1.0
-    return (sum_joint - expected) / denom
-
-
 def file_module(node_id: str) -> str:
     """Extract the file-level module from a node ID."""
     parts = node_id.split(".")
@@ -84,16 +60,6 @@ def file_module(node_id: str) -> str:
             break
         file_parts.append(p)
     return ".".join(file_parts) if file_parts else parts[0]
-
-
-def package_of(node_id: str) -> str:
-    """Extract the parent package from a node ID.
-
-    flask.app -> flask, flask.json.tag -> flask.json, flask -> flask.
-    At module level this gives non-trivial baseline clusters for ARI.
-    """
-    parts = node_id.rsplit(".", 1)
-    return parts[0] if len(parts) > 1 else node_id
 
 
 def investigate_codebase(name: str, source_path: Path):
@@ -194,31 +160,19 @@ def investigate_codebase(name: str, source_path: Path):
         if not result.module_detection.package_fallback and result.modules:
             spectral_labels = {}
             file_labels = {}
-            pkg_labels = {}
             for mod in result.modules:
                 if mod.unassigned:
                     continue
                 for nid in mod.node_ids:
                     spectral_labels[nid] = mod.id
                     file_labels[nid] = file_module(nid)
-                    pkg_labels[nid] = package_of(nid)
 
             if len(spectral_labels) > 1:
                 common = sorted(spectral_labels.keys())
                 sl = [spectral_labels[n] for n in common]
                 fl = [file_labels[n] for n in common]
-                pl = [pkg_labels[n] for n in common]
                 nmi = compute_nmi(sl, fl)
-                # ARI uses package-level baseline (file-level gives all
-                # singletons at MODULE granularity, making ARI degenerate)
-                n_pkg_groups = len(set(pl))
-                if n_pkg_groups > 1:
-                    ari = compute_ari(sl, pl)
-                    print(f"\n  NMI vs file-module baseline: {nmi:.3f}")
-                    print(f"  ARI vs package baseline: {ari:.3f}")
-                else:
-                    print(f"\n  NMI vs file-module baseline: {nmi:.3f}")
-                    print(f"  ARI: N/A (single package, no meaningful baseline)")
+                print(f"\n  NMI vs file-module baseline: {nmi:.3f}")
 
                 # Cross-tab: which file-modules are grouped together?
                 module_to_files = defaultdict(lambda: defaultdict(int))
