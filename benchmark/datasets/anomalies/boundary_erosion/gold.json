@@ -1,0 +1,12 @@
+{
+  "anomalies": [
+    {
+      "kind": "cross_module",
+      "region_nodes": [
+        "api.routes",
+        "data.audit",
+        "data.store"
+      ]
+    }
+  ]
+}

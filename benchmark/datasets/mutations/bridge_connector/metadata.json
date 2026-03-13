@@ -1,0 +1,5 @@
+{
+  "split": "public",
+  "level": "module",
+  "description": "Connector node bridging two separate regions"
+}

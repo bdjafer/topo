@@ -1,0 +1,26 @@
+{
+  "ordering": [
+    [
+      "clean",
+      "mutated"
+    ]
+  ],
+  "required_expectations": [
+    {
+      "variants": [
+        "clean",
+        "mutated"
+      ],
+      "signal": "cross_package_dep_count",
+      "direction": "higher_in_second"
+    }
+  ],
+  "mutated_region": {
+    "nodes": [
+      "api.routes",
+      "api.serializers",
+      "data.store",
+      "data.audit"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "ordering": [
+    [
+      "clean",
+      "mutated"
+    ],
+    [
+      "repaired",
+      "mutated"
+    ]
+  ],
+  "required_expectations": [
+    {
+      "variants": [
+        "clean",
+        "mutated"
+      ],
+      "signal": "cross_package_dep_count",
+      "direction": "higher_in_second"
+    }
+  ],
+  "mutated_region": {
+    "nodes": [
+      "core.rules.normalize_order"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "anomalies": [
+    {
+      "kind": "cycle_member",
+      "region_nodes": [
+        "api.routes",
+        "core.service",
+        "data.store"
+      ]
+    }
+  ]
+}

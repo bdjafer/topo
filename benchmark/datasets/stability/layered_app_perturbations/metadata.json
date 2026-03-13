@@ -1,0 +1,8 @@
+{
+  "split": "public",
+  "description": "Structure-preserving perturbations of layered_app",
+  "perturbation_families": [
+    "rename",
+    "add_dead_leaf"
+  ]
+}

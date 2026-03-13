@@ -1,0 +1,36 @@
+{
+  "ordering": [
+    [
+      "clean",
+      "mutated"
+    ],
+    [
+      "repaired",
+      "mutated"
+    ]
+  ],
+  "required_expectations": [
+    {
+      "variants": [
+        "clean",
+        "mutated"
+      ],
+      "signal": "largest_module_ratio",
+      "direction": "higher_in_second",
+      "margin": 0.01
+    },
+    {
+      "variants": [
+        "clean",
+        "mutated"
+      ],
+      "signal": "cross_package_dep_count",
+      "direction": "higher_in_second"
+    }
+  ],
+  "mutated_region": {
+    "nodes": [
+      "bridge.connector"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "ordering": [
+    [
+      "clean",
+      "mutated"
+    ],
+    [
+      "repaired",
+      "mutated"
+    ]
+  ],
+  "required_expectations": [
+    {
+      "variants": [
+        "clean",
+        "mutated"
+      ],
+      "signal": "has_finding",
+      "signal_args": {
+        "kind": "cycle_member"
+      },
+      "direction": "present_in_second_not_first"
+    },
+    {
+      "variants": [
+        "clean",
+        "mutated"
+      ],
+      "signal": "cross_package_dep_count",
+      "direction": "higher_in_second"
+    }
+  ],
+  "mutated_region": {
+    "nodes": [
+      "core.service",
+      "api.routes"
+    ]
+  }
+}

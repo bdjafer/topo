@@ -1,0 +1,11 @@
+{
+  "anomalies": [
+    {
+      "kind": "cross_module",
+      "region_nodes": [
+        "data.store",
+        "api.serializers"
+      ]
+    }
+  ]
+}

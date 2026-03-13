@@ -1,0 +1,42 @@
+{
+  "rename": {
+    "api": "api.api_v2",
+    "api.routes": "api.routes_v2",
+    "api.routes.submit_order": "api.routes.submit_order_v2",
+    "api.routes.get_order": "api.routes.get_order_v2",
+    "api.serializers": "api.serializers_v2",
+    "api.serializers.serialize_order": "api.serializers.serialize_order_v2",
+    "core": "core.core_v2",
+    "core.rules": "core.rules_v2",
+    "core.rules.normalize_order": "core.rules.normalize_order_v2",
+    "core.service": "core.service_v2",
+    "core.service.create_order": "core.service.create_order_v2",
+    "core.service.fetch_order": "core.service.fetch_order_v2",
+    "data": "data.data_v2",
+    "data.audit": "data.audit_v2",
+    "data.audit.record_event": "data.audit.record_event_v2",
+    "data.store": "data.store_v2",
+    "data.store.save_order": "data.store.save_order_v2",
+    "data.store.load_order": "data.store.load_order_v2"
+  },
+  "add_dead_leaf": {
+    "api": "api",
+    "api.routes": "api.routes",
+    "api.routes.submit_order": "api.routes.submit_order",
+    "api.routes.get_order": "api.routes.get_order",
+    "api.serializers": "api.serializers",
+    "api.serializers.serialize_order": "api.serializers.serialize_order",
+    "core": "core",
+    "core.rules": "core.rules",
+    "core.rules.normalize_order": "core.rules.normalize_order",
+    "core.service": "core.service",
+    "core.service.create_order": "core.service.create_order",
+    "core.service.fetch_order": "core.service.fetch_order",
+    "data": "data",
+    "data.audit": "data.audit",
+    "data.audit.record_event": "data.audit.record_event",
+    "data.store": "data.store",
+    "data.store.save_order": "data.store.save_order",
+    "data.store.load_order": "data.store.load_order"
+  }
+}
