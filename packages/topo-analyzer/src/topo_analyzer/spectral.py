@@ -67,11 +67,18 @@ class SpectralResult:
         return self.primary_eigenvalues
 
     @property
+    def _max_fingerprint_width(self) -> int:
+        """Width to pad all fingerprints to (max eigenvector count across components)."""
+        if not self.components:
+            return 0
+        return max(component.eigenvectors.shape[1] for component in self.components)
+
+    @property
     def eigenvectors(self) -> NDArray[np.floating]:
         """Stack component embeddings into a single padded matrix."""
         if not self.components:
             return np.zeros((0, 0))
-        width = max(component.eigenvectors.shape[1] for component in self.components)
+        width = self._max_fingerprint_width
         matrices = []
         for component in self.components:
             vectors = component.eigenvectors
@@ -125,10 +132,14 @@ class SpectralResult:
         return self.largest_component_size / self.total_node_count
 
     def fingerprint(self, node_id: str) -> NDArray[np.floating]:
-        """Get the spectral fingerprint of a node."""
+        """Get the spectral fingerprint of a node, padded to uniform width."""
+        width = self._max_fingerprint_width
         for component in self.components:
             if node_id in component.node_ids:
-                return component.fingerprint(node_id)
+                fp = component.fingerprint(node_id)
+                if fp.shape[0] < width:
+                    fp = np.pad(fp, (0, width - fp.shape[0]))
+                return fp
         raise KeyError(f"No spectral fingerprint for node {node_id}")
 
 
