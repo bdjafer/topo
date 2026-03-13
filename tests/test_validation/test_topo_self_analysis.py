@@ -12,7 +12,9 @@ def test_topo_self_analysis_stays_first_party_and_interpretable():
     assert result.coverage is not None
     assert result.health is not None
     assert result.coverage.spectral_coverage_ratio > 0.8
-    assert result.health.largest_module_ratio < 0.5
+    # With package-aware module fallback, the largest module is topo_analyzer
+    # which contains 7/13 nodes (53.8%) — an accurate reflection of the codebase.
+    assert result.health.largest_module_ratio < 0.6
 
     dependency_pairs = {
         (dependency.source_package, dependency.target_package)
@@ -33,4 +35,7 @@ def test_topo_self_summary_and_findings_remain_actionable():
     assert "Package flow:" in summary
     assert "Scope roots:" in summary
     assert len(result.findings) <= 7
-    assert any(finding.kind == "reverse_dependency" for finding in result.findings)
+    # After call-edge validation against imports, the false reverse dependency
+    # (topo_parser -> topo_analyzer from PyCG suffix matching) is eliminated.
+    # A clean layered codebase should have no reverse dependency findings.
+    assert not any(finding.kind == "reverse_dependency" for finding in result.findings)

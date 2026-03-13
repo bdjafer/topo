@@ -4,17 +4,19 @@ Structural role classification.
 Classifies code entities by their structural position in the graph:
 hub, bridge, utility, entry point, orphan, etc.
 
-Uses a combination of graph-theoretic metrics (degree, betweenness,
-centrality) and spectral fingerprint properties.
+Uses distribution-based classification: instead of hardcoded thresholds,
+each node is classified by where it falls in the graph's own metric
+distributions (percentile ranks of degree and betweenness, plus a
+directional flow score).
 """
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass
 from enum import Enum
 
 import networkx as nx
+import numpy as np
 
 from topo_parser.graph import CodeGraph, EdgeKind
 
@@ -46,18 +48,22 @@ def classify_roles(
     graph: CodeGraph,
     edge_kind: EdgeKind = EdgeKind.CALLS,
     edge_kinds: list[EdgeKind] | None = None,
+    *,
+    pct_threshold: float = 0.9,
 ) -> list[RoleAssignment]:
     """
     Classify structural roles for all nodes based on graph position.
 
-    Uses only graph-local properties (degree, betweenness) — does not
-    require spectral decomposition.  For large graphs, betweenness is
-    approximated via random sampling to keep the cost manageable.
+    Uses distribution-based classification: roles are assigned based on
+    where each node falls in the graph's own metric distributions rather
+    than hardcoded absolute thresholds.
 
     Args:
         graph: The code graph.
         edge_kind: Which relationship layer to use (ignored if edge_kinds is set).
         edge_kinds: Multiple layers to combine for role classification.
+        pct_threshold: Percentile rank above which a metric is considered
+            unusually high (default 0.9 = top 10%).
 
     Returns:
         List of role assignments for each node.
@@ -76,21 +82,43 @@ def classify_roles(
 
     betweenness = _compute_betweenness(nx_graph)
 
-    assignments = []
-    for node_id in graph.nodes:
-        in_deg = nx_graph.in_degree(node_id)
-        out_deg = nx_graph.out_degree(node_id)
-        deg = in_deg + out_deg
-        btw = betweenness.get(node_id, 0.0)
+    # Collect per-node metrics
+    node_ids = list(graph.nodes)
+    n = len(node_ids)
+    degrees = np.zeros(n, dtype=int)
+    in_degrees = np.zeros(n, dtype=int)
+    out_degrees = np.zeros(n, dtype=int)
+    btw_values = np.zeros(n)
 
-        role = _classify_single(deg, in_deg, out_deg, btw, len(graph.nodes))
+    for i, node_id in enumerate(node_ids):
+        in_degrees[i] = nx_graph.in_degree(node_id)
+        out_degrees[i] = nx_graph.out_degree(node_id)
+        degrees[i] = in_degrees[i] + out_degrees[i]
+        btw_values[i] = betweenness.get(node_id, 0.0)
+
+    # Compute population statistics
+    degree_pcts = _percentile_ranks(degrees)
+    btw_pcts = _percentile_ranks(btw_values)
+    median_degree = float(np.median(degrees))
+
+    assignments = []
+    for i, node_id in enumerate(node_ids):
+        role = _classify_node(
+            degree=int(degrees[i]),
+            in_degree=int(in_degrees[i]),
+            out_degree=int(out_degrees[i]),
+            degree_pct=degree_pcts[i],
+            betweenness_pct=btw_pcts[i],
+            median_degree=median_degree,
+            pct_threshold=pct_threshold,
+        )
         assignments.append(RoleAssignment(
             node_id=node_id,
             role=role,
-            degree=deg,
-            betweenness=btw,
-            in_degree=in_deg,
-            out_degree=out_deg,
+            degree=int(degrees[i]),
+            betweenness=btw_values[i],
+            in_degree=int(in_degrees[i]),
+            out_degree=int(out_degrees[i]),
         ))
 
     return assignments
@@ -113,41 +141,72 @@ def _compute_betweenness(nx_graph: nx.DiGraph) -> dict[str, float]:
     return nx.betweenness_centrality(nx_graph, k=k)
 
 
-def _classify_single(
+def _percentile_ranks(values: np.ndarray) -> np.ndarray:
+    """Compute percentile rank for each value: fraction of values strictly less.
+
+    Uses ranks/(n-1) so the maximum value maps to 1.0 and the minimum to 0.0.
+    This ensures the top node is always classifiable regardless of graph size.
+
+    Distribution-free, handles ties correctly, works with any shape
+    including heavy-tailed and zero-inflated distributions.
+    """
+    n = len(values)
+    if n <= 1:
+        return np.zeros(n)
+    sorted_vals = np.sort(values)
+    # For each value, count how many are strictly less via searchsorted
+    ranks = np.searchsorted(sorted_vals, values, side="left")
+    return ranks / (n - 1)
+
+
+# Structural constants that define what each role means.
+# These are not statistical thresholds — they are definitional.
+_MIN_DIRECTIONAL_DEGREE = 3  # Need ≥3 edges for direction to be meaningful
+_DIRECTION_THRESHOLD = 0.6  # ≥60% flow imbalance = directional role
+_MIN_HUB_GAP = 2  # Hub must exceed median by ≥2 (prevents false hubs in uniform graphs)
+
+
+def _classify_node(
     degree: int,
     in_degree: int,
     out_degree: int,
-    betweenness: float,
-    n_nodes: int,
+    degree_pct: float,
+    betweenness_pct: float,
+    median_degree: float,
+    pct_threshold: float,
 ) -> StructuralRole:
-    """Classify a single node based on its metrics.
+    """Classify a single node using distribution-based rules.
 
-    Thresholds are initial heuristics.  The hub threshold uses a log-scale
-    cap so it remains meaningful on large graphs (the old linear 15%
-    threshold would require degree > 7 000 on a 49K-node graph, making
-    hub detection impossible in practice).
+    Classification priority:
+    1. ORPHAN:      degree == 0
+    2. BRIDGE:      top-percentile betweenness but NOT top-percentile degree
+    3. UTILITY:     strong sink (direction ≤ -0.6) with enough edges
+    4. ENTRY_POINT: strong source (direction ≥ +0.6) with enough edges
+    5. HUB:         top-percentile degree, above median gap, balanced flow
+    6. REGULAR:     everything else
     """
     if degree == 0:
         return StructuralRole.ORPHAN
 
-    # High betweenness + moderate degree = bridge
-    if betweenness > 0.05 and degree < n_nodes * 0.3:
+    direction = (out_degree - in_degree) / degree
+
+    # Bridge: unusually high betweenness without unusually high degree
+    if betweenness_pct >= pct_threshold and degree_pct < pct_threshold:
         return StructuralRole.BRIDGE
 
-    # High degree = hub.
-    # Use log-scale cap: for small graphs the threshold is ~15% of nodes,
-    # for large graphs it plateaus so that well-connected nodes are still
-    # detected as hubs.
-    hub_threshold = max(5, min(n_nodes * 0.15, 10 * math.log2(max(n_nodes, 2))))
-    if degree > hub_threshold:
-        return StructuralRole.HUB
-
-    # High in-degree, low out-degree = utility
-    if in_degree > 3 and out_degree <= 1:
+    # Directional roles: strong flow imbalance with enough edges
+    if degree >= _MIN_DIRECTIONAL_DEGREE and direction <= -_DIRECTION_THRESHOLD:
         return StructuralRole.UTILITY
 
-    # High out-degree, low in-degree = entry point
-    if out_degree > 3 and in_degree <= 1:
+    if degree >= _MIN_DIRECTIONAL_DEGREE and direction >= _DIRECTION_THRESHOLD:
         return StructuralRole.ENTRY_POINT
+
+    # Hub: top-percentile degree, clearly above median, balanced flow
+    if (
+        degree_pct >= pct_threshold
+        and degree >= median_degree + _MIN_HUB_GAP
+        and abs(direction) < _DIRECTION_THRESHOLD
+    ):
+        return StructuralRole.HUB
 
     return StructuralRole.REGULAR

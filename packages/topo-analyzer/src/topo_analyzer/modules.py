@@ -42,6 +42,7 @@ class ModuleDetection:
     component_count: int
     clustered_node_count: int
     unassigned_node_count: int
+    package_fallback: bool = False
 
 
 def detect_modules(
@@ -92,6 +93,17 @@ def detect_modules(
         total_weight = sum(weight for _, weight in silhouettes)
         silhouette = sum(score * weight for score, weight in silhouettes) / total_weight
 
+    # When k was auto-detected and spectral clustering is degenerate,
+    # fall back to package-based grouping which uses the structure
+    # already encoded in the node IDs.
+    used_fallback = False
+    if n_modules is None and _is_degenerate(modules, silhouette):
+        all_node_ids = [nid for m in modules for nid in m.node_ids]
+        modules = _package_grouping(all_node_ids)
+        chosen_k = len(modules)
+        silhouette = None
+        used_fallback = True
+
     return ModuleDetection(
         modules=modules,
         chosen_k=chosen_k,
@@ -99,6 +111,7 @@ def detect_modules(
         component_count=spectral.component_count,
         clustered_node_count=spectral.analyzed_node_count,
         unassigned_node_count=len(spectral.unassigned_node_ids),
+        package_fallback=used_fallback,
     )
 
 
@@ -290,3 +303,37 @@ def _kmeans(X: np.ndarray, k: int, max_iter: int = 100) -> np.ndarray:
                 centroids_arr[i] = X[mask].mean(axis=0)
 
     return labels
+
+
+def _is_degenerate(modules: list[Module], silhouette: float | None) -> bool:
+    """Clustering is degenerate when clusters are too small to be meaningful.
+
+    If silhouette is strong (>= 0.5), the spectral signal is trusted.
+    Otherwise, if the average cluster has fewer than 3 nodes, there isn't
+    enough statistical mass per cluster for the grouping to be meaningful.
+    """
+    if silhouette is not None and silhouette >= 0.5:
+        return False
+    clustered = [m for m in modules if not m.unassigned]
+    if not clustered:
+        return False
+    total_nodes = sum(m.size for m in clustered)
+    avg_size = total_nodes / len(clustered)
+    return avg_size < 3.0
+
+
+def _package_grouping(node_ids: list[str]) -> list[Module]:
+    """Group nodes by their top-level package (first dotted component).
+
+    Confidence is set to 0.5 (medium): the grouping is certain (packages
+    are well-defined), but we haven't validated structural cohesion
+    through spectral analysis.
+    """
+    groups: dict[str, list[str]] = {}
+    for nid in node_ids:
+        pkg = nid.split(".", 1)[0]
+        groups.setdefault(pkg, []).append(nid)
+    return [
+        Module(id=i, node_ids=sorted(members), confidence=0.5)
+        for i, (_, members) in enumerate(sorted(groups.items()))
+    ]
