@@ -32,3 +32,6 @@ htmlcov/
 
 # uv
 uv.lock
+
+# Benchmark run artifacts
+.benchmark/

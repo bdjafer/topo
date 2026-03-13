@@ -1,0 +1,12 @@
+{
+  "analysis_level": "module",
+  "included_nodes": {
+    "api.routes": "api",
+    "api.serializers": "api",
+    "core.rules": "core",
+    "core.service": "core",
+    "data.audit": "data",
+    "data.store": "data"
+  },
+  "excluded_nodes": []
+}

@@ -1,0 +1,5 @@
+{
+  "split": "public",
+  "level": "module",
+  "description": "Single reverse calls edge across module boundary"
+}

@@ -8,6 +8,7 @@ dependencies = [
     "topo-parser",
     "topo-analyzer",
     "topo-cli",
+    "topo-benchmark",
 ]
 
 [dependency-groups]
@@ -23,6 +24,7 @@ pycg = { workspace = true }
 topo-parser = { workspace = true }
 topo-analyzer = { workspace = true }
 topo-cli = { workspace = true }
+topo-benchmark = { workspace = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

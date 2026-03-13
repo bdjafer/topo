@@ -1,0 +1,48 @@
+{
+  "ordering": [
+    [
+      "clean",
+      "mutated"
+    ],
+    [
+      "repaired",
+      "mutated"
+    ]
+  ],
+  "required_expectations": [
+    {
+      "variants": [
+        "clean",
+        "mutated"
+      ],
+      "signal": "cross_package_dep_count",
+      "direction": "higher_in_second"
+    },
+    {
+      "variants": [
+        "clean",
+        "mutated"
+      ],
+      "signal": "has_cross_package_dep",
+      "signal_args": {
+        "source_pkg": "data",
+        "target_pkg": "api"
+      },
+      "direction": "true_in_second"
+    },
+    {
+      "variants": [
+        "repaired",
+        "mutated"
+      ],
+      "signal": "cross_package_dep_count",
+      "direction": "higher_in_second"
+    }
+  ],
+  "mutated_region": {
+    "nodes": [
+      "data.store",
+      "api.serializers"
+    ]
+  }
+}
