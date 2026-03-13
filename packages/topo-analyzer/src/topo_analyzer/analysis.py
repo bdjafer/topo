@@ -238,9 +238,13 @@ class StructuralAnalysis:
                 f"  Orphans: {self.health.orphan_count}/{self.graph.node_count} "
                 f"({self.health.orphan_ratio:.1%})"
             )
+            module_status = (
+                "package grouping" if self.module_detection.package_fallback
+                else self.health.largest_module_status
+            )
             lines.append(
                 f"  Largest module: {self.health.largest_module_ratio:.1%} "
-                f"({self.health.largest_module_status})"
+                f"({module_status})"
             )
 
         lines.append("")
@@ -323,6 +327,7 @@ class StructuralAnalysis:
                 "component_count": self.module_detection.component_count,
                 "clustered_node_count": self.module_detection.clustered_node_count,
                 "unassigned_node_count": self.module_detection.unassigned_node_count,
+                "package_fallback": self.module_detection.package_fallback,
             },
             "findings": [
                 {
@@ -509,6 +514,7 @@ def _build_findings(
     health: GraphHealth,
     dependencies: list[CrossPackageDependency],
     anomalies: list[Anomaly],
+    package_fallback: bool = False,
 ) -> list[Finding]:
     """Convert low-level diagnostics into a short findings list."""
     findings: list[Finding] = []
@@ -525,7 +531,9 @@ def _build_findings(
             confidence=0.9,
         ))
 
-    if health.largest_module_ratio >= 0.5:
+    # Skip module separation finding when using package fallback — the module
+    # sizes reflect intentional package structure, not clustering quality.
+    if health.largest_module_ratio >= 0.5 and not package_fallback:
         findings.append(Finding(
             kind="module_separation",
             title="Weak module separation",
@@ -645,7 +653,7 @@ def analyze(
     dependencies = _collect_cross_package_dependencies(analysis_graph, projection)
     health = _compute_health(analysis_graph, roles, module_detection.modules)
     coverage = _compute_coverage(graph, projection, spectral)
-    findings = _build_findings(coverage, health, dependencies, anomalies)
+    findings = _build_findings(coverage, health, dependencies, anomalies, module_detection.package_fallback)
 
     return StructuralAnalysis(
         raw_graph=graph,
