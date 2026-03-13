@@ -306,11 +306,18 @@ def _kmeans(X: np.ndarray, k: int, max_iter: int = 100) -> np.ndarray:
 
 
 def _is_degenerate(modules: list[Module], silhouette: float | None) -> bool:
-    """Clustering is degenerate when clusters are too small to be meaningful.
+    """Clustering is degenerate when it lacks meaningful structure.
 
-    If silhouette is strong (>= 0.5), the spectral signal is trusted.
-    Otherwise, if the average cluster has fewer than 3 nodes, there isn't
-    enough statistical mass per cluster for the grouping to be meaningful.
+    Two triggers, either sufficient:
+    1. Clusters are too small (≤3 nodes on average) with weak silhouette.
+       Three nodes per cluster lack statistical mass for spectral grouping
+       to be more informative than package-based grouping.
+    2. Silhouette is very poor (<0.3) regardless of cluster size.
+       A silhouette below 0.3 indicates the clustering has no meaningful
+       separation — essentially random assignment.
+
+    In both cases, falling back to package grouping produces more stable
+    and architecturally coherent modules.
     """
     if silhouette is not None and silhouette >= 0.5:
         return False
@@ -319,7 +326,11 @@ def _is_degenerate(modules: list[Module], silhouette: float | None) -> bool:
         return False
     total_nodes = sum(m.size for m in clustered)
     avg_size = total_nodes / len(clustered)
-    return avg_size < 3.0
+    if avg_size <= 3.0:
+        return True
+    if silhouette is not None and silhouette < 0.3:
+        return True
+    return False
 
 
 def _package_grouping(node_ids: list[str]) -> list[Module]:
