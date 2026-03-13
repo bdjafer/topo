@@ -280,8 +280,14 @@ def _add_pycg_calls(graph: CodeGraph, pycg_calls: dict[str, list[str]]) -> None:
     When PyCG can't resolve a package, it may produce path-based names like
     'path.to.src.pkg.module.func'. We try suffix matching to recover these.
     Only edges where both source and target are known nodes are added.
+
+    Cross-module call edges are validated against the import graph: a call
+    from module A to something in module B is only kept if A has an import
+    edge targeting B or one of B's members. This eliminates phantom edges
+    from ambiguous suffix matching.
     """
     node_ids = set(graph.nodes)
+    module_ids = {nid for nid, node in graph.nodes.items() if node.kind == NodeKind.MODULE}
 
     # Build suffix index for fuzzy matching: for each node ID, index all
     # suffixes (e.g. "pkg.mod.func" indexes "pkg.mod.func", "mod.func", "func")
@@ -296,6 +302,12 @@ def _add_pycg_calls(graph: CodeGraph, pycg_calls: dict[str, list[str]]) -> None:
             else:
                 suffix_to_node[suffix] = nid
 
+    # Build import targets per module for cross-module call validation.
+    import_targets: dict[str, set[str]] = {}
+    for edge in graph.edges_by_kind(EdgeKind.IMPORTS):
+        src_mod = _module_of(edge.source, module_ids)
+        import_targets.setdefault(src_mod, set()).add(edge.target)
+
     def _resolve_pycg_id(pycg_id: str) -> str | None:
         """Match a PyCG identifier to a graph node ID."""
         if pycg_id in node_ids:
@@ -309,6 +321,20 @@ def _add_pycg_calls(graph: CodeGraph, pycg_calls: dict[str, list[str]]) -> None:
                 return match
         return None
 
+    def _has_import_path(source: str, target: str) -> bool:
+        """Check that source's module imports target's module (or an ancestor)."""
+        src_mod = _module_of(source, module_ids)
+        tgt_mod = _module_of(target, module_ids)
+        if src_mod == tgt_mod:
+            return True
+        targets = import_targets.get(src_mod, set())
+        # Check if any prefix of the target is an import target
+        tgt_parts = target.split(".")
+        return any(
+            ".".join(tgt_parts[:i]) in targets
+            for i in range(1, len(tgt_parts) + 1)
+        )
+
     seen: set[tuple[str, str]] = set()
     for caller, callees in pycg_calls.items():
         source = _resolve_pycg_id(caller)
@@ -319,9 +345,21 @@ def _add_pycg_calls(graph: CodeGraph, pycg_calls: dict[str, list[str]]) -> None:
             if target is None:
                 continue
             edge_key = (source, target)
-            if edge_key not in seen:
+            if edge_key not in seen and _has_import_path(source, target):
                 seen.add(edge_key)
                 graph.add_edge(Edge(source=source, target=target, kind=EdgeKind.CALLS))
+
+
+def _module_of(node_id: str, module_ids: set[str]) -> str:
+    """Find the owning module of a node by walking up its dotted name."""
+    if node_id in module_ids:
+        return node_id
+    parts = node_id.split(".")
+    for i in range(len(parts) - 1, 0, -1):
+        candidate = ".".join(parts[:i])
+        if candidate in module_ids:
+            return candidate
+    return parts[0]
 
 
 def _add_super_calls_ast(

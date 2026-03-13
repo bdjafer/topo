@@ -92,6 +92,15 @@ def detect_modules(
         total_weight = sum(weight for _, weight in silhouettes)
         silhouette = sum(score * weight for score, weight in silhouettes) / total_weight
 
+    # When k was auto-detected and spectral clustering is degenerate,
+    # fall back to package-based grouping which uses the structure
+    # already encoded in the node IDs.
+    if n_modules is None and _is_degenerate(modules, silhouette):
+        all_node_ids = [nid for m in modules for nid in m.node_ids]
+        modules = _package_grouping(all_node_ids)
+        chosen_k = len(modules)
+        silhouette = None
+
     return ModuleDetection(
         modules=modules,
         chosen_k=chosen_k,
@@ -290,3 +299,32 @@ def _kmeans(X: np.ndarray, k: int, max_iter: int = 100) -> np.ndarray:
                 centroids_arr[i] = X[mask].mean(axis=0)
 
     return labels
+
+
+def _is_degenerate(modules: list[Module], silhouette: float | None) -> bool:
+    """Clustering is degenerate when clusters are too small to be meaningful.
+
+    If silhouette is strong (>= 0.5), the spectral signal is trusted.
+    Otherwise, if the average cluster has fewer than 3 nodes, there isn't
+    enough statistical mass per cluster for the grouping to be meaningful.
+    """
+    if silhouette is not None and silhouette >= 0.5:
+        return False
+    clustered = [m for m in modules if not m.unassigned]
+    if not clustered:
+        return False
+    total_nodes = sum(m.size for m in clustered)
+    avg_size = total_nodes / len(clustered)
+    return avg_size < 3.0
+
+
+def _package_grouping(node_ids: list[str]) -> list[Module]:
+    """Group nodes by their top-level package (first dotted component)."""
+    groups: dict[str, list[str]] = {}
+    for nid in node_ids:
+        pkg = nid.split(".", 1)[0]
+        groups.setdefault(pkg, []).append(nid)
+    return [
+        Module(id=i, node_ids=sorted(members), confidence=0.8)
+        for i, (_, members) in enumerate(sorted(groups.items()))
+    ]

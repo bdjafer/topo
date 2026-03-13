@@ -134,20 +134,21 @@ def _classify_single(
     if betweenness > 0.05 and degree < n_nodes * 0.3:
         return StructuralRole.BRIDGE
 
-    # High degree = hub.
+    # Check directional roles BEFORE hub — a node with lopsided
+    # directionality is a utility (sink) or entry_point (source),
+    # not a hub, regardless of total degree.
+    if in_degree > 3 and out_degree <= 1:
+        return StructuralRole.UTILITY
+
+    if out_degree > 3 and in_degree <= 1:
+        return StructuralRole.ENTRY_POINT
+
+    # Hub = high degree with significant flow in BOTH directions.
     # Use log-scale cap: for small graphs the threshold is ~15% of nodes,
     # for large graphs it plateaus so that well-connected nodes are still
     # detected as hubs.
     hub_threshold = max(5, min(n_nodes * 0.15, 10 * math.log2(max(n_nodes, 2))))
-    if degree > hub_threshold:
+    if degree > hub_threshold and min(in_degree, out_degree) >= 2:
         return StructuralRole.HUB
-
-    # High in-degree, low out-degree = utility
-    if in_degree > 3 and out_degree <= 1:
-        return StructuralRole.UTILITY
-
-    # High out-degree, low in-degree = entry point
-    if out_degree > 3 and in_degree <= 1:
-        return StructuralRole.ENTRY_POINT
 
     return StructuralRole.REGULAR
