@@ -65,7 +65,14 @@ def _detect_cross_module(
     edge_kinds: list[EdgeKind] | EdgeKind,
     projection: AnalysisProjection | None = None,
 ) -> list[Anomaly]:
-    """Group unexpected bidirectional boundaries between detected modules."""
+    """Detect unexpected cross-module dependencies.
+
+    Detects two patterns:
+    1. Bidirectional boundaries: two modules with edges flowing both ways.
+    2. Minority couplings: a directed module pair with significantly fewer
+       edges than the graph's typical cross-module pair, suggesting a
+       layer skip or reverse dependency.
+    """
     if not modules:
         return []
     kinds = edge_kinds if isinstance(edge_kinds, list) else [edge_kinds]
@@ -97,6 +104,11 @@ def _detect_cross_module(
 
     anomalies: list[Anomaly] = []
     seen_pairs: set[tuple[int, int]] = set()
+
+    # Compute median edge count per directed pair for minority detection.
+    directed_totals = [sum(counts.values()) for counts in pair_counts.values()]
+    median_edges = float(np.median(directed_totals)) if directed_totals else 0.0
+
     for src_mod, tgt_mod in pair_counts:
         module_pair = tuple(sorted((src_mod, tgt_mod)))
         if module_pair in seen_pairs:
@@ -105,18 +117,54 @@ def _detect_cross_module(
 
         forward = pair_counts.get((module_pair[0], module_pair[1]), {})
         reverse = pair_counts.get((module_pair[1], module_pair[0]), {})
-        if not forward or not reverse:
+
+        # Pattern 1: Bidirectional boundary (existing detection).
+        if forward and reverse:
+            forward_total = sum(forward.values())
+            reverse_total = sum(reverse.values())
+            total_edges = forward_total + reverse_total
+            reverse_share = min(forward_total, reverse_total) / total_edges
+            edge_counts = dict(forward)
+            for edge_kind, count in reverse.items():
+                edge_counts[edge_kind] = edge_counts.get(edge_kind, 0) + count
+
+            examples = pair_examples.get((module_pair[0], module_pair[1]), []) + pair_examples.get((module_pair[1], module_pair[0]), [])
+            anomalies.append(Anomaly(
+                kind=AnomalyKind.CROSS_MODULE,
+                node_ids=sorted({
+                    node_id
+                    for source, target, _ in examples
+                    for node_id in (source, target)
+                }),
+                description=(
+                    f"Bidirectional dependency between module {module_pair[0]} and module {module_pair[1]}: "
+                    f"{forward_total} forward edges, {reverse_total} reverse edges"
+                ),
+                severity=min(1.0, 0.35 + reverse_share),
+                confidence=min(1.0, 0.5 + total_edges / 20.0),
+                anchors=_anchors_for_examples(projection, examples),
+                edge_counts=edge_counts,
+            ))
             continue
 
-        forward_total = sum(forward.values())
-        reverse_total = sum(reverse.values())
-        total_edges = forward_total + reverse_total
-        reverse_share = min(forward_total, reverse_total) / total_edges
-        edge_counts = dict(forward)
-        for edge_kind, count in reverse.items():
-            edge_counts[edge_kind] = edge_counts.get(edge_kind, 0) + count
+        # Pattern 2: Minority unidirectional coupling.
+        # A directed pair with far fewer edges than typical suggests a
+        # layer-skip or reverse dependency — structurally unusual coupling.
+        active = forward or reverse
+        if not active:
+            continue
+        active_total = sum(active.values())
+        if median_edges <= 0 or active_total >= median_edges:
+            continue
 
-        examples = pair_examples.get((module_pair[0], module_pair[1]), []) + pair_examples.get((module_pair[1], module_pair[0]), [])
+        minority_ratio = active_total / median_edges
+        # Determine which direction the minority edges flow.
+        if forward and not reverse:
+            direction_pair = (module_pair[0], module_pair[1])
+        else:
+            direction_pair = (module_pair[1], module_pair[0])
+
+        examples = pair_examples.get(direction_pair, [])
         anomalies.append(Anomaly(
             kind=AnomalyKind.CROSS_MODULE,
             node_ids=sorted({
@@ -125,13 +173,13 @@ def _detect_cross_module(
                 for node_id in (source, target)
             }),
             description=(
-                f"Bidirectional dependency between module {module_pair[0]} and module {module_pair[1]}: "
-                f"{forward_total} forward edges, {reverse_total} reverse edges"
+                f"Unusual dependency from module {direction_pair[0]} to module {direction_pair[1]}: "
+                f"{active_total} edges ({minority_ratio:.0%} of typical cross-module coupling)"
             ),
-            severity=min(1.0, 0.35 + reverse_share),
-            confidence=min(1.0, 0.5 + total_edges / 20.0),
+            severity=min(1.0, 0.3 + (1.0 - minority_ratio) * 0.5),
+            confidence=min(1.0, 0.4 + active_total / 10.0),
             anchors=_anchors_for_examples(projection, examples),
-            edge_counts=edge_counts,
+            edge_counts=dict(active),
         ))
     return anomalies
 
