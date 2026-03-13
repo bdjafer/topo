@@ -86,6 +86,16 @@ def file_module(node_id: str) -> str:
     return ".".join(file_parts) if file_parts else parts[0]
 
 
+def package_of(node_id: str) -> str:
+    """Extract the parent package from a node ID.
+
+    flask.app -> flask, flask.json.tag -> flask.json, flask -> flask.
+    At module level this gives non-trivial baseline clusters for ARI.
+    """
+    parts = node_id.rsplit(".", 1)
+    return parts[0] if len(parts) > 1 else node_id
+
+
 def investigate_codebase(name: str, source_path: Path):
     print(f"\n{'='*80}")
     print(f"  {name.upper()}: {source_path}")
@@ -183,27 +193,37 @@ def investigate_codebase(name: str, source_path: Path):
         # Compare modules against file/package grouping
         if not result.module_detection.package_fallback and result.modules:
             spectral_labels = {}
-            baseline_labels = {}
+            file_labels = {}
+            pkg_labels = {}
             for mod in result.modules:
                 if mod.unassigned:
                     continue
                 for nid in mod.node_ids:
                     spectral_labels[nid] = mod.id
-                    baseline_labels[nid] = file_module(nid)
+                    file_labels[nid] = file_module(nid)
+                    pkg_labels[nid] = package_of(nid)
 
             if len(spectral_labels) > 1:
-                common = sorted(set(spectral_labels) & set(baseline_labels))
+                common = sorted(spectral_labels.keys())
                 sl = [spectral_labels[n] for n in common]
-                bl = [baseline_labels[n] for n in common]
-                nmi = compute_nmi(sl, bl)
-                ari = compute_ari(sl, bl)
-                print(f"\n  NMI vs file-module baseline: {nmi:.3f}")
-                print(f"  ARI vs file-module baseline: {ari:.3f}")
+                fl = [file_labels[n] for n in common]
+                pl = [pkg_labels[n] for n in common]
+                nmi = compute_nmi(sl, fl)
+                # ARI uses package-level baseline (file-level gives all
+                # singletons at MODULE granularity, making ARI degenerate)
+                n_pkg_groups = len(set(pl))
+                if n_pkg_groups > 1:
+                    ari = compute_ari(sl, pl)
+                    print(f"\n  NMI vs file-module baseline: {nmi:.3f}")
+                    print(f"  ARI vs package baseline: {ari:.3f}")
+                else:
+                    print(f"\n  NMI vs file-module baseline: {nmi:.3f}")
+                    print(f"  ARI: N/A (single package, no meaningful baseline)")
 
                 # Cross-tab: which file-modules are grouped together?
                 module_to_files = defaultdict(lambda: defaultdict(int))
                 for nid in common:
-                    module_to_files[spectral_labels[nid]][baseline_labels[nid]] += 1
+                    module_to_files[spectral_labels[nid]][file_labels[nid]] += 1
 
                 print(f"\n  Module composition (spectral module -> file modules):")
                 for mid in sorted(module_to_files.keys()):
