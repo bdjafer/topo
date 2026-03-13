@@ -128,27 +128,37 @@ def score_mutation_case(
     pairwise_results: list[bool] = []
     for better, worse in ordering:
         if better in analyses and worse in analyses:
-            # All required expectations for this pair must pass
-            pair_pass = True
-            for exp in expectations.get("required_expectations", []):
-                exp_variants = exp.get("variants")
-                if exp_variants and list(exp_variants) == [better, worse]:
-                    # Inject mutated_region into attribution expectations
-                    exp_with_region = {**exp, "mutated_region": mutated_region}
-                    if not _eval_signal(analyses, exp_with_region):
-                        pair_pass = False
+            # Find expectations matching this pair
+            matched_exps = [
+                exp for exp in expectations.get("required_expectations", [])
+                if exp.get("variants") and list(exp["variants"]) == [better, worse]
+            ]
+            # Pairs with no matching expectations FAIL — no free passes
+            if not matched_exps:
+                pairwise_results.append(False)
+                continue
+            # All matched expectations must pass
+            pair_pass = all(
+                _eval_signal(analyses, {**exp, "mutated_region": mutated_region})
+                for exp in matched_exps
+            )
             pairwise_results.append(pair_pass)
 
     pairwise_accuracy = sum(pairwise_results) / len(pairwise_results) if pairwise_results else 0.0
 
-    # Repair accuracy: repaired should be closer to clean than mutated
+    # Repair accuracy: repaired should be closer to clean than mutated.
+    # Only evaluated for cases that have a repaired variant.
+    # Cases without repair are excluded (not counted), not given a free 1.0.
+    has_repair = "repaired" in analyses
     repair_results: list[bool] = []
-    if "repaired" in analyses and "clean" in analyses and "mutated" in analyses:
+    if has_repair and "clean" in analyses and "mutated" in analyses:
         sim_repaired = signals.partition_similarity(analyses["repaired"], analyses["clean"])
         sim_mutated = signals.partition_similarity(analyses["mutated"], analyses["clean"])
         repair_results.append(sim_repaired >= sim_mutated)
 
-    repair_accuracy = sum(repair_results) / len(repair_results) if repair_results else 1.0
+    repair_accuracy: float | None = None
+    if repair_results:
+        repair_accuracy = sum(repair_results) / len(repair_results)
 
     # Attribution: does the mutated region appear in top anomalies?
     attr_results: list[bool] = []
@@ -157,12 +167,21 @@ def score_mutation_case(
         attr_results.append(signals.attribution_at_k(analyses["mutated"], region_nodes, k=3))
     attribution = sum(attr_results) / len(attr_results) if attr_results else 0.0
 
+    # Score: geometric mean of available components.
+    # Repair accuracy is excluded (not set to 1.0) when no repair variant exists.
+    # Attribution of 0 means 0 — no silent inflation.
+    score_components = [pairwise_accuracy, attribution]
+    if repair_accuracy is not None:
+        score_components.append(repair_accuracy)
+    score = geometric_mean(*score_components)
+
     return {
         "case_id": case_id,
         "pairwise_accuracy": pairwise_accuracy,
         "repair_accuracy": repair_accuracy,
         "attribution_at_3": attribution,
-        "score": geometric_mean(pairwise_accuracy, repair_accuracy, max(attribution, 0.001)),
+        "has_repair_variant": has_repair,
+        "score": score,
         "pairwise_details": pairwise_results,
     }
 
@@ -173,11 +192,21 @@ def aggregate_mutation_scores(case_results: list[dict]) -> dict:
         return {"score": 0.0, "pairwise_accuracy": 0.0, "repair_accuracy": 0.0, "attribution_at_3": 0.0}
 
     pw = sum(r["pairwise_accuracy"] for r in case_results) / len(case_results)
-    ra = sum(r["repair_accuracy"] for r in case_results) / len(case_results)
     at = sum(r["attribution_at_3"] for r in case_results) / len(case_results)
 
+    # Repair accuracy: only average over cases that have a repair variant.
+    # Cases without repair are excluded, not counted as 1.0.
+    repair_cases = [r for r in case_results if r["repair_accuracy"] is not None]
+    ra: float | None = None
+    if repair_cases:
+        ra = sum(r["repair_accuracy"] for r in repair_cases) / len(repair_cases)
+
+    score_components = [pw, at]
+    if ra is not None:
+        score_components.append(ra)
+
     return {
-        "score": geometric_mean(pw, ra, max(at, 0.001)),
+        "score": geometric_mean(*score_components),
         "pairwise_accuracy": pw,
         "repair_accuracy": ra,
         "attribution_at_3": at,

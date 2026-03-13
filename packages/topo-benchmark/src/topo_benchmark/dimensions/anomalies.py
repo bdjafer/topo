@@ -14,7 +14,14 @@ from topo_benchmark.scoring import (
 
 
 def _match_anomaly(predicted_nodes: set[str], gold_nodes: set[str], iou_threshold: float = 0.5) -> bool:
-    """Check if predicted anomaly matches gold by IoU on node sets."""
+    """Check if predicted anomaly matches gold by IoU on node sets.
+
+    The IoU threshold of 0.5 follows the standard object-detection convention
+    (PASCAL VOC) adapted to node-set overlap.  At 0.5 the predicted region must
+    share at least half its nodes (by union) with the gold region to count as a
+    true positive.  This balances tolerance for partial overlap against
+    requiring meaningful agreement.
+    """
     if not predicted_nodes or not gold_nodes:
         return False
     intersection = predicted_nodes & gold_nodes
@@ -77,7 +84,7 @@ def score_anomaly_case(
         "ece": ece,
         "brier": brier,
         "calibration_score": calibration_score,
-        "score": geometric_mean(max(ap, 0.001), max(p_at_3, 0.001), max(calibration_score, 0.001)),
+        "score": geometric_mean(ap, p_at_3, calibration_score),
         "n_predicted": len(predicted),
         "n_gold": len(gold_regions),
     }
@@ -93,7 +100,7 @@ def aggregate_anomaly_scores(case_results: list[dict]) -> dict:
     cs = sum(r["calibration_score"] for r in case_results) / len(case_results)
 
     return {
-        "score": geometric_mean(max(ap, 0.001), max(pk, 0.001), max(cs, 0.001)),
+        "score": geometric_mean(ap, pk, cs),
         "average_precision": ap,
         "precision_at_3": pk,
         "calibration_score": cs,
