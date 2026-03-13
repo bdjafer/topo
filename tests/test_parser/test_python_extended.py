@@ -331,3 +331,106 @@ def test_staticmethod_not_affected(tmp_path: Path):
     graph = parse_python_project(tmp_path)
     calls = graph.edges_by_kind(EdgeKind.CALLS)
     assert len(calls) == 0
+
+
+# ---------- Relative import resolution ----------
+
+
+def test_relative_import_from_init(tmp_path: Path):
+    """from .app import Flask in pkg/__init__.py → edges to pkg.app and pkg.app.Flask."""
+    pkg = tmp_path / "pkg"
+    pkg.mkdir()
+    (pkg / "__init__.py").write_text("from .app import Flask\n")
+    (pkg / "app.py").write_text(textwrap.dedent("""\
+        class Flask:
+            pass
+    """))
+
+    graph = parse_python_project(tmp_path)
+    imports = graph.edges_by_kind(EdgeKind.IMPORTS)
+    targets = {e.target for e in imports if e.source == "pkg"}
+    assert "pkg.app" in targets, f"Expected 'pkg.app' in import targets, got: {targets}"
+    assert "pkg.app.Flask" in targets, f"Expected 'pkg.app.Flask' in import targets, got: {targets}"
+
+
+def test_relative_import_from_module(tmp_path: Path):
+    """from .helpers import send_file in pkg/views.py → edges to pkg.helpers and pkg.helpers.send_file."""
+    pkg = tmp_path / "pkg"
+    pkg.mkdir()
+    (pkg / "__init__.py").write_text("")
+    (pkg / "helpers.py").write_text("def send_file(): pass\n")
+    (pkg / "views.py").write_text("from .helpers import send_file\n")
+
+    graph = parse_python_project(tmp_path)
+    imports = graph.edges_by_kind(EdgeKind.IMPORTS)
+    targets = {e.target for e in imports if e.source == "pkg.views"}
+    assert "pkg.helpers" in targets, f"Expected 'pkg.helpers' in targets, got: {targets}"
+    assert "pkg.helpers.send_file" in targets, f"Expected 'pkg.helpers.send_file' in targets, got: {targets}"
+
+
+def test_relative_import_bare_dot(tmp_path: Path):
+    """from . import helpers in pkg/app.py → edge to pkg.helpers."""
+    pkg = tmp_path / "pkg"
+    pkg.mkdir()
+    (pkg / "__init__.py").write_text("")
+    (pkg / "helpers.py").write_text("def helper(): pass\n")
+    (pkg / "app.py").write_text("from . import helpers\n")
+
+    graph = parse_python_project(tmp_path)
+    imports = graph.edges_by_kind(EdgeKind.IMPORTS)
+    targets = {e.target for e in imports if e.source == "pkg.app"}
+    assert "pkg.helpers" in targets, f"Expected 'pkg.helpers' in targets, got: {targets}"
+
+
+def test_relative_import_double_dot(tmp_path: Path):
+    """from ..utils import foo in pkg/sub/mod.py → edges to pkg.utils and pkg.utils.foo."""
+    pkg = tmp_path / "pkg"
+    sub = pkg / "sub"
+    sub.mkdir(parents=True)
+    (pkg / "__init__.py").write_text("")
+    (pkg / "utils.py").write_text("def foo(): pass\n")
+    (sub / "__init__.py").write_text("")
+    (sub / "mod.py").write_text("from ..utils import foo\n")
+
+    graph = parse_python_project(tmp_path)
+    imports = graph.edges_by_kind(EdgeKind.IMPORTS)
+    targets = {e.target for e in imports if e.source == "pkg.sub.mod"}
+    assert "pkg.utils" in targets, f"Expected 'pkg.utils' in targets, got: {targets}"
+    assert "pkg.utils.foo" in targets, f"Expected 'pkg.utils.foo' in targets, got: {targets}"
+
+
+def test_absolute_import_unchanged(tmp_path: Path):
+    """Absolute imports should still work correctly after the relative import refactor."""
+    (tmp_path / "mod.py").write_text("from os.path import join\nimport sys\n")
+
+    graph = parse_python_project(tmp_path)
+    imports = graph.edges_by_kind(EdgeKind.IMPORTS)
+    targets = {e.target for e in imports}
+    assert "os.path" in targets, f"Expected 'os.path' in targets, got: {targets}"
+    assert "os.path.join" in targets, f"Expected 'os.path.join' in targets, got: {targets}"
+    assert "sys" in targets, f"Expected 'sys' in targets, got: {targets}"
+
+
+def test_cross_module_call_via_relative_import(tmp_path: Path):
+    """A call to an imported function from another module should produce a CALLS edge."""
+    pkg = tmp_path / "pkg"
+    pkg.mkdir()
+    (pkg / "__init__.py").write_text("")
+    (pkg / "helpers.py").write_text(textwrap.dedent("""\
+        def do_work():
+            pass
+    """))
+    (pkg / "main.py").write_text(textwrap.dedent("""\
+        from .helpers import do_work
+
+        def run():
+            do_work()
+    """))
+
+    graph = parse_python_project(tmp_path)
+    calls = graph.edges_by_kind(EdgeKind.CALLS)
+    # The call from pkg.main.run -> pkg.helpers.do_work should survive validation
+    assert any(
+        e.source == "pkg.main.run" and e.target == "pkg.helpers.do_work"
+        for e in calls
+    ), f"Expected cross-module call edge, got: {[(e.source, e.target) for e in calls]}"

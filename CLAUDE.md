@@ -16,6 +16,20 @@ uv run pytest              # Run all tests
 uv run topo <path>         # Run the CLI
 ```
 
+## Design Decisions
+
+### Clustering quality metric: NMI, not ARI
+
+We use **Normalized Mutual Information (NMI)** to compare spectral modules against directory-based baselines. We deliberately do not use **Adjusted Rand Index (ARI)**.
+
+ARI counts pairs of items that are co-clustered in both partitions. This makes it degenerate or misleading for our use case:
+
+- **At module level**, the file-based baseline produces singleton clusters (each module-level node is its own file), so ARI is mathematically 0 regardless of clustering quality.
+- **At any level**, the spectral clustering intentionally produces finer-grained modules than directory structure — splitting a flat package like `flask.*` into 5 sub-groups based on coupling. ARI penalizes this refinement as "disagreement," even when the sub-groups are architecturally correct.
+- **Coarsening the baseline** to package level still yields low ARI (~0.06) because the baseline is extremely imbalanced (18/3/3 for Flask).
+
+NMI uses entropy rather than pair-counting, so it correctly measures how much knowing the spectral cluster tells you about the file-module identity, even when the partitions have different granularities. NMI of 0.7–0.8 means the spectral modules are strongly consistent with file structure while revealing finer internal structure — which is the tool's purpose.
+
 ---
 
 # Structural Intelligence

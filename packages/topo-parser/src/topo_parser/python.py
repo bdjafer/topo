@@ -164,7 +164,7 @@ def _extract_from_file(
         elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             _extract_function(graph, node, mod_id, file)
         elif isinstance(node, (ast.Import, ast.ImportFrom)):
-            _extract_import(graph, node, mod_id)
+            _extract_import(graph, node, mod_id, file)
 
 
 def _extract_class(
@@ -199,23 +199,66 @@ def _extract_function(
     graph.add_edge(Edge(source=parent_id, target=func_id, kind=EdgeKind.CONTAINS))
 
 
-def _extract_import(graph: CodeGraph, node: ast.Import | ast.ImportFrom, mod_id: str) -> None:
-    """Extract import edges.
+def _resolve_relative_import(
+    mod_id: str, file: Path, level: int, module: str | None,
+) -> str | None:
+    """Resolve a relative import to a fully-qualified module path.
 
-    For `import foo.bar`, creates an edge to `foo.bar`.
-    For `from foo.bar import baz, qux`, creates edges to both
-    `foo.bar` (the module) and `foo.bar.baz`, `foo.bar.qux` (the names).
-    This allows call resolution to map `baz()` -> `foo.bar.baz`.
+    Args:
+        mod_id: Fully-qualified ID of the importing module.
+        file: Path to the importing file (needed to detect __init__.py).
+        level: Number of dots in the relative import (1 = current package).
+        module: The module part of ``from .module import name`` (may be None).
+
+    Returns:
+        Fully-qualified module path, or None if the import goes above the root.
+    """
+    if file.name == "__init__.py":
+        package_parts = mod_id.split(".")
+    else:
+        package_parts = mod_id.rsplit(".", 1)[0].split(".") if "." in mod_id else []
+
+    levels_up = level - 1
+    if levels_up >= len(package_parts):
+        return None
+    if levels_up > 0:
+        package_parts = package_parts[:-levels_up]
+
+    base = ".".join(package_parts)
+    if module:
+        return f"{base}.{module}" if base else module
+    return base or None
+
+
+def _extract_import(
+    graph: CodeGraph, node: ast.Import | ast.ImportFrom, mod_id: str, file: Path,
+) -> None:
+    """Extract import edges with fully-qualified targets.
+
+    For ``import foo.bar``, creates an edge to ``foo.bar``.
+    For ``from foo.bar import baz``, creates edges to ``foo.bar`` and ``foo.bar.baz``.
+    For relative imports (``from .foo import bar``), resolves the target using
+    the importing module's position in the package hierarchy.
     """
     if isinstance(node, ast.Import):
         for alias in node.names:
             graph.add_edge(Edge(source=mod_id, target=alias.name, kind=EdgeKind.IMPORTS))
+        return
+
+    if isinstance(node, ast.ImportFrom) and node.level > 0:
+        base = _resolve_relative_import(mod_id, file, node.level, node.module)
     elif node.module:
-        graph.add_edge(Edge(source=mod_id, target=node.module, kind=EdgeKind.IMPORTS))
-        for alias in node.names:
-            if alias.name != "*":
-                qualified = f"{node.module}.{alias.name}"
-                graph.add_edge(Edge(source=mod_id, target=qualified, kind=EdgeKind.IMPORTS))
+        base = node.module
+    else:
+        return
+
+    if base is None:
+        return
+
+    graph.add_edge(Edge(source=mod_id, target=base, kind=EdgeKind.IMPORTS))
+    for alias in node.names:
+        if alias.name != "*":
+            graph.add_edge(Edge(source=mod_id, target=f"{base}.{alias.name}", kind=EdgeKind.IMPORTS))
 
 
 ## ---------------------------------------------------------------------------

@@ -141,3 +141,47 @@ def test_spectral_outlier_detected_within_module():
     assert len(anomalies) == 1
     assert anomalies[0].kind == AnomalyKind.SPECTRAL_OUTLIER
     assert anomalies[0].node_ids == ["d"]
+
+
+def test_spectral_outlier_multi_component_no_crash():
+    """Outlier detection should handle components with different fingerprint widths."""
+    spectral = SpectralResult(
+        total_node_ids=["a0", "a1", "a2", "a3", "b0", "b1", "b2"],
+        components=[
+            SpectralComponent(
+                id=0,
+                node_ids=["a0", "a1", "a2", "a3"],
+                eigenvalues=np.array([0.1, 0.2, 0.3]),
+                eigenvectors=np.array([
+                    [0.0, 0.0, 0.0],
+                    [0.1, 0.0, 0.0],
+                    [0.0, 0.1, 0.0],
+                    [3.0, 3.0, 3.0],
+                ]),
+            ),
+            SpectralComponent(
+                id=1,
+                node_ids=["b0", "b1", "b2"],
+                eigenvalues=np.array([0.5]),
+                eigenvectors=np.array([
+                    [0.0],
+                    [0.1],
+                    [5.0],
+                ]),
+            ),
+        ],
+        unassigned_components=[],
+        primary_eigenvalues=np.array([0.1, 0.2, 0.3]),
+        component_sizes=[4, 3],
+        fiedler_value=0.1,
+    )
+    modules = [
+        Module(id=0, node_ids=["a0", "a1", "a2", "a3"], confidence=0.8, component_id=0),
+        Module(id=1, node_ids=["b0", "b1", "b2"], confidence=0.7, component_id=1),
+    ]
+
+    # Should not crash despite different eigenvector widths (3 vs 1)
+    anomalies = _detect_spectral_outliers(spectral, modules, projection=None, threshold_sigma=1.5)
+    assert isinstance(anomalies, list)
+    outlier_nodes = {nid for a in anomalies for nid in a.node_ids}
+    assert "a3" in outlier_nodes or "b2" in outlier_nodes
