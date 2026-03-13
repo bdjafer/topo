@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from topo_analyzer.spectral import SpectralResult
+from topo_analyzer.spectral import SpectralComponent, SpectralResult
 
 
 @dataclass
@@ -21,13 +21,33 @@ class Module:
 
     id: int
     node_ids: list[str]
+    component_id: int | None = None
+    cohesion: float | None = None
+    separation: float | None = None
+    confidence: float = 0.0
+    unassigned: bool = False
 
     @property
     def size(self) -> int:
         return len(self.node_ids)
 
 
-def detect_modules(spectral: SpectralResult, n_modules: int | None = None) -> list[Module]:
+@dataclass
+class ModuleDetection:
+    """Detected structural modules plus clustering diagnostics."""
+
+    modules: list[Module]
+    chosen_k: int | None
+    silhouette: float | None
+    component_count: int
+    clustered_node_count: int
+    unassigned_node_count: int
+
+
+def detect_modules(
+    spectral: SpectralResult,
+    n_modules: int | None = None,
+) -> ModuleDetection:
     """
     Detect structural modules from spectral fingerprints using k-means clustering.
 
@@ -37,32 +57,141 @@ def detect_modules(spectral: SpectralResult, n_modules: int | None = None) -> li
                    silhouette score across k=2..max_k.
 
     Returns:
-        List of detected modules.
+        Detected modules plus clustering diagnostics.
     """
-    if n_modules is None:
-        n_modules = _estimate_k(spectral.eigenvectors)
+    modules: list[Module] = []
+    next_module_id = 0
+    chosen_ks: list[int] = []
+    silhouettes: list[tuple[float, int]] = []
 
-    labels = _kmeans(spectral.eigenvectors, n_modules)
-    return _labels_to_modules(labels, spectral.node_ids, n_modules)
+    for component in spectral.components:
+        explicit_k = n_modules if len(spectral.components) == 1 else None
+        component_modules, component_k, component_silhouette = _cluster_component(
+            component,
+            next_module_id,
+            explicit_k,
+        )
+        modules.extend(component_modules)
+        next_module_id += len(component_modules)
+        chosen_ks.append(component_k)
+        if component_silhouette is not None:
+            silhouettes.append((component_silhouette, len(component.node_ids)))
+
+    for unassigned_nodes in spectral.unassigned_components:
+        modules.append(Module(
+            id=next_module_id,
+            node_ids=unassigned_nodes,
+            confidence=0.0,
+            unassigned=True,
+        ))
+        next_module_id += 1
+
+    chosen_k = sum(chosen_ks) if chosen_ks else None
+    silhouette = None
+    if silhouettes:
+        total_weight = sum(weight for _, weight in silhouettes)
+        silhouette = sum(score * weight for score, weight in silhouettes) / total_weight
+
+    return ModuleDetection(
+        modules=modules,
+        chosen_k=chosen_k,
+        silhouette=silhouette,
+        component_count=spectral.component_count,
+        clustered_node_count=spectral.analyzed_node_count,
+        unassigned_node_count=len(spectral.unassigned_node_ids),
+    )
 
 
-def _labels_to_modules(labels: np.ndarray, node_ids: list[str], k: int) -> list[Module]:
+def _labels_to_modules(
+    labels: np.ndarray,
+    node_ids: list[str],
+    k: int,
+    *,
+    start_id: int,
+    component_id: int,
+) -> list[Module]:
     """Convert label array to Module list."""
     modules = []
     for i in range(k):
         member_ids = [node_ids[j] for j in range(len(node_ids)) if labels[j] == i]
         if member_ids:
-            modules.append(Module(id=i, node_ids=member_ids))
+            modules.append(Module(
+                id=start_id + len(modules),
+                node_ids=member_ids,
+                component_id=component_id,
+            ))
     return modules
 
 
-def _estimate_k(X: np.ndarray, max_k: int = 8) -> int:
-    """Select k using silhouette scores with diminishing-returns cutoff.
+def _cluster_component(
+    component: SpectralComponent,
+    start_id: int,
+    n_modules: int | None,
+) -> tuple[list[Module], int, float | None]:
+    """Cluster one connected component and annotate module quality metrics."""
+    X = component.eigenvectors
+    if n_modules is None:
+        n_modules = _estimate_k(X)
+    n_modules = max(1, min(n_modules, len(component.node_ids)))
 
-    Tries k=2..max_k. Computes silhouette gains between consecutive k values.
-    Picks the first k where the subsequent gain drops below the mean gain,
-    balancing cluster quality against over-fragmentation.
-    """
+    if n_modules == 1:
+        modules = [Module(
+            id=start_id,
+            node_ids=list(component.node_ids),
+            component_id=component.id,
+            cohesion=0.0,
+            separation=None,
+            confidence=0.5,
+        )]
+        return modules, 1, None
+
+    labels = _kmeans(X, n_modules)
+    silhouette = _silhouette_score(X, labels)
+    modules = _labels_to_modules(
+        labels,
+        component.node_ids,
+        n_modules,
+        start_id=start_id,
+        component_id=component.id,
+    )
+    _annotate_module_metrics(modules, X, labels, component.node_ids, silhouette)
+    return modules, n_modules, silhouette
+
+
+def _annotate_module_metrics(
+    modules: list[Module],
+    X: np.ndarray,
+    labels: np.ndarray,
+    node_ids: list[str],
+    silhouette: float,
+) -> None:
+    """Compute cohesion, separation, and confidence for clustered modules."""
+    centroids: dict[int, np.ndarray] = {}
+    for module in modules:
+        indices = [node_ids.index(node_id) for node_id in module.node_ids]
+        centroids[module.id] = X[indices].mean(axis=0)
+
+    for module in modules:
+        indices = [node_ids.index(node_id) for node_id in module.node_ids]
+        centroid = centroids[module.id]
+        cohesion = float(np.mean(np.linalg.norm(X[indices] - centroid, axis=1)))
+
+        other_distances = [
+            float(np.linalg.norm(centroid - other_centroid))
+            for other_id, other_centroid in centroids.items()
+            if other_id != module.id
+        ]
+        separation = min(other_distances) if other_distances else None
+        ratio = 0.5 if separation is None else separation / (separation + cohesion + 1e-9)
+        confidence = max(0.0, min(1.0, 0.5 * max(silhouette, 0.0) + 0.5 * ratio))
+
+        module.cohesion = cohesion
+        module.separation = separation
+        module.confidence = confidence
+
+
+def _estimate_k(X: np.ndarray, max_k: int = 8) -> int:
+    """Select k by the best silhouette score across candidate cluster counts."""
     max_k = min(max_k, X.shape[0] - 1)
     if max_k < 2:
         return 2
@@ -71,19 +200,6 @@ def _estimate_k(X: np.ndarray, max_k: int = 8) -> int:
     for k in range(2, max_k + 1):
         labels = _kmeans(X, k)
         scores.append(_silhouette_score(X, labels))
-
-    if len(scores) < 3:
-        return int(np.argmax(scores)) + 2
-
-    gains = [scores[i + 1] - scores[i] for i in range(len(scores) - 1)]
-    mean_gain = np.mean([g for g in gains if g > 0]) if any(g > 0 for g in gains) else 0
-
-    # Pick first k where subsequent gain drops below mean gain
-    for i in range(len(gains) - 1):
-        if gains[i] > 0 and gains[i + 1] < mean_gain:
-            return i + 3  # k = i+2 was good, next gain dropped, so use i+3
-
-    # No clear elbow — pick k with best score
     return int(np.argmax(scores)) + 2
 
 

@@ -17,6 +17,12 @@ import logging
 import os
 from pathlib import Path
 
+from topo_parser.ast_resolve import (
+    _resolve_call_edges_ast,
+    _resolve_inherits_edges,
+    _resolve_name,
+    _try_resolve,
+)
 from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
 
 logger = logging.getLogger(__name__)
@@ -25,6 +31,7 @@ logger = logging.getLogger(__name__)
 def parse_python_project(
     root: Path,
     exclude_patterns: list[str] | None = None,
+    include_roots: list[Path] | None = None,
 ) -> CodeGraph:
     """
     Parse a Python project directory into a CodeGraph.
@@ -37,10 +44,11 @@ def parse_python_project(
         root: Path to project directory.
         exclude_patterns: Directory/file name patterns to exclude (e.g. ["pycg", ".venv"]).
             Any .py file whose path contains a matching component is skipped.
+        include_roots: Optional sub-roots to include instead of walking the full tree.
     """
     graph = CodeGraph()
     root = root.resolve()
-    py_files = sorted(root.rglob("*.py"))
+    py_files = _discover_python_files(root, include_roots)
 
     if exclude_patterns:
         py_files = [
@@ -76,6 +84,25 @@ def parse_python_project(
     # Resolve INHERITS edges (always AST-based)
     _resolve_inherits_edges(graph)
     return graph
+
+
+def _discover_python_files(root: Path, include_roots: list[Path] | None) -> list[Path]:
+    """Collect Python files from the requested roots."""
+    if not include_roots:
+        return sorted(root.rglob("*.py"))
+
+    py_files: list[Path] = []
+    seen: set[Path] = set()
+    for include_root in include_roots:
+        resolved_root = include_root.resolve()
+        if not resolved_root.exists():
+            continue
+        for py_file in resolved_root.rglob("*.py"):
+            resolved_file = py_file.resolve()
+            if resolved_file not in seen:
+                seen.add(resolved_file)
+                py_files.append(resolved_file)
+    return sorted(py_files)
 
 
 def _find_package_roots(root: Path, py_files: list[Path]) -> list[Path]:
@@ -359,212 +386,3 @@ def _add_super_calls_ast(
                         ))
 
 
-## ---------------------------------------------------------------------------
-## AST-based call resolution (fallback when PyCG is unavailable)
-## ---------------------------------------------------------------------------
-
-
-def _self_param_name(node: ast.FunctionDef | ast.AsyncFunctionDef) -> str | None:
-    """Return the name of the first parameter if it looks like self/cls."""
-    if node.args.args:
-        name = node.args.args[0].arg
-        if name in ("self", "cls"):
-            return name
-    return None
-
-
-def _resolve_call(
-    node: ast.expr,
-    self_name: str | None,
-    class_id: str | None,
-    base_name: str | None = None,
-) -> str | None:
-    """Resolve a call expression, with special handling for self/cls/super().
-
-    For ``self.method()``, rewrites to ``ClassName.method`` so the
-    downstream resolver can match it to a known node via ancestor prefix walk.
-    For ``super().method()``, rewrites to ``BaseName.method`` using the
-    first declared base class.
-    """
-    # self.method() or cls.method() -> ClassName.method
-    if (
-        self_name
-        and class_id
-        and isinstance(node, ast.Attribute)
-        and isinstance(node.value, ast.Name)
-        and node.value.id == self_name
-    ):
-        class_short = class_id.rsplit(".", 1)[-1]
-        return f"{class_short}.{node.attr}"
-
-    # super().method() -> BaseName.method
-    if (
-        class_id
-        and isinstance(node, ast.Attribute)
-        and isinstance(node.value, ast.Call)
-        and isinstance(node.value.func, ast.Name)
-        and node.value.func.id == "super"
-    ):
-        if base_name:
-            return f"{base_name}.{node.attr}"
-        return None
-
-    return _resolve_name(node)
-
-
-def _resolve_call_edges_ast(graph: CodeGraph) -> None:
-    """AST-based fallback: extract and resolve call edges from function bodies.
-
-    This is used when PyCG is unavailable. It re-parses each file to find
-    call expressions and resolves them using ancestor prefix walking and
-    import maps. Less precise than PyCG but requires no external dependency.
-    """
-    # Re-extract call edges from the AST
-    for node_obj in list(graph.nodes.values()):
-        if node_obj.kind != NodeKind.FUNCTION:
-            continue
-        try:
-            source = node_obj.file.read_text(encoding="utf-8")
-            tree = ast.parse(source, filename=str(node_obj.file))
-        except (SyntaxError, UnicodeDecodeError):
-            continue
-        func_node = _find_ast_function(tree, node_obj.line, node_obj.name)
-        if func_node is None:
-            continue
-
-        # Determine class context for self/cls/super resolution
-        class_id, base_name = _find_class_context(tree, node_obj.id)
-        self_name = _self_param_name(func_node) if class_id else None
-
-        seen_calls: set[str] = set()
-        for child in ast.walk(func_node):
-            if isinstance(child, ast.Call):
-                callee = _resolve_call(child.func, self_name, class_id, base_name)
-                if callee and callee not in seen_calls:
-                    seen_calls.add(callee)
-                    graph.add_edge(Edge(
-                        source=node_obj.id, target=callee, kind=EdgeKind.CALLS,
-                    ))
-
-    # Now resolve raw call targets to known nodes
-    _resolve_raw_edges(graph, {EdgeKind.CALLS})
-
-
-def _find_ast_function(
-    tree: ast.Module, line: int, name: str,
-) -> ast.FunctionDef | ast.AsyncFunctionDef | None:
-    """Find a function/method AST node by line number and name."""
-    for node in ast.walk(tree):
-        if (
-            isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
-            and node.name == name
-            and node.lineno == line
-        ):
-            return node
-    return None
-
-
-def _find_class_context(
-    tree: ast.Module, func_id: str,
-) -> tuple[str | None, str | None]:
-    """Determine the enclosing class ID and base class name for a function.
-
-    Returns (class_id, base_name) or (None, None) if not a method.
-    """
-    parts = func_id.rsplit(".", 2)
-    if len(parts) < 3:
-        return None, None
-    # Check if parent is a class by looking for it in the func_id
-    # func_id format: "mod.Class.method" — parent would be "mod.Class"
-    parent_id = func_id.rsplit(".", 1)[0]
-    # Walk AST to find the class
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            # Check if this class name matches the parent
-            if parent_id.endswith(f".{node.name}") or parent_id == node.name:
-                base_name = None
-                if node.bases:
-                    base_name = _resolve_name(node.bases[0])
-                return parent_id, base_name
-    return None, None
-
-
-def _resolve_name(node: ast.expr) -> str | None:
-    """Best-effort resolve an AST expression to a dotted name string."""
-    if isinstance(node, ast.Name):
-        return node.id
-    if isinstance(node, ast.Attribute):
-        value = _resolve_name(node.value)
-        if value:
-            return f"{value}.{node.attr}"
-    return None
-
-
-def _resolve_inherits_edges(graph: CodeGraph) -> None:
-    """Resolve raw targets in INHERITS edges to actual graph node IDs."""
-    _resolve_raw_edges(graph, {EdgeKind.INHERITS})
-
-
-def _resolve_raw_edges(graph: CodeGraph, kinds: set[EdgeKind]) -> None:
-    """Resolve raw targets in edges of given kinds to actual graph node IDs.
-
-    Raw edges have targets like 'helper' or 'Enum'. This pass replaces them
-    with fully qualified node IDs where possible, and drops edges that can't
-    be resolved to known nodes.
-    """
-    node_ids = set(graph.nodes)
-
-    # Build import map: for each module, map imported short names to full targets.
-    import_map: dict[str, dict[str, str]] = {}
-    for edge in graph.edges_by_kind(EdgeKind.IMPORTS):
-        mod = edge.source
-        target = edge.target
-        short = target.rsplit(".", 1)[-1]
-        import_map.setdefault(mod, {})[short] = target
-
-    keep: list[Edge] = []
-    for edge in graph.edges:
-        if edge.kind not in kinds:
-            keep.append(edge)
-            continue
-        target = _try_resolve(edge.source, edge.target, node_ids, import_map)
-        if target:
-            keep.append(Edge(source=edge.source, target=target, kind=edge.kind))
-
-    graph.edges = keep
-
-
-def _try_resolve(
-    source: str, raw_target: str, node_ids: set[str],
-    import_map: dict[str, dict[str, str]],
-) -> str | None:
-    """Try to resolve a raw edge target to a known node ID."""
-    # 1. Already a known node ID (fully qualified call)
-    if raw_target in node_ids:
-        return raw_target
-
-    parts = source.split(".")
-
-    # 2. Qualify with each ancestor prefix of the source
-    # source="pkg.mod.Class.method", try "pkg.mod.Class.helper", "pkg.mod.helper", "pkg.helper"
-    for i in range(len(parts) - 1, 0, -1):
-        candidate = ".".join(parts[:i]) + "." + raw_target
-        if candidate in node_ids:
-            return candidate
-
-    # 3. Handle dotted targets via imports: "EdgeKind.CALLS" where EdgeKind was imported
-    first_part = raw_target.split(".")[0]
-    rest = raw_target.split(".")[1:]
-    for i in range(len(parts), 0, -1):
-        mod_candidate = ".".join(parts[:i])
-        if mod_candidate in import_map:
-            if first_part in import_map[mod_candidate]:
-                imported_target = import_map[mod_candidate][first_part]
-                if rest:
-                    full = imported_target + "." + ".".join(rest)
-                else:
-                    full = imported_target
-                if full in node_ids:
-                    return full
-
-    return None

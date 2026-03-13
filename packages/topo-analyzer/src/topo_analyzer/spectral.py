@@ -31,18 +31,105 @@ except ImportError:
 
 
 @dataclass
+class SpectralComponent:
+    """Spectral embedding for a single connected component."""
+
+    id: int
+    node_ids: list[str]
+    eigenvalues: NDArray[np.floating]
+    eigenvectors: NDArray[np.floating]
+
+    def fingerprint(self, node_id: str) -> NDArray[np.floating]:
+        """Get the spectral fingerprint of a node in this component."""
+        idx = self.node_ids.index(node_id)
+        return self.eigenvectors[idx]
+
+
+@dataclass
 class SpectralResult:
     """Result of spectral decomposition."""
 
-    node_ids: list[str]  # Ordered list of node ids, corresponding to matrix rows
-    eigenvalues: NDArray[np.floating]  # k smallest non-trivial eigenvalues
-    eigenvectors: NDArray[np.floating]  # (n_nodes, k) matrix — spectral fingerprints
+    total_node_ids: list[str]
+    components: list[SpectralComponent]
+    unassigned_components: list[list[str]]
+    primary_eigenvalues: NDArray[np.floating]
+    component_sizes: list[int]
     fiedler_value: float  # Second-smallest eigenvalue — algebraic connectivity
+
+    @property
+    def node_ids(self) -> list[str]:
+        """Ordered node ids that received spectral fingerprints."""
+        return [node_id for component in self.components for node_id in component.node_ids]
+
+    @property
+    def eigenvalues(self) -> NDArray[np.floating]:
+        """Eigenvalues for the primary component used in diagnostics."""
+        return self.primary_eigenvalues
+
+    @property
+    def eigenvectors(self) -> NDArray[np.floating]:
+        """Stack component embeddings into a single padded matrix."""
+        if not self.components:
+            return np.zeros((0, 0))
+        width = max(component.eigenvectors.shape[1] for component in self.components)
+        matrices = []
+        for component in self.components:
+            vectors = component.eigenvectors
+            if vectors.shape[1] < width:
+                vectors = np.pad(vectors, ((0, 0), (0, width - vectors.shape[1])))
+            matrices.append(vectors)
+        return np.vstack(matrices)
+
+    @property
+    def analyzed_node_count(self) -> int:
+        """Number of nodes that received a usable embedding."""
+        return len(self.node_ids)
+
+    @property
+    def unassigned_node_ids(self) -> list[str]:
+        """Flattened list of nodes from components that were not clustered."""
+        return [node_id for component in self.unassigned_components for node_id in component]
+
+    @property
+    def total_node_count(self) -> int:
+        """Total number of nodes in the input graph."""
+        return len(self.total_node_ids)
+
+    @property
+    def coverage_ratio(self) -> float:
+        """Fraction of nodes that received a spectral fingerprint."""
+        if self.total_node_count == 0:
+            return 0.0
+        return self.analyzed_node_count / self.total_node_count
+
+    @property
+    def component_count(self) -> int:
+        """Number of connected components in the input graph."""
+        return len(self.component_sizes)
+
+    @property
+    def clusterable_component_count(self) -> int:
+        """Number of components large enough for spectral clustering."""
+        return len(self.components)
+
+    @property
+    def largest_component_size(self) -> int:
+        """Size of the largest connected component."""
+        return max(self.component_sizes, default=0)
+
+    @property
+    def largest_component_ratio(self) -> float:
+        """Fraction of nodes in the largest connected component."""
+        if self.total_node_count == 0:
+            return 0.0
+        return self.largest_component_size / self.total_node_count
 
     def fingerprint(self, node_id: str) -> NDArray[np.floating]:
         """Get the spectral fingerprint of a node."""
-        idx = self.node_ids.index(node_id)
-        return self.eigenvectors[idx]
+        for component in self.components:
+            if node_id in component.node_ids:
+                return component.fingerprint(node_id)
+        raise KeyError(f"No spectral fingerprint for node {node_id}")
 
 
 def _find_connected_components(
@@ -137,12 +224,13 @@ def spectral_decomposition(
 
 
 # Default weights for multi-layer analysis. Calls are the strongest
-# signal, imports and containment provide context, inheritance is rare
-# but structurally meaningful.
+# signal, imports provide context, and inheritance is rare but
+# structurally meaningful. Containment stays off by default because it
+# captures organization, not coupling.
 DEFAULT_LAYER_WEIGHTS: dict[EdgeKind, float] = {
     EdgeKind.CALLS: 1.0,
     EdgeKind.IMPORTS: 0.5,
-    EdgeKind.CONTAINS: 0.3,
+    EdgeKind.CONTAINS: 0.0,
     EdgeKind.INHERITS: 0.8,
 }
 
@@ -208,60 +296,66 @@ def _decompose(
     sparse matrix, then computes the k+1 smallest eigenvalues via
     scipy.sparse.linalg.eigsh.
 
-    For disconnected graphs, spectral decomposition is performed on the
-    largest connected component only. Nodes outside the largest component
-    get zero-valued eigenvector entries, and fiedler_value is set to 0.0.
+    For disconnected graphs, each sufficiently large connected component is
+    decomposed independently. Small or edgeless components are reported as
+    unassigned so they do not collapse into artificial mega-clusters.
     """
     n = adjacency.shape[0]
     n_edges = adjacency.nnz // 2  # each undirected edge stored twice
     if n < 3 or n_edges == 0:
         return None
 
-    # Detect connected components
     components = _find_connected_components(adjacency, node_ids)
-    is_disconnected = len(components) > 1
+    component_sizes = [len(component) for component in components]
+    primary_eigenvalues = np.array([], dtype=float)
+    clusterable_components: list[SpectralComponent] = []
+    unassigned_components: list[list[str]] = []
 
-    if is_disconnected:
-        # Work on the largest connected component only
-        largest = components[0]
-        if len(largest) < 3:
-            return None
-        sub_indices = np.array(largest)
+    for component_id, component in enumerate(components):
+        if len(component) < 3:
+            unassigned_components.append([node_ids[index] for index in component])
+            continue
+
+        sub_indices = np.array(component)
         sub_adj = adjacency[np.ix_(sub_indices, sub_indices)]
-        sub_n = len(largest)
+        sub_n = len(component)
+        sub_edges = sub_adj.nnz // 2
+        if sub_edges == 0:
+            unassigned_components.append([node_ids[index] for index in component])
+            continue
+
         k_sub = min(k, sub_n - 2)
         k_sub = max(k_sub, 1)
         sub_result = _decompose_core(sub_n, sub_adj, k_sub)
         if sub_result is None:
-            return None
-        sub_eigenvalues, sub_eigenvectors = sub_result
+            unassigned_components.append([node_ids[index] for index in component])
+            continue
 
-        # Embed sub-component results back into full-size arrays.
-        # Nodes outside the largest component get zero eigenvector entries.
-        full_eigenvectors = np.zeros((n, sub_eigenvectors.shape[1]), dtype=sub_eigenvectors.dtype)
-        for local_idx, global_idx in enumerate(largest):
-            full_eigenvectors[global_idx] = sub_eigenvectors[local_idx]
-
-        return SpectralResult(
-            node_ids=node_ids,
-            eigenvalues=sub_eigenvalues,
-            eigenvectors=full_eigenvectors,
-            fiedler_value=0.0,
-        )
-    else:
-        # Graph is fully connected — proceed normally
-        if n < k + 1:
-            k = max(n - 2, 1)
-        result = _decompose_core(n, adjacency, k)
-        if result is None:
-            return None
-        eigenvalues, eigenvectors = result
-        return SpectralResult(
-            node_ids=node_ids,
+        eigenvalues, eigenvectors = sub_result
+        if component_id == 0:
+            primary_eigenvalues = eigenvalues
+        clusterable_components.append(SpectralComponent(
+            id=component_id,
+            node_ids=[node_ids[index] for index in component],
             eigenvalues=eigenvalues,
             eigenvectors=eigenvectors,
-            fiedler_value=float(eigenvalues[0]),
-        )
+        ))
+
+    if not clusterable_components:
+        return None
+
+    fiedler_value = 0.0
+    if len(components) == 1 and len(primary_eigenvalues) > 0:
+        fiedler_value = float(primary_eigenvalues[0])
+
+    return SpectralResult(
+        total_node_ids=node_ids,
+        components=clusterable_components,
+        unassigned_components=unassigned_components,
+        primary_eigenvalues=primary_eigenvalues,
+        component_sizes=component_sizes,
+        fiedler_value=fiedler_value,
+    )
 
 
 def _decompose_core(
@@ -288,7 +382,12 @@ def _decompose_core(
 
     # k+1 smallest eigenvalues (skip the trivial zero eigenvalue)
     try:
-        eigenvalues, eigenvectors = eigsh(laplacian, k=k + 1, which="SM")
+        eigenvalues, eigenvectors = eigsh(
+            laplacian,
+            k=k + 1,
+            which="SM",
+            v0=np.linspace(1.0, 2.0, n, dtype=float),
+        )
     except Exception:
         # eigsh can fail on very small graphs;
         # fall back to dense decomposition as a last resort.

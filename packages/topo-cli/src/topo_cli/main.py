@@ -13,8 +13,16 @@ import json
 import sys
 from pathlib import Path
 
+from topo_parser.graph import EdgeKind
 from topo_parser.python import parse_python_project
 from topo_analyzer.analysis import analyze
+from topo_analyzer.projection import (
+    AnalysisLevel,
+    AnalysisPolicy,
+    AnalysisProjectionConfig,
+    discover_first_party_source_roots,
+    load_analysis_policy,
+)
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -36,6 +44,23 @@ def main(argv: list[str] | None = None) -> None:
         "--exclude", type=str, default=None,
         help="Comma-separated directory names to exclude (e.g. pycg,.venv,node_modules)",
     )
+    parser.add_argument(
+        "--scope",
+        choices=["auto", "all", "first-party"],
+        default=None,
+        help="Analysis scope preset for monorepos and self-analysis",
+    )
+    parser.add_argument(
+        "--level",
+        choices=[level.value for level in AnalysisLevel],
+        default=None,
+        help="Analysis level (package, module, symbol)",
+    )
+    parser.add_argument(
+        "--diagnostics",
+        action="store_true",
+        help="Include low-level spectral diagnostics in text output",
+    )
 
     args = parser.parse_args(argv)
 
@@ -43,59 +68,79 @@ def main(argv: list[str] | None = None) -> None:
         print(f"Error: {args.path} is not a directory", file=sys.stderr)
         sys.exit(1)
 
+    policy = _load_policy_or_exit(args.path)
+
     # Parse
     exclude_patterns = args.exclude.split(",") if args.exclude else None
-    graph = parse_python_project(args.path, exclude_patterns=exclude_patterns)
+    scope_roots = _resolve_scope_roots(args.path, args.scope, policy)
+    graph = parse_python_project(
+        args.path,
+        exclude_patterns=exclude_patterns,
+        include_roots=list(scope_roots) if scope_roots else None,
+    )
 
     # Analyze
-    from topo_parser.graph import EdgeKind
+    level = _resolve_analysis_level(args.level, policy)
+    projection_config = AnalysisProjectionConfig.for_analysis(
+        edge_kind=EdgeKind.CALLS if args.edge_kind == "combined" else EdgeKind(args.edge_kind),
+        combined=args.edge_kind == "combined",
+        level=level,
+        scope_roots=scope_roots,
+    )
     if args.edge_kind == "combined":
-        result = analyze(graph, combined=True, n_modules=args.n_modules)
+        result = analyze(
+            graph,
+            combined=True,
+            n_modules=args.n_modules,
+            projection_config=projection_config,
+        )
     else:
         edge_kind = EdgeKind(args.edge_kind)
-        result = analyze(graph, edge_kind=edge_kind, n_modules=args.n_modules)
+        result = analyze(
+            graph,
+            edge_kind=edge_kind,
+            n_modules=args.n_modules,
+            projection_config=projection_config,
+        )
 
     # Output
     if args.as_json:
-        print(json.dumps(_to_dict(result), indent=2))
+        print(json.dumps(result.to_dict(), indent=2))
     else:
-        print(result.summary())
+        print(result.summary(verbose=args.diagnostics))
+
+def _resolve_scope_roots(
+    path: Path,
+    scope: str | None,
+    policy: AnalysisPolicy | None,
+) -> tuple[Path, ...]:
+    """Resolve CLI scope presets into concrete source roots."""
+    scope_value = scope or (policy.scope if policy and policy.scope else "auto")
+    if scope_value == "all":
+        return ()
+    first_party_roots = discover_first_party_source_roots(path)
+    if scope_value == "first-party":
+        return first_party_roots
+    return first_party_roots
 
 
-def _to_dict(result) -> dict:
-    """Convert analysis result to a JSON-serializable dict."""
-    return {
-        "graph": {
-            "nodes": result.graph.node_count,
-            "edges": result.graph.edge_count,
-        },
-        "spectral": {
-            "fiedler_value": result.spectral.fiedler_value,
-            "eigenvalues": result.spectral.eigenvalues.tolist(),
-        } if result.spectral else None,
-        "modules": [
-            {"id": m.id, "size": m.size, "members": m.node_ids}
-            for m in result.modules
-        ],
-        "roles": [
-            {
-                "node_id": r.node_id,
-                "role": r.role.value,
-                "degree": r.degree,
-                "betweenness": round(r.betweenness, 4),
-            }
-            for r in result.roles
-        ],
-        "anomalies": [
-            {
-                "kind": a.kind.value,
-                "node_ids": a.node_ids,
-                "description": a.description,
-                "severity": round(a.severity, 2),
-            }
-            for a in result.anomalies
-        ],
-    }
+def _resolve_analysis_level(
+    level: str | None,
+    policy: AnalysisPolicy | None,
+) -> AnalysisLevel:
+    """Resolve CLI and policy defaults for analysis level."""
+    if level is not None:
+        return AnalysisLevel(level)
+    if policy and policy.level is not None:
+        return policy.level
+    return AnalysisLevel.MODULE
+def _load_policy_or_exit(path: Path) -> AnalysisPolicy | None:
+    """Load repo policy and turn parse errors into CLI-friendly failures."""
+    try:
+        return load_analysis_policy(path)
+    except ValueError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -109,7 +109,7 @@ def _compute_betweenness(nx_graph: nx.DiGraph) -> dict[str, float]:
         return nx.betweenness_centrality(nx_graph)
     # Sample sqrt(n) pivot nodes — gives a good accuracy/speed trade-off
     # while keeping cost at O(k * E) where k = sqrt(n).
-    k = max(50, int(n ** 0.5))
+    k = min(n - 1, max(2, int(n ** 0.5)))
     return nx.betweenness_centrality(nx_graph, k=k)
 
 

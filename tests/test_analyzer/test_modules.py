@@ -35,11 +35,12 @@ def test_detect_two_modules():
     spectral = spectral_decomposition(g, edge_kind=EdgeKind.CALLS, k=4)
     assert spectral is not None
 
-    modules = detect_modules(spectral, n_modules=2)
-    assert len(modules) == 2
+    detection = detect_modules(spectral, n_modules=2)
+    assert len(detection.modules) == 2
+    assert detection.chosen_k == 2
 
     # Both modules should have members (non-trivial split)
-    sizes = sorted(m.size for m in modules)
+    sizes = sorted(module.size for module in detection.modules)
     assert all(s > 0 for s in sizes)
     assert sum(sizes) == 10
 
@@ -50,8 +51,9 @@ def test_detect_modules_auto_k():
     spectral = spectral_decomposition(g, edge_kind=EdgeKind.CALLS, k=4)
     assert spectral is not None
 
-    modules = detect_modules(spectral)  # auto k
-    assert len(modules) >= 2
+    detection = detect_modules(spectral)  # auto k
+    assert len(detection.modules) >= 2
+    assert detection.silhouette is not None
 
 
 def test_estimate_k_small_input():
@@ -68,5 +70,6 @@ def test_n_modules_override():
     spectral = spectral_decomposition(g, edge_kind=EdgeKind.CALLS, k=4)
     assert spectral is not None
 
-    modules = detect_modules(spectral, n_modules=3)
-    assert len(modules) == 3
+    detection = detect_modules(spectral, n_modules=3)
+    assert len(detection.modules) == 3
+    assert detection.chosen_k == 3

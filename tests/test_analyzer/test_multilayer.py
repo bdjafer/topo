@@ -4,6 +4,7 @@ from pathlib import Path
 
 from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
 from topo_analyzer.spectral import (
+    DEFAULT_LAYER_WEIGHTS,
     spectral_decomposition,
     spectral_decomposition_multilayer,
 )
@@ -35,16 +36,22 @@ def test_single_layer_has_orphans():
     """A single CALLS layer leaves most nodes disconnected."""
     g = _make_multilayer_graph()
     result = spectral_decomposition(g, edge_kind=EdgeKind.CALLS)
-    # Only 3 nodes connected on CALLS, not enough for spectral
-    # or it produces a result with many disconnected nodes
-    if result is not None:
-        assert len(result.node_ids) == 6
+    assert result is not None
+    assert len(result.node_ids) == 3
+    assert result.unassigned_node_ids == ["n3", "n4", "n5"]
 
 
 def test_multilayer_connects_all_nodes():
-    """Multi-layer decomposition should see edges from all layers."""
+    """Multi-layer decomposition should connect when all linking layers are weighted."""
     g = _make_multilayer_graph()
-    result = spectral_decomposition_multilayer(g)
+    result = spectral_decomposition_multilayer(
+        g,
+        layer_weights={
+            EdgeKind.CALLS: 1.0,
+            EdgeKind.IMPORTS: 1.0,
+            EdgeKind.CONTAINS: 1.0,
+        },
+    )
     assert result is not None
     assert len(result.node_ids) == 6
     # Fiedler > 0 means the combined graph is connected
@@ -62,11 +69,18 @@ def test_multilayer_with_custom_weights():
     assert result is not None
 
 
+def test_contains_weight_disabled_by_default():
+    """Containment should not influence combined-mode clustering by default."""
+    assert DEFAULT_LAYER_WEIGHTS[EdgeKind.CONTAINS] == 0.0
+
+
 def test_analyze_combined_mode():
     """analyze(combined=True) runs end-to-end."""
     g = _make_multilayer_graph()
     result = analyze(g, combined=True)
     assert result.spectral is not None
-    # No orphans — every node is connected through some layer
+    assert result.coverage is not None
+    assert result.coverage.spectral_coverage_ratio < 1.0
+    # CONTAINS is disabled by default, so n3 remains disconnected here.
     orphans = [r for r in result.roles if r.role.value == "orphan"]
-    assert len(orphans) == 0
+    assert len(orphans) == 1
