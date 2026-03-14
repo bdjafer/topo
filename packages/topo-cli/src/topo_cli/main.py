@@ -16,7 +16,6 @@ from pathlib import Path
 from topo_parser.graph import EdgeKind
 from topo_parser.python import parse_python_project
 from topo_analyzer.analysis import analyze
-from topo_analyzer.layer_analysis import analyze_layer_signal
 from topo_analyzer.projection import (
     AnalysisLevel,
     AnalysisPolicy,
@@ -62,12 +61,6 @@ def main(argv: list[str] | None = None) -> None:
         action="store_true",
         help="Include low-level spectral diagnostics in text output",
     )
-    parser.add_argument(
-        "--layer-analysis",
-        action="store_true",
-        dest="layer_analysis",
-        help="Analyze per-layer signal contribution instead of running the full pipeline",
-    )
 
     args = parser.parse_args(argv)
 
@@ -86,20 +79,8 @@ def main(argv: list[str] | None = None) -> None:
         include_roots=list(scope_roots) if scope_roots else None,
     )
 
-    level = _resolve_analysis_level(args.level, policy)
-
-    # Layer analysis mode
-    if args.layer_analysis:
-        layer_result = analyze_layer_signal(
-            graph, level=level, scope_roots=scope_roots, n_modules=args.n_modules,
-        )
-        if args.as_json:
-            print(json.dumps(_layer_analysis_to_dict(layer_result), indent=2))
-        else:
-            print(layer_result.summary())
-        return
-
     # Analyze
+    level = _resolve_analysis_level(args.level, policy)
     projection_config = AnalysisProjectionConfig.for_analysis(
         edge_kind=EdgeKind.CALLS if args.edge_kind == "combined" else EdgeKind(args.edge_kind),
         combined=args.edge_kind == "combined",
@@ -153,30 +134,6 @@ def _resolve_analysis_level(
     if policy and policy.level is not None:
         return policy.level
     return AnalysisLevel.MODULE
-def _layer_analysis_to_dict(result) -> dict:
-    """Serialize a LayerAnalysisResult to a JSON-friendly dict."""
-    def _signal_dict(signal):
-        return {
-            "label": signal.label,
-            "weights": {k.value: v for k, v in signal.weights.items()},
-            "nmi": round(signal.nmi, 4) if signal.nmi is not None else None,
-            "silhouette": round(signal.silhouette, 4) if signal.silhouette is not None else None,
-            "quality_score": round(signal.quality_score, 4),
-            "n_modules": signal.n_modules,
-            "coverage_ratio": round(signal.coverage_ratio, 4),
-            "edge_count": signal.edge_count,
-        }
-
-    return {
-        "signals": [_signal_dict(s) for s in result.signals],
-        "best_single": _signal_dict(result.best_single) if result.best_single else None,
-        "best_combined": _signal_dict(result.best_combined) if result.best_combined else None,
-        "recommended_weights": {
-            k.value: v for k, v in result.recommended_weights.items()
-        },
-    }
-
-
 def _load_policy_or_exit(path: Path) -> AnalysisPolicy | None:
     """Load repo policy and turn parse errors into CLI-friendly failures."""
     try:
