@@ -30,6 +30,19 @@ ARI counts pairs of items that are co-clustered in both partitions. This makes i
 
 NMI uses entropy rather than pair-counting, so it correctly measures how much knowing the spectral cluster tells you about the file-module identity, even when the partitions have different granularities. NMI of 0.7–0.8 means the spectral modules are strongly consistent with file structure while revealing finer internal structure — which is the tool's purpose.
 
+### NMI baseline is broken for single-package projects (tested & rolled back)
+
+We built a layer signal analysis tool (`layer_analysis.py`) to empirically measure each graph layer's contribution to clustering quality by sweeping weight combinations and measuring NMI + silhouette. Tested on topo (monorepo), Flask, and Click.
+
+**Results:**
+
+- On **topo** (monorepo with 3-4 top-level packages): results looked reasonable. CALLS strongest, IMPORTS marginal, CONTAINS circular.
+- On **Flask** and **Click** (single-package libraries): completely useless. The NMI baseline uses `node_id.split(".", 1)[0]` (top-level package), which produces exactly 1 group for single-package projects. This makes NMI either 0.0 (if spectral finds >1 cluster) or 1.0 trivially (if spectral finds 1 cluster). Neither is informative.
+
+**Decision:** Rolled back. The tool was answering "which layers are best?" using a metric that only works on monorepos. Before any layer weight optimization can be meaningful, we need a clustering quality baseline that works on single-package projects (e.g., second-level module grouping, or known architectural documentation).
+
+**Lesson:** Always validate benchmarking tools on the target codebases (Flask, Click, real projects) before investing in analysis infrastructure. Topo's own monorepo structure is a favorable special case, not representative.
+
 ---
 
 # Structural Intelligence
