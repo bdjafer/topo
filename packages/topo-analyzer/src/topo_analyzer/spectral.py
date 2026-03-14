@@ -234,10 +234,20 @@ def spectral_decomposition(
     return _decompose(node_ids, adjacency, k)
 
 
-# Default weights for multi-layer analysis. Calls are the strongest
-# signal, imports provide context, and inheritance is rare but
-# structurally meaningful. Containment stays off by default because it
-# captures organization, not coupling.
+# Default weights for multi-layer analysis, empirically validated via
+# layer signal analysis (see topo_analyzer.layer_analysis):
+#
+# - CALLS (1.0): Strongest structural signal at all levels. At module level
+#   on topo's own codebase: NMI=0.601, silhouette=0.553.
+# - IMPORTS (0.5): Marginal contribution. Adding imports to calls at module
+#   level slightly hurts NMI but slightly helps silhouette. Net effect ~neutral.
+# - INHERITS (0.8): Rare but structurally meaningful. Cannot be empirically
+#   validated on codebases without inheritance; weight set by structural reasoning.
+# - CONTAINS (0.0): Captures organizational hierarchy, not coupling. At symbol
+#   level, contains(1.0) inflates NMI by encoding directory structure, which
+#   is circular against the directory-based NMI baseline. Kept at 0.0 per
+#   design principle: "modules derived from how the code is connected, not
+#   how directories are organized."
 DEFAULT_LAYER_WEIGHTS: dict[EdgeKind, float] = {
     EdgeKind.CALLS: 1.0,
     EdgeKind.IMPORTS: 0.5,
