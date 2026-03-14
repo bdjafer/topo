@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "codebase": "flask",
+    "version": "3.1.0",
+    "labeling_method": "Architecture documentation + source reading. Labels created BEFORE seeing spectral output.",
+    "labeling_date": "2026-03-14",
+    "rationale": {
+      "core": "flask.sansio.app IS the core app implementation; flask.app wraps it. They are one architectural unit despite different directories. flask.ctx manages request/app contexts tied to the app lifecycle. flask.config is app configuration.",
+      "blueprints": "flask.sansio.blueprints and flask.sansio.scaffold are the ASGI-compatible blueprint implementations; flask.blueprints wraps them. One architectural unit.",
+      "json": "Self-contained JSON serialization subsystem with its own provider pattern.",
+      "cli": "CLI entry point: __main__ delegates to cli module.",
+      "helpers": "Cross-cutting utilities, debug support, global proxies, logging, signals — infrastructure glue.",
+      "http": "HTTP layer: sessions, request/response wrappers, template rendering, view dispatch.",
+      "types": "Type stubs — no runtime behavior, pure type annotations.",
+      "testing": "Test client and utilities — used only in test suites."
+    }
+  },
+  "included_nodes": {
+    "flask": "core",
+    "flask.app": "core",
+    "flask.ctx": "core",
+    "flask.config": "core",
+    "flask.sansio.app": "core",
+    "flask.blueprints": "blueprints",
+    "flask.sansio.blueprints": "blueprints",
+    "flask.sansio.scaffold": "blueprints",
+    "flask.json": "json",
+    "flask.json.provider": "json",
+    "flask.json.tag": "json",
+    "flask.cli": "cli",
+    "flask.__main__": "cli",
+    "flask.helpers": "helpers",
+    "flask.debughelpers": "helpers",
+    "flask.globals": "helpers",
+    "flask.logging": "helpers",
+    "flask.signals": "helpers",
+    "flask.sessions": "http",
+    "flask.wrappers": "http",
+    "flask.templating": "http",
+    "flask.views": "http",
+    "flask.typing": "types",
+    "flask.testing": "testing"
+  },
+  "excluded_nodes": [],
+  "notes": "Cross-directory pairs: sansio.app<->app/ctx/config (core), sansio.blueprints/scaffold<->blueprints (blueprints). These are the pairs that directory grouping cannot recover but spectral might."
+}
