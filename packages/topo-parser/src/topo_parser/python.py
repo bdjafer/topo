@@ -81,6 +81,10 @@ def parse_python_project(
     else:
         _resolve_call_edges_ast(graph)
 
+    # PyCG doesn't track @property access (it sees attribute access, not
+    # function calls).  Supplement with AST-based property resolution.
+    _add_property_access_calls(graph, root, py_files, package_roots)
+
     # Resolve INHERITS edges (always AST-based)
     _resolve_inherits_edges(graph)
     return graph
@@ -465,5 +469,227 @@ def _add_super_calls_ast(
                         graph.add_edge(Edge(
                             source=func_id, target=target, kind=EdgeKind.CALLS,
                         ))
+
+
+def _add_property_access_calls(
+    graph: CodeGraph, root: Path, py_files: list[Path], package_roots: list[Path],
+) -> None:
+    """Add CALLS edges for @property access that PyCG misses.
+
+    PyCG treats ``obj.prop`` as attribute access, not a function call, so
+    @property methods never get CALLS edges.  This walks the AST to find
+    attribute accesses that target known @property methods, using lightweight
+    type inference (constructor assignment and parameter annotations) to
+    determine the class.
+    """
+    node_ids = set(graph.nodes)
+    module_ids = {nid for nid, n in graph.nodes.items() if n.kind == NodeKind.MODULE}
+
+    # Step 1: Collect @property methods per class.
+    # property_map: {attr_name: [(class_id, method_node_id), ...]}
+    property_map: dict[str, list[tuple[str, str]]] = {}
+    for py_file in py_files:
+        try:
+            source = py_file.read_text(encoding="utf-8")
+            tree = ast.parse(source, filename=str(py_file))
+        except (SyntaxError, UnicodeDecodeError):
+            continue
+
+        pkg_root = _best_package_root(py_file, package_roots)
+        file_root = pkg_root or root
+        mod_id = _module_id(py_file, file_root)
+
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.ClassDef):
+                continue
+            class_id = f"{mod_id}.{node.name}"
+            if class_id not in node_ids:
+                continue
+            for child in ast.iter_child_nodes(node):
+                if not isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    continue
+                if not any(
+                    isinstance(d, ast.Name) and d.id == "property"
+                    for d in child.decorator_list
+                ):
+                    continue
+                method_id = f"{class_id}.{child.name}"
+                if method_id in node_ids:
+                    property_map.setdefault(child.name, []).append(
+                        (class_id, method_id)
+                    )
+
+    if not property_map:
+        return
+
+    # Build a quick lookup: short class name -> set of class_ids
+    class_short_to_ids: dict[str, set[str]] = {}
+    for nid, n in graph.nodes.items():
+        if n.kind == NodeKind.CLASS:
+            class_short_to_ids.setdefault(n.name, set()).add(nid)
+
+    # Build import targets per module for validation.
+    import_targets: dict[str, set[str]] = {}
+    for edge in graph.edges_by_kind(EdgeKind.IMPORTS):
+        src_mod = _module_of(edge.source, module_ids)
+        import_targets.setdefault(src_mod, set()).add(edge.target)
+
+    existing_calls = {(e.source, e.target) for e in graph.edges_by_kind(EdgeKind.CALLS)}
+
+    # Step 2: Walk every function, infer local variable types, match property access.
+    for py_file in py_files:
+        try:
+            source = py_file.read_text(encoding="utf-8")
+            tree = ast.parse(source, filename=str(py_file))
+        except (SyntaxError, UnicodeDecodeError):
+            continue
+
+        pkg_root = _best_package_root(py_file, package_roots)
+        file_root = pkg_root or root
+        mod_id = _module_id(py_file, file_root)
+
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+            # Determine the enclosing scope (module or class.method)
+            func_id = _find_func_id(tree, node, mod_id)
+            if func_id is None or func_id not in node_ids:
+                continue
+
+            # Infer variable types from assignments and annotations.
+            # var_types: {variable_name: class_short_name}
+            var_types = _infer_variable_types(node)
+
+            # Scan for attribute accesses matching known @property names.
+            src_mod = _module_of(func_id, module_ids)
+            for child in ast.walk(node):
+                if not isinstance(child, ast.Attribute):
+                    continue
+                attr_name = child.attr
+                if attr_name not in property_map:
+                    continue
+                # Determine the variable being accessed
+                if not isinstance(child.value, ast.Name):
+                    continue
+                var_name = child.value.id
+                if var_name in ("self", "cls"):
+                    continue  # self.prop is already within the class
+
+                class_name = var_types.get(var_name)
+                candidates = property_map[attr_name]
+
+                if class_name is not None:
+                    # Type is known — match against the specific class.
+                    matched = [
+                        (cid, mid) for cid, mid in candidates
+                        if cid.rsplit(".", 1)[-1] == class_name
+                    ]
+                else:
+                    # Type is unknown (loop variable, etc.).  Use
+                    # import-validated candidates — if exactly one
+                    # candidate's class is imported, use it.
+                    matched = _import_validated_candidates(
+                        candidates, src_mod, module_ids, import_targets,
+                    )
+
+                for class_id, method_id in matched:
+                    tgt_mod = _module_of(method_id, module_ids)
+                    if src_mod != tgt_mod:
+                        targets = import_targets.get(src_mod, set())
+                        tgt_parts = class_id.split(".")
+                        if not any(
+                            ".".join(tgt_parts[:i]) in targets
+                            for i in range(1, len(tgt_parts) + 1)
+                        ):
+                            continue
+                    edge_key = (func_id, method_id)
+                    if edge_key not in existing_calls:
+                        existing_calls.add(edge_key)
+                        graph.add_edge(Edge(
+                            source=func_id, target=method_id, kind=EdgeKind.CALLS,
+                        ))
+
+
+def _import_validated_candidates(
+    candidates: list[tuple[str, str]],
+    src_mod: str,
+    module_ids: set[str],
+    import_targets: dict[str, set[str]],
+) -> list[tuple[str, str]]:
+    """Filter property candidates to those whose class is imported by src_mod.
+
+    When variable type is unknown (e.g. loop variables), this narrows the
+    candidates using import validation.  Returns only candidates where the
+    source module imports the target class's module.
+    """
+    targets = import_targets.get(src_mod, set())
+    valid = []
+    for class_id, method_id in candidates:
+        tgt_mod = _module_of(method_id, module_ids)
+        if src_mod == tgt_mod:
+            valid.append((class_id, method_id))
+            continue
+        tgt_parts = class_id.split(".")
+        if any(".".join(tgt_parts[:i]) in targets for i in range(1, len(tgt_parts) + 1)):
+            valid.append((class_id, method_id))
+    return valid
+
+
+def _infer_variable_types(
+    func_node: ast.FunctionDef | ast.AsyncFunctionDef,
+) -> dict[str, str]:
+    """Lightweight type inference for local variables within a function.
+
+    Returns a mapping from variable name to the short class name, inferred from:
+    - Constructor calls: ``x = ClassName(...)``
+    - Type annotations: ``x: ClassName = ...`` or parameter ``x: ClassName``
+    """
+    var_types: dict[str, str] = {}
+
+    # Parameter annotations
+    for arg in func_node.args.args + func_node.args.kwonlyargs:
+        if arg.annotation:
+            ann_name = _resolve_name(arg.annotation)
+            if ann_name:
+                var_types[arg.arg] = ann_name.rsplit(".", 1)[-1]
+
+    # Walk assignments in the function body
+    for node in ast.walk(func_node):
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            ann_name = _resolve_name(node.annotation)
+            if ann_name:
+                var_types[node.target.id] = ann_name.rsplit(".", 1)[-1]
+        elif isinstance(node, ast.Assign) and len(node.targets) == 1:
+            target = node.targets[0]
+            if isinstance(target, ast.Name) and isinstance(node.value, ast.Call):
+                # x = ClassName(...)
+                call_name = _resolve_name(node.value.func)
+                if call_name:
+                    short = call_name.rsplit(".", 1)[-1]
+                    # Only treat as constructor if name starts with uppercase
+                    if short and short[0].isupper():
+                        var_types[target.id] = short
+
+    return var_types
+
+
+def _find_func_id(
+    tree: ast.Module,
+    func_node: ast.FunctionDef | ast.AsyncFunctionDef,
+    mod_id: str,
+) -> str | None:
+    """Determine the fully-qualified ID of a function node within a module."""
+    # Check if it's a method inside a class
+    for cls_node in ast.walk(tree):
+        if not isinstance(cls_node, ast.ClassDef):
+            continue
+        for child in ast.iter_child_nodes(cls_node):
+            if child is func_node:
+                return f"{mod_id}.{cls_node.name}.{func_node.name}"
+    # Top-level function
+    for child in ast.iter_child_nodes(tree):
+        if child is func_node:
+            return f"{mod_id}.{func_node.name}"
+    return None
 
 
