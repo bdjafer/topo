@@ -270,6 +270,27 @@ def _extract_import(
 ## ---------------------------------------------------------------------------
 
 
+_PYCG_MAX_ITER = 3
+"""Cap PyCG's fixpoint iterations.
+
+PyCG's inter-procedural analysis iterates until its assignment state
+converges.  For codebases with deep class hierarchies (e.g. Click's 4-level
+inheritance chains), the state grows each iteration and convergence never
+happens — each round discovers more transitive call targets, exponentially
+increasing both state size and per-iteration cost.
+
+Empirically, Flask converges at iteration 3 and Click's state explodes
+after iteration 3.  Capping at 3 gives correct results for well-behaved
+codebases while preventing unbounded runtime on adversarial ones.
+"""
+
+_PYCG_TIMEOUT_SECONDS = 30
+"""Hard timeout per package root for PyCG analysis.
+
+Safety net in case max_iter alone isn't sufficient to prevent hangs.
+"""
+
+
 def _extract_calls_pycg(
     root: Path, py_files: list[Path], package_roots: list[Path],
 ) -> dict[str, list[str]] | None:
@@ -306,7 +327,9 @@ def _extract_calls_pycg(
         for pkg_dir, entry_points in groups:
             os.chdir(str(root))
             try:
-                cg = CallGraphGenerator(entry_points, pkg_dir, -1, "call-graph")
+                cg = CallGraphGenerator(
+                    entry_points, pkg_dir, _PYCG_MAX_ITER, "call-graph",
+                )
                 cg.analyze()
                 raw = cg.output()
                 for caller, callees in raw.items():
