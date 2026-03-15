@@ -197,3 +197,103 @@ def compute_brier(
         (conf - float(correct)) ** 2
         for conf, correct in zip(confidences, correctness)
     ) / len(confidences)
+
+
+def compute_v_measure(
+    left: dict[str, object],
+    right: dict[str, object],
+) -> tuple[float, float, float]:
+    """V-measure between two label mappings on shared keys.
+
+    Returns (homogeneity, completeness, v_measure).
+    Homogeneity: each predicted cluster contains only members of a single gold class.
+    Completeness: all members of a gold class are assigned to the same cluster.
+    V-measure: harmonic mean of homogeneity and completeness.
+
+    Unlike NMI, V-measure does not degenerate when one partition has very few groups.
+    """
+    common = sorted(set(left) & set(right))
+    if not common:
+        return (0.0, 0.0, 0.0)
+    n = len(common)
+
+    labels_c = [left[k] for k in common]   # gold classes
+    labels_k = [right[k] for k in common]   # predicted clusters
+
+    joint: dict[tuple[object, object], int] = defaultdict(int)
+    count_c: dict[object, int] = defaultdict(int)
+    count_k: dict[object, int] = defaultdict(int)
+    for c, k in zip(labels_c, labels_k):
+        joint[(c, k)] += 1
+        count_c[c] += 1
+        count_k[k] += 1
+
+    # H(C) — entropy of gold classes
+    h_c = -sum((cnt / n) * log(cnt / n) for cnt in count_c.values() if cnt > 0)
+    # H(K) — entropy of predicted clusters
+    h_k = -sum((cnt / n) * log(cnt / n) for cnt in count_k.values() if cnt > 0)
+
+    # H(C|K) — conditional entropy of gold classes given predicted clusters
+    h_c_given_k = 0.0
+    for k_label, k_count in count_k.items():
+        for c_label in count_c:
+            n_ck = joint.get((c_label, k_label), 0)
+            if n_ck > 0:
+                h_c_given_k -= (n_ck / n) * log(n_ck / k_count)
+
+    # H(K|C) — conditional entropy of predicted clusters given gold classes
+    h_k_given_c = 0.0
+    for c_label, c_count in count_c.items():
+        for k_label in count_k:
+            n_ck = joint.get((c_label, k_label), 0)
+            if n_ck > 0:
+                h_k_given_c -= (n_ck / n) * log(n_ck / c_count)
+
+    # Homogeneity: 1 - H(C|K) / H(C)
+    homogeneity = 1.0 - (h_c_given_k / h_c) if h_c > 0 else 1.0
+    # Completeness: 1 - H(K|C) / H(K)
+    completeness = 1.0 - (h_k_given_c / h_k) if h_k > 0 else 1.0
+
+    if homogeneity + completeness == 0:
+        v_measure = 0.0
+    else:
+        v_measure = 2 * homogeneity * completeness / (homogeneity + completeness)
+
+    return (homogeneity, completeness, v_measure)
+
+
+def compute_cross_directory_recovery(
+    predicted: dict[str, object],
+    gold: dict[str, object],
+    directory_labels: dict[str, object],
+) -> float:
+    """Fraction of cross-directory same-module pairs correctly co-clustered.
+
+    Finds pairs of nodes that share the same gold module but are in different
+    directories. Returns the fraction of such pairs that are also co-clustered
+    by the predicted partition.
+
+    This is the decisive metric for marginal value: directory grouping scores 0%
+    by definition, since cross-directory pairs are never co-clustered by directory.
+    """
+    common = sorted(set(predicted) & set(gold) & set(directory_labels))
+    if len(common) < 2:
+        return 0.0
+
+    cross_dir_same_module = 0
+    cross_dir_same_module_recovered = 0
+
+    for i, a in enumerate(common):
+        for b in common[i + 1:]:
+            if gold[a] != gold[b]:
+                continue
+            if directory_labels[a] == directory_labels[b]:
+                continue
+            # This pair shares a gold module but is in different directories
+            cross_dir_same_module += 1
+            if predicted[a] == predicted[b]:
+                cross_dir_same_module_recovered += 1
+
+    if cross_dir_same_module == 0:
+        return float("nan")  # No cross-directory pairs exist — metric not applicable
+    return cross_dir_same_module_recovered / cross_dir_same_module

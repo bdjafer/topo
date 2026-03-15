@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "codebase": "click",
+    "version": "8.1.8",
+    "labeling_method": "Architecture documentation + source reading. Labels created BEFORE seeing spectral output.",
+    "labeling_date": "2026-03-14",
+    "rationale": {
+      "core": "The central command/group/parameter machinery that everything else depends on.",
+      "decorators": "Public API surface — @click.command, @click.option, etc. Wraps core.",
+      "parsing": "Argument parsing (click.parser) and the exceptions it raises.",
+      "output": "Terminal output: formatting, terminal UI (progress bars, prompts), and platform-specific implementations.",
+      "types": "Parameter type system — all the concrete types (INT, STRING, Path, Choice, etc.).",
+      "completion": "Shell completion subsystem.",
+      "internals": "Internal utilities, compatibility shims, global state.",
+      "testing": "Test runner (CliRunner) for testing Click applications."
+    }
+  },
+  "included_nodes": {
+    "click": "decorators",
+    "click.core": "core",
+    "click.decorators": "decorators",
+    "click.parser": "parsing",
+    "click.exceptions": "parsing",
+    "click.formatting": "output",
+    "click.termui": "output",
+    "click._termui_impl": "output",
+    "click.types": "types",
+    "click.shell_completion": "completion",
+    "click._compat": "internals",
+    "click._winconsole": "internals",
+    "click._utils": "internals",
+    "click.utils": "internals",
+    "click.globals": "internals",
+    "click.testing": "testing"
+  },
+  "excluded_nodes": [],
+  "notes": "Click is a flat single-package library. All modules are click.*  so directory_partition produces a single group. Cross-directory recovery is not applicable (NaN). V-measure and boundary F1 are the relevant metrics here — they test whether spectral finds structure where directories provide none."
+}

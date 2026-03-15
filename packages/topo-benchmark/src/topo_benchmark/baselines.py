@@ -12,6 +12,28 @@ def directory_partition(graph: CodeGraph) -> dict[str, str]:
     return {node_id: node_id.split(".", 1)[0] for node_id in graph.nodes}
 
 
+def directory_partition_by_module(graph: CodeGraph, module_ids: set[str]) -> dict[str, str]:
+    """Group symbol-level nodes by their owning module's second dotted component.
+
+    For symbol nodes like ``click.core.Command.__init__``, find the longest
+    prefix that matches a known module ID (e.g. ``click.core``), then use
+    that module's second component (``click.core``) as the directory label.
+    Falls back to first component if there is no second.
+    """
+    partition: dict[str, str] = {}
+    sorted_modules = sorted(module_ids, key=len, reverse=True)
+    for node_id in graph.nodes:
+        owning_module = node_id
+        for mod in sorted_modules:
+            if node_id == mod or node_id.startswith(mod + "."):
+                owning_module = mod
+                break
+        parts = owning_module.split(".")
+        label = ".".join(parts[:2]) if len(parts) >= 2 else parts[0]
+        partition[node_id] = label
+    return partition
+
+
 def louvain_partition(
     graph: CodeGraph,
     edge_kinds: list[EdgeKind] | None = None,
