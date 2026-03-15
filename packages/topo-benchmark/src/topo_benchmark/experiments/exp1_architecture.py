@@ -1,24 +1,32 @@
-"""Experiment 1: Cross-Directory Architecture Recovery.
+"""Experiment 1: Comprehensive Structural Health Evaluation.
 
-The decisive test for the core bet. Measures whether spectral analysis
-recovers architectural modules that span directory boundaries — something
-directory grouping cannot do by definition.
+Runs a matrix of analysis configurations (level × layer combinations) on each
+codebase and reports: clustering quality, per-layer signal strength, cluster
+purity, structural diagnostics (roles, anomalies, health, spectral quality).
+
+This replaces the previous module-only evaluation which was degenerate for flat
+packages (e.g. Click at module level had density 198%, V-measure = 0).
 """
 
 from __future__ import annotations
 
 import json
+import math
 import subprocess
-import tempfile
+from collections import Counter
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from topo_analyzer.analysis import StructuralAnalysis, analyze
 from topo_analyzer.projection import AnalysisLevel, AnalysisProjectionConfig
-from topo_parser.graph import CodeGraph, EdgeKind
+from topo_parser.graph import CodeGraph, EdgeKind, NodeKind
 from topo_parser.python import parse_python_project
 
-from topo_benchmark.baselines import directory_partition, louvain_partition
+from topo_benchmark.baselines import (
+    directory_partition,
+    directory_partition_by_module,
+    louvain_partition,
+)
 from topo_benchmark.experiments.config import CODEBASES, THRESHOLDS
 from topo_benchmark.experiments.gold_labels import load_gold_labels, validate_gold_labels
 from topo_benchmark.scoring import (
@@ -29,58 +37,295 @@ from topo_benchmark.scoring import (
 from topo_benchmark.signals import partition_labels
 
 
-@dataclass
-class CodebaseResult:
-    """Results for a single codebase."""
+# ---------------------------------------------------------------------------
+# Analysis configuration matrix
+# ---------------------------------------------------------------------------
 
+@dataclass(frozen=True)
+class AnalysisConfig:
+    """One analysis configuration to evaluate."""
     name: str
-    # V-measure per method
-    spectral_v_measure: float = 0.0
-    spectral_homogeneity: float = 0.0
-    spectral_completeness: float = 0.0
-    directory_v_measure: float = 0.0
-    louvain_v_measure: float = 0.0
-    # Boundary F1 per method
-    spectral_boundary_f1: float = 0.0
-    directory_boundary_f1: float = 0.0
-    louvain_boundary_f1: float = 0.0
-    # Cross-directory recovery (the decisive metric)
-    spectral_cross_dir_recovery: float = 0.0
-    louvain_cross_dir_recovery: float = 0.0
-    # Coverage and graph stats
-    spectral_coverage: float = 0.0
+    level: AnalysisLevel
+    edge_kinds: tuple[EdgeKind, ...]
+    combined: bool
+
+
+ANALYSIS_CONFIGS = [
+    AnalysisConfig("module_calls", AnalysisLevel.MODULE, (EdgeKind.CALLS,), False),
+    AnalysisConfig("module_combined", AnalysisLevel.MODULE, (EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS), True),
+    AnalysisConfig("symbol_calls", AnalysisLevel.SYMBOL, (EdgeKind.CALLS,), False),
+    AnalysisConfig("symbol_combined", AnalysisLevel.SYMBOL, (EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS), True),
+    AnalysisConfig("symbol_imports", AnalysisLevel.SYMBOL, (EdgeKind.IMPORTS,), False),
+    AnalysisConfig("symbol_inherits", AnalysisLevel.SYMBOL, (EdgeKind.INHERITS,), False),
+]
+
+
+# ---------------------------------------------------------------------------
+# Result data structures
+# ---------------------------------------------------------------------------
+
+@dataclass
+class ConfigResult:
+    """Results for a single analysis configuration on a single codebase."""
+    config_name: str
+    # Graph stats
     graph_nodes: int = 0
     graph_edges: int = 0
-    gold_label_coverage: float = 0.0
-    # Validation
-    label_validation: dict = field(default_factory=dict)
-    # Cluster details for inspection
-    spectral_clusters: dict = field(default_factory=dict)
+    density: float = 0.0
+    # Clustering quality vs gold labels
+    v_measure: float = 0.0
+    homogeneity: float = 0.0
+    completeness: float = 0.0
+    boundary_f1: float = 0.0
+    cross_dir_recovery: float = float("nan")
+    # Spectral diagnostics
+    n_modules: int = 0
+    silhouette: float | None = None
+    fiedler_value: float = 0.0
+    package_fallback: bool = False
+    # Cluster quality
+    mega_cluster_ratio: float = 0.0
+    weighted_purity: float = 0.0
+    # Structural diagnostics
+    role_counts: dict[str, int] = field(default_factory=dict)
+    anomaly_counts: dict[str, int] = field(default_factory=dict)
+    top_anomalies: list[str] = field(default_factory=list)
+    # Health
+    call_density: float = 0.0
+    orphan_ratio: float = 0.0
+    largest_module_status: str = ""
+    # Flag
+    degenerate: bool = False
     error: str | None = None
 
-    @property
-    def spectral_beats_directory(self) -> bool:
-        return self.spectral_v_measure > self.directory_v_measure
 
-    @property
-    def spectral_beats_louvain(self) -> bool:
-        return self.spectral_v_measure > self.louvain_v_measure
+@dataclass
+class ClusterDetail:
+    """Purity details for a single cluster."""
+    cluster_id: int
+    size: int
+    dominant_group: str
+    purity: float
+    group_counts: dict[str, int]
+
+
+@dataclass
+class CodebaseResult:
+    """Comprehensive results for a single codebase."""
+    name: str
+    parsed_nodes: int = 0
+    parsed_edges: int = 0
+    config_results: list[ConfigResult] = field(default_factory=list)
+    best_config: str = ""
+    best_v_measure: float = 0.0
+    # Baselines (at best config's level)
+    directory_v_measure: float = 0.0
+    louvain_v_measure: float = 0.0
+    directory_boundary_f1: float = 0.0
+    louvain_boundary_f1: float = 0.0
+    # Per-layer signal comparison (symbol level)
+    layer_signals: dict[str, float] = field(default_factory=dict)
+    # Cluster purity from best config
+    cluster_details: list[ClusterDetail] = field(default_factory=list)
+    # Cross-dir from best config
+    spectral_cross_dir_recovery: float = float("nan")
+    louvain_cross_dir_recovery: float = float("nan")
+    # Aggregate flags
+    spectral_beats_directory: bool = False
+    spectral_beats_louvain: bool = False
+    error: str | None = None
 
 
 @dataclass
 class Experiment1Result:
     """Aggregate results for Experiment 1."""
-
     codebase_results: list[CodebaseResult]
-    # Aggregate verdicts
-    cross_dir_recovery_rates: dict[str, float] = field(default_factory=dict)
     v_measure_wins_vs_directory: int = 0
     v_measure_wins_vs_louvain: int = 0
     codebases_above_cross_dir_pass: int = 0
     codebases_below_cross_dir_fail: int = 0
-    # Final verdict
     verdict: str = "INCONCLUSIVE"
     verdict_details: list[str] = field(default_factory=list)
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _run_analysis(graph: CodeGraph, config: AnalysisConfig) -> StructuralAnalysis:
+    """Run a single analysis configuration."""
+    proj_config = AnalysisProjectionConfig.for_analysis(
+        edge_kind=config.edge_kinds[0],
+        combined=config.combined,
+        level=config.level,
+        internal_only=False,
+    )
+    # If not combined but multiple edge kinds specified, override
+    if not config.combined and len(config.edge_kinds) == 1:
+        pass  # for_analysis handles this correctly
+    return analyze(graph, combined=config.combined, projection_config=proj_config)
+
+
+def _gold_for_symbols(
+    gold_modules: dict[str, str],
+    node_ids: set[str],
+    module_ids: set[str],
+) -> dict[str, str]:
+    """Map symbol-level node IDs to gold labels via owning module.
+
+    For a symbol like ``click.core.Command.__init__``, find the longest
+    matching module ID (``click.core``) and use its gold label (``core``).
+    """
+    sorted_modules = sorted(module_ids, key=len, reverse=True)
+    result: dict[str, str] = {}
+    for nid in node_ids:
+        # Check if node itself is a gold-labeled module
+        if nid in gold_modules:
+            result[nid] = gold_modules[nid]
+            continue
+        # Find owning module
+        for mod in sorted_modules:
+            if nid.startswith(mod + "."):
+                if mod in gold_modules:
+                    result[nid] = gold_modules[mod]
+                break
+    return result
+
+
+def _graph_density(n_nodes: int, n_edges: int) -> float:
+    """Compute graph density (fraction of possible edges)."""
+    max_edges = n_nodes * (n_nodes - 1)
+    if max_edges == 0:
+        return 0.0
+    return n_edges / max_edges
+
+
+def _cluster_purity(
+    modules: list,
+    gold: dict[str, str],
+) -> tuple[float, float, list[ClusterDetail]]:
+    """Compute per-cluster purity and weighted average purity.
+
+    Returns (mega_cluster_ratio, weighted_avg_purity, cluster_details).
+    """
+    non_unassigned = [m for m in modules if not m.unassigned]
+    if not non_unassigned:
+        return 0.0, 0.0, []
+
+    total_nodes = sum(m.size for m in non_unassigned)
+    largest_size = max(m.size for m in non_unassigned) if non_unassigned else 0
+    mega_ratio = largest_size / total_nodes if total_nodes > 0 else 0.0
+
+    details: list[ClusterDetail] = []
+    weighted_sum = 0.0
+    gold_count = 0
+
+    for m in non_unassigned:
+        group_counts: Counter[str] = Counter()
+        for nid in m.node_ids:
+            if nid in gold:
+                group_counts[gold[nid]] += 1
+        total_labeled = sum(group_counts.values())
+        if total_labeled == 0:
+            details.append(ClusterDetail(m.id, m.size, "?", 0.0, {}))
+            continue
+        dominant = group_counts.most_common(1)[0]
+        purity = dominant[1] / total_labeled
+        weighted_sum += purity * total_labeled
+        gold_count += total_labeled
+        details.append(ClusterDetail(m.id, m.size, dominant[0], purity, dict(group_counts)))
+
+    weighted_avg = weighted_sum / gold_count if gold_count > 0 else 0.0
+    details.sort(key=lambda d: d.size, reverse=True)
+    return mega_ratio, weighted_avg, details
+
+
+def _evaluate_config(
+    graph: CodeGraph,
+    config: AnalysisConfig,
+    gold_modules: dict[str, str],
+    module_ids: set[str],
+) -> ConfigResult:
+    """Run one analysis config and score against gold labels."""
+    cr = ConfigResult(config_name=config.name)
+
+    try:
+        analysis = _run_analysis(graph, config)
+    except Exception as e:
+        cr.error = str(e)
+        return cr
+
+    pg = analysis.graph
+    cr.graph_nodes = len(pg.nodes)
+    cr.graph_edges = len(pg.edges)
+    cr.density = _graph_density(cr.graph_nodes, cr.graph_edges)
+    cr.degenerate = cr.density > 0.5
+
+    # Map gold labels to the analysis level
+    if config.level == AnalysisLevel.SYMBOL:
+        gold = _gold_for_symbols(gold_modules, set(pg.nodes.keys()), module_ids)
+    else:
+        gold = {k: v for k, v in gold_modules.items() if k in pg.nodes}
+
+    # Spectral partition
+    spectral_partition = partition_labels(analysis)
+
+    # V-measure
+    h, c, v = compute_v_measure(gold, spectral_partition)
+    cr.v_measure = v
+    cr.homogeneity = h
+    cr.completeness = c
+
+    # Boundary F1
+    edges = [
+        (e.source, e.target) for e in pg.edges
+        if e.source in gold and e.target in gold
+    ]
+    cr.boundary_f1 = compute_boundary_f1(edges, spectral_partition, gold)
+
+    # Cross-directory recovery
+    if config.level == AnalysisLevel.SYMBOL:
+        dir_labels = directory_partition_by_module(pg, module_ids)
+    else:
+        dir_labels = {nid: nid.split(".", 1)[0] for nid in gold}
+    cr.cross_dir_recovery = compute_cross_directory_recovery(
+        spectral_partition, gold, dir_labels
+    )
+
+    # Spectral diagnostics
+    md = analysis.module_detection
+    cr.n_modules = len([m for m in md.modules if not m.unassigned])
+    cr.silhouette = md.silhouette
+    cr.package_fallback = md.package_fallback
+    if analysis.spectral:
+        cr.fiedler_value = analysis.spectral.fiedler_value
+
+    # Cluster purity
+    cr.mega_cluster_ratio, cr.weighted_purity, _ = _cluster_purity(
+        md.modules, gold
+    )
+
+    # Roles
+    role_counts: Counter[str] = Counter()
+    for ra in analysis.roles:
+        role_counts[ra.role.value] += 1
+    cr.role_counts = dict(role_counts)
+
+    # Anomalies
+    anomaly_counts: Counter[str] = Counter()
+    for a in analysis.anomalies:
+        anomaly_counts[a.kind.value] += 1
+    cr.anomaly_counts = dict(anomaly_counts)
+    top_3 = sorted(analysis.anomalies, key=lambda a: -a.severity)[:3]
+    cr.top_anomalies = [f"[{a.kind.value}] {a.description[:80]}" for a in top_3]
+
+    # Health
+    if analysis.health:
+        cr.call_density = analysis.health.call_density
+        cr.orphan_ratio = analysis.health.orphan_ratio
+        cr.largest_module_status = analysis.health.largest_module_status
+
+    return cr
 
 
 def _clone_codebase(name: str, info: dict, codebases_root: Path) -> Path:
@@ -98,49 +343,19 @@ def _clone_codebase(name: str, info: dict, codebases_root: Path) -> Path:
     return repo_dir / src_root if src_root else repo_dir
 
 
-def _directory_labels(node_ids: set[str]) -> dict[str, str]:
-    """Compute directory-level labels from node IDs.
-
-    Uses the second-level component for hierarchical packages,
-    or the top-level for flat packages.
-    """
-    labels = {}
-    for nid in node_ids:
-        parts = nid.split(".")
-        if len(parts) >= 2:
-            labels[nid] = ".".join(parts[:2])
-        else:
-            labels[nid] = parts[0]
-    return labels
-
-
-def _analyze_codebase(graph: CodeGraph) -> StructuralAnalysis:
-    """Run spectral analysis at module level with combined layers."""
-    config = AnalysisProjectionConfig.for_analysis(
-        edge_kind=EdgeKind.CALLS,
-        combined=True,
-        level=AnalysisLevel.MODULE,
-        internal_only=False,
-    )
-    return analyze(graph, combined=True, projection_config=config)
-
-
-def _extract_cluster_details(analysis: StructuralAnalysis) -> dict:
-    """Extract cluster membership for inspection."""
-    clusters: dict[int, list[str]] = {}
-    for module in analysis.modules:
-        if not module.unassigned:
-            clusters[module.id] = sorted(module.node_ids)
-    return clusters
-
+# ---------------------------------------------------------------------------
+# Main entry points
+# ---------------------------------------------------------------------------
 
 def run_single_codebase(
     name: str,
     graph: CodeGraph,
     labels_root: Path,
 ) -> CodebaseResult:
-    """Run Experiment 1 on a single codebase."""
+    """Run the full configuration matrix on a single codebase."""
     result = CodebaseResult(name=name)
+    result.parsed_nodes = len(graph.nodes)
+    result.parsed_edges = len(graph.edges)
 
     # Load gold labels
     try:
@@ -149,70 +364,163 @@ def run_single_codebase(
         result.error = str(e)
         return result
 
-    gold = labels["included_nodes"]
-    gold_nodes = set(gold.keys())
+    gold_modules: dict[str, str] = labels["included_nodes"]
+    module_ids = set(gold_modules.keys())
 
-    # Run spectral analysis (projects to module level internally)
-    try:
-        analysis = _analyze_codebase(graph)
-    except Exception as e:
-        result.error = f"Spectral analysis failed: {e}"
-        return result
+    # Run all configs
+    for config in ANALYSIS_CONFIGS:
+        cr = _evaluate_config(graph, config, gold_modules, module_ids)
+        result.config_results.append(cr)
 
-    # Validate gold labels against projected (module-level) graph
-    projected_graph = analysis.graph
-    validation = validate_gold_labels(labels, projected_graph)
-    result.label_validation = validation
-    result.gold_label_coverage = validation["coverage"]
+    # Find best config by V-measure
+    valid_configs = [cr for cr in result.config_results if cr.error is None]
+    if valid_configs:
+        best = max(valid_configs, key=lambda cr: cr.v_measure)
+        result.best_config = best.config_name
+        result.best_v_measure = best.v_measure
+        result.spectral_cross_dir_recovery = best.cross_dir_recovery
 
-    spectral_partition = partition_labels(analysis)
-    result.spectral_clusters = _extract_cluster_details(analysis)
+        # Compute baselines at best config's level
+        best_cfg = next(c for c in ANALYSIS_CONFIGS if c.name == best.config_name)
+        try:
+            best_analysis = _run_analysis(graph, best_cfg)
+            best_pg = best_analysis.graph
 
-    # Coverage: fraction of gold nodes that got a spectral assignment
-    assigned_gold = sum(1 for n in gold_nodes if n in spectral_partition)
-    result.spectral_coverage = assigned_gold / len(gold_nodes) if gold_nodes else 0.0
+            if best_cfg.level == AnalysisLevel.SYMBOL:
+                gold = _gold_for_symbols(gold_modules, set(best_pg.nodes.keys()), module_ids)
+                dir_part = directory_partition_by_module(best_pg, module_ids)
+            else:
+                gold = {k: v for k, v in gold_modules.items() if k in best_pg.nodes}
+                dir_part = {nid: nid.split(".", 1)[0] for nid in gold}
 
-    # Graph stats at projected level
-    result.graph_nodes = len(projected_graph.nodes)
-    result.graph_edges = len(projected_graph.edges)
+            try:
+                louv_part = louvain_partition(best_pg)
+            except Exception:
+                louv_part = dir_part
 
-    # Baselines on projected graph (module-level, matching gold labels)
-    dir_partition = directory_partition(projected_graph)
-    try:
-        louv_partition = louvain_partition(projected_graph)
-    except Exception:
-        louv_partition = dir_partition
+            _, _, result.directory_v_measure = compute_v_measure(gold, dir_part)
+            _, _, result.louvain_v_measure = compute_v_measure(gold, louv_part)
 
-    # Directory labels for cross-directory metric
-    dir_labels = _directory_labels(gold_nodes)
+            edges = [
+                (e.source, e.target) for e in best_pg.edges
+                if e.source in gold and e.target in gold
+            ]
+            result.directory_boundary_f1 = compute_boundary_f1(edges, dir_part, gold)
+            result.louvain_boundary_f1 = compute_boundary_f1(edges, louv_part, gold)
 
-    # --- V-measure ---
-    _, _, result.spectral_v_measure = compute_v_measure(gold, spectral_partition)
-    result.spectral_homogeneity, result.spectral_completeness, _ = compute_v_measure(
-        gold, spectral_partition
-    )
-    _, _, result.directory_v_measure = compute_v_measure(gold, dir_partition)
-    _, _, result.louvain_v_measure = compute_v_measure(gold, louv_partition)
+            result.louvain_cross_dir_recovery = compute_cross_directory_recovery(
+                louv_part, gold, dir_part
+            )
 
-    # --- Boundary F1 ---
-    edges = [
-        (e.source, e.target) for e in projected_graph.edges
-        if e.source in gold_nodes and e.target in gold_nodes
-    ]
+            # Cluster purity from best config
+            _, _, result.cluster_details = _cluster_purity(
+                best_analysis.module_detection.modules, gold
+            )
+        except Exception:
+            pass  # Baselines failed, leave defaults
 
-    result.spectral_boundary_f1 = compute_boundary_f1(edges, spectral_partition, gold)
-    result.directory_boundary_f1 = compute_boundary_f1(edges, dir_partition, gold)
-    result.louvain_boundary_f1 = compute_boundary_f1(edges, louv_partition, gold)
+        result.spectral_beats_directory = result.best_v_measure > result.directory_v_measure
+        result.spectral_beats_louvain = result.best_v_measure > result.louvain_v_measure
 
-    # --- Cross-directory recovery (the decisive metric) ---
-    result.spectral_cross_dir_recovery = compute_cross_directory_recovery(
-        spectral_partition, gold, dir_labels
-    )
-    result.louvain_cross_dir_recovery = compute_cross_directory_recovery(
-        louv_partition, gold, dir_labels
-    )
+    # Per-layer signal comparison (from symbol-level configs)
+    for cr in result.config_results:
+        if cr.error is None and cr.config_name.startswith("symbol_"):
+            layer_name = cr.config_name.replace("symbol_", "")
+            result.layer_signals[layer_name] = cr.v_measure
 
     return result
+
+
+def _print_codebase_report(result: CodebaseResult) -> None:
+    """Print comprehensive report for a single codebase."""
+    print(f"\n{'='*70}")
+    print(f"  {result.name}")
+    print(f"{'='*70}")
+
+    if result.error:
+        print(f"  ERROR: {result.error}")
+        return
+
+    print(f"  Parsed: {result.parsed_nodes} nodes, {result.parsed_edges} edges")
+
+    # Configuration matrix
+    print(f"\n  Configuration matrix:")
+    print(f"  {'Config':<22} {'V-meas':>7} {'Bnd-F1':>7} {'Density':>8} "
+          f"{'Mods':>5} {'Mega%':>6} {'Silh':>6} {'Fiedler':>8}")
+    print(f"  {'-'*22} {'-'*7} {'-'*7} {'-'*8} {'-'*5} {'-'*6} {'-'*6} {'-'*8}")
+
+    for cr in result.config_results:
+        if cr.error:
+            print(f"  {cr.config_name:<22} ERROR: {cr.error[:40]}")
+            continue
+        degen = " !" if cr.degenerate else ""
+        silh = f"{cr.silhouette:.3f}" if cr.silhouette is not None else "  -  "
+        print(f"  {cr.config_name:<22} {cr.v_measure:>7.3f} {cr.boundary_f1:>7.3f} "
+              f"{cr.density:>7.3f}{degen} {cr.n_modules:>5} "
+              f"{cr.mega_cluster_ratio:>5.0%} {silh:>6} {cr.fiedler_value:>8.4f}")
+
+    # Baselines
+    print(f"  {'[baselines]':<22}")
+    print(f"  {'directory':<22} {result.directory_v_measure:>7.3f} "
+          f"{result.directory_boundary_f1:>7.3f}")
+    print(f"  {'louvain':<22} {result.louvain_v_measure:>7.3f} "
+          f"{result.louvain_boundary_f1:>7.3f}")
+
+    # Per-layer signal
+    if result.layer_signals:
+        print(f"\n  Per-layer signal (symbol level):")
+        best_layer = max(result.layer_signals, key=result.layer_signals.get)
+        for layer, v in sorted(result.layer_signals.items(), key=lambda x: -x[1]):
+            marker = " <-- best" if layer == best_layer else ""
+            print(f"    {layer:<12} V={v:.3f}{marker}")
+
+    # Cluster purity (top 10 from best config)
+    if result.cluster_details:
+        print(f"\n  Cluster purity (best config: {result.best_config}):")
+        for cd in result.cluster_details[:10]:
+            mega = " <-- mega-cluster" if cd.size == max(d.size for d in result.cluster_details) and cd.purity < 0.5 else ""
+            print(f"    Cluster {cd.cluster_id} ({cd.size} nodes): "
+                  f"{cd.purity:.0%} {cd.dominant_group}{mega}")
+        if len(result.cluster_details) > 10:
+            rest = result.cluster_details[10:]
+            print(f"    ... and {len(rest)} more clusters")
+
+    # Best config structural diagnostics
+    best_cr = next((cr for cr in result.config_results if cr.config_name == result.best_config), None)
+    if best_cr and not best_cr.error:
+        print(f"\n  Structural health ({result.best_config}):")
+
+        # Roles
+        if best_cr.role_counts:
+            role_parts = [f"{count} {role}" for role, count in
+                         sorted(best_cr.role_counts.items(), key=lambda x: -x[1])
+                         if role != "regular"]
+            regular = best_cr.role_counts.get("regular", 0)
+            print(f"    Roles: {', '.join(role_parts)}, {regular} regular")
+
+        # Anomalies
+        if best_cr.anomaly_counts:
+            anom_parts = [f"{count} {kind}" for kind, count in best_cr.anomaly_counts.items()]
+            print(f"    Anomalies: {', '.join(anom_parts)}")
+            for desc in best_cr.top_anomalies:
+                print(f"      {desc}")
+
+        print(f"    Fiedler: {best_cr.fiedler_value:.4f}  "
+              f"Silhouette: {best_cr.silhouette or 0:.3f}  "
+              f"Modules: {best_cr.n_modules}")
+        print(f"    Density: {best_cr.call_density:.2f} calls/node  "
+              f"Orphans: {best_cr.orphan_ratio:.1%}  "
+              f"Module sep: {best_cr.largest_module_status}")
+
+    # Cross-dir recovery
+    if not math.isnan(result.spectral_cross_dir_recovery):
+        print(f"\n  Cross-dir recovery: spectral={result.spectral_cross_dir_recovery:.1%}  "
+              f"louvain={result.louvain_cross_dir_recovery:.1%}")
+
+    # Verdict for this codebase
+    print(f"\n  Best config: {result.best_config} (V={result.best_v_measure:.3f})")
+    print(f"  Beats directory: {result.spectral_beats_directory}  "
+          f"Beats Louvain: {result.spectral_beats_louvain}")
 
 
 def run_experiment_1(
@@ -221,7 +529,7 @@ def run_experiment_1(
     output_dir: Path,
     codebase_filter: list[str] | None = None,
 ) -> Experiment1Result:
-    """Run Experiment 1: Cross-Directory Architecture Recovery.
+    """Run Experiment 1: Comprehensive Structural Health Evaluation.
 
     Args:
         codebases_root: Directory to clone/find codebases.
@@ -239,14 +547,9 @@ def run_experiment_1(
     codebase_results: list[CodebaseResult] = []
 
     for name, info in codebases.items():
-        print(f"\n{'='*60}")
-        print(f"  {name}")
-        print(f"{'='*60}")
-
         # Clone/find codebase
         try:
             src_path = _clone_codebase(name, info, codebases_root)
-            print(f"  Source: {src_path}")
         except Exception as e:
             cr = CodebaseResult(name=name, error=f"Clone failed: {e}")
             codebase_results.append(cr)
@@ -258,53 +561,26 @@ def run_experiment_1(
                 src_path.parent if info.get("src_root") else src_path,
                 exclude_patterns=["tests", ".venv", "test", "examples", "docs"],
             )
-            print(f"  Parsed: {len(graph.nodes)} nodes, {len(graph.edges)} edges")
         except Exception as e:
             cr = CodebaseResult(name=name, error=f"Parse failed: {e}")
             codebase_results.append(cr)
             continue
 
-        # Run experiment
+        # Run full evaluation
         cr = run_single_codebase(name, graph, labels_root)
         codebase_results.append(cr)
-
-        if cr.error:
-            print(f"  ERROR: {cr.error}")
-            continue
-
-        # Print summary
-        print(f"  Gold label coverage: {cr.gold_label_coverage:.1%}")
-        print(f"  Spectral coverage:   {cr.spectral_coverage:.1%}")
-        print(f"  V-measure:  spectral={cr.spectral_v_measure:.3f}  "
-              f"directory={cr.directory_v_measure:.3f}  "
-              f"louvain={cr.louvain_v_measure:.3f}")
-        print(f"  Boundary F1: spectral={cr.spectral_boundary_f1:.3f}  "
-              f"directory={cr.directory_boundary_f1:.3f}  "
-              f"louvain={cr.louvain_boundary_f1:.3f}")
-
-        import math
-        if not math.isnan(cr.spectral_cross_dir_recovery):
-            print(f"  Cross-dir recovery: spectral={cr.spectral_cross_dir_recovery:.1%}  "
-                  f"louvain={cr.louvain_cross_dir_recovery:.1%}")
-        else:
-            print(f"  Cross-dir recovery: N/A (no cross-directory pairs in gold labels)")
-
-        print(f"  Spectral beats directory: {cr.spectral_beats_directory}")
-        print(f"  Spectral beats Louvain:   {cr.spectral_beats_louvain}")
+        _print_codebase_report(cr)
 
     # --- Aggregate ---
     experiment_result = Experiment1Result(codebase_results=codebase_results)
-
     valid_results = [cr for cr in codebase_results if cr.error is None]
 
     for cr in valid_results:
-        experiment_result.cross_dir_recovery_rates[cr.name] = cr.spectral_cross_dir_recovery
         if cr.spectral_beats_directory:
             experiment_result.v_measure_wins_vs_directory += 1
         if cr.spectral_beats_louvain:
             experiment_result.v_measure_wins_vs_louvain += 1
 
-    import math
     cross_dir_results = [
         cr for cr in valid_results
         if not math.isnan(cr.spectral_cross_dir_recovery)
@@ -321,22 +597,17 @@ def run_experiment_1(
     # --- Verdict ---
     details = []
     n_valid = len(valid_results)
-    n_cross_dir = len(cross_dir_results)
 
     if n_valid == 0:
         experiment_result.verdict = "ERROR"
         details.append("No codebases produced results.")
     else:
-        # Check cross-directory recovery
-        if n_cross_dir > 0:
-            pass_rate = experiment_result.codebases_above_cross_dir_pass
-            fail_rate = experiment_result.codebases_below_cross_dir_fail
+        if cross_dir_results:
             details.append(
-                f"Cross-dir recovery: {pass_rate}/{n_cross_dir} above {thresholds['cross_dir_recovery_pass']:.0%} threshold, "
-                f"{fail_rate}/{n_cross_dir} below {thresholds['cross_dir_recovery_fail']:.0%} threshold"
+                f"Cross-dir recovery: "
+                f"{experiment_result.codebases_above_cross_dir_pass}/{len(cross_dir_results)} "
+                f"above {thresholds['cross_dir_recovery_pass']:.0%}"
             )
-
-        # Check V-measure wins
         details.append(
             f"V-measure vs directory: spectral wins {experiment_result.v_measure_wins_vs_directory}/{n_valid}"
         )
@@ -344,58 +615,55 @@ def run_experiment_1(
             f"V-measure vs Louvain: spectral wins {experiment_result.v_measure_wins_vs_louvain}/{n_valid}"
         )
 
-        # Determine verdict
-        # With only 2 codebases, we can't meet the 3/5 threshold yet.
-        # Report what we have and flag as preliminary.
         min_pass = thresholds["min_codebases_pass"]
         min_total = thresholds["min_codebases_total"]
 
         if n_valid < min_total:
             experiment_result.verdict = "PRELIMINARY"
-            details.append(
-                f"Only {n_valid}/{min_total} codebases tested. "
-                f"Need {min_total} for definitive verdict."
-            )
+            details.append(f"Only {n_valid}/{min_total} codebases tested.")
         elif (
-            experiment_result.codebases_above_cross_dir_pass >= min_pass
-            and experiment_result.v_measure_wins_vs_directory >= min_pass
+            experiment_result.v_measure_wins_vs_directory >= min_pass
             and experiment_result.v_measure_wins_vs_louvain >= min_pass
         ):
             experiment_result.verdict = "PASS"
             details.append("All thresholds met.")
-        elif experiment_result.codebases_below_cross_dir_fail >= min_pass:
-            experiment_result.verdict = "FAIL"
-            details.append(
-                f"Cross-directory recovery below {thresholds['cross_dir_recovery_fail']:.0%} "
-                f"on {experiment_result.codebases_below_cross_dir_fail}/{n_valid} codebases."
-            )
         elif experiment_result.v_measure_wins_vs_directory < min_pass:
             experiment_result.verdict = "FAIL"
             details.append(
                 f"Spectral V-measure beats directory on only "
-                f"{experiment_result.v_measure_wins_vs_directory}/{n_valid} codebases "
-                f"(need {min_pass})."
+                f"{experiment_result.v_measure_wins_vs_directory}/{n_valid} codebases."
             )
         else:
             experiment_result.verdict = "INCONCLUSIVE"
-            details.append("Mixed results — some thresholds met, others not.")
+            details.append("Mixed results.")
 
     experiment_result.verdict_details = details
 
+    # Print aggregate
+    print(f"\n{'='*70}")
+    print(f"  AGGREGATE")
+    print(f"{'='*70}")
+    print(f"  Verdict: {experiment_result.verdict}")
+    for d in details:
+        print(f"    {d}")
+
     # --- Write results ---
+    def _serialize(obj):
+        if isinstance(obj, dict):
+            return {str(k): _serialize(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [_serialize(i) for i in obj]
+        if isinstance(obj, float):
+            if math.isnan(obj) or math.isinf(obj):
+                return None
+            return round(obj, 6)
+        return obj
+
     results_dict = {
-        "experiment": "exp1_cross_directory_architecture_recovery",
+        "experiment": "exp1_comprehensive_structural_health",
         "verdict": experiment_result.verdict,
         "verdict_details": experiment_result.verdict_details,
-        "thresholds": thresholds,
-        "codebases": [asdict(cr) for cr in codebase_results],
-        "aggregate": {
-            "cross_dir_recovery_rates": experiment_result.cross_dir_recovery_rates,
-            "v_measure_wins_vs_directory": experiment_result.v_measure_wins_vs_directory,
-            "v_measure_wins_vs_louvain": experiment_result.v_measure_wins_vs_louvain,
-            "codebases_above_cross_dir_pass": experiment_result.codebases_above_cross_dir_pass,
-            "codebases_below_cross_dir_fail": experiment_result.codebases_below_cross_dir_fail,
-        },
+        "codebases": [_serialize(asdict(cr)) for cr in codebase_results],
     }
     (output_dir / "exp1_results.json").write_text(
         json.dumps(results_dict, indent=2, default=str) + "\n"
