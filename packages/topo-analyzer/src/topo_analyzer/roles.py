@@ -12,10 +12,10 @@ directional flow score).
 
 from __future__ import annotations
 
+from collections import deque
 from dataclasses import dataclass
 from enum import Enum
 
-import networkx as nx
 import numpy as np
 
 from topo_parser.graph import CodeGraph, EdgeKind
@@ -50,6 +50,7 @@ def classify_roles(
     edge_kinds: list[EdgeKind] | None = None,
     *,
     pct_threshold: float = 0.9,
+    betweenness_override: dict[str, float] | None = None,
 ) -> list[RoleAssignment]:
     """
     Classify structural roles for all nodes based on graph position.
@@ -64,26 +65,31 @@ def classify_roles(
         edge_kinds: Multiple layers to combine for role classification.
         pct_threshold: Percentile rank above which a metric is considered
             unusually high (default 0.9 = top 10%).
+        betweenness_override: Pre-computed betweenness centrality (e.g. from Rust).
 
     Returns:
         List of role assignments for each node.
     """
     kinds = edge_kinds if edge_kinds is not None else [edge_kind]
 
-    # Build directed NetworkX graph from all specified layers
-    nx_graph = nx.DiGraph()
-    for node_id in graph.nodes:
-        nx_graph.add_node(node_id)
+    # Build adjacency from all specified layers.
+    node_ids = list(graph.nodes)
+    node_set = set(node_ids)
+    successors: dict[str, list[str]] = {nid: [] for nid in node_ids}
+    predecessors: dict[str, list[str]] = {nid: [] for nid in node_ids}
 
     for ek in kinds:
         for edge in graph.edges_by_kind(ek):
-            if edge.source in graph.nodes and edge.target in graph.nodes:
-                nx_graph.add_edge(edge.source, edge.target)
+            if edge.source in node_set and edge.target in node_set:
+                successors[edge.source].append(edge.target)
+                predecessors[edge.target].append(edge.source)
 
-    betweenness = _compute_betweenness(nx_graph)
+    if betweenness_override is not None:
+        betweenness = betweenness_override
+    else:
+        betweenness = _brandes_betweenness(node_ids, successors, predecessors)
 
-    # Collect per-node metrics
-    node_ids = list(graph.nodes)
+    # Collect per-node metrics.
     n = len(node_ids)
     degrees = np.zeros(n, dtype=int)
     in_degrees = np.zeros(n, dtype=int)
@@ -91,12 +97,12 @@ def classify_roles(
     btw_values = np.zeros(n)
 
     for i, node_id in enumerate(node_ids):
-        in_degrees[i] = nx_graph.in_degree(node_id)
-        out_degrees[i] = nx_graph.out_degree(node_id)
+        in_degrees[i] = len(predecessors[node_id])
+        out_degrees[i] = len(successors[node_id])
         degrees[i] = in_degrees[i] + out_degrees[i]
         btw_values[i] = betweenness.get(node_id, 0.0)
 
-    # Compute population statistics
+    # Compute population statistics.
     degree_pcts = _percentile_ranks(degrees)
     btw_pcts = _percentile_ranks(btw_values)
     median_degree = float(np.median(degrees))
@@ -125,20 +131,74 @@ def classify_roles(
 
 
 # Threshold above which we switch to approximate betweenness centrality.
-# Exact betweenness is O(V*E); for a 49K-node / 375K-edge graph that is
-# ~18 billion operations — too slow in practice.
+# Exact betweenness is O(V*E); for large graphs we sample sqrt(n) pivots.
 _BETWEENNESS_APPROX_THRESHOLD = 5000
 
 
-def _compute_betweenness(nx_graph: nx.DiGraph) -> dict[str, float]:
-    """Compute betweenness centrality, using approximation for large graphs."""
-    n = nx_graph.number_of_nodes()
+def _brandes_betweenness(
+    node_ids: list[str],
+    successors: dict[str, list[str]],
+    predecessors: dict[str, list[str]],
+) -> dict[str, float]:
+    """Brandes' algorithm for betweenness centrality on a directed graph.
+
+    For large graphs (> _BETWEENNESS_APPROX_THRESHOLD nodes), samples
+    sqrt(n) source nodes for approximation.
+    """
+    n = len(node_ids)
+    if n == 0:
+        return {}
+
+    cb: dict[str, float] = {v: 0.0 for v in node_ids}
+
+    # Choose source nodes: all for small graphs, sample for large.
     if n <= _BETWEENNESS_APPROX_THRESHOLD:
-        return nx.betweenness_centrality(nx_graph)
-    # Sample sqrt(n) pivot nodes — gives a good accuracy/speed trade-off
-    # while keeping cost at O(k * E) where k = sqrt(n).
-    k = min(n - 1, max(2, int(n ** 0.5)))
-    return nx.betweenness_centrality(nx_graph, k=k)
+        sources = node_ids
+    else:
+        rng = np.random.RandomState(42)
+        k = min(n - 1, max(2, int(n ** 0.5)))
+        sources = list(rng.choice(node_ids, size=k, replace=False))
+
+    for s in sources:
+        # BFS from s.
+        stack: list[str] = []
+        pred: dict[str, list[str]] = {v: [] for v in node_ids}
+        sigma: dict[str, int] = {v: 0 for v in node_ids}
+        sigma[s] = 1
+        dist: dict[str, int] = {v: -1 for v in node_ids}
+        dist[s] = 0
+        queue = deque([s])
+
+        while queue:
+            v = queue.popleft()
+            stack.append(v)
+            for w in successors[v]:
+                if dist[w] < 0:
+                    dist[w] = dist[v] + 1
+                    queue.append(w)
+                if dist[w] == dist[v] + 1:
+                    sigma[w] += sigma[v]
+                    pred[w].append(v)
+
+        # Back-propagation of dependencies.
+        delta: dict[str, float] = {v: 0.0 for v in node_ids}
+        while stack:
+            w = stack.pop()
+            for v in pred[w]:
+                delta[v] += (sigma[v] / sigma[w]) * (1.0 + delta[w])
+            if w != s:
+                cb[w] += delta[w]
+
+    # Normalize: for directed graphs, divide by (n-1)*(n-2).
+    # If using sampling, scale up by n/k.
+    if n > 2:
+        scale = 1.0 / ((n - 1) * (n - 2))
+        if n > _BETWEENNESS_APPROX_THRESHOLD:
+            scale *= n / len(sources)
+        for v in cb:
+            cb[v] *= scale
+
+    return cb
 
 
 def _percentile_ranks(values: np.ndarray) -> np.ndarray:

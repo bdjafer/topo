@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://topo.dev/schemas/graph.json",
+  "title": "Topo Graph",
+  "description": "Universal code graph representation. Output of any topo parser, input to the analyzer. Language-agnostic.",
+  "type": "object",
+  "required": ["nodes", "edges"],
+  "additionalProperties": false,
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "description": "Code entities in the graph.",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Fully qualified identifier. Dotted path: 'package.module.Class.method'."
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["module", "class", "function"],
+            "description": "Structural kind of the entity."
+          },
+          "file": {
+            "type": "string",
+            "description": "Source file path (relative to project root)."
+          },
+          "line": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Line number where the entity is defined."
+          },
+          "name": {
+            "type": "string",
+            "description": "Short name (leaf of the qualified path)."
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "description": "Structural relationships between entities.",
+      "items": {
+        "type": "object",
+        "required": ["source", "target", "kind"],
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Source node ID."
+          },
+          "target": {
+            "type": "string",
+            "description": "Target node ID."
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["calls", "imports", "inherits", "contains"],
+            "description": "Relationship type. calls=runtime, imports=compile-time, inherits=type, contains=structural nesting."
+          }
+        }
+      }
+    }
+  }
+}

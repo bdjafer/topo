@@ -173,7 +173,7 @@ def _extract_from_file(
         return  # Namespace-only file (empty, docstring-only, etc.)
 
     mod_id = _module_id(file, root)
-    graph.add_node(Node(id=mod_id, kind=NodeKind.MODULE, file=file, line=1, name=mod_id.split(".")[-1]))
+    graph.add_node(Node(id=mod_id, kind=NodeKind.MODULE, file=str(file), line=1, name=mod_id.split(".")[-1]))
 
     for node in children:
         if isinstance(node, ast.ClassDef):
@@ -189,7 +189,7 @@ def _extract_class(
 ) -> None:
     """Extract a class node, its methods, and inheritance edges."""
     class_id = f"{parent_id}.{node.name}"
-    graph.add_node(Node(id=class_id, kind=NodeKind.CLASS, file=file, line=node.lineno, name=node.name))
+    graph.add_node(Node(id=class_id, kind=NodeKind.CLASS, file=str(file), line=node.lineno, name=node.name))
     graph.add_edge(Edge(source=parent_id, target=class_id, kind=EdgeKind.CONTAINS))
 
     # Inheritance (raw names, resolved later by _resolve_inherits_edges)
@@ -212,7 +212,7 @@ def _extract_function(
 ) -> None:
     """Extract a function/method node. Call edges are added by PyCG."""
     func_id = f"{parent_id}.{node.name}"
-    graph.add_node(Node(id=func_id, kind=NodeKind.FUNCTION, file=file, line=node.lineno, name=node.name))
+    graph.add_node(Node(id=func_id, kind=NodeKind.FUNCTION, file=str(file), line=node.lineno, name=node.name))
     graph.add_edge(Edge(source=parent_id, target=func_id, kind=EdgeKind.CONTAINS))
 
 

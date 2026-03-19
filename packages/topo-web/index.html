@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>topo — Structural Analysis</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-dim: #1f6feb;
+      --green: #3fb950;
+      --orange: #d29922;
+      --red: #f85149;
+      --purple: #bc8cff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    header .tag {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--surface);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Upload zone */
+    #upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 48px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 24px;
+    }
+
+    #upload-zone:hover, #upload-zone.dragover {
+      border-color: var(--accent);
+      background: rgba(88, 166, 255, 0.05);
+    }
+
+    #upload-zone p { color: var(--text-muted); margin-top: 8px; font-size: 14px; }
+    #upload-zone .label { font-size: 16px; color: var(--text); font-weight: 500; }
+
+    #file-input { display: none; }
+
+    /* Results */
+    #results { display: none; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .stat-card.good .value { color: var(--green); }
+    .stat-card.warn .value { color: var(--orange); }
+    .stat-card.bad .value { color: var(--red); }
+
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .section-header:hover { background: rgba(255,255,255,0.02); }
+
+    .section-header .arrow {
+      transition: transform 0.2s;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .section-header .arrow.collapsed { transform: rotate(-90deg); }
+
+    .section-body { padding: 16px; }
+    .section-body.collapsed { display: none; }
+
+    /* Module list */
+    .module-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .module-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+    }
+
+    .module-item .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .module-item .module-id {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .module-item .module-size {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .module-item .node-list {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .module-item .node-list .node {
+      display: inline-block;
+      background: var(--surface);
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin: 2px 4px 2px 0;
+    }
+
+    /* Role badges */
+    .role-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .role-hub { background: rgba(88,166,255,0.15); color: var(--accent); }
+    .role-bridge { background: rgba(188,140,255,0.15); color: var(--purple); }
+    .role-utility { background: rgba(63,185,80,0.15); color: var(--green); }
+    .role-entry_point { background: rgba(210,153,34,0.15); color: var(--orange); }
+    .role-orphan { background: rgba(248,81,73,0.15); color: var(--red); }
+    .role-regular { background: rgba(139,148,158,0.1); color: var(--text-muted); }
+
+    /* Role table */
+    .role-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .role-table th {
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .role-table td {
+      padding: 6px 12px;
+      border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px;
+    }
+
+    .role-table tr:last-child td { border-bottom: none; }
+
+    .role-table .node-name { font-weight: 500; color: var(--text); }
+    .role-table .metric { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+    /* SCC list */
+    .scc-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 8px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px;
+    }
+
+    .scc-label {
+      font-size: 11px;
+      color: var(--red);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* Timing */
+    #timing {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Loading */
+    #loading {
+      display: none;
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Error */
+    #error {
+      display: none;
+      background: rgba(248, 81, 73, 0.1);
+      border: 1px solid var(--red);
+      border-radius: 8px;
+      padding: 16px;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+
+    /* Demo link */
+    .demo-link {
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>topo</h1>
+    <span class="tag">structural analysis · WASM</span>
+  </header>
+  <main>
+    <div id="upload-zone">
+      <div class="label">Drop a graph.json file here</div>
+      <p>or click to browse · <span class="demo-link" id="demo-btn">try demo graph</span></p>
+      <p>Generate with: <code>topo parse &lt;path&gt; -o graph.json</code></p>
+      <input type="file" id="file-input" accept=".json" />
+    </div>
+
+    <div id="loading"><span class="spinner"></span>Analyzing…</div>
+    <div id="error"></div>
+
+    <div id="results">
+      <div id="timing"></div>
+      <div class="stats-grid" id="stats-grid"></div>
+      <div id="modules-section"></div>
+      <div id="roles-section"></div>
+      <div id="sccs-section"></div>
+    </div>
+  </main>
+
+  <script type="module" src="/src/app.ts"></script>
+</body>
+</html>

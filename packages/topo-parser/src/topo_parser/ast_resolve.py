@@ -8,6 +8,7 @@ logic used to resolve names, calls, and inheritance edges.
 from __future__ import annotations
 
 import ast
+from pathlib import Path
 
 from topo_parser.graph import CodeGraph, Edge, EdgeKind, NodeKind
 
@@ -64,8 +65,8 @@ def _resolve_call_edges_ast(graph: CodeGraph) -> None:
         if node_obj.kind != NodeKind.FUNCTION:
             continue
         try:
-            source = node_obj.file.read_text(encoding="utf-8")
-            tree = ast.parse(source, filename=str(node_obj.file))
+            source = Path(node_obj.file).read_text(encoding="utf-8")
+            tree = ast.parse(source, filename=node_obj.file)
         except (SyntaxError, UnicodeDecodeError):
             continue
         func_node = _find_ast_function(tree, node_obj.line, node_obj.name)

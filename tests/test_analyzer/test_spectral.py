@@ -1,7 +1,5 @@
 """Tests for spectral decomposition."""
 
-from pathlib import Path
-
 from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
 from topo_analyzer.spectral import spectral_decomposition
 
@@ -10,7 +8,7 @@ def _make_chain_graph(n: int) -> CodeGraph:
     """Create a simple chain graph: f0 → f1 → f2 → ... → f(n-1)."""
     g = CodeGraph()
     for i in range(n):
-        g.add_node(Node(id=f"f{i}", kind=NodeKind.FUNCTION, file=Path("m.py"), line=i, name=f"f{i}"))
+        g.add_node(Node(id=f"f{i}", kind=NodeKind.FUNCTION, file="m.py", line=i, name=f"f{i}"))
     for i in range(n - 1):
         g.add_edge(Edge(source=f"f{i}", target=f"f{i+1}", kind=EdgeKind.CALLS))
     return g

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
 
 from topo_analyzer.modules import detect_modules
@@ -29,7 +27,7 @@ def _make_two_cluster_graph(
         graph.add_node(Node(
             id=node_id,
             kind=NodeKind.FUNCTION,
-            file=Path("/fake"),
+            file="/fake",
             line=1,
             name=node_id,
         ))
@@ -68,7 +66,7 @@ def _make_three_cluster_graph(
             graph.add_node(Node(
                 id=node_id,
                 kind=NodeKind.FUNCTION,
-                file=Path("/fake"),
+                file="/fake",
                 line=1,
                 name=node_id,
             ))

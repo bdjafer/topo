@@ -11,9 +11,9 @@ from topo_benchmark.codegraph_io import deserialize_graph, load_graph, save_grap
 
 def _make_graph() -> CodeGraph:
     g = CodeGraph()
-    g.add_node(Node(id="pkg.mod.fn", kind=NodeKind.FUNCTION, file=Path("pkg/mod.py"), line=12, name="fn"))
-    g.add_node(Node(id="pkg.mod.cls", kind=NodeKind.CLASS, file=Path("pkg/mod.py"), line=1, name="cls"))
-    g.add_node(Node(id="pkg.mod", kind=NodeKind.MODULE, file=Path("pkg/mod.py"), line=0, name="mod"))
+    g.add_node(Node(id="pkg.mod.fn", kind=NodeKind.FUNCTION, file="pkg/mod.py", line=12, name="fn"))
+    g.add_node(Node(id="pkg.mod.cls", kind=NodeKind.CLASS, file="pkg/mod.py", line=1, name="cls"))
+    g.add_node(Node(id="pkg.mod", kind=NodeKind.MODULE, file="pkg/mod.py", line=0, name="mod"))
     g.add_edge(Edge(source="pkg.mod.fn", target="pkg.mod.cls", kind=EdgeKind.CALLS))
     g.add_edge(Edge(source="pkg.mod", target="pkg.mod.fn", kind=EdgeKind.CONTAINS))
     g.add_edge(Edge(source="pkg.mod.cls", target="pkg.mod.fn", kind=EdgeKind.INHERITS))

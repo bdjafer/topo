@@ -90,14 +90,14 @@ def _role_description(role: RoleAssignment) -> str:
     return ""
 
 
-def _relative_path(file_path: Path, project_root: Path | None) -> str:
+def _relative_path(file_path: str, project_root: Path | None) -> str:
     """Return a relative path string if possible, otherwise absolute."""
     if project_root is not None:
         try:
-            return str(file_path.relative_to(project_root))
+            return str(Path(file_path).relative_to(project_root))
         except ValueError:
             pass
-    return str(file_path)
+    return file_path
 
 
 # ── ASCII DAG renderer ─────────────────────────────────────────────

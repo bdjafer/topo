@@ -1,7 +1,5 @@
 """Tests for module detection via spectral clustering."""
 
-from pathlib import Path
-
 from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
 from topo_analyzer.spectral import spectral_decomposition
 from topo_analyzer.modules import detect_modules, _estimate_k
@@ -12,14 +10,14 @@ def _make_two_cluster_graph() -> CodeGraph:
     g = CodeGraph()
     # Cluster A: tightly connected
     for i in range(5):
-        g.add_node(Node(id=f"a{i}", kind=NodeKind.FUNCTION, file=Path("a.py"), line=i, name=f"a{i}"))
+        g.add_node(Node(id=f"a{i}", kind=NodeKind.FUNCTION, file="a.py", line=i, name=f"a{i}"))
     for i in range(5):
         for j in range(i + 1, 5):
             g.add_edge(Edge(source=f"a{i}", target=f"a{j}", kind=EdgeKind.CALLS))
 
     # Cluster B: tightly connected
     for i in range(5):
-        g.add_node(Node(id=f"b{i}", kind=NodeKind.FUNCTION, file=Path("b.py"), line=i, name=f"b{i}"))
+        g.add_node(Node(id=f"b{i}", kind=NodeKind.FUNCTION, file="b.py", line=i, name=f"b{i}"))
     for i in range(5):
         for j in range(i + 1, 5):
             g.add_edge(Edge(source=f"b{i}", target=f"b{j}", kind=EdgeKind.CALLS))

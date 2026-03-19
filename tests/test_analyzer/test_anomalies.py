@@ -1,7 +1,5 @@
 """Tests for structural anomaly detection."""
 
-from pathlib import Path
-
 import numpy as np
 
 from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
@@ -20,8 +18,8 @@ from topo_analyzer.spectral import SpectralComponent, SpectralResult
 def test_cross_module_anomaly():
     """A bidirectional cross-module dependency should be flagged."""
     g = CodeGraph()
-    g.add_node(Node(id="a", kind=NodeKind.FUNCTION, file=Path("a.py"), line=1, name="a"))
-    g.add_node(Node(id="b", kind=NodeKind.FUNCTION, file=Path("b.py"), line=1, name="b"))
+    g.add_node(Node(id="a", kind=NodeKind.FUNCTION, file="a.py", line=1, name="a"))
+    g.add_node(Node(id="b", kind=NodeKind.FUNCTION, file="b.py", line=1, name="b"))
     g.add_edge(Edge(source="a", target="b", kind=EdgeKind.CALLS))
     g.add_edge(Edge(source="b", target="a", kind=EdgeKind.CALLS))
 
@@ -39,8 +37,8 @@ def test_cross_module_anomaly():
 def test_no_cross_module_within_same_module():
     """An edge within the same module should not be flagged."""
     g = CodeGraph()
-    g.add_node(Node(id="a", kind=NodeKind.FUNCTION, file=Path("a.py"), line=1, name="a"))
-    g.add_node(Node(id="b", kind=NodeKind.FUNCTION, file=Path("b.py"), line=1, name="b"))
+    g.add_node(Node(id="a", kind=NodeKind.FUNCTION, file="a.py", line=1, name="a"))
+    g.add_node(Node(id="b", kind=NodeKind.FUNCTION, file="b.py", line=1, name="b"))
     g.add_edge(Edge(source="a", target="b", kind=EdgeKind.CALLS))
 
     modules = [Module(id=0, node_ids=["a", "b"])]
@@ -52,7 +50,7 @@ def test_cross_module_severity_penalizes_reverse_direction():
     """More balanced reverse flow should score as more severe."""
     g = CodeGraph()
     for name in ["a0", "a1", "a2", "b0", "b1", "c0", "c1", "d0", "d1"]:
-        g.add_node(Node(id=name, kind=NodeKind.FUNCTION, file=Path("m.py"), line=1, name=name))
+        g.add_node(Node(id=name, kind=NodeKind.FUNCTION, file="m.py", line=1, name=name))
 
     for source, target in [
         ("a0", "b0"), ("a1", "b0"), ("a2", "b1"), ("b1", "a0"),
@@ -79,7 +77,7 @@ def test_cycle_detection():
     """A strongly connected dependency group should be detected."""
     g = CodeGraph()
     for name in ["a", "b", "c"]:
-        g.add_node(Node(id=name, kind=NodeKind.FUNCTION, file=Path("m.py"), line=1, name=name))
+        g.add_node(Node(id=name, kind=NodeKind.FUNCTION, file="m.py", line=1, name=name))
     g.add_edge(Edge(source="a", target="b", kind=EdgeKind.CALLS))
     g.add_edge(Edge(source="b", target="c", kind=EdgeKind.CALLS))
     g.add_edge(Edge(source="c", target="a", kind=EdgeKind.CALLS))
@@ -95,7 +93,7 @@ def test_no_cycles_in_dag():
     """A DAG should produce no cycle anomalies."""
     g = CodeGraph()
     for name in ["a", "b", "c"]:
-        g.add_node(Node(id=name, kind=NodeKind.FUNCTION, file=Path("m.py"), line=1, name=name))
+        g.add_node(Node(id=name, kind=NodeKind.FUNCTION, file="m.py", line=1, name=name))
     g.add_edge(Edge(source="a", target="b", kind=EdgeKind.CALLS))
     g.add_edge(Edge(source="b", target="c", kind=EdgeKind.CALLS))
 
@@ -106,8 +104,8 @@ def test_no_cycles_in_dag():
 def test_detect_anomalies_integration():
     """Full anomaly detection pipeline runs without errors."""
     g = CodeGraph()
-    g.add_node(Node(id="a", kind=NodeKind.FUNCTION, file=Path("m.py"), line=1, name="a"))
-    g.add_node(Node(id="b", kind=NodeKind.FUNCTION, file=Path("m.py"), line=2, name="b"))
+    g.add_node(Node(id="a", kind=NodeKind.FUNCTION, file="m.py", line=1, name="a"))
+    g.add_node(Node(id="b", kind=NodeKind.FUNCTION, file="m.py", line=2, name="b"))
     g.add_edge(Edge(source="a", target="b", kind=EdgeKind.CALLS))
 
     anomalies = detect_anomalies(g, spectral=None, modules=[], edge_kind=EdgeKind.CALLS)
@@ -198,7 +196,7 @@ def test_layer_discrepancy_per_kind_normalization():
     g = CodeGraph()
     # 4 MODULE nodes: all have high imports, zero calls (normal Python pattern)
     for i in range(4):
-        g.add_node(Node(id=f"mod{i}", kind=NodeKind.MODULE, file=Path(f"mod{i}.py"), line=1, name=f"mod{i}"))
+        g.add_node(Node(id=f"mod{i}", kind=NodeKind.MODULE, file=f"mod{i}.py", line=1, name=f"mod{i}"))
     for i in range(4):
         for j in range(4):
             if i != j:
@@ -206,7 +204,7 @@ def test_layer_discrepancy_per_kind_normalization():
 
     # 4 FUNCTION nodes: all have calls, zero imports (normal Python pattern)
     for i in range(4):
-        g.add_node(Node(id=f"fn{i}", kind=NodeKind.FUNCTION, file=Path(f"fn{i}.py"), line=1, name=f"fn{i}"))
+        g.add_node(Node(id=f"fn{i}", kind=NodeKind.FUNCTION, file=f"fn{i}.py", line=1, name=f"fn{i}"))
     for i in range(4):
         for j in range(4):
             if i != j:
@@ -226,7 +224,7 @@ def test_layer_discrepancy_flags_genuine_cross_layer_tension():
     g = CodeGraph()
     # 5 functions: fn0-fn3 have moderate calls, fn4 has extreme calls
     for i in range(5):
-        g.add_node(Node(id=f"fn{i}", kind=NodeKind.FUNCTION, file=Path(f"fn.py"), line=i, name=f"fn{i}"))
+        g.add_node(Node(id=f"fn{i}", kind=NodeKind.FUNCTION, file="fn.py", line=i, name=f"fn{i}"))
     # fn0-fn3: each has 1 call edge and 4 import edges
     for i in range(4):
         g.add_edge(Edge(source=f"fn{i}", target=f"fn{(i+1)%4}", kind=EdgeKind.CALLS))
@@ -251,7 +249,7 @@ def test_layer_discrepancy_absent_layer_skipped():
     """A node with degree < 2 in one layer should not be flagged."""
     g = CodeGraph()
     for i in range(5):
-        g.add_node(Node(id=f"fn{i}", kind=NodeKind.FUNCTION, file=Path(f"fn.py"), line=i, name=f"fn{i}"))
+        g.add_node(Node(id=f"fn{i}", kind=NodeKind.FUNCTION, file="fn.py", line=i, name=f"fn{i}"))
     # All functions have calls edges
     for i in range(5):
         g.add_edge(Edge(source=f"fn{i}", target=f"fn{(i+1)%5}", kind=EdgeKind.CALLS))
@@ -280,8 +278,8 @@ def test_layer_discrepancy_small_kind_group_skipped():
     """A kind group with fewer than 5 nodes produces no findings."""
     g = CodeGraph()
     # Only 2 MODULE nodes (too few for percentiles)
-    g.add_node(Node(id="m0", kind=NodeKind.MODULE, file=Path("m0.py"), line=1, name="m0"))
-    g.add_node(Node(id="m1", kind=NodeKind.MODULE, file=Path("m1.py"), line=1, name="m1"))
+    g.add_node(Node(id="m0", kind=NodeKind.MODULE, file="m0.py", line=1, name="m0"))
+    g.add_node(Node(id="m1", kind=NodeKind.MODULE, file="m1.py", line=1, name="m1"))
     g.add_edge(Edge(source="m0", target="m1", kind=EdgeKind.IMPORTS))
     g.add_edge(Edge(source="m0", target="m1", kind=EdgeKind.CALLS))
     g.add_edge(Edge(source="m1", target="m0", kind=EdgeKind.CALLS))

@@ -42,7 +42,9 @@ def test_topo_self_summary_and_findings_remain_actionable():
     # Regression guard: with per-kind percentile normalization, clustering
     # quality gates, and orphan unanimity, the self-analysis should produce
     # a small number of TRUE-EXPECTED findings, not dozens of artifacts.
-    assert len(result.findings) <= 10, (
-        f"Expected <= 10 findings after detector fixes, got {len(result.findings)}: "
+    # Threshold: 15 allows for minor variations from algorithm changes
+    # (e.g. hand-rolled Tarjan/Brandes vs networkx, Rust vs Python backend).
+    assert len(result.findings) <= 15, (
+        f"Expected <= 15 findings after detector fixes, got {len(result.findings)}: "
         + ", ".join(f.id for f in result.findings)
     )

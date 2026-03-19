@@ -217,7 +217,7 @@ def generate_mutations(clean: CodeGraph) -> None:
     # --- bridge_connector ---
     # Signal: largest_module_ratio increases, module_separation finding appears
     case_dir = out / "bridge_connector"
-    connector = Node(id="bridge.connector.relay", kind=NodeKind.FUNCTION, file=Path("bridge/connector.py"), line=1, name="relay")
+    connector = Node(id="bridge.connector.relay", kind=NodeKind.FUNCTION, file="bridge/connector.py", line=1, name="relay")
     mutated = _add_node_and_edges(clean, connector, [
         ("api.routes.submit_order", "bridge.connector.relay", EdgeKind.CALLS),
         ("bridge.connector.relay", "data.store.save_order", EdgeKind.CALLS),
@@ -240,7 +240,7 @@ def generate_mutations(clean: CodeGraph) -> None:
 
     # --- bridge_hub_escalation ---
     case_dir = out / "bridge_hub_escalation"
-    connector = Node(id="bridge.connector.relay", kind=NodeKind.FUNCTION, file=Path("bridge/connector.py"), line=1, name="relay")
+    connector = Node(id="bridge.connector.relay", kind=NodeKind.FUNCTION, file="bridge/connector.py", line=1, name="relay")
     mutated = _add_node_and_edges(clean, connector, [
         ("api.routes.submit_order", "bridge.connector.relay", EdgeKind.CALLS),
         ("api.routes.get_order", "bridge.connector.relay", EdgeKind.CALLS),
@@ -263,7 +263,7 @@ def generate_mutations(clean: CodeGraph) -> None:
 
     # --- bridge_multilayer ---
     case_dir = out / "bridge_multilayer"
-    connector = Node(id="bridge.connector.relay", kind=NodeKind.FUNCTION, file=Path("bridge/connector.py"), line=1, name="relay")
+    connector = Node(id="bridge.connector.relay", kind=NodeKind.FUNCTION, file="bridge/connector.py", line=1, name="relay")
     mutated = _add_node_and_edges(clean, connector, [
         ("api.routes.submit_order", "bridge.connector.relay", EdgeKind.CALLS),
         ("bridge.connector.relay", "data.store.save_order", EdgeKind.IMPORTS),
@@ -417,7 +417,7 @@ def generate_stability(clean: CodeGraph) -> None:
         leaf = Node(
             id=f"{pkg}.helpers.noop",
             kind=NodeKind.FUNCTION,
-            file=Path(f"{pkg}/helpers.py"),
+            file=f"{pkg}/helpers.py",
             line=1,
             name="noop",
         )

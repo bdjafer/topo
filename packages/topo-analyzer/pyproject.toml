@@ -7,7 +7,6 @@ dependencies = [
     "topo-parser",
     "numpy>=1.24",
     "scipy>=1.10",
-    "networkx>=3.0",
 ]
 
 [build-system]

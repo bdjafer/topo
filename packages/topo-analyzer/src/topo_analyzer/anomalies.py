@@ -11,7 +11,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 
-import networkx as nx
 import numpy as np
 
 from topo_parser.graph import CodeGraph, EdgeKind, NodeKind
@@ -49,6 +48,7 @@ def detect_anomalies(
     edge_kind: EdgeKind = EdgeKind.CALLS,
     edge_kinds: list[EdgeKind] | None = None,
     projection: AnalysisProjection | None = None,
+    sccs_override: list[list[str]] | None = None,
 ) -> list[Anomaly]:
     """Run all anomaly detectors and return combined results."""
     kinds = edge_kinds if edge_kinds is not None else [edge_kind]
@@ -56,9 +56,33 @@ def detect_anomalies(
     anomalies.extend(_detect_cross_module(graph, modules, kinds, projection))
     if spectral and modules:
         anomalies.extend(_detect_spectral_outliers(spectral, modules, projection))
-    anomalies.extend(_detect_cycles(graph, kinds, projection))
+    if sccs_override is not None:
+        anomalies.extend(_sccs_to_anomalies(sccs_override, projection))
+    else:
+        anomalies.extend(_detect_cycles(graph, kinds, projection))
     anomalies.extend(_detect_layer_discrepancies(graph, kinds, projection))
     return sorted(anomalies, key=lambda anomaly: (-anomaly.severity, -anomaly.confidence))
+
+
+def _sccs_to_anomalies(
+    sccs: list[list[str]],
+    projection: AnalysisProjection | None = None,
+) -> list[Anomaly]:
+    """Convert pre-computed SCCs (e.g. from Rust) to Anomaly objects."""
+    anomalies: list[Anomaly] = []
+    for component in sccs:
+        if len(component) <= 1:
+            continue
+        node_ids = sorted(component)
+        anomalies.append(Anomaly(
+            kind=AnomalyKind.CYCLE_MEMBER,
+            node_ids=node_ids,
+            description=f"Strongly connected dependency group of {len(node_ids)} nodes",
+            severity=min(1.0, len(node_ids) / 8.0),
+            confidence=min(1.0, 0.4 + len(node_ids) / 10.0),
+            anchors=projection.anchors_for(node_ids) if projection else [],
+        ))
+    return anomalies
 
 
 def _detect_cross_module(
@@ -279,20 +303,19 @@ def _detect_cycles(
     edge_kinds: list[EdgeKind] | EdgeKind,
     projection: AnalysisProjection | None = None,
 ) -> list[Anomaly]:
-    """Find strongly connected dependency groups."""
-    nx_graph = nx.DiGraph()
+    """Find strongly connected dependency groups via Tarjan's algorithm."""
     kinds = edge_kinds if isinstance(edge_kinds, list) else [edge_kinds]
+
+    # Build adjacency list from selected layers.
+    adj: dict[str, list[str]] = {nid: [] for nid in graph.nodes}
     for edge_kind in kinds:
         for edge in graph.edges_by_kind(edge_kind):
             if edge.source in graph.nodes and edge.target in graph.nodes:
-                nx_graph.add_edge(edge.source, edge.target)
+                adj[edge.source].append(edge.target)
+
+    components = _tarjan_scc(adj)
 
     anomalies: list[Anomaly] = []
-    try:
-        components = list(nx.strongly_connected_components(nx_graph))
-    except nx.NetworkXError:
-        return []
-
     for component in components:
         if len(component) <= 1:
             continue
@@ -306,6 +329,63 @@ def _detect_cycles(
             anchors=projection.anchors_for(node_ids) if projection else [],
         ))
     return anomalies
+
+
+def _tarjan_scc(adj: dict[str, list[str]]) -> list[list[str]]:
+    """Tarjan's algorithm for strongly connected components.
+
+    Iterative (stack-based) to avoid recursion limits on large graphs.
+    """
+    index_counter = [0]
+    index: dict[str, int] = {}
+    lowlink: dict[str, int] = {}
+    on_stack: set[str] = set()
+    stack: list[str] = []
+    result: list[list[str]] = []
+
+    for node in adj:
+        if node in index:
+            continue
+        # Iterative DFS using an explicit work stack.
+        # Each frame is (node, neighbor_iterator, is_initial_visit).
+        work: list[tuple[str, int]] = []
+        work.append((node, 0))
+        index[node] = lowlink[node] = index_counter[0]
+        index_counter[0] += 1
+        stack.append(node)
+        on_stack.add(node)
+
+        while work:
+            v, ni = work[-1]
+            neighbors = adj[v]
+            if ni < len(neighbors):
+                work[-1] = (v, ni + 1)
+                w = neighbors[ni]
+                if w not in index:
+                    index[w] = lowlink[w] = index_counter[0]
+                    index_counter[0] += 1
+                    stack.append(w)
+                    on_stack.add(w)
+                    work.append((w, 0))
+                elif w in on_stack:
+                    lowlink[v] = min(lowlink[v], index[w])
+            else:
+                # All neighbors processed — check if v is an SCC root.
+                if lowlink[v] == index[v]:
+                    component: list[str] = []
+                    while True:
+                        w = stack.pop()
+                        on_stack.discard(w)
+                        component.append(w)
+                        if w == v:
+                            break
+                    result.append(component)
+                work.pop()
+                if work:
+                    parent = work[-1][0]
+                    lowlink[parent] = min(lowlink[parent], lowlink[v])
+
+    return result
 
 
 def _detect_layer_discrepancies(

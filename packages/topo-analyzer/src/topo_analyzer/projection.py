@@ -43,7 +43,7 @@ class AnalysisAnchor:
     """A file anchor that points back to the original graph node."""
 
     node_id: str
-    file: Path
+    file: str
     line: int
     kind: NodeKind
 
@@ -51,7 +51,7 @@ class AnalysisAnchor:
         """Serialize an anchor for JSON output."""
         return {
             "node_id": self.node_id,
-            "file": str(self.file),
+            "file": self.file,
             "line": self.line,
             "kind": self.kind.value,
         }
@@ -287,11 +287,11 @@ def build_projection(graph: CodeGraph, config: AnalysisProjectionConfig) -> Anal
     )
 
 
-def _is_in_scope(file: Path, scope_roots: tuple[Path, ...]) -> bool:
+def _is_in_scope(file: str, scope_roots: tuple[Path, ...]) -> bool:
     """Check whether a source file is inside one of the configured scope roots."""
     if not scope_roots:
         return True
-    resolved = file.resolve()
+    resolved = Path(file).resolve()
     return any(resolved.is_relative_to(root) for root in scope_roots)
 
 

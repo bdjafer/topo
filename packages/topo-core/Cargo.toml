@@ -1,0 +1,25 @@
+[package]
+name = "topo-core"
+version = "0.1.0"
+edition = "2024"
+description = "Computational core for topo structural analysis — spectral decomposition, clustering, graph algorithms"
+
+[lib]
+name = "topo_core"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+faer = { version = "0.24", default-features = false, features = ["std"] }
+ndarray = "0.16"
+petgraph = "0.8"
+pyo3 = { version = "0.23", features = ["extension-module"], optional = true }
+wasm-bindgen = { version = "0.2", optional = true }
+getrandom = { version = "0.3", optional = true }
+
+[features]
+default = ["faer-rayon"]
+faer-rayon = ["faer/rayon"]
+python = ["pyo3"]
+wasm = ["wasm-bindgen", "getrandom/wasm_js"]

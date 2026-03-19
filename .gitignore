@@ -35,3 +35,15 @@ uv.lock
 
 # Benchmark run artifacts
 .benchmark/
+
+# Rust
+target/
+Cargo.lock
+
+# Node / WASM
+node_modules/
+packages/topo-core/pkg/
+packages/topo-core/pkg-node/
+packages/topo-web/dist/
+packages/topo-web/dist-site/
+packages/topo-web/wasm/

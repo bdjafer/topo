@@ -7,8 +7,6 @@ No external baselines needed — these are self-consistency checks.
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
 from scipy.sparse import csr_matrix, diags
 
@@ -52,7 +50,7 @@ def _make_code_graph(n: int, edges: list[tuple[int, int]]) -> CodeGraph:
         graph.add_node(Node(
             id=f"node_{i}",
             kind=NodeKind.FUNCTION,
-            file=Path("/fake"),
+            file="/fake",
             line=1,
             name=f"node_{i}",
         ))

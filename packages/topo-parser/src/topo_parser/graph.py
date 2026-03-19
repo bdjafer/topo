@@ -11,7 +11,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from pathlib import Path
 
 
 class NodeKind(Enum):
@@ -37,7 +36,7 @@ class Node:
 
     id: str  # Fully qualified name, e.g. "pkg.module.ClassName.method"
     kind: NodeKind
-    file: Path
+    file: str  # Source file path (metadata, not a filesystem reference)
     line: int
     name: str  # Short name, e.g. "method"
 
@@ -86,6 +85,39 @@ class CodeGraph:
     @property
     def edge_count(self) -> int:
         return len(self.edges)
+
+    def to_dict(self) -> dict:
+        """Serialize to a JSON-compatible dict — the canonical wire format."""
+        return {
+            "nodes": [
+                {"id": n.id, "kind": n.kind.value, "file": n.file, "line": n.line, "name": n.name}
+                for n in sorted(self.nodes.values(), key=lambda n: n.id)
+            ],
+            "edges": [
+                {"source": e.source, "target": e.target, "kind": e.kind.value}
+                for e in self.edges
+            ],
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> CodeGraph:
+        """Reconstruct from a dict produced by to_dict()."""
+        graph = cls()
+        for nd in data["nodes"]:
+            graph.add_node(Node(
+                id=nd["id"],
+                kind=NodeKind(nd["kind"]),
+                file=nd["file"],
+                line=nd["line"],
+                name=nd["name"],
+            ))
+        for ed in data["edges"]:
+            graph.add_edge(Edge(
+                source=ed["source"],
+                target=ed["target"],
+                kind=EdgeKind(ed["kind"]),
+            ))
+        return graph
 
     def summary(self) -> str:
         """Human-readable summary of graph contents."""

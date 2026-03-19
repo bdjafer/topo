@@ -1,7 +1,5 @@
 """Tests for multi-layer spectral decomposition."""
 
-from pathlib import Path
-
 from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
 from topo_analyzer.spectral import (
     DEFAULT_LAYER_WEIGHTS,
@@ -15,7 +13,7 @@ def _make_multilayer_graph() -> CodeGraph:
     """Graph where different layers connect different nodes."""
     g = CodeGraph()
     for i in range(6):
-        g.add_node(Node(id=f"n{i}", kind=NodeKind.FUNCTION, file=Path("m.py"), line=i, name=f"n{i}"))
+        g.add_node(Node(id=f"n{i}", kind=NodeKind.FUNCTION, file="m.py", line=i, name=f"n{i}"))
 
     # CALLS layer connects n0-n1-n2
     g.add_edge(Edge(source="n0", target="n1", kind=EdgeKind.CALLS))

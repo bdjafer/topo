@@ -28,6 +28,7 @@ from topo_analyzer.spectral import (
     spectral_decomposition,
     spectral_decomposition_multilayer,
 )
+from topo_analyzer._rust_backend import is_available as _rust_available, run_core_analysis
 
 SUMMARY_EDGE_KINDS = [EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS, EdgeKind.CONTAINS]
 
@@ -898,8 +899,28 @@ def analyze(
     active_edge_kinds = list(projection_config.edge_kinds)
     use_multilayer = combined or len(active_edge_kinds) > 1
 
+    # --- Compute core: Rust backend or Python fallback ---
+    _rust_spectral = None
+    _rust_modules = None
+    _rust_betweenness = None
+    _rust_sccs = None
+
+    if _rust_available():
+        try:
+            _rust_spectral, _rust_modules, _rust_betweenness, _rust_sccs = run_core_analysis(
+                detail_graph,
+                edge_kind=active_edge_kinds[0],
+                combined=use_multilayer,
+                layer_weights=projection_config.layer_weights,
+                n_modules=n_modules,
+            )
+        except Exception:
+            pass  # Fall back to Python path
+
     # Spectral decomposition on the DETAIL (symbol-level) graph
-    if use_multilayer:
+    if _rust_spectral is not None:
+        spectral = _rust_spectral
+    elif use_multilayer:
         spectral = spectral_decomposition_multilayer(
             detail_graph,
             layer_weights=projection_config.layer_weights,
@@ -908,17 +929,26 @@ def analyze(
         spectral = spectral_decomposition(detail_graph, edge_kind=active_edge_kinds[0])
 
     # Module detection on DETAIL spectral result
-    module_detection = detect_modules(spectral, n_modules=n_modules) if spectral else ModuleDetection(
-        modules=[],
-        chosen_k=None,
-        silhouette=None,
-        component_count=0,
-        clustered_node_count=0,
-        unassigned_node_count=0,
-    )
+    if _rust_modules is not None:
+        module_detection = _rust_modules
+    elif spectral:
+        module_detection = detect_modules(spectral, n_modules=n_modules)
+    else:
+        module_detection = ModuleDetection(
+            modules=[],
+            chosen_k=None,
+            silhouette=None,
+            component_count=0,
+            clustered_node_count=0,
+            unassigned_node_count=0,
+        )
 
     # Roles on DETAIL graph
-    detail_roles = classify_roles(detail_graph, edge_kinds=active_edge_kinds)
+    detail_roles = classify_roles(
+        detail_graph,
+        edge_kinds=active_edge_kinds,
+        betweenness_override=_rust_betweenness,
+    )
 
     # Anomalies on DETAIL graph
     anomalies = detect_anomalies(
@@ -928,6 +958,7 @@ def analyze(
         edge_kind=active_edge_kinds[0],
         edge_kinds=active_edge_kinds,
         projection=detail,
+        sccs_override=_rust_sccs,
     )
 
     # Cross-package dependencies on REPORT graph

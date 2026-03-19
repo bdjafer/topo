@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://topo.dev/schemas/analysis.json",
+  "title": "Topo Analysis",
+  "description": "Complete structural analysis output. Fully computed, lossless. Any formatter can render this without additional computation.",
+  "type": "object",
+  "required": ["scope", "graph", "coverage", "spectral", "clustering", "modules", "roles", "findings", "anomalies", "health"],
+  "properties": {
+
+    "scope": {
+      "type": "object",
+      "description": "What was analyzed and how.",
+      "required": ["level", "edge_kinds"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["symbol", "module", "package"],
+          "description": "Granularity of the analysis."
+        },
+        "edge_kinds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Which relationship layers were included."
+        },
+        "internal_only": {
+          "type": "boolean",
+          "description": "Whether only internal (first-party) code was analyzed."
+        },
+        "roots": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Scope root paths (if scoped)."
+        }
+      }
+    },
+
+    "graph": {
+      "type": "object",
+      "description": "Summary of the analyzed graph (after projection/scoping).",
+      "required": ["nodes", "edges"],
+      "properties": {
+        "nodes": { "type": "integer" },
+        "edges": { "type": "integer" }
+      }
+    },
+
+    "raw_graph": {
+      "type": "object",
+      "description": "Summary of the raw input graph (before projection/scoping).",
+      "properties": {
+        "nodes": { "type": "integer" },
+        "edges": { "type": "integer" }
+      }
+    },
+
+    "coverage": {
+      "type": "object",
+      "description": "How much of the input graph was covered by analysis.",
+      "properties": {
+        "raw_nodes":                  { "type": "integer" },
+        "raw_edges":                  { "type": "integer" },
+        "analyzed_nodes":             { "type": "integer" },
+        "analyzed_edges":             { "type": "integer" },
+        "spectral_nodes":             { "type": "integer" },
+        "spectral_coverage_ratio":    { "type": "number" },
+        "component_count":            { "type": "integer" },
+        "largest_component_ratio":    { "type": "number" }
+      }
+    },
+
+    "spectral": {
+      "type": "object",
+      "description": "Spectral decomposition results.",
+      "properties": {
+        "fiedler_value":              { "type": "number", "description": "Second-smallest Laplacian eigenvalue. Higher = more connected." },
+        "eigenvalues":                { "type": "array", "items": { "type": "number" } },
+        "component_count":            { "type": "integer" },
+        "largest_component_ratio":    { "type": "number" }
+      }
+    },
+
+    "clustering": {
+      "type": "object",
+      "description": "Module clustering results.",
+      "properties": {
+        "module_count":          { "type": "integer" },
+        "chosen_k":              { "type": ["integer", "null"] },
+        "silhouette":            { "type": ["number", "null"], "description": "Silhouette score. >0.5 = good, <0.3 = degenerate." },
+        "clustered_node_count":  { "type": "integer" },
+        "unassigned_node_count": { "type": "integer" },
+        "package_fallback":      { "type": "boolean", "description": "True if spectral clustering failed and fell back to package grouping." }
+      }
+    },
+
+    "modules": {
+      "type": "array",
+      "description": "Detected structural modules (clusters).",
+      "items": {
+        "type": "object",
+        "required": ["id", "size", "members"],
+        "properties": {
+          "id":           { "type": "integer" },
+          "size":         { "type": "integer" },
+          "members":      { "type": "array", "items": { "type": "string" }, "description": "Node IDs in this module." },
+          "label":        { "type": "string", "description": "Human-readable label derived from members." },
+          "cohesion":     { "type": ["number", "null"], "description": "Internal clustering quality." },
+          "separation":   { "type": ["number", "null"], "description": "Distance from other modules." },
+          "confidence":   { "type": "number" },
+          "unassigned":   { "type": "boolean" }
+        }
+      }
+    },
+
+    "roles": {
+      "type": "array",
+      "description": "Structural role classifications for each node.",
+      "items": {
+        "type": "object",
+        "required": ["node_id", "role", "degree", "betweenness", "in_degree", "out_degree"],
+        "properties": {
+          "node_id":      { "type": "string" },
+          "role":         { "type": "string", "enum": ["hub", "bridge", "utility", "entry_point", "orphan", "regular"] },
+          "degree":       { "type": "integer" },
+          "betweenness":  { "type": "number" },
+          "in_degree":    { "type": "integer" },
+          "out_degree":   { "type": "integer" },
+          "anchor":       { "$ref": "#/$defs/anchor" }
+        }
+      }
+    },
+
+    "findings": {
+      "type": "array",
+      "description": "Actionable structural findings. Prioritized by severity.",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "title", "description", "severity", "confidence"],
+        "properties": {
+          "id":               { "type": "string", "description": "Stable deterministic ID for deduplication/suppression." },
+          "kind":             { "type": "string", "description": "Finding category: god_module, fragile_hub, cycle_member, cross_module, orphan, wide_interface, phantom_import, low_cohesion, coverage, module_separation, reverse_dependency, layer_discrepancy, spectral_outlier." },
+          "title":            { "type": "string" },
+          "description":      { "type": "string" },
+          "severity":         { "type": "number", "minimum": 0, "maximum": 1 },
+          "severity_label":   { "type": "string", "enum": ["high", "medium", "low"] },
+          "confidence":       { "type": "number", "minimum": 0, "maximum": 1 },
+          "confidence_label": { "type": "string", "enum": ["high", "medium", "low"] },
+          "anchors":          { "type": "array", "items": { "$ref": "#/$defs/anchor" } }
+        }
+      }
+    },
+
+    "anomalies": {
+      "type": "array",
+      "description": "Raw anomaly detections (before finding generation).",
+      "items": {
+        "type": "object",
+        "required": ["kind", "node_ids", "description", "severity"],
+        "properties": {
+          "kind":         { "type": "string", "enum": ["cross_module", "spectral_outlier", "cycle_member", "layer_discrepancy"] },
+          "node_ids":     { "type": "array", "items": { "type": "string" } },
+          "description":  { "type": "string" },
+          "severity":     { "type": "number", "minimum": 0, "maximum": 1 },
+          "confidence":   { "type": "number", "minimum": 0, "maximum": 1 },
+          "anchors":      { "type": "array", "items": { "$ref": "#/$defs/anchor" } },
+          "edge_counts":  { "type": "object", "additionalProperties": { "type": "integer" } }
+        }
+      }
+    },
+
+    "cross_package_dependencies": {
+      "type": "array",
+      "description": "Aggregated edges between top-level packages.",
+      "items": {
+        "type": "object",
+        "required": ["source_package", "target_package", "total"],
+        "properties": {
+          "source_package": { "type": "string" },
+          "target_package": { "type": "string" },
+          "total":          { "type": "integer" },
+          "edge_counts":    { "type": "object", "additionalProperties": { "type": "integer" } }
+        }
+      }
+    },
+
+    "health": {
+      "type": "object",
+      "description": "Overall graph health metrics.",
+      "required": ["call_density", "orphan_ratio", "largest_module_ratio"],
+      "properties": {
+        "call_count":             { "type": "integer" },
+        "analyzed_node_count":    { "type": "integer" },
+        "call_density":           { "type": "number", "description": "Calls per node." },
+        "orphan_count":           { "type": "integer" },
+        "orphan_ratio":           { "type": "number" },
+        "largest_module_size":    { "type": "integer" },
+        "largest_module_ratio":   { "type": "number" },
+        "largest_module_status":  { "type": "string", "enum": ["well separated", "mixed", "poorly separated"] }
+      }
+    }
+  },
+
+  "$defs": {
+    "anchor": {
+      "type": "object",
+      "description": "Source code location reference.",
+      "required": ["node_id"],
+      "properties": {
+        "node_id": { "type": "string" },
+        "file":    { "type": "string" },
+        "line":    { "type": "integer" },
+        "kind":    { "type": "string", "enum": ["module", "class", "function"] }
+      }
+    }
+  }
+}

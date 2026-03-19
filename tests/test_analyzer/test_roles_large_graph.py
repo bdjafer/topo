@@ -1,7 +1,5 @@
 """Tests for the approximate large-graph role path."""
 
-from pathlib import Path
-
 import topo_analyzer.roles as roles_module
 from topo_analyzer.roles import classify_roles
 from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
@@ -16,7 +14,7 @@ def test_large_graph_uses_approximate_betweenness(monkeypatch):
         graph.add_node(Node(
             id=f"n{index}",
             kind=NodeKind.FUNCTION,
-            file=Path("m.py"),
+            file="m.py",
             line=index,
             name=f"n{index}",
         ))
