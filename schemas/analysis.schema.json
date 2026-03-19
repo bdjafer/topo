@@ -2,9 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://topo.dev/schemas/analysis.json",
   "title": "Topo Analysis",
-  "description": "Complete structural analysis output. Fully computed, lossless. Any formatter can render this without additional computation.",
+  "description": "Complete structural intelligence for a codebase. Fully computed, lossless. Any formatter can render this without additional computation.",
   "type": "object",
-  "required": ["scope", "graph", "coverage", "spectral", "clustering", "modules", "roles", "findings", "anomalies", "health"],
+  "required": ["scope", "coverage", "spectral", "architecture", "roles", "issues", "health"],
   "properties": {
 
     "scope": {
@@ -34,94 +34,84 @@
       }
     },
 
-    "graph": {
-      "type": "object",
-      "description": "Summary of the analyzed graph (after projection/scoping).",
-      "required": ["nodes", "edges"],
-      "properties": {
-        "nodes": { "type": "integer" },
-        "edges": { "type": "integer" }
-      }
-    },
-
-    "raw_graph": {
-      "type": "object",
-      "description": "Summary of the raw input graph (before projection/scoping).",
-      "properties": {
-        "nodes": { "type": "integer" },
-        "edges": { "type": "integer" }
-      }
-    },
-
     "coverage": {
       "type": "object",
-      "description": "How much of the input graph was covered by analysis.",
+      "description": "How much of the codebase was analyzed.",
+      "required": ["analyzed_nodes", "analyzed_edges", "parsed_nodes", "parsed_edges"],
       "properties": {
-        "raw_nodes":                  { "type": "integer" },
-        "raw_edges":                  { "type": "integer" },
-        "analyzed_nodes":             { "type": "integer" },
-        "analyzed_edges":             { "type": "integer" },
-        "spectral_nodes":             { "type": "integer" },
-        "spectral_coverage_ratio":    { "type": "number" },
-        "component_count":            { "type": "integer" },
-        "largest_component_ratio":    { "type": "number" }
+        "analyzed_nodes": { "type": "integer", "description": "Nodes in the analyzed graph (after projection/scoping)." },
+        "analyzed_edges": { "type": "integer", "description": "Edges in the analyzed graph." },
+        "parsed_nodes":   { "type": "integer", "description": "Nodes in the raw parsed graph (before projection)." },
+        "parsed_edges":   { "type": "integer", "description": "Edges in the raw parsed graph." }
       }
     },
 
     "spectral": {
-      "type": "object",
-      "description": "Spectral decomposition results.",
+      "type": ["object", "null"],
+      "description": "Spectral decomposition of the graph Laplacian. The mathematical foundation for module detection and structural analysis. Null if the graph is too small for meaningful decomposition.",
       "properties": {
-        "fiedler_value":              { "type": "number", "description": "Second-smallest Laplacian eigenvalue. Higher = more connected." },
-        "eigenvalues":                { "type": "array", "items": { "type": "number" } },
-        "component_count":            { "type": "integer" },
-        "largest_component_ratio":    { "type": "number" }
+        "fiedler_value":           { "type": "number", "description": "Algebraic connectivity. Higher = more connected. 0 = disconnected." },
+        "eigenvalues":             { "type": "array", "items": { "type": "number" }, "description": "Leading non-trivial eigenvalues. Gaps reveal natural cluster boundaries." },
+        "nodes_covered":           { "type": "integer", "description": "How many nodes received spectral fingerprints." },
+        "coverage_ratio":          { "type": "number", "description": "Fraction of analyzed nodes covered by spectral decomposition." },
+        "components":              { "type": "integer", "description": "Number of connected components." },
+        "largest_component_ratio": { "type": "number", "description": "Fraction of nodes in the largest connected component." }
       }
     },
 
-    "clustering": {
+    "architecture": {
       "type": "object",
-      "description": "Module clustering results.",
+      "description": "Detected architectural structure as a graph. Modules are nodes, cross-module dependencies are edges. This is the structural X-ray of the codebase.",
+      "required": ["modules", "dependencies"],
       "properties": {
-        "module_count":          { "type": "integer" },
-        "chosen_k":              { "type": ["integer", "null"] },
-        "silhouette":            { "type": ["number", "null"], "description": "Silhouette score. >0.5 = good, <0.3 = degenerate." },
-        "clustered_node_count":  { "type": "integer" },
-        "unassigned_node_count": { "type": "integer" },
-        "package_fallback":      { "type": "boolean", "description": "True if spectral clustering failed and fell back to package grouping." }
-      }
-    },
-
-    "modules": {
-      "type": "array",
-      "description": "Detected structural modules (clusters).",
-      "items": {
-        "type": "object",
-        "required": ["id", "size", "members"],
-        "properties": {
-          "id":           { "type": "integer" },
-          "size":         { "type": "integer" },
-          "members":      { "type": "array", "items": { "type": "string" }, "description": "Node IDs in this module." },
-          "label":        { "type": "string", "description": "Human-readable label derived from members." },
-          "cohesion":     { "type": ["number", "null"], "description": "Internal clustering quality." },
-          "separation":   { "type": ["number", "null"], "description": "Distance from other modules." },
-          "confidence":   { "type": "number" },
-          "unassigned":   { "type": "boolean" }
-        }
+        "modules": {
+          "type": "array",
+          "description": "Structural modules (detected clusters). Each module is a group of code entities that are more tightly coupled to each other than to the rest of the codebase.",
+          "items": {
+            "type": "object",
+            "required": ["id", "label", "size", "members"],
+            "properties": {
+              "id":         { "type": "integer", "description": "Unique module identifier." },
+              "label":      { "type": "string", "description": "Human-readable label derived from members." },
+              "size":       { "type": "integer", "description": "Number of code entities in this module." },
+              "members":    { "type": "array", "items": { "type": "string" }, "description": "Node IDs belonging to this module." },
+              "cohesion":   { "type": ["number", "null"], "description": "Internal tightness (avg intra-module distance). Lower = tighter." },
+              "separation": { "type": ["number", "null"], "description": "Distinctness from other modules (nearest centroid distance). Higher = more distinct." },
+              "confidence": { "type": "number", "description": "How reliably this module was detected. 0-1." },
+              "unassigned": { "type": "boolean", "description": "True if this is a catch-all for nodes that didn't cluster." }
+            }
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "description": "Directed dependencies between modules. Each entry represents aggregated edges crossing a module boundary.",
+          "items": {
+            "type": "object",
+            "required": ["source", "target", "weight"],
+            "properties": {
+              "source":      { "type": "integer", "description": "Source module ID." },
+              "target":      { "type": "integer", "description": "Target module ID." },
+              "weight":      { "type": "integer", "description": "Total number of edges crossing this boundary." },
+              "edge_kinds":  { "type": "object", "additionalProperties": { "type": "integer" }, "description": "Breakdown by relationship type (calls, imports, etc.)." }
+            }
+          }
+        },
+        "silhouette":        { "type": ["number", "null"], "description": "Overall clustering quality. >0.5 good, <0.3 degenerate." },
+        "package_fallback":  { "type": "boolean", "description": "True if spectral clustering failed and fell back to directory-based grouping." }
       }
     },
 
     "roles": {
       "type": "array",
-      "description": "Structural role classifications for each node.",
+      "description": "Structural role of every analyzed node. Roles are derived from graph position (degree, betweenness, flow direction), not from code content.",
       "items": {
         "type": "object",
         "required": ["node_id", "role", "degree", "betweenness", "in_degree", "out_degree"],
         "properties": {
           "node_id":      { "type": "string" },
           "role":         { "type": "string", "enum": ["hub", "bridge", "utility", "entry_point", "orphan", "regular"] },
-          "degree":       { "type": "integer" },
-          "betweenness":  { "type": "number" },
+          "degree":       { "type": "integer", "description": "Total edges (in + out)." },
+          "betweenness":  { "type": "number", "description": "Fraction of shortest paths passing through this node." },
           "in_degree":    { "type": "integer" },
           "out_degree":   { "type": "integer" },
           "anchor":       { "$ref": "#/$defs/anchor" }
@@ -129,15 +119,15 @@
       }
     },
 
-    "findings": {
+    "issues": {
       "type": "array",
-      "description": "Actionable structural findings. Prioritized by severity.",
+      "description": "Actionable structural issues, prioritized by severity. Each issue is a structural concern that a developer should evaluate.",
       "items": {
         "type": "object",
         "required": ["id", "kind", "title", "description", "severity", "confidence"],
         "properties": {
           "id":               { "type": "string", "description": "Stable deterministic ID for deduplication/suppression." },
-          "kind":             { "type": "string", "description": "Finding category: god_module, fragile_hub, cycle_member, cross_module, orphan, wide_interface, phantom_import, low_cohesion, coverage, module_separation, reverse_dependency, layer_discrepancy, spectral_outlier." },
+          "kind":             { "type": "string", "description": "Issue category." },
           "title":            { "type": "string" },
           "description":      { "type": "string" },
           "severity":         { "type": "number", "minimum": 0, "maximum": 1 },
@@ -149,52 +139,12 @@
       }
     },
 
-    "anomalies": {
-      "type": "array",
-      "description": "Raw anomaly detections (before finding generation).",
-      "items": {
-        "type": "object",
-        "required": ["kind", "node_ids", "description", "severity"],
-        "properties": {
-          "kind":         { "type": "string", "enum": ["cross_module", "spectral_outlier", "cycle_member", "layer_discrepancy"] },
-          "node_ids":     { "type": "array", "items": { "type": "string" } },
-          "description":  { "type": "string" },
-          "severity":     { "type": "number", "minimum": 0, "maximum": 1 },
-          "confidence":   { "type": "number", "minimum": 0, "maximum": 1 },
-          "anchors":      { "type": "array", "items": { "$ref": "#/$defs/anchor" } },
-          "edge_counts":  { "type": "object", "additionalProperties": { "type": "integer" } }
-        }
-      }
-    },
-
-    "cross_package_dependencies": {
-      "type": "array",
-      "description": "Aggregated edges between top-level packages.",
-      "items": {
-        "type": "object",
-        "required": ["source_package", "target_package", "total"],
-        "properties": {
-          "source_package": { "type": "string" },
-          "target_package": { "type": "string" },
-          "total":          { "type": "integer" },
-          "edge_counts":    { "type": "object", "additionalProperties": { "type": "integer" } }
-        }
-      }
-    },
-
     "health": {
-      "type": "object",
-      "description": "Overall graph health metrics.",
-      "required": ["call_density", "orphan_ratio", "largest_module_ratio"],
+      "type": ["object", "null"],
+      "description": "Structural health. Newman's modularity Q measures how well detected modules explain the edge structure vs random assignment. Null if the graph has no edges.",
+      "required": ["modularity_q"],
       "properties": {
-        "call_count":             { "type": "integer" },
-        "analyzed_node_count":    { "type": "integer" },
-        "call_density":           { "type": "number", "description": "Calls per node." },
-        "orphan_count":           { "type": "integer" },
-        "orphan_ratio":           { "type": "number" },
-        "largest_module_size":    { "type": "integer" },
-        "largest_module_ratio":   { "type": "number" },
-        "largest_module_status":  { "type": "string", "enum": ["well separated", "mixed", "poorly separated"] }
+        "modularity_q": { "type": "number", "description": "Newman's modularity Q. Higher = module boundaries explain more of the edge structure. >0.3 significant, >0.5 strong, 0 = no better than random." }
       }
     }
   },

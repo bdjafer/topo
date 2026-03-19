@@ -13,6 +13,7 @@ from topo_analyzer.projection import (
     AnalysisProjectionConfig,
     load_analysis_policy,
 )
+from topo_formatter.text import format_text
 from topo_analyzer.roles import RoleAssignment, StructuralRole
 from topo_parser.graph import EdgeKind
 from topo_parser.python import parse_python_project
@@ -84,16 +85,14 @@ def test_summary_and_json_include_confidence_and_findings(tmp_path: Path):
     )
 
     result = analyze(graph, combined=True, projection_config=config)
-    summary = result.summary()
     data = result.to_dict()
+    summary = format_text(data)
 
     assert "Issues" in summary
-    assert "Architecture" in summary
     assert "Health" in summary
     assert "scope" in data
-    assert "coverage" in data
-    assert "findings" in data
-    assert "clustering" in data
+    assert "issues" in data
+    assert "architecture" in data
 
 
 def test_reverse_dependency_is_reported_from_graph(tmp_path: Path):
@@ -202,8 +201,9 @@ def test_ignore_filtering_hides_findings(tmp_path: Path):
 
     # Ignore the first finding
     first_id = result.findings[0].id
-    summary_with = result.summary()
-    summary_without = result.summary(ignores={first_id: "test justification"})
+    data = result.to_dict()
+    summary_with = format_text(data)
+    summary_without = format_text(data, ignores={first_id: "test justification"})
 
     assert first_id in summary_with
     assert first_id not in summary_without

@@ -143,6 +143,7 @@ class GraphHealth:
     orphan_ratio: float
     largest_module_size: int
     largest_module_ratio: float
+    modularity_q: float | None = None
 
     @property
     def largest_module_status(self) -> str:
@@ -196,21 +197,13 @@ class StructuralAnalysis:
         """Compatibility accessor for callers that expect direct modules."""
         return self.module_detection.modules
 
-    def summary(self, **kwargs) -> str:
-        """Human-readable structural analysis report.
-
-        Delegates to :func:`topo_analyzer.report.format_summary`.
-        """
-        from topo_analyzer.report import format_summary
-        return format_summary(self, **kwargs)
-
-    def to_dict(self, **kwargs) -> dict:
+    def to_dict(self) -> dict:
         """JSON-serializable dict of the full analysis result.
 
         Delegates to :func:`topo_analyzer.report.to_dict`.
         """
         from topo_analyzer.report import to_dict
-        return to_dict(self, **kwargs)
+        return to_dict(self)
 
 
 def _top_level_package(node_id: str) -> str:
@@ -283,6 +276,45 @@ def _compute_coverage(
     )
 
 
+def _compute_modularity_q(graph: CodeGraph, modules: list[Module]) -> float | None:
+    """Newman's modularity Q for the detected module assignment.
+
+    Measures how well module boundaries explain the edge structure vs random
+    assignment.  Range: -0.5 to 1.0.  >0.3 significant, >0.5 strong.
+    """
+    m = graph.edge_count
+    if m == 0:
+        return None
+
+    node_to_module: dict[str, int] = {}
+    for mod in modules:
+        if mod.unassigned:
+            continue
+        for nid in mod.node_ids:
+            node_to_module[nid] = mod.id
+
+    internal: dict[int, int] = {}
+    degree: dict[int, int] = {}
+
+    for edge in graph.edges:
+        src_mod = node_to_module.get(edge.source)
+        tgt_mod = node_to_module.get(edge.target)
+        if src_mod is not None:
+            degree[src_mod] = degree.get(src_mod, 0) + 1
+        if tgt_mod is not None:
+            degree[tgt_mod] = degree.get(tgt_mod, 0) + 1
+        if src_mod is not None and tgt_mod is not None and src_mod == tgt_mod:
+            internal[src_mod] = internal.get(src_mod, 0) + 1
+
+    q = 0.0
+    for mod_id in set(internal) | set(degree):
+        ec = internal.get(mod_id, 0) / m
+        ac = degree.get(mod_id, 0) / (2 * m)
+        q += ec - ac * ac
+
+    return round(q, 4)
+
+
 def _compute_health(
     graph: CodeGraph,
     roles: list[RoleAssignment],
@@ -310,6 +342,7 @@ def _compute_health(
         orphan_ratio=orphan_ratio,
         largest_module_size=largest_module_size,
         largest_module_ratio=largest_module_ratio,
+        modularity_q=_compute_modularity_q(graph, modules),
     )
 
 

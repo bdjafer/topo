@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from topo_formatter.text import format_text
 from tests.test_validation.benchmark_utils import analyze_topo_self
 
 
@@ -30,7 +31,8 @@ def test_topo_self_analysis_stays_first_party_and_interpretable():
 def test_topo_self_summary_and_findings_remain_actionable():
     """The default summary should stay findings-first and package-oriented."""
     result = analyze_topo_self()
-    summary = result.summary()
+    data = result.to_dict()
+    summary = format_text(data)
 
     assert "Issues" in summary
     assert "Architecture" in summary

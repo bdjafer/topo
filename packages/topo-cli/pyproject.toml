@@ -6,6 +6,7 @@ requires-python = ">=3.11"
 dependencies = [
     "topo-parser",
     "topo-analyzer",
+    "topo-formatter",
 ]
 
 [project.scripts]
@@ -21,3 +22,4 @@ packages = ["src/topo_cli"]
 [tool.uv.sources]
 topo-parser = { workspace = true }
 topo-analyzer = { workspace = true }
+topo-formatter = { workspace = true }

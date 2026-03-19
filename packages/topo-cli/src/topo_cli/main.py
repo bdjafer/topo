@@ -182,12 +182,15 @@ def _run_analysis(
             projection_config=projection_config,
         )
 
+    data = result.to_dict()
     if args.as_json:
-        print(json.dumps(result.to_dict(), indent=2))
+        print(json.dumps(data, indent=2))
     else:
+        from topo_formatter.text import format_text
         ignores = policy.ignores if policy else {}
         use_color = not args.no_color and sys.stdout.isatty()
-        print(result.summary(
+        print(format_text(
+            data,
             verbose=args.verbose,
             diagnostics=args.diagnostics,
             ignores=ignores,

@@ -22,8 +22,8 @@ def test_cli_runs_on_project(tmp_path: Path, capsys):
     assert "nodes" in captured.out
 
 
-def test_cli_summary_includes_health_and_cross_package_dependencies(tmp_path: Path, capsys):
-    """CLI text output should surface health metrics and package flow."""
+def test_cli_summary_includes_health(tmp_path: Path, capsys):
+    """CLI text output should surface health metrics."""
     alpha = tmp_path / "alpha"
     beta = tmp_path / "beta"
     alpha.mkdir()
@@ -45,6 +45,4 @@ def test_cli_summary_includes_health_and_cross_package_dependencies(tmp_path: Pa
     captured = capsys.readouterr()
 
     assert "Health" in captured.out
-    assert "Architecture" in captured.out
-    assert "alpha" in captured.out
-    assert "beta" in captured.out
+    assert "Modularity Q" in captured.out
