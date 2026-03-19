@@ -142,6 +142,10 @@ def test_json_output_reports_reverse_dependency_descriptively(tmp_path: Path, ca
     assert "expected" not in alpha_to_beta
     assert "policy_status" not in beta_to_alpha
     assert any(finding["kind"] == "reverse_dependency" for finding in data["findings"])
+    # All findings should have a stable issue ID
+    for finding in data["findings"]:
+        assert "id" in finding
+        assert isinstance(finding["id"], str)
 
 
 def test_json_output_loads_analysis_defaults(tmp_path: Path, capsys):

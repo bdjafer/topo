@@ -10,11 +10,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from collections import Counter
+
 from topo_parser.graph import CodeGraph, EdgeKind
 from topo_analyzer.anomalies import Anomaly, AnomalyKind, detect_anomalies
 from topo_analyzer.modules import Module, ModuleDetection, detect_modules
 from topo_analyzer.projection import (
     AnalysisAnchor,
+    AnalysisLevel,
     AnalysisProjection,
     AnalysisProjectionConfig,
     build_projection,
@@ -62,6 +65,26 @@ def _severity_label(score: float) -> str:
     if score >= 0.45:
         return "medium"
     return "low"
+
+
+def _module_label(module: Module) -> str:
+    """Derive a human-readable label from a module's members."""
+    if not module.node_ids:
+        return f"module-{module.id}"
+    # Find the longest common dotted prefix
+    parts_list = [nid.split(".") for nid in module.node_ids]
+    prefix_parts: list[str] = []
+    for level_parts in zip(*parts_list):
+        if len(set(level_parts)) == 1:
+            prefix_parts.append(level_parts[0])
+        else:
+            break
+    if prefix_parts:
+        return ".".join(prefix_parts)
+    # No common prefix — use the most frequent top-level package
+    top_packages = [nid.split(".", 1)[0] for nid in module.node_ids]
+    most_common_pkg, _ = Counter(top_packages).most_common(1)[0]
+    return most_common_pkg
 
 
 @dataclass(frozen=True)
@@ -134,6 +157,7 @@ class GraphHealth:
 class Finding:
     """A prioritized, developer-facing structural finding."""
 
+    id: str
     kind: str
     title: str
     description: str
@@ -171,242 +195,21 @@ class StructuralAnalysis:
         """Compatibility accessor for callers that expect direct modules."""
         return self.module_detection.modules
 
-    def summary(self, verbose: bool = False) -> str:
-        """Human-readable summary of structural analysis."""
-        lines = [
-            f"Analysis graph: {self.graph.node_count} nodes, {self.graph.edge_count} edges",
-            f"Projection: {self.projection.config.level.value} level, "
-            f"{', '.join(kind.value for kind in self.projection.config.edge_kinds)}, "
-            f"{'internal-only' if self.projection.config.internal_only else 'mixed'}",
-        ]
+    def summary(self, **kwargs) -> str:
+        """Human-readable structural analysis report.
 
-        if self.projection.config.scope_roots:
-            lines.append(f"Scope roots: {', '.join(self.projection.config.scope_labels)}")
+        Delegates to :func:`topo_analyzer.report.format_summary`.
+        """
+        from topo_analyzer.report import format_summary
+        return format_summary(self, **kwargs)
 
-        if self.coverage:
-            lines.append("")
-            lines.append("Coverage:")
-            lines.append(
-                f"  Parsed graph: {self.coverage.raw_node_count} nodes, {self.coverage.raw_edge_count} edges"
-            )
-            lines.append(
-                f"  Scope selection: {self.coverage.scoped_node_count}/{self.coverage.raw_node_count} "
-                f"nodes ({self.coverage.scope_node_ratio:.1%})"
-            )
-            lines.append(
-                f"  Projection: {self.coverage.scoped_node_count} scoped nodes -> "
-                f"{self.coverage.analyzed_node_count} analysis nodes "
-                f"({self.coverage.projection_node_ratio:.1%} compression ratio)"
-            )
-            lines.append(
-                f"  Analysis graph: {self.coverage.analyzed_node_count} nodes, "
-                f"{self.coverage.analyzed_edge_count} edges"
-            )
-            lines.append(
-                f"  Spectral coverage: {self.coverage.spectral_node_count}/{self.coverage.analyzed_node_count} "
-                f"nodes ({self.coverage.spectral_coverage_ratio:.1%}) across "
-                f"{self.coverage.component_count} components"
-            )
+    def to_dict(self, **kwargs) -> dict:
+        """JSON-serializable dict of the full analysis result.
 
-        lines.append("")
-        lines.append("Findings:")
-        if self.findings:
-            for finding in self.findings[:7]:
-                lines.append(
-                    f"  [{finding.severity_label}/{finding.confidence_label}] {finding.title}: "
-                    f"{finding.description}"
-                )
-                for anchor in finding.anchors[:2]:
-                    lines.append(f"    {anchor.node_id} ({anchor.file}:{anchor.line})")
-        else:
-            lines.append("  No high-signal issues detected.")
-
-        if self.cross_package_dependencies:
-            lines.append("")
-            lines.append("Package flow:")
-            for dependency in self.cross_package_dependencies:
-                lines.append(f"  {dependency.summary()}")
-
-        if self.health:
-            lines.append("")
-            lines.append("Health:")
-            lines.append(
-                f"  Call density: {self.health.call_count} calls / {self.health.analyzed_node_count} "
-                f"nodes = {self.health.call_density:.2f} calls/node"
-            )
-            lines.append(
-                f"  Orphans: {self.health.orphan_count}/{self.graph.node_count} "
-                f"({self.health.orphan_ratio:.1%})"
-            )
-            module_status = (
-                "package grouping" if self.module_detection.package_fallback
-                else self.health.largest_module_status
-            )
-            lines.append(
-                f"  Largest module: {self.health.largest_module_ratio:.1%} "
-                f"({module_status})"
-            )
-
-        lines.append("")
-        lines.append(f"Detected modules: {len(self.modules)}")
-        for module in self.modules:
-            share = module.size / self.graph.node_count if self.graph.node_count else 0.0
-            flag = " unassigned" if module.unassigned else ""
-            lines.append(
-                f"  Module {module.id} ({module.size} nodes, {share:.1%}, "
-                f"confidence {_confidence_label(module.confidence)}){flag}"
-            )
-
-        role_counts: dict[str, int] = {}
-        for role in self.roles:
-            role_counts[role.role.value] = role_counts.get(role.role.value, 0) + 1
-        lines.append("")
-        lines.append("Structural roles:")
-        for role, count in sorted(role_counts.items()):
-            lines.append(f"  {role}: {count}")
-
-        if verbose and self.spectral:
-            lines.append("")
-            lines.append("Diagnostics:")
-            lines.append(f"  Algebraic connectivity: {self.spectral.fiedler_value:.4f}")
-            lines.append(f"  Spectral dimensions: {len(self.spectral.eigenvalues)}")
-            if self.module_detection.silhouette is not None:
-                lines.append(f"  Silhouette: {self.module_detection.silhouette:.3f}")
-            if self.module_detection.chosen_k is not None:
-                lines.append(f"  Chosen k: {self.module_detection.chosen_k}")
-
-        return "\n".join(lines)
-
-    def to_dict(self, *, include_raw: bool = True) -> dict:
-        """Convert the full analysis result into a JSON-serializable dict."""
-        return {
-            "scope": {
-                "level": self.projection.config.level.value,
-                "edge_kinds": [kind.value for kind in self.projection.config.edge_kinds],
-                "internal_only": self.projection.config.internal_only,
-                "roots": self.projection.config.scope_labels,
-            },
-            "graph": {
-                "nodes": self.graph.node_count,
-                "edges": self.graph.edge_count,
-            },
-            "raw_graph": {
-                "nodes": self.raw_graph.node_count,
-                "edges": self.raw_graph.edge_count,
-            } if include_raw else None,
-            "coverage": {
-                "raw_nodes": self.coverage.raw_node_count,
-                "raw_edges": self.coverage.raw_edge_count,
-                "scoped_nodes": self.coverage.scoped_node_count,
-                "scoped_edges": self.coverage.scoped_edge_count,
-                "analyzed_nodes": self.coverage.analyzed_node_count,
-                "analyzed_edges": self.coverage.analyzed_edge_count,
-                "scope_filtered_nodes": self.coverage.scope_filtered_node_count,
-                "scope_filtered_edges": self.coverage.scope_filtered_edge_count,
-                "scope_node_ratio": round(self.coverage.scope_node_ratio, 4),
-                "projection_node_ratio": round(self.coverage.projection_node_ratio, 4),
-                "spectral_nodes": self.coverage.spectral_node_count,
-                "spectral_coverage_ratio": round(self.coverage.spectral_coverage_ratio, 4),
-                "component_count": self.coverage.component_count,
-                "clusterable_component_count": self.coverage.clusterable_component_count,
-                "largest_component_ratio": round(self.coverage.largest_component_ratio, 4),
-            } if self.coverage else None,
-            "spectral": {
-                "fiedler_value": self.spectral.fiedler_value,
-                "eigenvalues": self.spectral.eigenvalues.tolist(),
-                "component_count": self.spectral.component_count,
-                "clusterable_component_count": self.spectral.clusterable_component_count,
-                "coverage_ratio": round(self.spectral.coverage_ratio, 4),
-                "largest_component_ratio": round(self.spectral.largest_component_ratio, 4),
-            } if self.spectral else None,
-            "clustering": {
-                "module_count": len(self.modules),
-                "chosen_k": self.module_detection.chosen_k,
-                "silhouette": round(self.module_detection.silhouette, 4)
-                if self.module_detection.silhouette is not None else None,
-                "component_count": self.module_detection.component_count,
-                "clustered_node_count": self.module_detection.clustered_node_count,
-                "unassigned_node_count": self.module_detection.unassigned_node_count,
-                "package_fallback": self.module_detection.package_fallback,
-            },
-            "findings": [
-                {
-                    "kind": finding.kind,
-                    "title": finding.title,
-                    "description": finding.description,
-                    "severity": round(finding.severity, 2),
-                    "severity_label": finding.severity_label,
-                    "confidence": round(finding.confidence, 2),
-                    "confidence_label": finding.confidence_label,
-                    "anchors": [anchor.to_dict() for anchor in finding.anchors],
-                }
-                for finding in self.findings
-            ],
-            "modules": [
-                {
-                    "id": module.id,
-                    "size": module.size,
-                    "members": module.node_ids,
-                    "component_id": module.component_id,
-                    "cohesion": round(module.cohesion, 4) if module.cohesion is not None else None,
-                    "separation": round(module.separation, 4) if module.separation is not None else None,
-                    "confidence": round(module.confidence, 4),
-                    "unassigned": module.unassigned,
-                }
-                for module in self.modules
-            ],
-            "roles": [
-                {
-                    "node_id": role.node_id,
-                    "role": role.role.value,
-                    "degree": role.degree,
-                    "betweenness": round(role.betweenness, 4),
-                    "in_degree": role.in_degree,
-                    "out_degree": role.out_degree,
-                    "anchors": [anchor.to_dict() for anchor in self.projection.anchors_for([role.node_id], limit=1)],
-                }
-                for role in self.roles
-            ],
-            "anomalies": [
-                {
-                    "kind": anomaly.kind.value,
-                    "node_ids": anomaly.node_ids,
-                    "description": anomaly.description,
-                    "severity": round(anomaly.severity, 2),
-                    "confidence": round(anomaly.confidence, 2),
-                    "anchors": [anchor.to_dict() for anchor in anomaly.anchors],
-                    "edge_counts": {
-                        kind.value: count
-                        for kind, count in anomaly.edge_counts.items()
-                    },
-                }
-                for anomaly in self.anomalies
-            ],
-            "cross_package_dependencies": [
-                {
-                    "source_package": dependency.source_package,
-                    "target_package": dependency.target_package,
-                    "total": dependency.total_count,
-                    "edge_counts": {
-                        kind.value: dependency.edge_counts.get(kind, 0)
-                        for kind in SUMMARY_EDGE_KINDS
-                        if dependency.edge_counts.get(kind, 0) > 0
-                    },
-                    "anchors": [anchor.to_dict() for anchor in dependency.anchors],
-                }
-                for dependency in self.cross_package_dependencies
-            ],
-            "health": {
-                "call_count": self.health.call_count,
-                "analyzed_node_count": self.health.analyzed_node_count,
-                "call_density": round(self.health.call_density, 2),
-                "orphan_count": self.health.orphan_count,
-                "orphan_ratio": round(self.health.orphan_ratio, 4),
-                "largest_module_size": self.health.largest_module_size,
-                "largest_module_ratio": round(self.health.largest_module_ratio, 4),
-                "largest_module_status": self.health.largest_module_status,
-            } if self.health else None,
-        }
+        Delegates to :func:`topo_analyzer.report.to_dict`.
+        """
+        from topo_analyzer.report import to_dict
+        return to_dict(self, **kwargs)
 
 
 def _top_level_package(node_id: str) -> str:
@@ -509,18 +312,189 @@ def _compute_health(
     )
 
 
+def _issue_id(kind: str, node_ids: list[str] | None = None, packages: tuple[str, ...] | None = None) -> str:
+    """Generate a stable, deterministic issue ID for a finding."""
+    if kind == "coverage":
+        return "coverage:low-spectral"
+    if kind == "self_edge_drop":
+        return "self-edge-drop:high"
+    if kind == "module_separation":
+        return "module-separation:weak"
+    if kind == "reverse_dependency" and packages:
+        return f"reverse-dependency:{','.join(sorted(packages))}"
+    if kind == "spectral_outlier" and node_ids:
+        return f"spectral-outlier:{node_ids[0]}"
+    if kind == "cycle_member" and node_ids:
+        return f"cycle:{','.join(sorted(node_ids))}"
+    if kind == "orphan" and node_ids:
+        return f"orphan:{','.join(sorted(node_ids))}"
+    if kind == "cross_module" and node_ids:
+        return f"cross-module:{','.join(sorted(node_ids))}"
+    if kind == "god_module" and node_ids:
+        return f"god-module:{node_ids[0]}"
+    if kind == "low_cohesion" and node_ids:
+        return f"low-cohesion:{node_ids[0]}"
+    if kind == "fragile_hub" and node_ids:
+        return f"fragile-hub:{node_ids[0]}"
+    if kind == "layer_discrepancy" and node_ids:
+        return f"layer-discrepancy:{node_ids[0]}"
+    if kind == "wide_interface" and packages:
+        return f"wide-interface:{','.join(sorted(packages))}"
+    if kind == "phantom_import" and packages:
+        return f"phantom-import:{','.join(sorted(packages))}"
+    # Fallback
+    label = node_ids[0] if node_ids else "unknown"
+    return f"{kind}:{label}"
+
+
+def _detect_wide_interfaces(
+    graph: CodeGraph,
+    modules: list[Module],
+    projection: AnalysisProjection | None = None,
+) -> list[Finding]:
+    """Detect module pairs with unusually broad coupling surfaces.
+
+    Counts distinct (source, target) symbol pairs crossing each module boundary.
+    Flags pairs wider than 2× the median width (minimum threshold of 4).
+    """
+    if not modules or len(modules) < 2:
+        return []
+
+    node_to_module: dict[str, int] = {}
+    module_by_id: dict[int, Module] = {}
+    for m in modules:
+        if m.unassigned:
+            continue
+        module_by_id[m.id] = m
+        for nid in m.node_ids:
+            node_to_module[nid] = m.id
+
+    # Count distinct symbol pairs per module boundary.
+    pair_symbols: dict[tuple[int, int], set[tuple[str, str]]] = {}
+    for edge in graph.edges:
+        src_mod = node_to_module.get(edge.source)
+        tgt_mod = node_to_module.get(edge.target)
+        if src_mod is None or tgt_mod is None or src_mod == tgt_mod:
+            continue
+        pair = tuple(sorted((src_mod, tgt_mod)))
+        pair_symbols.setdefault(pair, set()).add((edge.source, edge.target))
+
+    if not pair_symbols:
+        return []
+
+    widths = sorted(len(syms) for syms in pair_symbols.values())
+    median_width = widths[(len(widths) - 1) // 2]
+    threshold = max(2 * median_width, 4)
+
+    findings: list[Finding] = []
+    for (mod_a, mod_b), syms in pair_symbols.items():
+        width = len(syms)
+        if width <= threshold:
+            continue
+        label_a = _module_label(module_by_id[mod_a]) if mod_a in module_by_id else str(mod_a)
+        label_b = _module_label(module_by_id[mod_b]) if mod_b in module_by_id else str(mod_b)
+        node_ids_for_anchors = [s for pair in list(syms)[:3] for s in pair]
+        findings.append(Finding(
+            id=_issue_id("wide_interface", packages=(label_a, label_b)),
+            kind="wide_interface",
+            title=f"Wide interface: {label_a} — {label_b}",
+            description=(
+                f"{width} distinct coupling points between {label_a} and {label_b} "
+                f"(median is {median_width}). Consider narrowing the interface."
+            ),
+            severity=min(1.0, 0.3 + (width - median_width) / max(width, 1) * 0.7),
+            confidence=0.6,
+            anchors=projection.anchors_for(node_ids_for_anchors, limit=2) if projection else [],
+        ))
+    return findings
+
+
+def _detect_phantom_imports(
+    graph: CodeGraph,
+    modules: list[Module],
+    projection: AnalysisProjection | None = None,
+) -> list[Finding]:
+    """Detect import edges between module pairs with no corresponding calls.
+
+    An import that is never followed by a call suggests unused coupling —
+    possibly a type-only import or dead dependency.
+    """
+    if not modules or len(modules) < 2:
+        return []
+
+    node_to_module: dict[str, int] = {}
+    module_by_id: dict[int, Module] = {}
+    for m in modules:
+        if m.unassigned:
+            continue
+        module_by_id[m.id] = m
+        for nid in m.node_ids:
+            node_to_module[nid] = m.id
+
+    # Collect cross-module import pairs and call pairs.
+    import_pairs: dict[tuple[int, int], list[tuple[str, str]]] = {}
+    call_pairs: set[tuple[int, int]] = set()
+
+    for edge in graph.edges_by_kind(EdgeKind.IMPORTS):
+        src_mod = node_to_module.get(edge.source)
+        tgt_mod = node_to_module.get(edge.target)
+        if src_mod is None or tgt_mod is None or src_mod == tgt_mod:
+            continue
+        pair = tuple(sorted((src_mod, tgt_mod)))
+        import_pairs.setdefault(pair, []).append((edge.source, edge.target))
+
+    for edge in graph.edges_by_kind(EdgeKind.CALLS):
+        src_mod = node_to_module.get(edge.source)
+        tgt_mod = node_to_module.get(edge.target)
+        if src_mod is None or tgt_mod is None or src_mod == tgt_mod:
+            continue
+        call_pairs.add(tuple(sorted((src_mod, tgt_mod))))
+
+    findings: list[Finding] = []
+    for pair, examples in import_pairs.items():
+        if pair in call_pairs:
+            continue
+        count = len(examples)
+        mod_a, mod_b = pair
+        label_a = _module_label(module_by_id[mod_a]) if mod_a in module_by_id else str(mod_a)
+        label_b = _module_label(module_by_id[mod_b]) if mod_b in module_by_id else str(mod_b)
+        node_ids = [s for src, tgt in examples[:3] for s in (src, tgt)]
+        findings.append(Finding(
+            id=_issue_id("phantom_import", packages=(label_a, label_b)),
+            kind="phantom_import",
+            title=f"Phantom import: {label_a} — {label_b}",
+            description=(
+                f"{count} import(s) between {label_a} and {label_b} with no "
+                f"corresponding calls — possibly unused coupling or type-only imports."
+            ),
+            severity=min(0.5, 0.2 + count * 0.1),
+            confidence=0.5,
+            anchors=projection.anchors_for(node_ids, limit=2) if projection else [],
+        ))
+    return findings
+
+
 def _build_findings(
     coverage: CoverageSummary,
     health: GraphHealth,
     dependencies: list[CrossPackageDependency],
     anomalies: list[Anomaly],
+    roles: list[RoleAssignment] | None = None,
+    projection: AnalysisProjection | None = None,
     package_fallback: bool = False,
+    self_edge_ratio: float = 0.0,
+    analysis_level: AnalysisLevel | None = None,
+    graph: CodeGraph | None = None,
+    modules: list[Module] | None = None,
+    detail_roles: list[RoleAssignment] | None = None,
+    module_detection: ModuleDetection | None = None,
 ) -> list[Finding]:
-    """Convert low-level diagnostics into a short findings list."""
+    """Convert low-level diagnostics into a prioritized findings list."""
     findings: list[Finding] = []
 
     if coverage.spectral_coverage_ratio < 0.75:
         findings.append(Finding(
+            id=_issue_id("coverage"),
             kind="coverage",
             title="Low spectral coverage",
             description=(
@@ -531,10 +505,28 @@ def _build_findings(
             confidence=0.9,
         ))
 
+    if (
+        self_edge_ratio > 0.7
+        and analysis_level is not None
+        and analysis_level != AnalysisLevel.SYMBOL
+    ):
+        findings.append(Finding(
+            id=_issue_id("self_edge_drop"),
+            kind="self_edge_drop",
+            title="High self-edge drop rate",
+            description=(
+                f"{self_edge_ratio:.0%} of scoped edges collapsed into self-edges at "
+                f"{analysis_level.value} level. Consider --level symbol for richer analysis."
+            ),
+            severity=min(1.0, 0.3 + self_edge_ratio * 0.5),
+            confidence=0.9,
+        ))
+
     # Skip module separation finding when using package fallback — the module
     # sizes reflect intentional package structure, not clustering quality.
     if health.largest_module_ratio >= 0.5 and not package_fallback:
         findings.append(Finding(
+            id=_issue_id("module_separation"),
             kind="module_separation",
             title="Weak module separation",
             description=(
@@ -558,6 +550,7 @@ def _build_findings(
         for dependency in pair_dependencies:
             anchors.extend(dependency.anchors)
         findings.append(Finding(
+            id=_issue_id("reverse_dependency", packages=pair),
             kind="reverse_dependency",
             title=f"Reverse dependency between {pair[0]} and {pair[1]}",
             description=(
@@ -568,20 +561,177 @@ def _build_findings(
             anchors=anchors[:3],
         ))
 
-    for anomaly in anomalies[:5]:
+    # Build role lookup for spectral outlier severity scaling.
+    _role_weights = {
+        StructuralRole.HUB: 1.5,
+        StructuralRole.BRIDGE: 1.3,
+        StructuralRole.ENTRY_POINT: 1.2,
+        StructuralRole.UTILITY: 1.1,
+    }
+    detail_role_map: dict[str, StructuralRole] = {}
+    if detail_roles:
+        for r in detail_roles:
+            detail_role_map[r.node_id] = r.role
+
+    # Suppress spectral outlier findings when clustering quality is too low
+    # for outlier detection to be informative.  Mirrors the package_fallback
+    # pattern used for module-separation above.
+    suppress_outliers = (
+        health.largest_module_ratio >= 0.8
+        or (module_detection is not None
+            and module_detection.silhouette is not None
+            and module_detection.silhouette < 0.3)
+    )
+
+    # Build role lookup for entry-point filtering of layer discrepancies.
+    report_role_map: dict[str, StructuralRole] = {}
+    if roles:
+        for r in roles:
+            report_role_map[r.node_id] = r.role
+
+    for anomaly in anomalies:
         if anomaly.kind == AnomalyKind.CROSS_MODULE:
             continue
+        if anomaly.kind == AnomalyKind.SPECTRAL_OUTLIER and suppress_outliers:
+            continue
+        # Entry points naturally span layers (high calls-out, low imports-in).
+        if anomaly.kind == AnomalyKind.LAYER_DISCREPANCY and anomaly.node_ids:
+            nid = anomaly.node_ids[0]
+            node_role = report_role_map.get(nid) or detail_role_map.get(nid)
+            if node_role == StructuralRole.ENTRY_POINT:
+                continue
+        severity = anomaly.severity
+        if anomaly.kind == AnomalyKind.SPECTRAL_OUTLIER and anomaly.node_ids:
+            role = detail_role_map.get(anomaly.node_ids[0])
+            if role:
+                severity = min(1.0, severity * _role_weights.get(role, 1.0))
         findings.append(Finding(
+            id=_issue_id(anomaly.kind.value, node_ids=anomaly.node_ids),
             kind=anomaly.kind.value,
             title=_anomaly_title(anomaly.kind),
             description=anomaly.description,
-            severity=anomaly.severity,
+            severity=severity,
             confidence=anomaly.confidence,
             anchors=anomaly.anchors,
         ))
 
+    # Orphan findings — structurally disconnected nodes, possible dead code.
+    if roles:
+        orphan_roles = [r for r in roles if r.role == StructuralRole.ORPHAN]
+        if len(orphan_roles) > 3:
+            node_ids = [r.node_id for r in orphan_roles]
+            anchors = projection.anchors_for(node_ids, limit=3) if projection else []
+            names = ", ".join(node_ids[:4])
+            if len(node_ids) > 4:
+                names += ", ..."
+            findings.append(Finding(
+                id=_issue_id("orphan", node_ids=node_ids),
+                kind="orphan",
+                title=f"{len(orphan_roles)} orphan modules — possible dead code",
+                description=names,
+                severity=min(0.5, len(orphan_roles) * 0.1),
+                confidence=0.7,
+                anchors=anchors,
+            ))
+        else:
+            for role in orphan_roles:
+                anchors = projection.anchors_for([role.node_id], limit=1) if projection else []
+                findings.append(Finding(
+                    id=_issue_id("orphan", node_ids=[role.node_id]),
+                    kind="orphan",
+                    title=f"Orphan: {role.node_id}",
+                    description="No inbound or outbound edges — may be dead code",
+                    severity=0.3,
+                    confidence=0.7,
+                    anchors=anchors,
+                ))
+
+    # God module detection: modules with outsized edge share or size.
+    # Suppress when clustering quality is too low — a "god module" that
+    # contains everything is a clustering failure, not a code problem.
+    if graph is not None and modules and not suppress_outliers:
+        clustered = [m for m in modules if not m.unassigned]
+        if len(clustered) >= 2:
+            module_sizes = sorted(m.size for m in clustered)
+            median_size = module_sizes[(len(module_sizes) - 1) // 2]
+            total_edges = graph.edge_count
+            k = len(clustered)
+            fair_share = 2.0 / k if k > 0 else 1.0
+
+            for m in clustered:
+                label = _module_label(m)
+                member_set = set(m.node_ids)
+                edge_count = sum(
+                    1 for e in graph.edges
+                    if e.source in member_set or e.target in member_set
+                )
+                edge_share = edge_count / max(total_edges, 1)
+                if edge_share > 2 * fair_share or m.size > 3 * median_size:
+                    findings.append(Finding(
+                        id=_issue_id("god_module", node_ids=[label]),
+                        kind="god_module",
+                        title=f"God module: {label}",
+                        description=(
+                            f"Module {label} has {m.size} nodes ({edge_share:.0%} of edges). "
+                            f"Consider splitting it into smaller, focused modules."
+                        ),
+                        severity=min(1.0, 0.4 + edge_share),
+                        confidence=0.7,
+                        anchors=projection.anchors_for(m.node_ids[:3], limit=2) if projection else [],
+                    ))
+
+    # Low cohesion detection: modules where internal spread exceeds distinctness.
+    if modules:
+        for m in modules:
+            if m.unassigned or m.size < 4:
+                continue
+            if m.cohesion is None or m.separation is None:
+                continue
+            if m.separation <= 0:
+                continue
+            if m.cohesion > m.separation:
+                label = _module_label(m)
+                ratio = (m.cohesion - m.separation) / m.cohesion
+                findings.append(Finding(
+                    id=_issue_id("low_cohesion", node_ids=[label]),
+                    kind="low_cohesion",
+                    title=f"Low cohesion: {label}",
+                    description=(
+                        f"Module {label} has higher internal spread ({m.cohesion:.3f}) "
+                        f"than distinctness ({m.separation:.3f}) — members may belong "
+                        f"to different concerns."
+                    ),
+                    severity=min(1.0, 0.3 + ratio * 0.7),
+                    confidence=m.confidence,
+                    anchors=projection.anchors_for(m.node_ids[:3], limit=2) if projection else [],
+                ))
+
+    # Fragile hub detection: HUB nodes that are also high-betweenness bottlenecks.
+    if roles:
+        hub_roles = [r for r in roles if r.role == StructuralRole.HUB]
+        if hub_roles:
+            all_btw = [r.betweenness for r in roles if r.betweenness > 0]
+            if all_btw:
+                btw_90 = sorted(all_btw)[min(int(len(all_btw) * 0.9), len(all_btw) - 1)]
+                for r in hub_roles:
+                    if r.betweenness >= btw_90:
+                        deg_pct = r.degree / max(r.degree for rr in roles) if roles else 0
+                        btw_pct = r.betweenness / max(all_btw) if all_btw else 0
+                        findings.append(Finding(
+                            id=_issue_id("fragile_hub", node_ids=[r.node_id]),
+                            kind="fragile_hub",
+                            title=f"Fragile hub: {r.node_id}",
+                            description=(
+                                f"{r.node_id} is both a structural hub (degree {r.degree}) "
+                                f"and a high-betweenness bottleneck — single point of failure."
+                            ),
+                            severity=min(1.0, 0.5 + btw_pct * deg_pct * 0.5),
+                            confidence=0.8,
+                            anchors=projection.anchors_for([r.node_id], limit=1) if projection else [],
+                        ))
+
     findings.sort(key=lambda finding: (-finding.severity, -finding.confidence, finding.title))
-    return findings[:7]
+    return findings
 
 
 def _anomaly_title(kind: AnomalyKind) -> str:
@@ -590,8 +740,124 @@ def _anomaly_title(kind: AnomalyKind) -> str:
         AnomalyKind.CROSS_MODULE: "Unexpected reverse boundary",
         AnomalyKind.SPECTRAL_OUTLIER: "Structural outlier",
         AnomalyKind.CYCLE_MEMBER: "Dependency cycle",
+        AnomalyKind.LAYER_DISCREPANCY: "Cross-layer discrepancy",
     }
     return titles[kind]
+
+
+def _build_dual_projection(
+    graph: CodeGraph,
+    config: AnalysisProjectionConfig,
+) -> tuple[AnalysisProjection, AnalysisProjection, dict[str, str], bool]:
+    """Build detail (SYMBOL) and report (user-level) projections.
+
+    Returns:
+        (detail, report, symbol_to_report, is_same)
+    """
+    if config.level == AnalysisLevel.SYMBOL:
+        projection = build_projection(graph, config)
+        identity = {nid: nid for nid in projection.graph.nodes}
+        return projection, projection, identity, True
+
+    detail_config = AnalysisProjectionConfig(
+        level=AnalysisLevel.SYMBOL,
+        edge_kinds=config.edge_kinds,
+        layer_weights=config.layer_weights,
+        scope_roots=config.scope_roots,
+        internal_only=config.internal_only,
+        source_node_kinds=config.source_node_kinds,
+    )
+    detail = build_projection(graph, detail_config)
+    report = build_projection(graph, config)
+
+    # Map SYMBOL IDs to report-level IDs via shared raw node IDs
+    symbol_to_report: dict[str, str] = {}
+    for raw_id, symbol_id in detail.raw_to_projected.items():
+        if raw_id in report.raw_to_projected:
+            report_id = report.raw_to_projected[raw_id]
+            symbol_to_report[symbol_id] = report_id
+    return detail, report, symbol_to_report, False
+
+
+_ROLE_PRIORITY = {
+    StructuralRole.HUB: 0,
+    StructuralRole.BRIDGE: 1,
+    StructuralRole.ENTRY_POINT: 2,
+    StructuralRole.UTILITY: 3,
+    StructuralRole.ORPHAN: 4,
+    StructuralRole.REGULAR: 5,
+}
+
+
+def _aggregate_roles_to_report_level(
+    symbol_roles: list[RoleAssignment],
+    symbol_to_report: dict[str, str],
+) -> list[RoleAssignment]:
+    """Pick the most structurally significant role per report-level node.
+
+    ORPHAN requires unanimity: a report-level node is ORPHAN only if every
+    symbol-level child is ORPHAN.  If any child is reachable, the module
+    is not dead code.
+    """
+    children: dict[str, list[RoleAssignment]] = {}
+    for role in symbol_roles:
+        report_id = symbol_to_report.get(role.node_id)
+        if report_id is None:
+            continue
+        children.setdefault(report_id, []).append(role)
+
+    result: list[RoleAssignment] = []
+    for report_id, child_roles in children.items():
+        all_orphan = all(r.role == StructuralRole.ORPHAN for r in child_roles)
+
+        chosen: RoleAssignment | None = None
+        for role in child_roles:
+            if role.role == StructuralRole.ORPHAN and not all_orphan:
+                continue  # Skip non-unanimous ORPHAN
+            if chosen is None or _ROLE_PRIORITY.get(role.role, 9) < _ROLE_PRIORITY.get(chosen.role, 9):
+                chosen = role
+
+        if chosen is None:
+            chosen = child_roles[0]
+
+        result.append(RoleAssignment(
+            node_id=report_id,
+            role=chosen.role,
+            degree=max(r.degree for r in child_roles),
+            betweenness=max(r.betweenness for r in child_roles),
+            in_degree=max(r.in_degree for r in child_roles),
+            out_degree=max(r.out_degree for r in child_roles),
+        ))
+    return result
+
+
+def _aggregate_modules_to_report_level(
+    modules: list[Module],
+    symbol_to_report: dict[str, str],
+) -> list[Module]:
+    """Map module members from SYMBOL to report-level IDs, deduplicating."""
+    result: list[Module] = []
+    for module in modules:
+        report_ids = sorted(set(
+            symbol_to_report[nid]
+            for nid in module.node_ids
+            if nid in symbol_to_report
+        ))
+        if not report_ids and not module.node_ids:
+            report_ids = []
+        elif not report_ids:
+            # Fallback: keep original IDs if no mapping exists
+            report_ids = list(module.node_ids)
+        result.append(Module(
+            id=module.id,
+            node_ids=report_ids,
+            component_id=module.component_id,
+            cohesion=module.cohesion,
+            separation=module.separation,
+            confidence=module.confidence,
+            unassigned=module.unassigned,
+        ))
+    return result
 
 
 def analyze(
@@ -603,6 +869,10 @@ def analyze(
 ) -> StructuralAnalysis:
     """
     Run the full structural analysis pipeline.
+
+    Internally runs spectral decomposition, role classification, and anomaly
+    detection at SYMBOL level for maximum information, then aggregates to
+    the user's requested level for reporting.
 
     Args:
         graph: Parsed code graph.
@@ -620,19 +890,24 @@ def analyze(
             combined=combined,
         )
 
-    projection = build_projection(graph, projection_config)
-    analysis_graph = projection.graph
+    detail, report, symbol_to_report, is_same = _build_dual_projection(
+        graph, projection_config,
+    )
+    detail_graph = detail.graph
+    report_graph = report.graph
     active_edge_kinds = list(projection_config.edge_kinds)
     use_multilayer = combined or len(active_edge_kinds) > 1
 
+    # Spectral decomposition on the DETAIL (symbol-level) graph
     if use_multilayer:
         spectral = spectral_decomposition_multilayer(
-            analysis_graph,
+            detail_graph,
             layer_weights=projection_config.layer_weights,
         )
     else:
-        spectral = spectral_decomposition(analysis_graph, edge_kind=active_edge_kinds[0])
+        spectral = spectral_decomposition(detail_graph, edge_kind=active_edge_kinds[0])
 
+    # Module detection on DETAIL spectral result
     module_detection = detect_modules(spectral, n_modules=n_modules) if spectral else ModuleDetection(
         modules=[],
         chosen_k=None,
@@ -641,27 +916,76 @@ def analyze(
         clustered_node_count=0,
         unassigned_node_count=0,
     )
-    roles = classify_roles(analysis_graph, edge_kinds=active_edge_kinds)
+
+    # Roles on DETAIL graph
+    detail_roles = classify_roles(detail_graph, edge_kinds=active_edge_kinds)
+
+    # Anomalies on DETAIL graph
     anomalies = detect_anomalies(
-        analysis_graph,
+        detail_graph,
         spectral,
         module_detection.modules,
         edge_kind=active_edge_kinds[0],
         edge_kinds=active_edge_kinds,
-        projection=projection,
+        projection=detail,
     )
-    dependencies = _collect_cross_package_dependencies(analysis_graph, projection)
-    health = _compute_health(analysis_graph, roles, module_detection.modules)
-    coverage = _compute_coverage(graph, projection, spectral)
-    findings = _build_findings(coverage, health, dependencies, anomalies, module_detection.package_fallback)
+
+    # Cross-package dependencies on REPORT graph
+    dependencies = _collect_cross_package_dependencies(report_graph, report)
+
+    # Aggregate to report level
+    if is_same:
+        report_roles = detail_roles
+        report_modules = module_detection.modules
+    else:
+        report_roles = _aggregate_roles_to_report_level(detail_roles, symbol_to_report)
+        report_modules = _aggregate_modules_to_report_level(
+            module_detection.modules, symbol_to_report,
+        )
+
+    report_module_detection = ModuleDetection(
+        modules=report_modules,
+        chosen_k=module_detection.chosen_k,
+        silhouette=module_detection.silhouette,
+        component_count=module_detection.component_count,
+        clustered_node_count=module_detection.clustered_node_count,
+        unassigned_node_count=module_detection.unassigned_node_count,
+        package_fallback=module_detection.package_fallback,
+    )
+
+    health = _compute_health(report_graph, report_roles, report_modules)
+    coverage = _compute_coverage(graph, report, spectral)
+    findings = _build_findings(
+        coverage, health, dependencies, anomalies,
+        roles=report_roles, projection=report,
+        package_fallback=module_detection.package_fallback,
+        self_edge_ratio=report.self_edge_ratio,
+        analysis_level=projection_config.level,
+        graph=report_graph,
+        modules=report_modules,
+        detail_roles=detail_roles,
+        module_detection=module_detection,
+    )
+
+    # Wide interface detection on detail graph (symbol-level coupling points).
+    findings.extend(_detect_wide_interfaces(
+        detail_graph, module_detection.modules, detail,
+    ))
+
+    # Phantom import detection on detail graph (imports without calls).
+    findings.extend(_detect_phantom_imports(
+        detail_graph, module_detection.modules, detail,
+    ))
+
+    findings.sort(key=lambda f: (-f.severity, -f.confidence, f.title))
 
     return StructuralAnalysis(
         raw_graph=graph,
-        graph=analysis_graph,
-        projection=projection,
+        graph=report_graph,
+        projection=report,
         spectral=spectral,
-        module_detection=module_detection,
-        roles=roles,
+        module_detection=report_module_detection,
+        roles=report_roles,
         anomalies=anomalies,
         findings=findings,
         cross_package_dependencies=dependencies,

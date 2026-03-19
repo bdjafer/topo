@@ -19,7 +19,8 @@ def test_src_layout_module_ids(tmp_path: Path):
 
     graph = parse_python_project(tmp_path)
 
-    assert "mypkg" in graph.nodes
+    # Empty __init__.py is a namespace marker, not a code entity — no node
+    assert "mypkg" not in graph.nodes
     assert "mypkg.core" in graph.nodes
     assert "mypkg.core.helper" in graph.nodes
 

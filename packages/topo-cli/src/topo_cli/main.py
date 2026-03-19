@@ -57,9 +57,19 @@ def main(argv: list[str] | None = None) -> None:
         help="Analysis level (package, module, symbol)",
     )
     parser.add_argument(
+        "--verbose", "-v",
+        action="store_true",
+        help="Show full module members, all roles, and acknowledged issues",
+    )
+    parser.add_argument(
         "--diagnostics",
         action="store_true",
         help="Include low-level spectral diagnostics in text output",
+    )
+    parser.add_argument(
+        "--no-color",
+        action="store_true",
+        help="Disable colored output",
     )
 
     args = parser.parse_args(argv)
@@ -107,7 +117,16 @@ def main(argv: list[str] | None = None) -> None:
     if args.as_json:
         print(json.dumps(result.to_dict(), indent=2))
     else:
-        print(result.summary(verbose=args.diagnostics))
+        ignores = policy.ignores if policy else {}
+        use_color = not args.no_color and sys.stdout.isatty()
+        print(result.summary(
+            verbose=args.verbose,
+            diagnostics=args.diagnostics,
+            ignores=ignores,
+            project_root=args.path.resolve(),
+            color=use_color,
+        ))
+
 
 def _resolve_scope_roots(
     path: Path,
@@ -134,6 +153,8 @@ def _resolve_analysis_level(
     if policy and policy.level is not None:
         return policy.level
     return AnalysisLevel.MODULE
+
+
 def _load_policy_or_exit(path: Path) -> AnalysisPolicy | None:
     """Load repo policy and turn parse errors into CLI-friendly failures."""
     try:

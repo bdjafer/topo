@@ -153,16 +153,29 @@ def _module_id(file: Path, root: Path) -> str:
     return ".".join(parts) if parts else rel.stem
 
 
+_STRUCTURAL_STMT_TYPES = (
+    ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef,
+    ast.Import, ast.ImportFrom,
+)
+
+
 def _extract_from_file(
     graph: CodeGraph, tree: ast.Module, file: Path, root: Path
 ) -> None:
-    """Extract nodes and edges from a single parsed file."""
-    mod_id = _module_id(file, root)
+    """Extract nodes and edges from a single parsed file.
 
-    # Module node
+    Files with no structural content (no classes, functions, or imports)
+    are skipped — they are namespace markers, not code entities.
+    """
+    children = list(ast.iter_child_nodes(tree))
+
+    if not any(isinstance(node, _STRUCTURAL_STMT_TYPES) for node in children):
+        return  # Namespace-only file (empty, docstring-only, etc.)
+
+    mod_id = _module_id(file, root)
     graph.add_node(Node(id=mod_id, kind=NodeKind.MODULE, file=file, line=1, name=mod_id.split(".")[-1]))
 
-    for node in ast.iter_child_nodes(tree):
+    for node in children:
         if isinstance(node, ast.ClassDef):
             _extract_class(graph, node, mod_id, file)
         elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):

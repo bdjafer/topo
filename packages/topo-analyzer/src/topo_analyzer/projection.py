@@ -21,6 +21,11 @@ DEFAULT_ANALYSIS_EDGE_KINDS: tuple[EdgeKind, ...] = (
     EdgeKind.IMPORTS,
     EdgeKind.INHERITS,
 )
+DEFAULT_ANALYSIS_LAYER_WEIGHTS: dict[EdgeKind, float] = {
+    EdgeKind.CALLS: 1.0,
+    EdgeKind.IMPORTS: 0.5,
+    EdgeKind.INHERITS: 0.8,
+}
 DEFAULT_SCOPE_PREFIXES: tuple[str, ...] = ("topo-",)
 POLICY_FILENAMES: tuple[str, ...] = ("topo.toml", ".topo.toml")
 
@@ -52,13 +57,14 @@ class AnalysisAnchor:
         }
 
 
-@dataclass(frozen=True)
+@dataclass
 class AnalysisPolicy:
     """Repo-level defaults for analysis execution."""
 
     path: Path
     scope: str | None = None
     level: AnalysisLevel | None = None
+    ignores: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -88,9 +94,11 @@ class AnalysisProjectionConfig:
     ) -> AnalysisProjectionConfig:
         """Build the default projection config for a single analysis run."""
         edge_kinds = DEFAULT_ANALYSIS_EDGE_KINDS if combined else (edge_kind,)
+        layer_weights = DEFAULT_ANALYSIS_LAYER_WEIGHTS if combined else None
         return cls(
             level=level,
             edge_kinds=edge_kinds,
+            layer_weights=layer_weights,
             scope_roots=scope_roots,
             internal_only=internal_only,
         )
@@ -113,6 +121,7 @@ class AnalysisProjection:
     scoped_edge_count: int
     raw_to_projected: dict[str, str]
     node_anchors: dict[str, list[AnalysisAnchor]] = field(default_factory=dict)
+    self_edge_count: int = 0
 
     def anchors_for(self, node_ids: list[str], limit: int = 3) -> list[AnalysisAnchor]:
         """Return representative anchors for one or more projected node IDs."""
@@ -152,6 +161,13 @@ class AnalysisProjection:
         if self.scoped_node_count == 0:
             return 0.0
         return self.graph.node_count / self.scoped_node_count
+
+    @property
+    def self_edge_ratio(self) -> float:
+        """Fraction of scoped edges that were dropped as self-edges."""
+        if self.scoped_edge_count == 0:
+            return 0.0
+        return self.self_edge_count / self.scoped_edge_count
 
 
 def discover_first_party_source_roots(
@@ -211,6 +227,7 @@ def build_projection(graph: CodeGraph, config: AnalysisProjectionConfig) -> Anal
     node_anchors: dict[str, list[AnalysisAnchor]] = {}
     projected_graph = CodeGraph()
     scoped_edge_count = 0
+    self_edge_count = 0
 
     for node_id, node in selected_nodes.items():
         projected_id = _projected_node_id(node_id, node.kind, config.level, module_nodes)
@@ -246,6 +263,7 @@ def build_projection(graph: CodeGraph, config: AnalysisProjectionConfig) -> Anal
         source = raw_to_projected[edge.source]
         target = raw_to_projected[edge.target]
         if source == target:
+            self_edge_count += 1
             continue
         projected_graph.add_edge(Edge(source=source, target=target, kind=edge.kind))
 
@@ -265,6 +283,7 @@ def build_projection(graph: CodeGraph, config: AnalysisProjectionConfig) -> Anal
         scoped_edge_count=scoped_edge_count,
         raw_to_projected=raw_to_projected,
         node_anchors=node_anchors,
+        self_edge_count=self_edge_count,
     )
 
 
@@ -313,10 +332,21 @@ def load_analysis_policy(start_path: Path) -> AnalysisPolicy | None:
     except ValueError as exc:
         raise ValueError(f"Invalid analysis.level in {policy_path}: {level_value}") from exc
 
+    ignore_section = analysis.get("ignore", {})
+    if not isinstance(ignore_section, dict):
+        raise ValueError(f"analysis.ignore must be a table in {policy_path}")
+    for key, value in ignore_section.items():
+        if not isinstance(value, str):
+            raise ValueError(
+                f"analysis.ignore values must be strings (justification) in {policy_path}, "
+                f"got {type(value).__name__} for key {key!r}"
+            )
+
     return AnalysisPolicy(
         path=policy_path,
         scope=scope,
         level=level,
+        ignores=dict(ignore_section),
     )
 
 

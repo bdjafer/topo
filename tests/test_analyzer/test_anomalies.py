@@ -11,6 +11,7 @@ from topo_analyzer.anomalies import (
     _detect_cross_module,
     _detect_spectral_outliers,
     _detect_cycles,
+    _detect_layer_discrepancies,
 )
 from topo_analyzer.modules import Module
 from topo_analyzer.spectral import SpectralComponent, SpectralResult
@@ -185,3 +186,105 @@ def test_spectral_outlier_multi_component_no_crash():
     assert isinstance(anomalies, list)
     outlier_nodes = {nid for a in anomalies for nid in a.node_ids}
     assert "a3" in outlier_nodes or "b2" in outlier_nodes
+
+
+def test_layer_discrepancy_per_kind_normalization():
+    """MODULE nodes with high imports and zero calls should not be flagged.
+
+    The detector computes percentiles within each NodeKind group, so
+    MODULE nodes are compared to other MODULEs — making the typical
+    Python pattern (high imports, zero calls) unremarkable.
+    """
+    g = CodeGraph()
+    # 4 MODULE nodes: all have high imports, zero calls (normal Python pattern)
+    for i in range(4):
+        g.add_node(Node(id=f"mod{i}", kind=NodeKind.MODULE, file=Path(f"mod{i}.py"), line=1, name=f"mod{i}"))
+    for i in range(4):
+        for j in range(4):
+            if i != j:
+                g.add_edge(Edge(source=f"mod{i}", target=f"mod{j}", kind=EdgeKind.IMPORTS))
+
+    # 4 FUNCTION nodes: all have calls, zero imports (normal Python pattern)
+    for i in range(4):
+        g.add_node(Node(id=f"fn{i}", kind=NodeKind.FUNCTION, file=Path(f"fn{i}.py"), line=1, name=f"fn{i}"))
+    for i in range(4):
+        for j in range(4):
+            if i != j:
+                g.add_edge(Edge(source=f"fn{i}", target=f"fn{j}", kind=EdgeKind.CALLS))
+
+    anomalies = _detect_layer_discrepancies(g, [EdgeKind.CALLS, EdgeKind.IMPORTS])
+
+    # No discrepancies: within their kind, each group has uniform degrees
+    # across the layer they participate in, and the min_deg guard excludes
+    # nodes absent from a layer.
+    assert len(anomalies) == 0
+
+
+def test_layer_discrepancy_flags_genuine_cross_layer_tension():
+    """A FUNCTION node with high calls AND high imports but very different
+    percentiles within its kind group should be flagged."""
+    g = CodeGraph()
+    # 5 functions: fn0-fn3 have moderate calls, fn4 has extreme calls
+    for i in range(5):
+        g.add_node(Node(id=f"fn{i}", kind=NodeKind.FUNCTION, file=Path(f"fn.py"), line=i, name=f"fn{i}"))
+    # fn0-fn3: each has 1 call edge and 4 import edges
+    for i in range(4):
+        g.add_edge(Edge(source=f"fn{i}", target=f"fn{(i+1)%4}", kind=EdgeKind.CALLS))
+        for j in range(4):
+            if i != j:
+                g.add_edge(Edge(source=f"fn{i}", target=f"fn{j}", kind=EdgeKind.IMPORTS))
+    # fn4: has 4 call edges but only 2 import edges — calls-heavy, imports-light
+    for i in range(4):
+        g.add_edge(Edge(source=f"fn4", target=f"fn{i}", kind=EdgeKind.CALLS))
+    g.add_edge(Edge(source=f"fn4", target=f"fn0", kind=EdgeKind.IMPORTS))
+    g.add_edge(Edge(source=f"fn4", target=f"fn1", kind=EdgeKind.IMPORTS))
+
+    anomalies = _detect_layer_discrepancies(g, [EdgeKind.CALLS, EdgeKind.IMPORTS])
+
+    # fn4 should be flagged: calls-central (highest among FUNCTIONs) but
+    # imports-peripheral (lowest among FUNCTIONs)
+    flagged = {nid for a in anomalies for nid in a.node_ids}
+    assert "fn4" in flagged
+
+
+def test_layer_discrepancy_absent_layer_skipped():
+    """A node with degree < 2 in one layer should not be flagged."""
+    g = CodeGraph()
+    for i in range(5):
+        g.add_node(Node(id=f"fn{i}", kind=NodeKind.FUNCTION, file=Path(f"fn.py"), line=i, name=f"fn{i}"))
+    # All functions have calls edges
+    for i in range(5):
+        g.add_edge(Edge(source=f"fn{i}", target=f"fn{(i+1)%5}", kind=EdgeKind.CALLS))
+    # Only fn0 has import edges (degree 0 in imports for fn1-fn4)
+    for i in range(1, 5):
+        g.add_edge(Edge(source="fn0", target=f"fn{i}", kind=EdgeKind.IMPORTS))
+
+    anomalies = _detect_layer_discrepancies(g, [EdgeKind.CALLS, EdgeKind.IMPORTS])
+
+    # fn1-fn4 have imports_degree=1 (inbound from fn0) and calls_degree=2
+    # fn0 has imports_degree=4 and calls_degree=2
+    # fn1-fn4 are filtered by min_deg < 2 guard (imports_degree=1).
+    # fn0 passes min_deg but has no large percentile gap.
+    for a in anomalies:
+        for nid in a.node_ids:
+            # Every flagged node should have degree >= 2 in both layers
+            node_calls_deg = sum(1 for e in g.edges_by_kind(EdgeKind.CALLS)
+                                 if e.source == nid or e.target == nid)
+            node_imports_deg = sum(1 for e in g.edges_by_kind(EdgeKind.IMPORTS)
+                                  if e.source == nid or e.target == nid)
+            assert node_calls_deg >= 2
+            assert node_imports_deg >= 2
+
+
+def test_layer_discrepancy_small_kind_group_skipped():
+    """A kind group with fewer than 5 nodes produces no findings."""
+    g = CodeGraph()
+    # Only 2 MODULE nodes (too few for percentiles)
+    g.add_node(Node(id="m0", kind=NodeKind.MODULE, file=Path("m0.py"), line=1, name="m0"))
+    g.add_node(Node(id="m1", kind=NodeKind.MODULE, file=Path("m1.py"), line=1, name="m1"))
+    g.add_edge(Edge(source="m0", target="m1", kind=EdgeKind.IMPORTS))
+    g.add_edge(Edge(source="m0", target="m1", kind=EdgeKind.CALLS))
+    g.add_edge(Edge(source="m1", target="m0", kind=EdgeKind.CALLS))
+
+    anomalies = _detect_layer_discrepancies(g, [EdgeKind.CALLS, EdgeKind.IMPORTS])
+    assert len(anomalies) == 0

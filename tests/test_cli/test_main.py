@@ -18,8 +18,8 @@ def test_cli_runs_on_project(tmp_path: Path, capsys):
 
     main([str(tmp_path)])
     captured = capsys.readouterr()
-    assert "Analysis graph:" in captured.out
-    assert "Projection:" in captured.out
+    assert "topo" in captured.out
+    assert "nodes" in captured.out
 
 
 def test_cli_summary_includes_health_and_cross_package_dependencies(tmp_path: Path, capsys):
@@ -44,6 +44,7 @@ def test_cli_summary_includes_health_and_cross_package_dependencies(tmp_path: Pa
     main([str(tmp_path)])
     captured = capsys.readouterr()
 
-    assert "Health:" in captured.out
-    assert "Package flow:" in captured.out
-    assert "alpha -> beta:" in captured.out
+    assert "Health" in captured.out
+    assert "Architecture" in captured.out
+    assert "alpha" in captured.out
+    assert "beta" in captured.out

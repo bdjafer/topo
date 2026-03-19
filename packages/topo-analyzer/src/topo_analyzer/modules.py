@@ -254,7 +254,10 @@ def _silhouette_score(X: np.ndarray, labels: np.ndarray, max_sample: int = 5000)
             silhouettes[si] = 0.0
             continue
 
-        # a = mean distance to same-cluster centroid (fast approximation)
+        # a = mean distance to same-cluster centroid (fast approximation).
+        # Exact pairwise distances are mathematically purer but produce
+        # systematically lower silhouette scores that break k-selection
+        # thresholds tuned for the centroid approximation.
         a = np.linalg.norm(X[i] - centroids[my_label])
 
         # b = distance to nearest other cluster centroid

@@ -1,3 +1,9 @@
 [analysis]
 scope = "first-party"
 level = "module"
+
+[analysis.ignore]
+"fragile-hub:topo_analyzer.analysis" = "Pipeline orchestrator; hub status is by design (degree inflated by symbol-level aggregation)"
+"module-separation:weak" = "Genuine property of a small cohesive monorepo with 3-package pipeline"
+"fragile-hub:topo_analyzer.modules" = "Stable, focused hub — defines core types used across analysis pipeline"
+"phantom-import:topo_analyzer,topo_benchmark" = "Type-only import for compare module; low severity, correctly hedged"

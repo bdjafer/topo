@@ -14,7 +14,7 @@ from enum import Enum
 import networkx as nx
 import numpy as np
 
-from topo_parser.graph import CodeGraph, EdgeKind
+from topo_parser.graph import CodeGraph, EdgeKind, NodeKind
 from topo_analyzer.modules import Module
 from topo_analyzer.projection import AnalysisAnchor, AnalysisProjection
 from topo_analyzer.spectral import SpectralResult
@@ -26,6 +26,7 @@ class AnomalyKind(Enum):
     CROSS_MODULE = "cross_module"
     SPECTRAL_OUTLIER = "spectral_outlier"
     CYCLE_MEMBER = "cycle_member"
+    LAYER_DISCREPANCY = "layer_discrepancy"
 
 
 @dataclass
@@ -56,6 +57,7 @@ def detect_anomalies(
     if spectral and modules:
         anomalies.extend(_detect_spectral_outliers(spectral, modules, projection))
     anomalies.extend(_detect_cycles(graph, kinds, projection))
+    anomalies.extend(_detect_layer_discrepancies(graph, kinds, projection))
     return sorted(anomalies, key=lambda anomaly: (-anomaly.severity, -anomaly.confidence))
 
 
@@ -184,6 +186,15 @@ def _detect_cross_module(
     return anomalies
 
 
+def _module_label_for_anomaly(module: Module) -> str:
+    """Derive a human-readable label from a module's member IDs."""
+    if not module.node_ids:
+        return f"module_{module.id}"
+    prefixes = [nid.split(".")[0] for nid in module.node_ids]
+    common = max(set(prefixes), key=prefixes.count)
+    return common
+
+
 def _detect_spectral_outliers(
     spectral: SpectralResult,
     modules: list[Module],
@@ -191,9 +202,25 @@ def _detect_spectral_outliers(
     threshold_sigma: float = 2.0,
 ) -> list[Anomaly]:
     """Find nodes whose spectral fingerprint is far from their module centroid."""
-    anomalies: list[Anomaly] = []
+    # Precompute centroids for all non-trivial modules.
+    module_centroids: dict[int, np.ndarray] = {}
+    module_labels: dict[int, str] = {}
     for module in modules:
         if module.unassigned or len(module.node_ids) < 3:
+            continue
+        fps = []
+        for nid in module.node_ids:
+            try:
+                fps.append(spectral.fingerprint(nid))
+            except KeyError:
+                continue
+        if len(fps) >= 3:
+            module_centroids[module.id] = np.vstack(fps).mean(axis=0)
+            module_labels[module.id] = _module_label_for_anomaly(module)
+
+    anomalies: list[Anomaly] = []
+    for module in modules:
+        if module.id not in module_centroids:
             continue
 
         fingerprints: list[np.ndarray] = []
@@ -208,7 +235,7 @@ def _detect_spectral_outliers(
             continue
 
         vectors = np.vstack(fingerprints)
-        centroid = vectors.mean(axis=0)
+        centroid = module_centroids[module.id]
         distances = np.linalg.norm(vectors - centroid, axis=1)
         mean_dist = float(distances.mean())
         std_dist = float(distances.std())
@@ -219,10 +246,27 @@ def _detect_spectral_outliers(
             z_score = (distances[index] - mean_dist) / std_dist
             if z_score <= threshold_sigma:
                 continue
+
+            # Find nearest alternative module.
+            fp = fingerprints[index]
+            nearest_label = ""
+            nearest_dist = float("inf")
+            for other_id, other_centroid in module_centroids.items():
+                if other_id == module.id:
+                    continue
+                d = float(np.linalg.norm(fp - other_centroid))
+                if d < nearest_dist:
+                    nearest_dist = d
+                    nearest_label = module_labels.get(other_id, str(other_id))
+
+            desc = f"Node {node_id} is {z_score:.1f}σ from module {module.id} centroid"
+            if nearest_label:
+                desc += f"; nearest alternative: {nearest_label}"
+
             anomalies.append(Anomaly(
                 kind=AnomalyKind.SPECTRAL_OUTLIER,
                 node_ids=[node_id],
-                description=f"Node {node_id} is {z_score:.1f}σ from module {module.id} centroid",
+                description=desc,
                 severity=min(1.0, z_score / 4.0),
                 confidence=max(0.4, module.confidence),
                 anchors=projection.anchors_for([node_id], limit=1) if projection else [],
@@ -261,6 +305,134 @@ def _detect_cycles(
             confidence=min(1.0, 0.4 + len(node_ids) / 10.0),
             anchors=projection.anchors_for(node_ids) if projection else [],
         ))
+    return anomalies
+
+
+def _detect_layer_discrepancies(
+    graph: CodeGraph,
+    edge_kinds: list[EdgeKind],
+    projection: AnalysisProjection | None = None,
+    gap_threshold: float = 0.4,
+) -> list[Anomaly]:
+    """Detect nodes with large degree percentile gaps between layers.
+
+    A node that is central in one relationship layer but peripheral in another
+    reveals architectural tension — different coupling types disagree about the
+    node's structural role.
+
+    Percentiles are computed within each NodeKind group (MODULE, CLASS,
+    FUNCTION) rather than globally. This prevents false positives from
+    inherent kind-level differences — e.g., MODULE nodes naturally have high
+    import degree and zero calls degree in Python.
+    """
+    if len(edge_kinds) < 2:
+        return []
+
+    node_ids = list(graph.nodes)
+    if not node_ids:
+        return []
+
+    # Group nodes by kind for per-kind percentile computation.
+    kind_groups: dict[NodeKind, list[str]] = {}
+    for nid in node_ids:
+        node = graph.nodes[nid]
+        kind_groups.setdefault(node.kind, []).append(nid)
+
+    # Compute degree per layer for each node.
+    layer_degrees: dict[EdgeKind, dict[str, int]] = {}
+    for kind in edge_kinds:
+        degrees: dict[str, int] = {nid: 0 for nid in node_ids}
+        for edge in graph.edges_by_kind(kind):
+            if edge.source in degrees:
+                degrees[edge.source] += 1
+            if edge.target in degrees:
+                degrees[edge.target] += 1
+        layer_degrees[kind] = degrees
+
+    # Compute percentile rank per layer, within each NodeKind group.
+    # Skip layers with no edges — all nodes tied at degree 0 is uninformative.
+    # Skip kind groups with fewer than 3 nodes — too few for meaningful
+    # percentiles.
+    layer_percentiles: dict[EdgeKind, dict[str, float]] = {}
+    for kind in edge_kinds:
+        degrees = layer_degrees[kind]
+        if not degrees or max(degrees.values()) == 0:
+            continue
+        pcts: dict[str, float] = {}
+        for _node_kind, group_nids in kind_groups.items():
+            if len(group_nids) < 5:
+                continue
+            group_degrees = sorted(degrees[nid] for nid in group_nids)
+            gn = len(group_degrees)
+            for nid in group_nids:
+                rank = sum(1 for d in group_degrees if d <= degrees[nid])
+                pcts[nid] = rank / gn
+        layer_percentiles[kind] = pcts
+
+    active_kinds = [k for k in edge_kinds if k in layer_percentiles]
+    if len(active_kinds) < 2:
+        return []
+
+    anomalies: list[Anomaly] = []
+    kind_labels = {
+        EdgeKind.CALLS: "calls",
+        EdgeKind.IMPORTS: "imports",
+        EdgeKind.INHERITS: "inherits",
+        EdgeKind.CONTAINS: "contains",
+    }
+
+    for nid in node_ids:
+        max_deg = max(layer_degrees[k].get(nid, 0) for k in active_kinds)
+        if max_deg < 2:
+            continue
+
+        # Require meaningful participation in both compared layers — a single
+        # edge is too weak to distinguish "peripheral" from "barely present."
+        min_deg = min(layer_degrees[k].get(nid, 0) for k in active_kinds)
+        if min_deg < 2:
+            continue
+
+        # Node must have percentiles in at least 2 layers (may be missing
+        # if its kind group was too small).
+        node_active = [k for k in active_kinds if nid in layer_percentiles[k]]
+        if len(node_active) < 2:
+            continue
+
+        best_gap = 0.0
+        best_pair: tuple[EdgeKind, EdgeKind] | None = None
+        for i, kind_a in enumerate(node_active):
+            for kind_b in node_active[i + 1:]:
+                pct_a = layer_percentiles[kind_a][nid]
+                pct_b = layer_percentiles[kind_b][nid]
+                gap = abs(pct_a - pct_b)
+                if gap > best_gap:
+                    best_gap = gap
+                    best_pair = (kind_a, kind_b)
+
+        if best_gap <= gap_threshold or best_pair is None:
+            continue
+
+        kind_a, kind_b = best_pair
+        pct_a = layer_percentiles[kind_a][nid]
+        pct_b = layer_percentiles[kind_b][nid]
+        label_a = kind_labels.get(kind_a, kind_a.value)
+        label_b = kind_labels.get(kind_b, kind_b.value)
+
+        # Order so the high-percentile layer is described as "central."
+        if pct_a >= pct_b:
+            desc = f"{nid} is {label_a}-central (p{pct_a:.0%}) but {label_b}-peripheral (p{pct_b:.0%})"
+        else:
+            desc = f"{nid} is {label_b}-central (p{pct_b:.0%}) but {label_a}-peripheral (p{pct_a:.0%})"
+
+        anomalies.append(Anomaly(
+            kind=AnomalyKind.LAYER_DISCREPANCY,
+            node_ids=[nid],
+            description=desc,
+            severity=min(1.0, 0.3 + best_gap * 0.7),
+            confidence=0.6,
+            anchors=projection.anchors_for([nid], limit=1) if projection else [],
+        ))
+
     return anomalies
 
 

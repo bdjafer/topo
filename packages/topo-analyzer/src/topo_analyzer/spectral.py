@@ -12,6 +12,7 @@ rather than O(n^2) with the number of nodes.
 
 from __future__ import annotations
 
+import warnings
 from collections import deque
 from dataclasses import dataclass
 
@@ -268,6 +269,13 @@ def spectral_decomposition_multilayer(
         SpectralResult, or None if the graph is too small.
     """
     if layer_weights is None:
+        warnings.warn(
+            "spectral_decomposition_multilayer() called without explicit layer_weights; "
+            "falling back to DEFAULT_LAYER_WEIGHTS. Pass weights explicitly via "
+            "AnalysisProjectionConfig.layer_weights.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         layer_weights = DEFAULT_LAYER_WEIGHTS
 
     node_ids = list(graph.nodes)
