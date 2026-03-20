@@ -16,8 +16,8 @@ from pathlib import Path
 
 from topo_parser.graph import CodeGraph, EdgeKind
 from topo_parser.python import parse_python_project
-from topo_analyzer.analysis import analyze
-from topo_analyzer.projection import (
+from topo_cli._rust_backend import is_full_available, run_full_analysis
+from topo_cli.projection import (
     AnalysisLevel,
     AnalysisPolicy,
     AnalysisProjectionConfig,
@@ -141,10 +141,6 @@ def _add_analysis_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--verbose", "-v", action="store_true", help="Show full details")
     parser.add_argument("--diagnostics", action="store_true", help="Show spectral diagnostics")
     parser.add_argument("--no-color", action="store_true", help="Disable colored output")
-    parser.add_argument(
-        "--backend", choices=["auto", "rust"], default="auto",
-        help="Compute backend (auto=scipy/numpy, rust=topo-core Rust engine)",
-    )
 
 
 def _run_analysis(
@@ -157,8 +153,12 @@ def _run_analysis(
 ) -> None:
     """Shared analysis + output logic."""
     import os
-    if getattr(args, "backend", "auto") == "rust":
-        os.environ["TOPO_BACKEND"] = "rust"
+    os.environ["TOPO_BACKEND"] = "rust"
+
+    if not is_full_available():
+        print("Error: topo-analyzer Rust backend is not installed. Install with: uv run maturin develop", file=sys.stderr)
+        sys.exit(1)
+
     level = _resolve_analysis_level(getattr(args, "level", None), policy)
     projection_config = AnalysisProjectionConfig.for_analysis(
         edge_kind=EdgeKind.CALLS if args.edge_kind == "combined" else EdgeKind(args.edge_kind),
@@ -166,23 +166,13 @@ def _run_analysis(
         level=level,
         scope_roots=scope_roots,
     )
-    if args.edge_kind == "combined":
-        result = analyze(
-            graph,
-            combined=True,
-            n_modules=args.n_modules,
-            projection_config=projection_config,
-        )
-    else:
-        edge_kind = EdgeKind(args.edge_kind)
-        result = analyze(
-            graph,
-            edge_kind=edge_kind,
-            n_modules=args.n_modules,
-            projection_config=projection_config,
-        )
 
-    data = result.to_dict()
+    data = run_full_analysis(
+        graph,
+        projection_config=projection_config,
+        n_modules=args.n_modules,
+    )
+
     if args.as_json:
         print(json.dumps(data, indent=2))
     else:

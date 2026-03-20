@@ -1,4 +1,4 @@
-/** TypeScript types matching the Rust topo-core API. */
+/** TypeScript types matching the Rust topo-analyzer API. */
 
 export interface NodeEntry {
   id: string;

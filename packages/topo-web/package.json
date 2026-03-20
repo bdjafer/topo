@@ -10,7 +10,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./wasm": "./wasm/topo_core_bg.wasm"
+    "./wasm": "./wasm/topo_analyzer_bg.wasm"
   },
   "files": [
     "dist/",
@@ -20,7 +20,7 @@
     "topo-wasm": "./bin/topo-wasm.mjs"
   },
   "scripts": {
-    "build:wasm": "cd ../topo-core && wasm-pack build --target web --features wasm --no-default-features --out-dir pkg && cp pkg/topo_core_bg.wasm ../topo-web/wasm/ && cp pkg/topo_core.js ../topo-web/wasm/ && cp pkg/topo_core.d.ts ../topo-web/wasm/",
+    "build:wasm": "cd ../topo-analyzer && wasm-pack build --target web --features wasm --no-default-features --out-dir pkg && cp pkg/topo_analyzer_bg.wasm ../topo-web/wasm/ && cp pkg/topo_analyzer.js ../topo-web/wasm/ && cp pkg/topo_analyzer.d.ts ../topo-web/wasm/",
     "build:ts": "tsc",
     "build:site": "vite build",
     "build": "npm run build:ts && npm run build:site",

@@ -18,8 +18,8 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, "../../..");
-const wasmPath = join(__dirname, "../../topo-core/pkg/topo_core_bg.wasm");
-const wasmJsPath = join(__dirname, "../../topo-core/pkg/topo_core.js");
+const wasmPath = join(__dirname, "../../topo-analyzer/pkg/topo_analyzer_bg.wasm");
+const wasmJsPath = join(__dirname, "../../topo-analyzer/pkg/topo_analyzer.js");
 
 const skipParse = process.argv.includes("--skip-parse");
 

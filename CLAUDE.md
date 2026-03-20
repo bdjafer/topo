@@ -2,11 +2,14 @@
 
 ## Project Structure
 
-Monorepo with three packages under `packages/`:
+Monorepo with packages under `packages/`:
 
-- **topo-parser**: Source code → typed multilayer graph. Parses Python codebases into nodes (functions, classes, modules) and edges (calls, imports, inheritance, co-location).
-- **topo-analyzer**: Graph → structural intelligence. Spectral decomposition, module detection, role classification, anomaly detection.
-- **topo-cli**: Developer-facing interface. CLI commands that run the pipeline and produce human/LLM-readable output.
+- **topo-parser** (Python): Source code → typed multilayer graph. Parses Python codebases into nodes (functions, classes, modules) and edges (calls, imports, inheritance, co-location).
+- **topo-analyzer** (Rust, via PyO3/maturin): Graph → structural intelligence. Spectral decomposition, module detection, role classification, anomaly detection. Exposes `topo_analyzer.analyze_full()` to Python.
+- **topo-cli** (Python): Developer-facing interface. CLI commands that run the pipeline and produce human/LLM-readable output. Contains `projection.py` (config/policy) and `_rust_backend.py` (Rust bridge).
+- **topo-formatter** (Python): Formats analysis output as text/JSON.
+- **topo-cli-rs** (Rust): Native Rust CLI (uses topo-analyzer directly).
+- **topo-web** (TypeScript): Browser UI via WASM build of topo-analyzer.
 
 ## Development
 

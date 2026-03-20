@@ -6,7 +6,7 @@
 
 ## Build the WASM binary (requires wasm-pack + Rust toolchain)
 wasm-build:
-	cd packages/topo-core && \
+	cd packages/topo-analyzer && \
 		wasm-pack build --target web --features wasm --no-default-features --out-dir pkg
 
 ## Parse this codebase and analyze it via WASM
@@ -38,10 +38,14 @@ analyze:
 
 .PHONY: rust-test rust-build
 
-## Run Rust unit tests
+## Run Rust unit tests (all workspace crates)
 rust-test:
-	cd packages/topo-core && cargo test
+	cargo test --workspace
 
-## Build the Rust crate (native, not WASM)
+## Build the Rust crates (native, not WASM)
 rust-build:
-	cd packages/topo-core && cargo build --release
+	cargo build --workspace --release
+
+## Analyze the Rust analyzer crate with itself
+rust-analyze:
+	cargo run -p topo-cli-rs -- packages/topo-analyzer/

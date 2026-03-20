@@ -1,0 +1,7 @@
+[workspace]
+resolver = "2"
+members = [
+    "packages/topo-analyzer",
+    "packages/topo-cli-rs",
+    "packages/topo-parser-rs",
+]

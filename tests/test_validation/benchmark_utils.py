@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+import os
 from collections import defaultdict
 from math import comb, log
 from pathlib import Path
 
-from topo_analyzer.analysis import StructuralAnalysis, analyze
-from topo_analyzer.projection import (
+from topo_cli._rust_backend import run_full_analysis
+from topo_cli.projection import (
     AnalysisLevel,
     AnalysisProjectionConfig,
     discover_first_party_source_roots,
@@ -15,6 +16,84 @@ from topo_analyzer.projection import (
 )
 from topo_parser.graph import CodeGraph, EdgeKind
 from topo_parser.python import parse_python_project
+
+
+class StructuralAnalysisResult:
+    """Thin wrapper around a Rust analysis dict to preserve attribute access."""
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    @property
+    def modules(self) -> list[ModuleResult]:
+        return [ModuleResult(m) for m in self._data.get("architecture", {}).get("modules", [])]
+
+    @property
+    def findings(self) -> list[dict]:
+        return self._data.get("issues", [])
+
+    @property
+    def anomalies(self) -> list[dict]:
+        return self._data.get("anomalies", [])
+
+    @property
+    def roles(self) -> list[dict]:
+        return self._data.get("roles", [])
+
+    @property
+    def health(self) -> dict:
+        return self._data.get("health", {})
+
+    @property
+    def coverage(self) -> dict:
+        return self._data.get("coverage", {})
+
+    @property
+    def cross_package_dependencies(self) -> list[dict]:
+        return self._data.get("architecture", {}).get("dependencies", [])
+
+    @property
+    def raw(self) -> dict:
+        return self._data
+
+
+class ModuleResult:
+    """Thin wrapper around a module dict."""
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    @property
+    def id(self) -> int:
+        return self._data["id"]
+
+    @property
+    def label(self) -> str:
+        return self._data.get("label", "")
+
+    @property
+    def node_ids(self) -> list[str]:
+        return self._data.get("members", [])
+
+    @property
+    def size(self) -> int:
+        return self._data.get("size", 0)
+
+    @property
+    def unassigned(self) -> bool:
+        return self._data.get("unassigned", False)
+
+    @property
+    def cohesion(self) -> float | None:
+        return self._data.get("cohesion")
+
+    @property
+    def separation(self) -> float | None:
+        return self._data.get("separation")
+
+    @property
+    def confidence(self) -> float | None:
+        return self._data.get("confidence")
 
 
 def repo_root() -> Path:
@@ -27,14 +106,20 @@ def fixture_root(name: str) -> Path:
     return repo_root() / "tests" / "fixtures" / "validation" / name
 
 
+def _ensure_rust_backend() -> None:
+    """Set the Rust backend environment variable."""
+    os.environ["TOPO_BACKEND"] = "rust"
+
+
 def analyze_fixture(
     name: str,
     *,
     level: AnalysisLevel = AnalysisLevel.MODULE,
     combined: bool = True,
     n_modules: int | None = None,
-) -> StructuralAnalysis:
-    """Parse and analyze a committed benchmark fixture."""
+) -> StructuralAnalysisResult:
+    """Parse and analyze a committed benchmark fixture via Rust."""
+    _ensure_rust_backend()
     root = fixture_root(name)
     graph = parse_python_project(root)
     config = AnalysisProjectionConfig.for_analysis(
@@ -42,12 +127,8 @@ def analyze_fixture(
         combined=combined,
         level=level,
     )
-    return analyze(
-        graph,
-        combined=combined,
-        n_modules=n_modules,
-        projection_config=config,
-    )
+    data = run_full_analysis(graph, projection_config=config, n_modules=n_modules)
+    return StructuralAnalysisResult(data)
 
 
 def analyze_graph(
@@ -56,23 +137,21 @@ def analyze_graph(
     level: AnalysisLevel = AnalysisLevel.MODULE,
     combined: bool = True,
     n_modules: int | None = None,
-) -> StructuralAnalysis:
-    """Analyze an in-memory graph using the benchmark defaults."""
+) -> StructuralAnalysisResult:
+    """Analyze an in-memory graph using the benchmark defaults via Rust."""
+    _ensure_rust_backend()
     config = AnalysisProjectionConfig.for_analysis(
         edge_kind=EdgeKind.CALLS,
         combined=combined,
         level=level,
     )
-    return analyze(
-        graph,
-        combined=combined,
-        n_modules=n_modules,
-        projection_config=config,
-    )
+    data = run_full_analysis(graph, projection_config=config, n_modules=n_modules)
+    return StructuralAnalysisResult(data)
 
 
-def analyze_topo_self() -> StructuralAnalysis:
-    """Run topo on its own first-party source roots."""
+def analyze_topo_self() -> StructuralAnalysisResult:
+    """Run topo on its own first-party source roots via Rust."""
+    _ensure_rust_backend()
     root = repo_root()
     policy = load_analysis_policy(root)
     scope_setting = policy.scope if policy and policy.scope else "auto"
@@ -87,10 +166,11 @@ def analyze_topo_self() -> StructuralAnalysis:
         level=policy.level if policy and policy.level else AnalysisLevel.MODULE,
         scope_roots=scope_roots,
     )
-    return analyze(graph, combined=True, projection_config=config)
+    data = run_full_analysis(graph, projection_config=config)
+    return StructuralAnalysisResult(data)
 
 
-def labels_from_modules(result: StructuralAnalysis) -> dict[str, int]:
+def labels_from_modules(result: StructuralAnalysisResult) -> dict[str, int]:
     """Extract module labels for all assigned nodes in an analysis result."""
     labels: dict[str, int] = {}
     for module in result.modules:

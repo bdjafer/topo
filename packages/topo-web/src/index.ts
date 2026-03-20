@@ -32,7 +32,7 @@ export type {
 import initWasm, {
   analyze as wasmAnalyze,
   type InitInput,
-} from "../wasm/topo_core.js";
+} from "../wasm/topo_analyzer.js";
 
 let initialized = false;
 

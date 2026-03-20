@@ -5,8 +5,8 @@ export default defineConfig({
   root: ".",
   resolve: {
     alias: {
-      // Point WASM imports to the topo-core pkg directory.
-      "../../topo-core/pkg": resolve(__dirname, "../topo-core/pkg"),
+      // Point WASM imports to the topo-analyzer pkg directory.
+      "../../topo-analyzer/pkg": resolve(__dirname, "../topo-analyzer/pkg"),
     },
   },
   build: {
@@ -17,7 +17,7 @@ export default defineConfig({
   },
   server: {
     fs: {
-      // Allow serving WASM from the sibling topo-core package.
+      // Allow serving WASM from the sibling topo-analyzer package.
       allow: [resolve(__dirname, ".."), resolve(__dirname)],
     },
     headers: {
