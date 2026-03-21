@@ -97,7 +97,26 @@
           }
         },
         "silhouette":        { "type": ["number", "null"], "description": "Overall clustering quality. >0.5 good, <0.3 degenerate." },
-        "package_fallback":  { "type": "boolean", "description": "True if spectral clustering failed and fell back to directory-based grouping." }
+        "package_fallback":  { "type": "boolean", "description": "True if spectral analysis was attempted but couldn't beat random partitioning. When true, modules reflect directory/package structure rather than spectral findings." },
+        "package_agreement": {
+          "type": ["object", "null"],
+          "description": "Comparison of spectral modules against declared package boundaries. Present only when the input has 2+ packages.",
+          "properties": {
+            "nmi": { "type": "number", "description": "NMI between spectral and package partitions. 1.0 = perfect alignment, 0.0 = no mutual information." },
+            "module_composition": {
+              "type": "array",
+              "description": "Per-module breakdown of which packages contributed members.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "module_id":     { "type": "integer" },
+                  "packages":      { "type": "object", "additionalProperties": { "type": "integer" }, "description": "Package name -> member count." },
+                  "cross_package": { "type": "boolean", "description": "True if this module draws members from 2+ packages." }
+                }
+              }
+            }
+          }
+        }
       }
     },
 

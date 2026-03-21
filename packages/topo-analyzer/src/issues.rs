@@ -10,7 +10,7 @@ use crate::anomalies::{Anomaly, AnomalyKind};
 use crate::graph::Graph;
 use crate::modules::EnrichedModule;
 use crate::stats;
-use crate::types::{AnchorOutput, IssueOutput, RoleOutput};
+use crate::types::{AnchorOutput, IssueOutput, PackageAgreementOutput, RoleOutput};
 
 /// Context for building issues.
 pub struct IssuesContext<'a> {
@@ -25,6 +25,7 @@ pub struct IssuesContext<'a> {
     pub level: &'a str,
     pub largest_module_ratio: f64,
     pub node_to_module: &'a HashMap<String, usize>,
+    pub package_agreement: Option<&'a PackageAgreementOutput>,
 }
 
 pub fn build_issues(ctx: &IssuesContext) -> Vec<IssueOutput> {
@@ -169,6 +170,9 @@ pub fn build_issues(ctx: &IssuesContext) -> Vec<IssueOutput> {
 
     // 11. Phantom imports.
     issues.extend(detect_phantom_imports(ctx));
+
+    // 12. Cross-package coupling.
+    issues.extend(detect_cross_package_coupling(ctx));
 
     // Sort by (-severity, -confidence, title).
     issues.sort_by(|a, b| {
@@ -745,6 +749,66 @@ fn anomaly_title(kind: AnomalyKind) -> String {
         AnomalyKind::CycleMember => "Dependency cycle".to_string(),
         AnomalyKind::LayerDiscrepancy => "Cross-layer discrepancy".to_string(),
     }
+}
+
+// ---------------------------------------------------------------------------
+// Cross-package coupling
+// ---------------------------------------------------------------------------
+
+fn detect_cross_package_coupling(ctx: &IssuesContext) -> Vec<IssueOutput> {
+    let agreement = match ctx.package_agreement {
+        Some(a) => a,
+        None => return Vec::new(),
+    };
+
+    let mut issues = Vec::new();
+
+    for comp in &agreement.module_composition {
+        if !comp.cross_package {
+            continue;
+        }
+        // Find module label.
+        let label = ctx
+            .modules
+            .iter()
+            .find(|m| m.id == comp.module_id)
+            .map(|m| m.label.as_str())
+            .unwrap_or("unknown");
+
+        // Build description of package breakdown.
+        let mut pkg_parts: Vec<(&String, &usize)> = comp.packages.iter().collect();
+        pkg_parts.sort_by(|a, b| b.1.cmp(a.1));
+        let breakdown: Vec<String> = pkg_parts
+            .iter()
+            .map(|(pkg, count)| format!("{pkg} ({count})"))
+            .collect();
+        let total: usize = comp.packages.values().sum();
+
+        // Severity: proportional to how evenly split across packages.
+        // A 50/50 split is more concerning than 95/5.
+        let max_count = comp.packages.values().max().copied().unwrap_or(0);
+        let cross_fraction = 1.0 - (max_count as f64 / total.max(1) as f64);
+        let sev = (0.3 + cross_fraction * 0.5).min(1.0);
+
+        issues.push(IssueOutput {
+            id: format!("cross-package-coupling:module-{}", comp.module_id),
+            kind: "cross_package_coupling".to_string(),
+            title: format!("Cross-package coupling in module \"{label}\""),
+            description: format!(
+                "Spectral analysis groups {total} nodes from {} packages into one structural \
+                 module: {}. This suggests tighter coupling across these package boundaries \
+                 than the declared structure implies.",
+                comp.packages.len(),
+                breakdown.join(", ")
+            ),
+            severity: round2(sev),
+            severity_label: severity_label(sev),
+            confidence: round2(agreement.nmi.max(0.3)),
+            confidence_label: confidence_label(agreement.nmi.max(0.3)),
+            anchors: Vec::new(),
+        });
+    }
+    issues
 }
 
 fn severity_label(score: f64) -> String {

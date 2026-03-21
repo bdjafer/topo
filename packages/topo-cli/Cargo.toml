@@ -10,6 +10,7 @@ path = "src/main.rs"
 
 [dependencies]
 topo-analyzer = { path = "../topo-analyzer", default-features = false }
+topo-cache = { path = "../topo-cache" }
 topo-formatter = { path = "../topo-formatter" }
 topo-parser = { path = "../topo-parser", features = ["rust"] }
 clap = { version = "4", features = ["derive"] }
@@ -17,3 +18,4 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 toml = "0.8"
 anyhow = "1"
+walkdir = "2"

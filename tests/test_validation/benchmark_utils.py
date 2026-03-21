@@ -22,11 +22,13 @@ DEFAULT_ANALYSIS_EDGE_KINDS: tuple[EdgeKind, ...] = (
     EdgeKind.CALLS,
     EdgeKind.IMPORTS,
     EdgeKind.INHERITS,
+    EdgeKind.DEFINES,
 )
 DEFAULT_ANALYSIS_LAYER_WEIGHTS: dict[EdgeKind, float] = {
     EdgeKind.CALLS: 1.0,
     EdgeKind.IMPORTS: 0.5,
     EdgeKind.INHERITS: 0.8,
+    EdgeKind.DEFINES: 0.2,
 }
 DEFAULT_SCOPE_PREFIXES: tuple[str, ...] = ("topo-",)
 POLICY_FILENAMES: tuple[str, ...] = ("topo.toml", ".topo.toml")

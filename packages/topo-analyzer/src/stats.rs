@@ -192,6 +192,69 @@ impl Rng {
     }
 }
 
+// ── Information theory ────────────────────────────────────────────────
+
+/// Normalized Mutual Information between two partitions over the same keys.
+///
+/// Returns a value in [0, 1]: 1.0 means the partitions are identical
+/// (up to label permutation), 0.0 means they share no information.
+pub fn compute_nmi(
+    left: &std::collections::HashMap<String, usize>,
+    right: &std::collections::HashMap<String, usize>,
+) -> f64 {
+    use std::collections::HashMap;
+
+    let keys: Vec<&String> = left.keys().filter(|k| right.contains_key(*k)).collect();
+    let n = keys.len();
+    if n == 0 {
+        return 1.0;
+    }
+    let nf = n as f64;
+
+    // Joint and marginal counts.
+    let mut joint: HashMap<(usize, usize), usize> = HashMap::new();
+    let mut count_l: HashMap<usize, usize> = HashMap::new();
+    let mut count_r: HashMap<usize, usize> = HashMap::new();
+    for k in &keys {
+        let l = left[*k];
+        let r = right[*k];
+        *joint.entry((l, r)).or_default() += 1;
+        *count_l.entry(l).or_default() += 1;
+        *count_r.entry(r).or_default() += 1;
+    }
+
+    // Mutual information.
+    let mut mi = 0.0;
+    for (&(l, r), &nij) in &joint {
+        if nij == 0 {
+            continue;
+        }
+        let pij = nij as f64 / nf;
+        let pi = count_l[&l] as f64 / nf;
+        let pj = count_r[&r] as f64 / nf;
+        mi += pij * (pij / (pi * pj)).ln();
+    }
+
+    // Marginal entropies.
+    let entropy = |counts: &HashMap<usize, usize>| -> f64 {
+        counts
+            .values()
+            .filter(|&&c| c > 0)
+            .map(|&c| {
+                let p = c as f64 / nf;
+                -p * p.ln()
+            })
+            .sum::<f64>()
+    };
+    let h_l = entropy(&count_l);
+    let h_r = entropy(&count_r);
+
+    if h_l + h_r == 0.0 {
+        return 1.0;
+    }
+    (2.0 * mi / (h_l + h_r)).clamp(0.0, 1.0)
+}
+
 // ── Internal helpers ───────────────────────────────────────────────────
 
 /// Interpolated percentile on a pre-sorted slice.
@@ -281,5 +344,51 @@ mod tests {
         let mut r2 = Rng::new(42);
         assert_eq!(r1.next_u64(), r2.next_u64());
         assert_eq!(r1.next_f64(), r2.next_f64());
+    }
+
+    #[test]
+    fn test_nmi_identical_partitions() {
+        let mut left = std::collections::HashMap::new();
+        let mut right = std::collections::HashMap::new();
+        for (i, name) in ["a", "b", "c", "d"].iter().enumerate() {
+            left.insert(name.to_string(), i % 2);
+            right.insert(name.to_string(), i % 2);
+        }
+        let nmi = compute_nmi(&left, &right);
+        assert!((nmi - 1.0).abs() < 1e-9, "identical partitions => NMI=1.0, got {nmi}");
+    }
+
+    #[test]
+    fn test_nmi_independent_partitions() {
+        // left: {a:0, b:0, c:1, d:1}, right: {a:0, b:1, c:0, d:1}
+        let left: std::collections::HashMap<String, usize> =
+            [("a", 0), ("b", 0), ("c", 1), ("d", 1)]
+                .into_iter()
+                .map(|(k, v)| (k.to_string(), v))
+                .collect();
+        let right: std::collections::HashMap<String, usize> =
+            [("a", 0), ("b", 1), ("c", 0), ("d", 1)]
+                .into_iter()
+                .map(|(k, v)| (k.to_string(), v))
+                .collect();
+        let nmi = compute_nmi(&left, &right);
+        assert!(nmi < 0.01, "independent partitions => NMI~0, got {nmi}");
+    }
+
+    #[test]
+    fn test_nmi_refinement() {
+        // left: 2 clusters, right: 3 clusters (refinement of left)
+        let left: std::collections::HashMap<String, usize> =
+            [("a", 0), ("b", 0), ("c", 0), ("d", 1), ("e", 1), ("f", 1)]
+                .into_iter()
+                .map(|(k, v)| (k.to_string(), v))
+                .collect();
+        let right: std::collections::HashMap<String, usize> =
+            [("a", 0), ("b", 0), ("c", 1), ("d", 2), ("e", 2), ("f", 2)]
+                .into_iter()
+                .map(|(k, v)| (k.to_string(), v))
+                .collect();
+        let nmi = compute_nmi(&left, &right);
+        assert!(nmi > 0.4 && nmi < 1.0, "refinement => 0 < NMI < 1, got {nmi}");
     }
 }

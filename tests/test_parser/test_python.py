@@ -40,7 +40,7 @@ def test_parse_simple_module(tmp_path: Path):
     assert any(e.target == "example.helper" for e in call_edges)
 
     # Should have containment edges
-    contain_edges = graph.edges_by_kind(EdgeKind.CONTAINS)
+    contain_edges = graph.edges_by_kind(EdgeKind.DEFINES)
     assert len(contain_edges) >= 3  # module→class, module→helper, class→method
 
 

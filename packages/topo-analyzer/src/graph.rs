@@ -92,6 +92,20 @@ impl Graph {
                 continue; // skip self-edges
             }
 
+            // Always record in typed_edges (for anomaly detection, modularity Q, etc.).
+            typed_edges
+                .entry(edge.kind.clone())
+                .or_default()
+                .push((src, tgt));
+
+            // Defines edges encode containment hierarchy, not functional coupling.
+            // Exclude them from the spectral adjacency matrix — they form a tree
+            // that dominates eigenvectors and produces degenerate mega-modules.
+            // Isolated nodes are later propagated via defines_parent_map().
+            if edge.kind == "defines" {
+                continue;
+            }
+
             let weight = input
                 .layer_weights
                 .as_ref()
@@ -102,10 +116,6 @@ impl Graph {
             adj[src].push((tgt, weight));
             successors[src].push(tgt);
             predecessors[tgt].push(src);
-            typed_edges
-                .entry(edge.kind.clone())
-                .or_default()
-                .push((src, tgt));
             edge_count += 1;
         }
 
@@ -195,6 +205,16 @@ impl Graph {
     /// Get edges of a specific kind.
     pub fn edges_of_kind(&self, kind: &str) -> &[(usize, usize)] {
         self.typed_edges.get(kind).map(|v| v.as_slice()).unwrap_or(&[])
+    }
+
+    /// Build child → parent map from "defines" edges.
+    /// In a defines edge (src, tgt), the source defines (contains) the target.
+    pub fn defines_parent_map(&self) -> HashMap<usize, usize> {
+        let mut parent = HashMap::new();
+        for &(src, tgt) in self.edges_of_kind("defines") {
+            parent.insert(tgt, src);
+        }
+        parent
     }
 
     /// Build an anchor for a node from its stored metadata.

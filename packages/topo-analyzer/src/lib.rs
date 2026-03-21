@@ -95,11 +95,15 @@ pub fn analyze(input: &AnalyzerInput) -> AnalyzerOutput {
         } else {
             2
         };
-        let km = clustering::kmeans(&cluster_data, actual_k, 100, 42);
-        let sil = clustering::silhouette_score(&cluster_data, &km.labels, &km.centroids);
+
+        // Ng-Jordan-Weiss: truncate to k dims + row-normalize.
+        let clustering_data = clustering::prepare_for_clustering(&cluster_data, actual_k);
+
+        let km = clustering::kmeans_best_of(&clustering_data, actual_k, 100, &[42, 137, 271, 503, 997]);
+        let sil = clustering::silhouette_score(&clustering_data, &km.labels, &km.centroids);
 
         // Degeneracy: spectral must beat random partitioning.
-        let random_sil = clustering::random_baseline_silhouette(&cluster_data, actual_k, 5, 43);
+        let random_sil = clustering::random_baseline_silhouette(&clustering_data, actual_k, 5, 43);
         let degenerate = sil <= random_sil + PERMUTATION_MARGIN;
 
         if degenerate {
@@ -117,12 +121,41 @@ pub fn analyze(input: &AnalyzerInput) -> AnalyzerOutput {
     // Assign unassigned nodes to a special cluster.
     let mut all_clusters = clusters;
     let max_cluster = all_clusters.values().max().copied().unwrap_or(0);
+    let unassigned_cluster_id = max_cluster + 1;
     for component in &spectral.unassigned {
         for &gi in component {
             let nid = &graph.node_ids[gi];
             if !all_clusters.contains_key(nid) {
-                all_clusters.insert(nid.clone(), max_cluster + 1);
+                all_clusters.insert(nid.clone(), unassigned_cluster_id);
             }
+        }
+    }
+
+    // Propagate cluster assignments to defines-only isolated nodes.
+    // Nodes with no coupling edges inherit their parent's cluster
+    // via the defines containment tree.
+    let parent_map = graph.defines_parent_map();
+    for _ in 0..20 {
+        let mut changed = false;
+        for gi in 0..graph.n {
+            let nid = &graph.node_ids[gi];
+            if let Some(&c) = all_clusters.get(nid) {
+                if c != unassigned_cluster_id {
+                    continue;
+                }
+            }
+            if let Some(&parent_idx) = parent_map.get(&gi) {
+                let parent_nid = &graph.node_ids[parent_idx];
+                if let Some(&pc) = all_clusters.get(parent_nid) {
+                    if pc != unassigned_cluster_id {
+                        all_clusters.insert(nid.clone(), pc);
+                        changed = true;
+                    }
+                }
+            }
+        }
+        if !changed {
+            break;
         }
     }
 
@@ -433,30 +466,20 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
 
     // 3. Module assignment.
     //
-    // When the parser provides explicit package names (2+ packages), use
-    // package grouping directly — the crate/package structure IS the
-    // top-level architecture. Spectral fingerprints remain available for
-    // roles and anomaly detection within each package.
-    let has_explicit_packages = input
-        .packages
-        .as_ref()
-        .map(|p| p.len() >= 2)
-        .unwrap_or(false)
-        && input.k.is_none();
-
-    let (final_modules, final_silhouette, final_fallback) = if has_explicit_packages {
-        (modules::package_grouping(&graph.node_ids), None, true)
-    } else {
-        // Single-crate: use spectral clustering.
-        let mut cluster_node_ids: Vec<String> = Vec::new();
-        let mut cluster_data: Vec<Vec<f64>> = Vec::new();
-        for (component_indices, result) in &spectral.components {
-            for (li, &gi) in component_indices.iter().enumerate() {
-                cluster_node_ids.push(graph.node_ids[gi].clone());
-                cluster_data.push(result.eigenvectors[li].clone());
-            }
+    // Always run spectral clustering regardless of package count.
+    // Package boundaries are the null hypothesis to compare against,
+    // not the answer. The degeneracy check (spectral must beat random)
+    // is the only path to package_fallback.
+    let mut cluster_node_ids: Vec<String> = Vec::new();
+    let mut cluster_data: Vec<Vec<f64>> = Vec::new();
+    for (component_indices, result) in &spectral.components {
+        for (li, &gi) in component_indices.iter().enumerate() {
+            cluster_node_ids.push(graph.node_ids[gi].clone());
+            cluster_data.push(result.eigenvectors[li].clone());
         }
+    }
 
+    let (final_modules, final_silhouette, final_fallback) = {
         let (clusters, silhouette_val, used_fallback) = if cluster_data.is_empty()
             || cluster_data.first().map(|v| v.is_empty()).unwrap_or(true)
         {
@@ -471,12 +494,16 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
             } else {
                 2
             };
-            let km = clustering::kmeans(&cluster_data, actual_k, 100, 42);
-            let sil = clustering::silhouette_score(&cluster_data, &km.labels, &km.centroids);
+
+            // Ng-Jordan-Weiss: truncate to k dims + row-normalize.
+            let clustering_data = clustering::prepare_for_clustering(&cluster_data, actual_k);
+
+            let km = clustering::kmeans_best_of(&clustering_data, actual_k, 100, &[42, 137, 271, 503, 997]);
+            let sil = clustering::silhouette_score(&clustering_data, &km.labels, &km.centroids);
 
             // Degeneracy: spectral must beat random partitioning.
             let random_sil =
-                clustering::random_baseline_silhouette(&cluster_data, actual_k, 5, 43);
+                clustering::random_baseline_silhouette(&clustering_data, actual_k, 5, 43);
             let degenerate = sil <= random_sil + PERMUTATION_MARGIN;
 
             if degenerate && k_hint == 0 {
@@ -506,6 +533,34 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
             }
         }
 
+        // Propagate cluster assignments to defines-only isolated nodes.
+        // Nodes with no coupling edges inherit their parent's cluster
+        // via the defines containment tree.
+        let parent_map = graph.defines_parent_map();
+        for _ in 0..20 {
+            let mut changed = false;
+            for gi in 0..graph.n {
+                let nid = &graph.node_ids[gi];
+                if let Some(&c) = all_clusters.get(nid) {
+                    if c != unassigned_cluster_id {
+                        continue;
+                    }
+                }
+                if let Some(&parent_idx) = parent_map.get(&gi) {
+                    let parent_nid = &graph.node_ids[parent_idx];
+                    if let Some(&pc) = all_clusters.get(parent_nid) {
+                        if pc != unassigned_cluster_id {
+                            all_clusters.insert(nid.clone(), pc);
+                            changed = true;
+                        }
+                    }
+                }
+            }
+            if !changed {
+                break;
+            }
+        }
+
         // Module enrichment.
         let silhouette_opt = if used_fallback {
             None
@@ -525,7 +580,6 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
             unassigned_id,
         );
 
-        // Degeneracy already handled by permutation baseline above.
         (enriched, silhouette_opt, used_fallback)
     };
 
@@ -598,7 +652,15 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         0.0
     };
 
-    // 12. Issue synthesis.
+    // 12. Package agreement analysis.
+    let package_agreement = match &input.packages {
+        Some(pkgs) if pkgs.len() >= 2 => {
+            Some(modules::compute_package_agreement(&final_modules, pkgs))
+        }
+        _ => None,
+    };
+
+    // 13. Issue synthesis.
     let issues_ctx = issues::IssuesContext {
         graph: &graph,
         modules: &final_modules,
@@ -611,10 +673,11 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         level: &scope.level,
         largest_module_ratio,
         node_to_module: &node_to_module,
+        package_agreement: package_agreement.as_ref(),
     };
     let issues = issues::build_issues(&issues_ctx);
 
-    // 13. Build spectral output.
+    // 14. Build spectral output.
     let spectral_output = if spectral.components.is_empty() && spectral.unassigned.is_empty() {
         None
     } else {
@@ -642,7 +705,7 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         })
     };
 
-    // 14. Assemble output.
+    // 15. Assemble output.
     types::AnalysisOutput {
         scope,
         coverage: types::CoverageOutput {
@@ -657,6 +720,7 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
             dependencies,
             silhouette: final_silhouette.map(round4),
             package_fallback: final_fallback,
+            package_agreement,
         },
         roles: role_outputs,
         issues,
@@ -689,6 +753,7 @@ fn empty_analysis_output(scope: types::ScopeOutput, input: &AnalyzerInput) -> ty
             dependencies: Vec::new(),
             silhouette: None,
             package_fallback: true,
+            package_agreement: None,
         },
         roles: Vec::new(),
         issues: Vec::new(),

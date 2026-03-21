@@ -183,6 +183,13 @@ pub struct ModuleOutput {
     pub separation: Option<f64>,
     pub confidence: f64,
     pub unassigned: bool,
+    /// Nodes assigned via defines-tree propagation (not spectral clustering).
+    #[serde(skip_serializing_if = "is_zero")]
+    pub propagated_count: usize,
+}
+
+fn is_zero(v: &usize) -> bool {
+    *v == 0
 }
 
 /// Directed dependency between two modules.
@@ -201,6 +208,29 @@ pub struct ArchitectureOutput {
     pub dependencies: Vec<DependencyOutput>,
     pub silhouette: Option<f64>,
     pub package_fallback: bool,
+    /// Comparison of spectral modules against declared package boundaries.
+    /// Present only when the input has 2+ packages.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub package_agreement: Option<PackageAgreementOutput>,
+}
+
+/// Comparison of spectral modules against declared package boundaries.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PackageAgreementOutput {
+    /// NMI between spectral and package partitions. 1.0 = perfect alignment.
+    pub nmi: f64,
+    /// Per-module breakdown of which packages contributed members.
+    pub module_composition: Vec<ModuleCompositionOutput>,
+}
+
+/// Per-module breakdown of package membership.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ModuleCompositionOutput {
+    pub module_id: usize,
+    /// Package name -> count of members from that package.
+    pub packages: HashMap<String, usize>,
+    /// True if this module draws members from 2+ packages.
+    pub cross_package: bool,
 }
 
 /// Structural role of a single node.

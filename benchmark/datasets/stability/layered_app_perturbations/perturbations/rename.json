@@ -156,22 +156,22 @@
     {
       "source": "api.routes_v2",
       "target": "api.routes.submit_order_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "api.routes_v2",
       "target": "api.routes.get_order_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "api.serializers_v2",
       "target": "api.serializers.serialize_order_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "core.rules_v2",
       "target": "core.rules.normalize_order_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "core.service_v2",
@@ -201,17 +201,17 @@
     {
       "source": "core.service_v2",
       "target": "core.service.create_order_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "core.service_v2",
       "target": "core.service.fetch_order_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "data.audit_v2",
       "target": "data.audit.record_event_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "data.store_v2",
@@ -226,12 +226,12 @@
     {
       "source": "data.store_v2",
       "target": "data.store.save_order_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "data.store_v2",
       "target": "data.store.load_order_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "api.routes.submit_order_v2",

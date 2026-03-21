@@ -15,7 +15,7 @@ def _make_graph() -> CodeGraph:
     g.add_node(Node(id="pkg.mod.cls", kind=NodeKind.CLASS, file="pkg/mod.py", line=1, name="cls"))
     g.add_node(Node(id="pkg.mod", kind=NodeKind.MODULE, file="pkg/mod.py", line=0, name="mod"))
     g.add_edge(Edge(source="pkg.mod.fn", target="pkg.mod.cls", kind=EdgeKind.CALLS))
-    g.add_edge(Edge(source="pkg.mod", target="pkg.mod.fn", kind=EdgeKind.CONTAINS))
+    g.add_edge(Edge(source="pkg.mod", target="pkg.mod.fn", kind=EdgeKind.DEFINES))
     g.add_edge(Edge(source="pkg.mod.cls", target="pkg.mod.fn", kind=EdgeKind.INHERITS))
     return g
 

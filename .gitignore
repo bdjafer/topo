@@ -36,6 +36,9 @@ uv.lock
 # Benchmark run artifacts
 .benchmark/
 
+# Topo cache
+.topo/
+
 # Rust
 target/
 Cargo.lock

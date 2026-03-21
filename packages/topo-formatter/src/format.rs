@@ -270,6 +270,66 @@ pub fn format_text(
         }
     }
 
+    // ── Package Agreement ──
+    if let Some(arch) = architecture {
+        if let Some(pa) = arch.get("package_agreement").and_then(|v| v.as_object()) {
+            let nmi = pa
+                .get("nmi")
+                .and_then(|v| v.as_f64())
+                .unwrap_or(0.0);
+            lines.push(String::new());
+            lines.push(section_header(&format!("Package Agreement (NMI: {nmi:.2})"), &s));
+            lines.push(String::new());
+
+            if let Some(composition) = pa.get("module_composition").and_then(|v| v.as_array()) {
+                let empty_modules = Vec::new();
+                let module_labels: HashMap<u64, &str> = modules
+                    .unwrap_or(&empty_modules)
+                    .iter()
+                    .filter_map(|m| {
+                        let id = m.get("id")?.as_u64()?;
+                        let label = m.get("label")?.as_str()?;
+                        Some((id, label))
+                    })
+                    .collect();
+
+                for entry in composition {
+                    let mid = entry.get("module_id").and_then(|v| v.as_u64()).unwrap_or(0);
+                    let label = module_labels.get(&mid).copied().unwrap_or("unknown");
+                    let cross = entry
+                        .get("cross_package")
+                        .and_then(|v| v.as_bool())
+                        .unwrap_or(false);
+
+                    if let Some(pkgs) = entry.get("packages").and_then(|v| v.as_object()) {
+                        let mut pkg_parts: Vec<(&String, u64)> = pkgs
+                            .iter()
+                            .filter_map(|(k, v)| Some((k, v.as_u64()?)))
+                            .collect();
+                        pkg_parts.sort_by(|a, b| b.1.cmp(&a.1));
+
+                        if cross {
+                            let parts: Vec<String> = pkg_parts
+                                .iter()
+                                .map(|(pkg, count)| format!("{pkg} ({count})"))
+                                .collect();
+                            lines.push(format!(
+                                "  {} spans: {}",
+                                s.bold(label),
+                                parts.join(", ")
+                            ));
+                        } else if let Some((pkg, _)) = pkg_parts.first() {
+                            lines.push(format!(
+                                "  {} is within: {pkg}",
+                                s.bold(label),
+                            ));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // ── Critical Nodes ──
     let mut critical_roles: Vec<&Value> = roles
         .iter()

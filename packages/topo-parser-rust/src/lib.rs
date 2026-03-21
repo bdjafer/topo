@@ -113,11 +113,11 @@ mod tests {
         assert!(classes >= 5, "Expected >=5 classes, got {classes}");
         assert!(functions >= 20, "Expected >=20 functions, got {functions}");
 
-        let contains = graph.edges.iter().filter(|e| e.kind == "contains").count();
+        let defines = graph.edges.iter().filter(|e| e.kind == "defines").count();
         let imports = graph.edges.iter().filter(|e| e.kind == "imports").count();
         let calls = graph.edges.iter().filter(|e| e.kind == "calls").count();
 
-        assert!(contains >= 30, "Expected >=30 contains edges, got {contains}");
+        assert!(defines >= 30, "Expected >=30 defines edges, got {defines}");
         assert!(imports >= 5, "Expected >=5 import edges, got {imports}");
         assert!(calls >= 10, "Expected >=10 call edges, got {calls}");
 
@@ -149,11 +149,11 @@ mod tests {
             let edges = graph.edges.len();
             let calls = graph.edges.iter().filter(|e| e.kind == "calls").count();
             let imports = graph.edges.iter().filter(|e| e.kind == "imports").count();
-            let contains = graph.edges.iter().filter(|e| e.kind == "contains").count();
+            let defines = graph.edges.iter().filter(|e| e.kind == "defines").count();
             let inherits = graph.edges.iter().filter(|e| e.kind == "inherits").count();
 
             eprintln!(
-                "  run {}: {:>6.0?}  ({nodes} nodes, {edges} edges: {calls} calls, {imports} imports, {contains} contains, {inherits} inherits)",
+                "  run {}: {:>6.0?}  ({nodes} nodes, {edges} edges: {calls} calls, {imports} imports, {defines} defines, {inherits} inherits)",
                 i + 1, elapsed
             );
 
@@ -195,7 +195,7 @@ mod tests {
             assert!(edge["target"].is_string(), "Edge missing target: {edge}");
             let kind = edge["kind"].as_str().unwrap();
             assert!(
-                ["calls", "imports", "inherits", "contains"].contains(&kind),
+                ["calls", "imports", "inherits", "defines"].contains(&kind),
                 "Invalid edge kind: {kind}"
             );
         }

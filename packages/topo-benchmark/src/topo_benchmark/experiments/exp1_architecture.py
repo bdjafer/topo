@@ -52,9 +52,9 @@ class AnalysisConfig:
 
 ANALYSIS_CONFIGS = [
     AnalysisConfig("module_calls", AnalysisLevel.MODULE, (EdgeKind.CALLS,), False),
-    AnalysisConfig("module_combined", AnalysisLevel.MODULE, (EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS), True),
+    AnalysisConfig("module_combined", AnalysisLevel.MODULE, (EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS, EdgeKind.DEFINES), True),
     AnalysisConfig("symbol_calls", AnalysisLevel.SYMBOL, (EdgeKind.CALLS,), False),
-    AnalysisConfig("symbol_combined", AnalysisLevel.SYMBOL, (EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS), True),
+    AnalysisConfig("symbol_combined", AnalysisLevel.SYMBOL, (EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS, EdgeKind.DEFINES), True),
     AnalysisConfig("symbol_imports", AnalysisLevel.SYMBOL, (EdgeKind.IMPORTS,), False),
     AnalysisConfig("symbol_inherits", AnalysisLevel.SYMBOL, (EdgeKind.INHERITS,), False),
 ]

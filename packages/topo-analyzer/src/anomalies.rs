@@ -511,7 +511,7 @@ fn detect_layer_discrepancies(graph: &Graph, edge_kinds: &[String]) -> Vec<Anoma
         ("calls", "calls"),
         ("imports", "imports"),
         ("inherits", "inherits"),
-        ("contains", "contains"),
+        ("defines", "defines"),
     ]
     .into_iter()
     .collect();

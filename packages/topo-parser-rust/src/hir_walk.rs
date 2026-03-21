@@ -75,7 +75,7 @@ fn extract_module(
         graph.add_edge(Edge {
             source: parent.to_string(),
             target: module_id.to_string(),
-            kind: "contains",
+            kind: "defines",
         });
     }
 
@@ -144,7 +144,7 @@ fn extract_function(
     graph.add_edge(Edge {
         source: module_id.to_string(),
         target: fn_id,
-        kind: "contains",
+        kind: "defines",
     });
 }
 
@@ -175,7 +175,7 @@ fn extract_struct(
     graph.add_edge(Edge {
         source: module_id.to_string(),
         target: id,
-        kind: "contains",
+        kind: "defines",
     });
 }
 
@@ -206,7 +206,7 @@ fn extract_enum(
     graph.add_edge(Edge {
         source: module_id.to_string(),
         target: id,
-        kind: "contains",
+        kind: "defines",
     });
 }
 
@@ -237,7 +237,7 @@ fn extract_trait(
     graph.add_edge(Edge {
         source: module_id.to_string(),
         target: trait_id.clone(),
-        kind: "contains",
+        kind: "defines",
     });
 
     // Trait methods as function nodes.
@@ -309,7 +309,7 @@ fn extract_impl_methods(
             graph.add_edge(Edge {
                 source: parent_id.clone(),
                 target: fn_id,
-                kind: "contains",
+                kind: "defines",
             });
         }
     }

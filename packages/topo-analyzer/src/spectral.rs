@@ -79,9 +79,16 @@ pub fn decompose(graph: &Graph, k: usize) -> SpectralResult {
             .max()
             .unwrap_or(0);
 
+        let mut pad_rng = crate::stats::Rng::new(12345);
         for (_, result) in &mut clusterable {
             for row in &mut result.eigenvectors {
+                let current_len = row.len();
                 row.resize(max_k, 0.0);
+                // Pad with tiny deterministic noise instead of zeros to avoid
+                // biasing nodes from smaller components toward a default cluster.
+                for j in current_len..max_k {
+                    row[j] = (pad_rng.next_f64() - 0.5) * 1e-6;
+                }
             }
         }
     }
@@ -162,7 +169,7 @@ fn decompose_core(adjacency: &[f64], n: usize, k: usize) -> Option<DecompResult>
     // D^{-1/2} — guard against zero-degree nodes.
     let d_inv_sqrt: Vec<f64> = degrees
         .iter()
-        .map(|&d| if d > 0.0 { 1.0 / d.sqrt() } else { 1.0 })
+        .map(|&d| if d > 0.0 { 1.0 / d.sqrt() } else { 0.0 })
         .collect();
 
     // Build normalized Laplacian: L = I - D^{-1/2} A D^{-1/2}

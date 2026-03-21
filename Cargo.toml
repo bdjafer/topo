@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "packages/topo-analyzer",
     "packages/topo-benchmark",
+    "packages/topo-cache",
     "packages/topo-cli",
     "packages/topo-formatter",
     "packages/topo-parser",

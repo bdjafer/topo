@@ -32,7 +32,7 @@ def test_summary():
     g = CodeGraph()
     g.add_node(Node(id="mod", kind=NodeKind.MODULE, file="mod.py", line=1, name="mod"))
     g.add_node(Node(id="mod.f", kind=NodeKind.FUNCTION, file="mod.py", line=5, name="f"))
-    g.add_edge(Edge(source="mod", target="mod.f", kind=EdgeKind.CONTAINS))
+    g.add_edge(Edge(source="mod", target="mod.f", kind=EdgeKind.DEFINES))
     summary = g.summary()
     assert "2 nodes" in summary
     assert "1 edges" in summary

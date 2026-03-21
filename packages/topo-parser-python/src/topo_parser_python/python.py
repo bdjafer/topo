@@ -85,6 +85,10 @@ def parse_python_project(
     # function calls).  Supplement with AST-based property resolution.
     _add_property_access_calls(graph, root, py_files, package_roots)
 
+    # Decorators are function calls that PyCG doesn't model.
+    # @app.route("/path") is a call to app.route.
+    _add_decorator_calls(graph, root, py_files, package_roots)
+
     # Resolve INHERITS edges (always AST-based)
     _resolve_inherits_edges(graph)
     return graph
@@ -190,7 +194,7 @@ def _extract_class(
     """Extract a class node, its methods, and inheritance edges."""
     class_id = f"{parent_id}.{node.name}"
     graph.add_node(Node(id=class_id, kind=NodeKind.CLASS, file=str(file), line=node.lineno, name=node.name))
-    graph.add_edge(Edge(source=parent_id, target=class_id, kind=EdgeKind.CONTAINS))
+    graph.add_edge(Edge(source=parent_id, target=class_id, kind=EdgeKind.DEFINES))
 
     # Inheritance (raw names, resolved later by _resolve_inherits_edges)
     for base in node.bases:
@@ -213,7 +217,7 @@ def _extract_function(
     """Extract a function/method node. Call edges are added by PyCG."""
     func_id = f"{parent_id}.{node.name}"
     graph.add_node(Node(id=func_id, kind=NodeKind.FUNCTION, file=str(file), line=node.lineno, name=node.name))
-    graph.add_edge(Edge(source=parent_id, target=func_id, kind=EdgeKind.CONTAINS))
+    graph.add_edge(Edge(source=parent_id, target=func_id, kind=EdgeKind.DEFINES))
 
 
 def _resolve_relative_import(
@@ -727,5 +731,71 @@ def _find_func_id(
         if child is func_node:
             return f"{mod_id}.{func_node.name}"
     return None
+
+
+def _add_decorator_calls(
+    graph: CodeGraph, root: Path, py_files: list[Path], package_roots: list[Path],
+) -> None:
+    """Add CALLS edges for decorator applications.
+
+    Applying a decorator is a function call: ``@app.route("/path")`` calls
+    ``app.route``.  PyCG doesn't model this because it treats decorators as
+    syntax, not invocations.  This is framework-agnostic — any ``@expr``
+    creates a call to ``expr``.
+    """
+    node_ids = set(graph.nodes)
+    existing_calls = {(e.source, e.target) for e in graph.edges_by_kind(EdgeKind.CALLS)}
+
+    # Build import map for resolution (same pattern as _resolve_raw_edges)
+    import_map: dict[str, dict[str, str]] = {}
+    for edge in graph.edges_by_kind(EdgeKind.IMPORTS):
+        short = edge.target.rsplit(".", 1)[-1]
+        import_map.setdefault(edge.source, {})[short] = edge.target
+
+    for py_file in py_files:
+        try:
+            source = py_file.read_text(encoding="utf-8")
+            tree = ast.parse(source, filename=str(py_file))
+        except (SyntaxError, UnicodeDecodeError):
+            continue
+
+        pkg_root = _best_package_root(py_file, package_roots)
+        file_root = pkg_root or root
+        mod_id = _module_id(py_file, file_root)
+
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                continue
+
+            # Determine the decorated entity's ID
+            if isinstance(node, ast.ClassDef):
+                entity_id = f"{mod_id}.{node.name}"
+            else:
+                # Could be a method or top-level function
+                entity_id = _find_func_id(tree, node, mod_id)
+
+            if not entity_id or entity_id not in node_ids:
+                continue
+
+            for deco in node.decorator_list:
+                # Extract the decorator callable name
+                # @decorator         -> "decorator"
+                # @obj.method        -> "obj.method"
+                # @obj.method(args)  -> "obj.method" (unwrap the call)
+                deco_expr = deco
+                if isinstance(deco_expr, ast.Call):
+                    deco_expr = deco_expr.func
+
+                raw_name = _resolve_name(deco_expr)
+                if not raw_name:
+                    continue
+
+                # Try to resolve to a known node
+                target = _try_resolve(entity_id, raw_name, node_ids, import_map)
+                if target and target != entity_id and (entity_id, target) not in existing_calls:
+                    existing_calls.add((entity_id, target))
+                    graph.add_edge(Edge(
+                        source=entity_id, target=target, kind=EdgeKind.CALLS,
+                    ))
 
 

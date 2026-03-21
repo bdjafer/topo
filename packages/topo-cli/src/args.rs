@@ -32,6 +32,10 @@ pub struct Cli {
     /// Source language (auto-detected if omitted).
     #[arg(long, value_parser = ["rust", "python"])]
     pub language: Option<String>,
+
+    /// Disable parse cache (force re-parse).
+    #[arg(long)]
+    pub no_cache: bool,
 }
 
 #[derive(Subcommand)]
@@ -40,6 +44,8 @@ pub enum Command {
     Parse(ParseArgs),
     /// Analyze a codebase (auto-parses if no --input given).
     Analyze(AnalyzeArgs),
+    /// Manage the parse cache.
+    Cache(CacheArgs),
 }
 
 #[derive(Parser)]
@@ -95,7 +101,7 @@ pub struct AnalysisArgs {
     #[arg(long = "json")]
     pub as_json: bool,
 
-    /// Edge layer to analyze (calls, imports, inherits, contains, combined).
+    /// Edge layer to analyze (calls, imports, inherits, defines, combined).
     #[arg(long = "edge-kind", default_value = "combined")]
     pub edge_kind: String,
 
@@ -118,4 +124,20 @@ pub struct AnalysisArgs {
     /// Disable colored output.
     #[arg(long = "no-color")]
     pub no_color: bool,
+}
+
+#[derive(Parser)]
+pub struct CacheArgs {
+    #[command(subcommand)]
+    pub command: CacheCommand,
+}
+
+#[derive(Subcommand)]
+pub enum CacheCommand {
+    /// Remove cached parse results.
+    Clear {
+        /// Path to project root.
+        #[arg(default_value = ".")]
+        path: PathBuf,
+    },
 }

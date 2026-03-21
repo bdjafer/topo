@@ -27,7 +27,7 @@ class EdgeKind(Enum):
     CALLS = "calls"  # A invokes B at runtime
     IMPORTS = "imports"  # A imports B
     INHERITS = "inherits"  # A extends/implements B
-    CONTAINS = "contains"  # A structurally contains B (module→class, class→method)
+    DEFINES = "defines"  # A defines B (module→class, class→method)
 
 
 @dataclass(frozen=True)

@@ -1,4 +1,5 @@
 mod args;
+mod cache;
 mod policy;
 
 use std::collections::HashMap;
@@ -9,7 +10,7 @@ use std::time::Instant;
 use anyhow::{Context, Result, bail};
 use clap::Parser;
 
-use args::{AnalysisArgs, AnalyzeArgs, Cli, Command, ParseArgs};
+use args::{AnalysisArgs, AnalyzeArgs, CacheCommand, Cli, Command, ParseArgs};
 
 fn main() {
     if let Err(e) = run() {
@@ -22,29 +23,31 @@ fn run() -> Result<()> {
     let cli = Cli::parse();
 
     match cli.command {
-        Some(Command::Parse(args)) => cmd_parse(args),
-        Some(Command::Analyze(args)) => cmd_analyze(args),
+        Some(Command::Parse(args)) => cmd_parse(args, cli.no_cache),
+        Some(Command::Analyze(args)) => cmd_analyze(args, cli.no_cache),
+        Some(Command::Cache(args)) => cmd_cache(args),
         None => {
             let path = cli
                 .path
                 .ok_or_else(|| anyhow::anyhow!("Missing required argument: <PATH>"))?;
-            cmd_default(&path, cli.exclude.as_deref(), cli.scope.as_deref(), cli.language.as_deref(), &cli.analysis)
+            cmd_default(&path, cli.exclude.as_deref(), cli.scope.as_deref(), cli.language.as_deref(), &cli.analysis, cli.no_cache)
         }
     }
 }
 
 // ── Parse command ──
 
-fn cmd_parse(args: ParseArgs) -> Result<()> {
+fn cmd_parse(args: ParseArgs, no_cache: bool) -> Result<()> {
     if !args.path.is_dir() {
         bail!("{} is not a directory", args.path.display());
     }
 
-    let graph_json = topo_parser::parse_project(
+    let (graph_json, _hit) = cache::cached_parse(
         &args.path,
         args.exclude.as_deref(),
         args.scope.as_deref(),
         args.language.as_deref(),
+        no_cache,
     )?;
 
     if let Some(output) = &args.output {
@@ -66,18 +69,19 @@ fn cmd_parse(args: ParseArgs) -> Result<()> {
 
 // ── Analyze command ──
 
-fn cmd_analyze(args: AnalyzeArgs) -> Result<()> {
+fn cmd_analyze(args: AnalyzeArgs, no_cache: bool) -> Result<()> {
     let (graph_json, project_root) = match (&args.path, &args.input) {
         (Some(path), None) => {
             // Auto-parse, then analyze.
             if !path.is_dir() {
                 bail!("{} is not a directory", path.display());
             }
-            let json = topo_parser::parse_project(
+            let (json, _hit) = cache::cached_parse(
                 path,
                 args.exclude.as_deref(),
                 args.scope.as_deref(),
                 args.language.as_deref(),
+                no_cache,
             )?;
             (json, Some(path.canonicalize()?))
         }
@@ -118,6 +122,7 @@ fn cmd_default(
     scope: Option<&str>,
     language: Option<&str>,
     analysis: &AnalysisArgs,
+    no_cache: bool,
 ) -> Result<()> {
     if !path.is_dir() {
         bail!("{} is not a directory", path.display());
@@ -133,8 +138,9 @@ fn cmd_default(
 
     status(tty, "Parsing...");
     let t0 = Instant::now();
-    let graph_json = topo_parser::parse_project(path, exclude, Some(effective_scope), language)?;
-    status(tty, &format!("Parsed in {:.1}s. Analyzing...", t0.elapsed().as_secs_f64()));
+    let (graph_json, cache_hit) = cache::cached_parse(path, exclude, Some(effective_scope), language, no_cache)?;
+    let parse_label = if cache_hit { "Cached" } else { "Parsed" };
+    status(tty, &format!("{parse_label} in {:.1}s. Analyzing...", t0.elapsed().as_secs_f64()));
 
     let project_root = path.canonicalize()?;
     let t1 = Instant::now();
@@ -143,6 +149,18 @@ fn cmd_default(
     eprintln!("Done in {:.1}s (parse {:.1}s + analyze {:.1}s)",
         t0.elapsed().as_secs_f64(), t0.elapsed().as_secs_f64() - t1.elapsed().as_secs_f64(), t1.elapsed().as_secs_f64());
     result
+}
+
+// ── Cache command ──
+
+fn cmd_cache(args: args::CacheArgs) -> Result<()> {
+    match args.command {
+        CacheCommand::Clear { path } => {
+            cache::clear_cache(&path)?;
+            eprintln!("Cache cleared.");
+            Ok(())
+        }
+    }
 }
 
 // ── Shared analysis + output ──
@@ -169,12 +187,14 @@ fn run_analysis(
                 "calls".to_string(),
                 "imports".to_string(),
                 "inherits".to_string(),
+                "defines".to_string(),
             ]),
             Some({
                 let mut m = HashMap::new();
                 m.insert("calls".to_string(), 1.0);
                 m.insert("imports".to_string(), 0.5);
                 m.insert("inherits".to_string(), 0.8);
+                m.insert("defines".to_string(), 0.2);
                 m
             }),
         )

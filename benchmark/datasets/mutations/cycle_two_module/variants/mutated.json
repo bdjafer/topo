@@ -156,22 +156,22 @@
     {
       "source": "api.routes",
       "target": "api.routes.submit_order",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "api.routes",
       "target": "api.routes.get_order",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "api.serializers",
       "target": "api.serializers.serialize_order",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "core.rules",
       "target": "core.rules.normalize_order",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "core.service",
@@ -201,17 +201,17 @@
     {
       "source": "core.service",
       "target": "core.service.create_order",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "core.service",
       "target": "core.service.fetch_order",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "data.audit",
       "target": "data.audit.record_event",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "data.store",
@@ -226,12 +226,12 @@
     {
       "source": "data.store",
       "target": "data.store.save_order",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "data.store",
       "target": "data.store.load_order",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "api.routes.submit_order",

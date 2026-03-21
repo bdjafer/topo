@@ -1,17 +1,5 @@
 # Topo — Structural Intelligence for Codebases
 
-## Project Structure
-
-Monorepo with packages under `packages/`:
-
-- **topo-parser** (Rust): Unified parser entry point — shared graph types, language detection, multi-language dispatch.
-- **topo-parser-python** (Python): Parses Python codebases into typed multilayer graphs (nodes + edges).
-- **topo-parser-rust** (Rust): Parses Rust codebases using rust-analyzer's `ra_ap_*` semantic analysis engine.
-- **topo-analyzer** (Rust): Spectral decomposition, module detection, role classification, anomaly detection. Also builds as PyO3 extension and WASM.
-- **topo-formatter** (Rust): Human-readable text formatter for analysis output. Also builds as PyO3 extension.
-- **topo-cli** (Rust): Developer-facing CLI. Thin shell around topo-parser + topo-analyzer + topo-formatter.
-- **topo-web** (TypeScript): Browser UI via WASM build of topo-analyzer.
-
 ## Development
 
 ```bash
@@ -21,42 +9,11 @@ cargo run -p topo-cli -- <path>  # Run the CLI
 uv run pytest              # Run Python tests
 ```
 
-## Design Decisions
-
-### Clustering quality metric: NMI, not ARI
-
-We use **Normalized Mutual Information (NMI)** to compare spectral modules against directory-based baselines. We deliberately do not use **Adjusted Rand Index (ARI)**.
-
-ARI counts pairs of items that are co-clustered in both partitions. This makes it degenerate or misleading for our use case:
-
-- **At module level**, the file-based baseline produces singleton clusters (each module-level node is its own file), so ARI is mathematically 0 regardless of clustering quality.
-- **At any level**, the spectral clustering intentionally produces finer-grained modules than directory structure — splitting a flat package like `flask.*` into 5 sub-groups based on coupling. ARI penalizes this refinement as "disagreement," even when the sub-groups are architecturally correct.
-- **Coarsening the baseline** to package level still yields low ARI (~0.06) because the baseline is extremely imbalanced (18/3/3 for Flask).
-
-NMI uses entropy rather than pair-counting, so it correctly measures how much knowing the spectral cluster tells you about the file-module identity, even when the partitions have different granularities. NMI of 0.7–0.8 means the spectral modules are strongly consistent with file structure while revealing finer internal structure — which is the tool's purpose.
-
-### NMI baseline is broken for single-package projects (tested & rolled back)
-
-We built a layer signal analysis tool (`layer_analysis.py`) to empirically measure each graph layer's contribution to clustering quality by sweeping weight combinations and measuring NMI + silhouette. Tested on topo (monorepo), Flask, and Click.
-
-**Results:**
-
-- On **topo** (monorepo with 3-4 top-level packages): results looked reasonable. CALLS strongest, IMPORTS marginal, CONTAINS circular.
-- On **Flask** and **Click** (single-package libraries): completely useless. The NMI baseline uses `node_id.split(".", 1)[0]` (top-level package), which produces exactly 1 group for single-package projects. This makes NMI either 0.0 (if spectral finds >1 cluster) or 1.0 trivially (if spectral finds 1 cluster). Neither is informative.
-
-**Decision:** Rolled back. The tool was answering "which layers are best?" using a metric that only works on monorepos. Before any layer weight optimization can be meaningful, we need a clustering quality baseline that works on single-package projects (e.g., second-level module grouping, or known architectural documentation).
-
-**Lesson:** Always validate benchmarking tools on the target codebases (Flask, Click, real projects) before investing in analysis infrastructure. Topo's own monorepo structure is a favorable special case, not representative.
-
 ---
 
 # Structural Intelligence
 
-## Permanent Context
-
----
-
-### What We Know
+## What We Know
 
 Every codebase has two descriptions. The first is the source code itself — the text that compilers and humans read. The second is the topology — the graph of which entities depend on, call, import, inherit from, and co-evolve with each other. These are different descriptions of the same reality.
 
@@ -70,7 +27,7 @@ Spectral graph analysis — decomposing a graph into its natural resonance modes
 
 ---
 
-### What We Want
+## What We Want
 
 A tool that takes a codebase as input and produces structural intelligence as output.
 
@@ -85,7 +42,9 @@ Structural intelligence means: answers to questions about the global topology th
 
 The tool should feel like a structural X-ray of the codebase. The developer sees what was always there but invisible without the right lens.
 
-**Structural intelligence as LLM context.** One of the most immediate uses: structural intelligence, formatted as a compact representation of the codebase's topology, becomes context for an LLM. An LLM that reads source code can assess local quality. An LLM that reads source code plus the structural X-ray can reason about global architecture. This means the output format of structural intelligence must be designed not only for human readability but for LLM ingestibility — compact, structured, rich enough to inform architectural reasoning, small enough to fit in a context window.
+**The output is issues.** Structural intelligence is delivered as prioritized, actionable structural concerns — the same shape as a linter. This is deliberate. An LLM can lint a codebase with topo, read the issues, and produce a refactoring plan. Issues are the interface between structural intelligence and automated action.
+
+**Structural intelligence as LLM context.** Structural intelligence, formatted as a compact representation of the codebase's topology, becomes context for an LLM. An LLM that reads source code can assess local quality. An LLM that reads source code plus the structural X-ray can reason about global architecture. The output format must be designed not only for human readability but for LLM ingestibility — compact, structured, rich enough to inform architectural reasoning, small enough to fit in a context window.
 
 **End goals.** Structural intelligence is not the final product. It is the foundation for two higher-level outcomes:
 
@@ -95,7 +54,7 @@ Second: structural intelligence is used to extract the domain model — a graph 
 
 ---
 
-### What We Don't Want
+## What We Don't Want
 
 We don't want another dependency visualization tool. Dependency graphs exist. They show edges. They don't tell you what the edges mean structurally.
 
@@ -107,11 +66,11 @@ We don't want a tool that requires the developer to understand spectral graph th
 
 ---
 
-### The Core Pipeline
+## The Core Pipeline
 
 The tool has a natural sequence of concerns, each building on the previous:
 
-**Parsing.** Source code becomes a typed, multilayer graph. Nodes are code entities (functions, classes, modules). Edges are structural relationships (calls, imports, inheritance, co-location, temporal co-change). Each relationship type forms a separate layer of the graph. The parser must be precise — false edges corrupt everything downstream.
+**Parsing.** Source code becomes a typed, multilayer graph. Nodes are code entities. Edges are structural relationships. Each relationship type forms a separate layer of the graph. The parser must be precise — false edges corrupt everything downstream.
 
 **Structural analysis.** The multilayer graph becomes structural fingerprints and derived insights. This is where spectral decomposition (or equivalent methods) extracts global topology. The output is not numbers for mathematicians — it is structural roles, module boundaries, anomalies, and constraints, expressed in terms developers understand.
 
@@ -121,29 +80,37 @@ Each concern is independent. The parser knows nothing about spectral analysis. T
 
 ---
 
-### The Key Bet
-
-The bet is: spectral analysis of code graphs produces structurally meaningful results — that the mathematical decomposition aligns with architectural reality as understood by developers who know the codebase.
-
-This is not guaranteed. Spectral methods work well on graphs with clear community structure (social networks, biological networks). Code graphs may or may not have this property. The directory structure that developers impose may or may not align with the topological structure that spectral analysis reveals. Spectral decomposition may or may not outperform simpler methods (community detection, directory grouping, degree-based heuristics).
-
-The bet must be tested empirically before significant engineering investment. The cheapest possible test: take a well-documented open-source codebase, parse its call graph, run spectral clustering, compare against documented architecture. If the results align, the bet is validated. If not, the approach needs rethinking or the project stops.
-
-Everything else in this project is conditional on this bet paying off.
-
----
-
-### The Multilayer Dimension
+## The Multilayer Dimension
 
 A codebase is not one graph. It is several overlapping graphs on the same set of nodes. The call graph captures runtime coupling. The import graph captures compile-time coupling. The inheritance graph captures type coupling. The co-location graph captures organizational coupling. The co-change graph (from git history) captures evolutionary coupling.
 
 A function can be central in the call graph but peripheral in the import graph. A class can be tightly coupled by inheritance but loosely coupled by actual usage. These cross-layer discrepancies are often the most structurally informative findings — they reveal where different kinds of coupling disagree, which is where architectural tension lives.
 
-Whether spectral analysis should run independently per layer and combine results, or jointly on a fused multilayer representation, is an open question. The answer depends on whether cross-layer interactions produce meaningful spectral signatures that per-layer analysis misses. This should be tested empirically, not decided in advance.
+---
+
+## The Two Embeddings
+
+Every code entity has two independent descriptions:
+
+1. **Where it sits** — its position in the dependency graph. Who calls it, what it imports, what calls it. This is the structural description.
+
+2. **What it does** — its content, its name, its types, its purpose. This is the semantic description.
+
+The structural embedding tells you the architecture the codebase *has*. The semantic embedding tells you the architecture the codebase *should have*, based on what each entity does. Neither is complete alone:
+
+- Structural alone cannot detect **misplaced concerns** — a function that handles authentication but sits in the billing module, tightly coupled to billing code through accidental dependency. Structurally, it belongs where it is. Semantically, it doesn't.
+
+- Semantic alone cannot detect **accidental coupling** — two unrelated functions forced into the same module by a shared dependency. Semantically, they're unrelated. Structurally, they're bound together.
+
+- Neither alone can detect **missing abstractions** — two functions in different modules that do the same thing independently. Semantically close, structurally distant.
+
+The findings that matter most for developers live in the **disagreements** between the two embeddings. The two spaces must remain separate — a joint embedding that blends them would lose the ability to detect disagreements, which is the entire point.
+
+The full plan for hybrid structural-semantic analysis is in `HYBRID_EMBEDDINGS.md`.
 
 ---
 
-### The Schema Question
+## The Schema Question
 
 The most ambitious goal: derive both a structural schema and a domain model from the codebase's own topology.
 
@@ -153,49 +120,33 @@ These constraints are not written down anywhere. They exist as emergent regulari
 
 A domain model goes further: it maps the structural modules to domain concepts. If the structural analysis identifies a tightly coupled cluster of functions dealing with user credentials, session tokens, and permission checks, that cluster is the "authentication" bounded context — regardless of whether those functions are in a directory called "auth" or scattered across the codebase. The domain model is the structural schema elevated to semantic meaning, bridging the gap between topology and intent.
 
-Whether spectral fingerprints are the right tool for either of these, or whether simpler graph statistics suffice, is an open question. The schema and domain model, if achievable, would function as a living architectural description — continuously verified, evolving with the codebase, and serving as the ground truth for what the system actually is versus what anyone thinks it is.
-
 ---
 
-### Open Questions
+## Open Questions
 
-These are the questions that should guide research and experimentation. They are ordered roughly by depth — foundational questions first, application questions later.
+**What are the irreducible node kinds?** The right decomposition should emerge from what the structural analysis actually needs to distinguish, not from language grammar categories. Different kinds are justified only if they occupy structurally distinct positions in the graph — if collapsing two kinds into one loses structural information.
 
-**What are the irreducible node kinds?** We assume functions, classes, and modules. But is this the right decomposition? A method is a function inside a class — is it a distinct kind or a function with a parent? A module in Python is a file, but in TypeScript it can be a namespace within a file. A class in some languages is just a namespace for functions. Perhaps the irreducible set is smaller: just "callable" and "namespace." Perhaps it's larger: "callable," "type," "namespace," "value," "interface." The right decomposition should emerge from what the structural analysis actually needs to distinguish, not from language grammar categories. Different kinds are justified only if they occupy structurally distinct positions in the graph — if collapsing two kinds into one loses structural information.
+**What are the irreducible relationship layers?** The right set of layers is the minimal set where each layer carries structural information not captured by any combination of the others. This should be tested: add a layer, check if downstream structural analysis improves. If not, the layer is redundant.
 
-**What are the irreducible relationship layers?** We assume calls, imports, inheritance, co-location, and co-change. But these were chosen by intuition, not derived. Are some redundant? (Does co-location just approximate the import graph?) Are some missing? (What about data flow — "function A produces values consumed by function B"? What about interface implementation vs class inheritance?) The right set of layers is the minimal set where each layer carries structural information not captured by any combination of the others. This should be tested: add a layer, check if downstream structural analysis improves. If not, the layer is redundant.
+**Do cross-layer discrepancies correspond to real architectural concerns?** If a function is central in one layer but peripheral in another, does this predict structural problems? This determines whether multilayer analysis is worth the effort beyond simple layer weighting.
 
-**Does spectral analysis of code graphs produce architecturally meaningful clusters?** This is the foundational empirical question. If spectral fingerprint similarity doesn't correspond to architectural module membership on well-documented codebases, the approach needs fundamental rethinking.
+**Can structural constraints be extracted automatically, and do violations predict future problems?** If violated constraints correlate with later bug fixes, refactoring PRs, or tech debt tickets, the schema is genuinely predictive. If not, it's descriptive at best.
 
-**Does spectral analysis outperform simpler baselines?** Directory grouping is free and often good. Louvain community detection is cheap and well-understood. The spectral approach must demonstrably outperform these on architectural alignment to justify its complexity.
+**Does temporal analysis (structural drift across git history) reveal meaningful trends?** Whether spectral fingerprint comparison across time snapshots captures architecture drift usefully is an empirical question.
 
-**Which graph layers contribute the most structural signal?** Is the call graph sufficient, or do imports, inheritance, co-location, and co-change add meaningful information? The answer determines how complex the parser needs to be.
-
-**Do cross-layer discrepancies correspond to real architectural concerns?** If a function is central in one layer but peripheral in another, does this predict structural problems? This determines whether multilayer analysis is worth the effort.
-
-**Can structural roles be classified from spectral fingerprints in a way that developers recognize as accurate?** "Hub," "bridge," "utility," "entry point" — do these categories emerge from the spectral data, and do developers agree with the classifications? Are these even the right categories, or does the data reveal a different taxonomy of structural roles?
-
-**Are automatically detected anomalies useful?** If fewer than half the detected anomalies correspond to real structural concerns, the detection is too noisy to ship. The threshold for useful anomaly detection is high.
-
-**Can structural constraints be extracted automatically, and do violations predict future problems?** This is the schema question. If violated constraints correlate with later bug fixes, refactoring PRs, or tech debt tickets, the schema is genuinely predictive. If not, it's descriptive at best.
-
-**Does temporal analysis (structural drift across git history) reveal meaningful trends?** Architecture drift is a real concern in long-lived codebases. Whether spectral fingerprint comparison across time snapshots captures this usefully is an empirical question.
-
-**Can the structural modules be mapped to domain concepts?** This is the DDD question. If the structurally derived modules correspond to recognizable domain concepts (authentication, billing, inventory), then the tool can extract domain models. If the structural modules don't align with domain boundaries, structural intelligence and domain modeling may need different approaches.
+**Can the structural modules be mapped to domain concepts?** If the structurally derived modules correspond to recognizable domain concepts, then the tool can extract domain models. If not, structural intelligence and domain modeling may need different approaches.
 
 **What representation of structural intelligence is most useful as LLM context?** A full spectral fingerprint matrix is meaningless to an LLM. A natural language summary loses precision. The right representation is somewhere between — structured enough to be precise, semantic enough to be interpretable. Finding this format is a design problem, not a math problem.
 
 ---
 
-### Methodology
+## Methodology
 
 Every claim the tool makes must be empirically validated against developer judgment on real codebases. The tool's structural findings are hypotheses about architecture. Developers who know the codebase are the ground truth.
 
-The validation methodology:
-
 - Use well-documented open-source codebases where architectural intent is known.
 - Compare tool output against documented architecture, known refactoring decisions, and developer expert judgment.
-- Always compare against the simplest baseline that could work (directory grouping, degree counting, Louvain clustering).
+- Always compare against the simplest baseline that could work.
 - A finding that doesn't outperform the simple baseline is not a finding.
 - Developer agreement is the ultimate metric. If developers who know the code say "this is wrong" or "this is obvious," the tool has failed on that finding, regardless of what the math says.
 
@@ -203,13 +154,10 @@ The tool improves through a cycle: run analysis → present to developers → co
 
 ---
 
-### What Remains Permanently True
-
-Regardless of implementation choices, these hold:
+## What Remains Permanently True
 
 - A codebase has both a textual and a topological description. Current tools exploit the textual description far more than the topological one.
 - Global structural properties of the topology (module boundaries, structural roles, bottlenecks, drift) are invisible to local analysis and valuable to developers.
-- Spectral decomposition is the established mathematical method for extracting global structure from graphs. Whether it's the right method for code graphs specifically is an empirical question, not a theoretical one.
 - The value of the tool is in the structural insight it surfaces, not in the mathematical method it uses internally. If a simpler method produces equally good insight, use the simpler method.
 - Developer judgment is the ground truth. The math serves the developer, not the other way around.
 

@@ -775,547 +775,547 @@
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.algorithms_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.algorithms_v2",
       "target": "topo_analyzer.algorithms.tarjan_scc_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.algorithms_v2",
       "target": "topo_analyzer.algorithms.brandes_betweenness_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.anomalies_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.Anomaly_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.detect_all_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.build_node_to_module_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.detect_cross_module_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.detect_spectral_outliers_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.sccs_to_anomalies_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.detect_layer_discrepancies_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.euclidean_dist_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.sorted_vec_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies_v2",
       "target": "topo_analyzer.anomalies.AnomalyKind_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.anomalies.AnomalyKind_v2",
       "target": "topo_analyzer.anomalies.AnomalyKind.as_str_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.clustering_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering_v2",
       "target": "topo_analyzer.clustering.KMeansResult_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering_v2",
       "target": "topo_analyzer.clustering.Rng_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering_v2",
       "target": "topo_analyzer.clustering.kmeans_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering_v2",
       "target": "topo_analyzer.clustering.silhouette_score_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering_v2",
       "target": "topo_analyzer.clustering.estimate_k_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering_v2",
       "target": "topo_analyzer.clustering.squared_distance_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering.Rng_v2",
       "target": "topo_analyzer.clustering.Rng.new_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering.Rng_v2",
       "target": "topo_analyzer.clustering.Rng.next_u64_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering.Rng_v2",
       "target": "topo_analyzer.clustering.Rng.next_f64_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.clustering.Rng_v2",
       "target": "topo_analyzer.clustering.Rng.choice_weighted_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.issues_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.IssuesContext_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.build_issues_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.detect_reverse_dependencies_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.detect_orphan_issues_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.detect_god_modules_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.detect_low_cohesion_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.detect_fragile_hubs_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.detect_wide_interfaces_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.detect_phantom_imports_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.issue_id_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.anomaly_title_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.severity_label_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.confidence_label_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.top_package_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.sorted_join_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.issues_v2",
       "target": "topo_analyzer.issues.round2_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.graph_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.graph_v2",
       "target": "topo_analyzer.graph.Graph_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.graph.Graph_v2",
       "target": "topo_analyzer.graph.Graph.from_input_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.graph.Graph_v2",
       "target": "topo_analyzer.graph.Graph.symmetric_adjacency_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.graph.Graph_v2",
       "target": "topo_analyzer.graph.Graph.connected_components_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.graph.Graph_v2",
       "target": "topo_analyzer.graph.Graph.in_degree_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.graph.Graph_v2",
       "target": "topo_analyzer.graph.Graph.out_degree_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.graph.Graph_v2",
       "target": "topo_analyzer.graph.Graph.edges_of_kind_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.graph.Graph_v2",
       "target": "topo_analyzer.graph.Graph.anchor_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.modules_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.EnrichedModule_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.module_label_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.annotate_modules_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.build_module_dependencies_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.is_degenerate_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.package_grouping_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.modularity_q_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.deduplicate_labels_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.euclidean_dist_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules_v2",
       "target": "topo_analyzer.modules.round4_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.modules.EnrichedModule_v2",
       "target": "topo_analyzer.modules.EnrichedModule.to_output_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.roles_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.roles_v2",
       "target": "topo_analyzer.roles.classify_roles_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.roles_v2",
       "target": "topo_analyzer.roles.classify_node_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.roles_v2",
       "target": "topo_analyzer.roles.percentile_ranks_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.roles_v2",
       "target": "topo_analyzer.roles.median_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.roles_v2",
       "target": "topo_analyzer.roles.round4_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.roles_v2",
       "target": "topo_analyzer.roles.Role_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.roles.Role_v2",
       "target": "topo_analyzer.roles.Role.as_str_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.spectral_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.spectral_v2",
       "target": "topo_analyzer.spectral.DecompResult_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.spectral_v2",
       "target": "topo_analyzer.spectral.SpectralResult_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.spectral_v2",
       "target": "topo_analyzer.spectral.decompose_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.spectral_v2",
       "target": "topo_analyzer.spectral.extract_subgraph_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.spectral_v2",
       "target": "topo_analyzer.spectral.decompose_core_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.types_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.default_true_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.NodeEntry_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.EdgeEntry_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.ScopeInput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.ProjectionInput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.AnalyzerInput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.ComponentResult_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.AnalyzerOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.AnchorOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.ScopeOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.CoverageOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.SpectralOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.ModuleOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.DependencyOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.ArchitectureOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.RoleOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.IssueOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.HealthOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer.types_v2",
       "target": "topo_analyzer.types.AnalysisOutput_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.analyze_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.package_grouping_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.empty_output_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.analyze_json_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.project_input_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.is_in_scope_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.projected_node_id_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.owning_module_id_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.analyze_full_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.analyze_full_json_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",
       "target": "topo_analyzer.empty_analysis_output_v2",
-      "kind": "contains"
+      "kind": "defines"
     },
     {
       "source": "topo_analyzer_v2",

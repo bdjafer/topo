@@ -110,6 +110,25 @@ pub fn kmeans(data: &[Vec<f64>], k: usize, max_iter: usize, seed: u64) -> KMeans
     }
 }
 
+/// Multi-start k-means: runs k-means with multiple seeds and picks the
+/// result with the best silhouette score, reducing local-optima risk.
+pub fn kmeans_best_of(data: &[Vec<f64>], k: usize, max_iter: usize, seeds: &[u64]) -> KMeansResult {
+    assert!(!seeds.is_empty(), "kmeans_best_of requires at least one seed");
+    let mut best_result = kmeans(data, k, max_iter, seeds[0]);
+    let mut best_sil = silhouette_score(data, &best_result.labels, &best_result.centroids);
+
+    for &seed in &seeds[1..] {
+        let result = kmeans(data, k, max_iter, seed);
+        let sil = silhouette_score(data, &result.labels, &result.centroids);
+        if sil > best_sil {
+            best_sil = sil;
+            best_result = result;
+        }
+    }
+
+    best_result
+}
+
 /// Centroid-approximated silhouette score.
 ///
 /// O(n*k) instead of O(n²) — uses distance to own centroid vs nearest
@@ -218,6 +237,29 @@ pub fn random_baseline_silhouette(
     }
 
     total / n_permutations as f64
+}
+
+/// Prepare spectral eigenvectors for k-means clustering.
+///
+/// Two standard steps from Ng-Jordan-Weiss (2001):
+/// 1. Truncate each row to the first `k` eigenvector dimensions.
+///    Higher eigenvectors capture noise, not community structure.
+/// 2. Row-normalize to unit length. The normalized Laplacian places
+///    same-community nodes at similar angles; without normalization,
+///    high-degree hubs sit near the origin and attract everything
+///    into one giant cluster.
+pub fn prepare_for_clustering(data: &[Vec<f64>], k: usize) -> Vec<Vec<f64>> {
+    data.iter()
+        .map(|row| {
+            let truncated: Vec<f64> = row.iter().take(k).cloned().collect();
+            let norm: f64 = truncated.iter().map(|v| v * v).sum::<f64>().sqrt();
+            if norm > 1e-10 {
+                truncated.iter().map(|v| v / norm).collect()
+            } else {
+                truncated
+            }
+        })
+        .collect()
 }
 
 fn squared_distance(a: &[f64], b: &[f64]) -> f64 {

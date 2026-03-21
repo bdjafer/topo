@@ -58,8 +58,8 @@
           },
           "kind": {
             "type": "string",
-            "enum": ["calls", "imports", "inherits", "contains"],
-            "description": "Relationship type. calls=runtime, imports=compile-time, inherits=type, contains=structural nesting."
+            "enum": ["calls", "imports", "inherits", "defines"],
+            "description": "Relationship type. calls=runtime, imports=compile-time, inherits=type, defines=structural definition (module→class, class→method)."
           }
         }
       }

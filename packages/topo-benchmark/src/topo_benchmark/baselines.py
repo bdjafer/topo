@@ -41,7 +41,7 @@ def louvain_partition(
 ) -> dict[str, int]:
     """Louvain community detection on the projected graph."""
     if edge_kinds is None:
-        edge_kinds = [EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS]
+        edge_kinds = [EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS, EdgeKind.DEFINES]
 
     G = nx.Graph()
     G.add_nodes_from(graph.nodes)
@@ -66,7 +66,7 @@ def heuristic_anomalies(
 ) -> list[dict]:
     """Simple anomaly detection: SCC-based cycles, cross-module edge counts."""
     if edge_kinds is None:
-        edge_kinds = [EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS]
+        edge_kinds = [EdgeKind.CALLS, EdgeKind.IMPORTS, EdgeKind.INHERITS, EdgeKind.DEFINES]
 
     G = nx.DiGraph()
     G.add_nodes_from(graph.nodes)
