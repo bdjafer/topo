@@ -6,11 +6,12 @@
 pub mod algorithms;
 pub mod anomalies;
 pub mod clustering;
-pub mod findings;
+pub mod issues;
 pub mod graph;
 pub mod modules;
 pub mod roles;
 pub mod spectral;
+pub mod stats;
 pub mod types;
 
 #[cfg(all(not(target_arch = "wasm32"), feature = "python"))]
@@ -21,20 +22,19 @@ pub mod wasm;
 
 use std::collections::{HashMap, HashSet};
 
-use modules::round4;
+use stats::round4;
 use types::{AnalyzerInput, AnalyzerOutput};
 
 /// Betweenness centrality approximation threshold (matches Python).
 const BETWEENNESS_APPROX_THRESHOLD: usize = 5000;
 
-/// Default maximum k for auto-estimation.
-const DEFAULT_MAX_K: usize = 8;
+/// Maximum eigenvectors to compute (computation budget, not cluster count).
+const SPECTRAL_MAX_EIGENVECTORS: usize = 20;
 
-/// Silhouette threshold below which clustering is degenerate.
-const SILHOUETTE_DEGENERATE: f64 = 0.3;
-
-/// Average cluster size threshold below which clustering is degenerate.
-const AVG_CLUSTER_SIZE_DEGENERATE: f64 = 3.0;
+/// Margin by which spectral clustering must beat random to be non-degenerate.
+/// The only remaining constant — has a clear meaning: "5 percentage points
+/// better than random partitioning."
+const PERMUTATION_MARGIN: f64 = 0.05;
 
 /// Run the full analysis pipeline: spectral decomposition, clustering,
 /// graph algorithms.
@@ -48,7 +48,7 @@ pub fn analyze(input: &AnalyzerInput) -> AnalyzerOutput {
 
     // Spectral decomposition.
     let k_hint = input.k.unwrap_or(0);
-    let spectral_k = if k_hint > 0 { k_hint } else { DEFAULT_MAX_K };
+    let spectral_k = if k_hint > 0 { k_hint } else { SPECTRAL_MAX_EIGENVECTORS };
     let spectral = spectral::decompose(&graph, spectral_k);
 
     // Build fingerprint map: node_id → eigenvector coordinates.
@@ -87,16 +87,20 @@ pub fn analyze(input: &AnalyzerInput) -> AnalyzerOutput {
         let clusters = package_grouping(&graph.node_ids);
         (clusters, 0.0, true)
     } else {
+        // k from eigengap (data-adaptive) or user hint.
         let actual_k = if k_hint > 0 {
             k_hint
+        } else if let Some((_, first_result)) = spectral.components.first() {
+            spectral::eigengap_k(&first_result.eigenvalues)
         } else {
-            clustering::estimate_k(&cluster_data, DEFAULT_MAX_K, 42)
+            2
         };
         let km = clustering::kmeans(&cluster_data, actual_k, 100, 42);
         let sil = clustering::silhouette_score(&cluster_data, &km.labels, &km.centroids);
 
-        let avg_cluster_size = cluster_data.len() as f64 / actual_k as f64;
-        let degenerate = sil < SILHOUETTE_DEGENERATE || avg_cluster_size <= AVG_CLUSTER_SIZE_DEGENERATE;
+        // Degeneracy: spectral must beat random partitioning.
+        let random_sil = clustering::random_baseline_silhouette(&cluster_data, actual_k, 5, 43);
+        let degenerate = sil <= random_sil + PERMUTATION_MARGIN;
 
         if degenerate {
             let clusters = package_grouping(&graph.node_ids);
@@ -318,6 +322,7 @@ fn project_input(input: &AnalyzerInput) -> AnalyzerInput {
         parsed_edges: Some(raw_edge_count),
         self_edge_ratio: Some(self_edge_ratio),
         projection: None, // Already projected
+        packages: input.packages.clone(),
     }
 }
 
@@ -409,7 +414,7 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
 
     // 1. Spectral decomposition.
     let k_hint = input.k.unwrap_or(0);
-    let spectral_k = if k_hint > 0 { k_hint } else { DEFAULT_MAX_K };
+    let spectral_k = if k_hint > 0 { k_hint } else { SPECTRAL_MAX_EIGENVECTORS };
     let spectral = spectral::decompose(&graph, spectral_k);
 
     // 2. Build fingerprint map.
@@ -426,30 +431,53 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         }
     }
 
-    // 3. Clustering.
-    let mut cluster_node_ids: Vec<String> = Vec::new();
-    let mut cluster_data: Vec<Vec<f64>> = Vec::new();
-    for (component_indices, result) in &spectral.components {
-        for (li, &gi) in component_indices.iter().enumerate() {
-            cluster_node_ids.push(graph.node_ids[gi].clone());
-            cluster_data.push(result.eigenvectors[li].clone());
-        }
-    }
+    // 3. Module assignment.
+    //
+    // When the parser provides explicit package names (2+ packages), use
+    // package grouping directly — the crate/package structure IS the
+    // top-level architecture. Spectral fingerprints remain available for
+    // roles and anomaly detection within each package.
+    let has_explicit_packages = input
+        .packages
+        .as_ref()
+        .map(|p| p.len() >= 2)
+        .unwrap_or(false)
+        && input.k.is_none();
 
-    let (clusters, silhouette_val, used_fallback) =
-        if cluster_data.is_empty() || cluster_data.first().map(|v| v.is_empty()).unwrap_or(true) {
+    let (final_modules, final_silhouette, final_fallback) = if has_explicit_packages {
+        (modules::package_grouping(&graph.node_ids), None, true)
+    } else {
+        // Single-crate: use spectral clustering.
+        let mut cluster_node_ids: Vec<String> = Vec::new();
+        let mut cluster_data: Vec<Vec<f64>> = Vec::new();
+        for (component_indices, result) in &spectral.components {
+            for (li, &gi) in component_indices.iter().enumerate() {
+                cluster_node_ids.push(graph.node_ids[gi].clone());
+                cluster_data.push(result.eigenvectors[li].clone());
+            }
+        }
+
+        let (clusters, silhouette_val, used_fallback) = if cluster_data.is_empty()
+            || cluster_data.first().map(|v| v.is_empty()).unwrap_or(true)
+        {
             let clusters = package_grouping(&graph.node_ids);
             (clusters, 0.0, true)
         } else {
+            // k from eigengap (data-adaptive) or user hint.
             let actual_k = if k_hint > 0 {
                 k_hint
+            } else if let Some((_, first_result)) = spectral.components.first() {
+                spectral::eigengap_k(&first_result.eigenvalues)
             } else {
-                clustering::estimate_k(&cluster_data, DEFAULT_MAX_K, 42)
+                2
             };
             let km = clustering::kmeans(&cluster_data, actual_k, 100, 42);
             let sil = clustering::silhouette_score(&cluster_data, &km.labels, &km.centroids);
-            let avg_size = cluster_data.len() as f64 / actual_k as f64;
-            let degenerate = sil < SILHOUETTE_DEGENERATE || avg_size <= AVG_CLUSTER_SIZE_DEGENERATE;
+
+            // Degeneracy: spectral must beat random partitioning.
+            let random_sil =
+                clustering::random_baseline_silhouette(&cluster_data, actual_k, 5, 43);
+            let degenerate = sil <= random_sil + PERMUTATION_MARGIN;
 
             if degenerate && k_hint == 0 {
                 let clusters = package_grouping(&graph.node_ids);
@@ -463,47 +491,43 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
             }
         };
 
-    // Assign unassigned nodes to a special cluster.
-    let mut all_clusters = clusters;
-    let max_cluster = all_clusters.values().max().copied().unwrap_or(0);
-    let unassigned_cluster_id = max_cluster + 1;
-    let mut has_unassigned = false;
-    for component in &spectral.unassigned {
-        for &gi in component {
-            let nid = &graph.node_ids[gi];
-            if !all_clusters.contains_key(nid) {
-                all_clusters.insert(nid.clone(), unassigned_cluster_id);
-                has_unassigned = true;
+        // Assign unassigned nodes to a special cluster.
+        let mut all_clusters = clusters;
+        let max_cluster = all_clusters.values().max().copied().unwrap_or(0);
+        let unassigned_cluster_id = max_cluster + 1;
+        let mut has_unassigned = false;
+        for component in &spectral.unassigned {
+            for &gi in component {
+                let nid = &graph.node_ids[gi];
+                if !all_clusters.contains_key(nid) {
+                    all_clusters.insert(nid.clone(), unassigned_cluster_id);
+                    has_unassigned = true;
+                }
             }
         }
-    }
 
-    // 4. Module enrichment.
-    let silhouette_opt = if used_fallback { None } else { Some(silhouette_val) };
-    let unassigned_id = if has_unassigned {
-        Some(unassigned_cluster_id)
-    } else {
-        None
-    };
-
-    let enriched = modules::annotate_modules(
-        &all_clusters,
-        &fingerprints,
-        silhouette_val,
-        unassigned_id,
-    );
-
-    // Check degeneracy and possibly fall back to package grouping.
-    let (final_modules, final_silhouette, final_fallback) =
-        if !used_fallback && input.k.is_none() && modules::is_degenerate(&enriched, silhouette_opt)
-        {
-            let all_node_ids: Vec<String> =
-                enriched.iter().flat_map(|m| m.node_ids.clone()).collect();
-            let pkg_modules = modules::package_grouping(&all_node_ids);
-            (pkg_modules, None, true)
+        // Module enrichment.
+        let silhouette_opt = if used_fallback {
+            None
         } else {
-            (enriched, silhouette_opt, used_fallback)
+            Some(silhouette_val)
         };
+        let unassigned_id = if has_unassigned {
+            Some(unassigned_cluster_id)
+        } else {
+            None
+        };
+
+        let enriched = modules::annotate_modules(
+            &all_clusters,
+            &fingerprints,
+            silhouette_val,
+            unassigned_id,
+        );
+
+        // Degeneracy already handled by permutation baseline above.
+        (enriched, silhouette_opt, used_fallback)
+    };
 
     // Build node_to_module map (skipping unassigned).
     let mut node_to_module: HashMap<String, usize> = HashMap::new();
@@ -544,12 +568,13 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         &fingerprints,
         &sccs,
         &active_edge_kinds,
+        final_fallback,
     );
 
     // 10. Modularity Q.
     let mod_q = modules::modularity_q(&graph, &node_to_module);
 
-    // 11. Compute derived metrics for findings.
+    // 11. Compute derived metrics for issues.
     let nodes_covered = fingerprints
         .values()
         .filter(|fp| fp.iter().any(|&v| v != 0.0))
@@ -573,8 +598,8 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         0.0
     };
 
-    // 12. Finding synthesis.
-    let findings_ctx = findings::FindingsContext {
+    // 12. Issue synthesis.
+    let issues_ctx = issues::IssuesContext {
         graph: &graph,
         modules: &final_modules,
         roles: &role_outputs,
@@ -587,7 +612,7 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         largest_module_ratio,
         node_to_module: &node_to_module,
     };
-    let issues = findings::build_findings(&findings_ctx);
+    let issues = issues::build_issues(&issues_ctx);
 
     // 13. Build spectral output.
     let spectral_output = if spectral.components.is_empty() && spectral.unassigned.is_empty() {
@@ -730,6 +755,7 @@ mod tests {
             parsed_edges: None,
             self_edge_ratio: None,
             projection: None,
+            packages: None,
         }
     }
 

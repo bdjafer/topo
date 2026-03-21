@@ -1,0 +1,19 @@
+[package]
+name = "topo-cli"
+version = "0.1.0"
+edition = "2024"
+description = "CLI for topo structural analysis"
+
+[[bin]]
+name = "topo"
+path = "src/main.rs"
+
+[dependencies]
+topo-analyzer = { path = "../topo-analyzer", default-features = false }
+topo-formatter = { path = "../topo-formatter" }
+topo-parser = { path = "../topo-parser", features = ["rust"] }
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+anyhow = "1"

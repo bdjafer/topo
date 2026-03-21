@@ -1,0 +1,19 @@
+[package]
+name = "topo-formatter"
+version = "0.1.0"
+edition = "2024"
+description = "Text formatter for topo structural analysis output"
+
+[lib]
+name = "topo_formatter"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde_json = "1"
+owo-colors = { version = "4", optional = true }
+pyo3 = { version = "0.23", features = ["extension-module"], optional = true }
+
+[features]
+default = ["terminal"]
+terminal = ["owo-colors"]
+python = ["pyo3"]

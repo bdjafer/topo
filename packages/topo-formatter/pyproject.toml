@@ -1,13 +1,12 @@
 [project]
 name = "topo-formatter"
 version = "0.1.0"
-description = "analysis.json → human/LLM-readable output"
+description = "Text formatter for topo structural analysis output (Rust via PyO3)"
 requires-python = ">=3.11"
-dependencies = []
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/topo_formatter"]
+[tool.maturin]
+features = ["python"]

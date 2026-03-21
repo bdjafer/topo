@@ -90,6 +90,11 @@ pub struct AnalyzerInput {
     /// performs the projection before analysis.
     #[serde(default)]
     pub projection: Option<ProjectionInput>,
+    /// Package/crate names for top-level architecture grouping.
+    /// When set with 2+ packages, used instead of spectral clustering for
+    /// module assignment. The parser populates this from workspace structure.
+    #[serde(default)]
+    pub packages: Option<Vec<String>>,
 }
 
 // ---------------------------------------------------------------------------

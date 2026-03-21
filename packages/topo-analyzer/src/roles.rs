@@ -9,17 +9,11 @@
 //! Ports logic from Python topo_analyzer.roles.
 
 use crate::graph::Graph;
+use crate::stats;
 use crate::types::RoleOutput;
 
 /// Percentile above which a metric is considered "high".
 const PCT_THRESHOLD: f64 = 0.9;
-/// Minimum edges for directional roles.
-const MIN_DIRECTIONAL_DEGREE: usize = 3;
-/// Flow imbalance threshold for directional roles.
-const DIRECTION_THRESHOLD: f64 = 0.6;
-/// Hub must exceed median degree by this gap.
-const MIN_HUB_GAP: f64 = 2.0;
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Role {
     Hub,
@@ -61,19 +55,37 @@ pub fn classify_roles(graph: &Graph, betweenness: &[f64]) -> Vec<RoleOutput> {
     }
 
     let degree_f: Vec<f64> = degrees.iter().map(|&d| d as f64).collect();
-    let degree_pcts = percentile_ranks(&degree_f);
-    let btw_pcts = percentile_ranks(betweenness);
-    let median_degree = median(&degree_f);
+    let degree_pcts = stats::percentile_ranks(&degree_f);
+    let btw_pcts = stats::percentile_ranks(betweenness);
+
+    // Data-adaptive thresholds (replaces MIN_HUB_GAP, MIN_DIRECTIONAL_DEGREE,
+    // DIRECTION_THRESHOLD with distribution-derived values).
+    let hub_fence = stats::tukey_upper_fence(&degree_f);
+
+    let mean_deg = stats::mean(&degree_f);
+    let std_deg = stats::std_dev(&degree_f);
+    let min_directional_degree = (mean_deg - std_deg).max(2.0) as usize;
+
+    let directions: Vec<f64> = (0..n)
+        .filter(|&i| degrees[i] > 0)
+        .map(|i| ((out_degrees[i] as f64 - in_degrees[i] as f64) / degrees[i] as f64).abs())
+        .collect();
+    let direction_fence = stats::tukey_upper_fence(&directions).clamp(0.5, 0.9);
 
     let mut roles = Vec::with_capacity(n);
     for i in 0..n {
+        let full_degree = graph.full_in_degrees[i] + graph.full_out_degrees[i];
         let role = classify_node(
             degrees[i],
             in_degrees[i],
             out_degrees[i],
             degree_pcts[i],
             btw_pcts[i],
-            median_degree,
+            betweenness[i],
+            hub_fence,
+            min_directional_degree,
+            direction_fence,
+            full_degree,
         );
         roles.push(RoleOutput {
             node_id: graph.node_ids[i].clone(),
@@ -103,31 +115,43 @@ fn classify_node(
     out_degree: usize,
     degree_pct: f64,
     betweenness_pct: f64,
-    median_degree: f64,
+    betweenness_raw: f64,
+    hub_fence: f64,
+    min_directional_degree: usize,
+    direction_fence: f64,
+    full_degree: usize,
 ) -> Role {
-    if degree == 0 {
+    // Orphan: no edges across ANY kind (including CONTAINS).
+    if full_degree == 0 {
         return Role::Orphan;
+    }
+    // Isolated in analysis layers but connected structurally — treat as regular.
+    if degree == 0 {
+        return Role::Regular;
     }
 
     let direction = (out_degree as f64 - in_degree as f64) / degree as f64;
 
     // Bridge: high betweenness but not high degree.
-    if betweenness_pct >= PCT_THRESHOLD && degree_pct < PCT_THRESHOLD {
+    if betweenness_raw > 0.0
+        && betweenness_pct >= PCT_THRESHOLD
+        && degree_pct < PCT_THRESHOLD
+    {
         return Role::Bridge;
     }
 
     // Directional roles: strong flow imbalance with enough edges.
-    if degree >= MIN_DIRECTIONAL_DEGREE && direction <= -DIRECTION_THRESHOLD {
+    if degree >= min_directional_degree && direction <= -direction_fence {
         return Role::Utility;
     }
-    if degree >= MIN_DIRECTIONAL_DEGREE && direction >= DIRECTION_THRESHOLD {
+    if degree >= min_directional_degree && direction >= direction_fence {
         return Role::EntryPoint;
     }
 
-    // Hub: top-percentile degree, clearly above median, balanced flow.
+    // Hub: top-percentile degree, above Tukey fence, balanced flow.
     if degree_pct >= PCT_THRESHOLD
-        && degree as f64 >= median_degree + MIN_HUB_GAP
-        && direction.abs() < DIRECTION_THRESHOLD
+        && degree as f64 >= hub_fence
+        && direction.abs() < direction_fence
     {
         return Role::Hub;
     }
@@ -135,44 +159,11 @@ fn classify_node(
     Role::Regular
 }
 
-/// Compute percentile ranks: fraction of values strictly less.
-///
-/// Uses ranks/(n-1) so maximum maps to 1.0, minimum to 0.0.
-/// Matches Python `roles.py::_percentile_ranks`.
-pub fn percentile_ranks(values: &[f64]) -> Vec<f64> {
-    let n = values.len();
-    if n <= 1 {
-        return vec![0.0; n];
-    }
-    let mut sorted = values.to_vec();
-    sorted.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
-
-    values
-        .iter()
-        .map(|&v| {
-            // Count strictly less via binary search (left side).
-            let rank = sorted.partition_point(|&x| x < v);
-            rank as f64 / (n - 1) as f64
-        })
-        .collect()
-}
-
-fn median(values: &[f64]) -> f64 {
-    if values.is_empty() {
-        return 0.0;
-    }
-    let mut sorted = values.to_vec();
-    sorted.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
-    let mid = sorted.len() / 2;
-    if sorted.len() % 2 == 0 {
-        (sorted[mid - 1] + sorted[mid]) / 2.0
-    } else {
-        sorted[mid]
-    }
-}
+// Re-export for backward compatibility.
+pub use crate::stats::percentile_ranks;
 
 fn round4(v: f64) -> f64 {
-    (v * 10000.0).round() / 10000.0
+    crate::stats::round4(v)
 }
 
 #[cfg(test)]
@@ -196,31 +187,44 @@ mod tests {
         assert_eq!(pcts[2], 0.0);
     }
 
+    // Test helper: classify_node(degree, in, out, deg_pct, btw_pct, btw_raw,
+    //   hub_fence, min_dir_degree, dir_fence, full_degree)
+
     #[test]
     fn test_classify_orphan() {
-        assert_eq!(classify_node(0, 0, 0, 0.0, 0.0, 5.0), Role::Orphan);
+        assert_eq!(classify_node(0, 0, 0, 0.0, 0.0, 0.0, 5.0, 3, 0.6, 0), Role::Orphan);
+    }
+
+    #[test]
+    fn test_classify_structurally_connected_not_orphan() {
+        assert_eq!(classify_node(0, 0, 0, 0.0, 0.0, 0.0, 5.0, 3, 0.6, 2), Role::Regular);
     }
 
     #[test]
     fn test_classify_bridge() {
-        assert_eq!(classify_node(4, 2, 2, 0.5, 0.95, 5.0), Role::Bridge);
+        assert_eq!(classify_node(4, 2, 2, 0.5, 0.95, 0.05, 8.0, 3, 0.6, 4), Role::Bridge);
+    }
+
+    #[test]
+    fn test_classify_bridge_rejects_zero_betweenness() {
+        assert_ne!(classify_node(4, 2, 2, 0.5, 0.95, 0.0, 8.0, 3, 0.6, 4), Role::Bridge);
     }
 
     #[test]
     fn test_classify_utility() {
         // Strong sink: 5 in, 0 out → direction = -1.0
-        assert_eq!(classify_node(5, 5, 0, 0.5, 0.5, 3.0), Role::Utility);
+        assert_eq!(classify_node(5, 5, 0, 0.5, 0.5, 0.0, 8.0, 3, 0.6, 5), Role::Utility);
     }
 
     #[test]
     fn test_classify_entry_point() {
         // Strong source: 0 in, 5 out → direction = 1.0
-        assert_eq!(classify_node(5, 0, 5, 0.5, 0.5, 3.0), Role::EntryPoint);
+        assert_eq!(classify_node(5, 0, 5, 0.5, 0.5, 0.0, 8.0, 3, 0.6, 5), Role::EntryPoint);
     }
 
     #[test]
     fn test_classify_hub() {
-        // High degree, balanced, above median
-        assert_eq!(classify_node(10, 5, 5, 0.95, 0.95, 3.0), Role::Hub);
+        // High degree, above fence, balanced
+        assert_eq!(classify_node(10, 5, 5, 0.95, 0.95, 0.1, 8.0, 3, 0.6, 10), Role::Hub);
     }
 }

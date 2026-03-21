@@ -1,0 +1,5 @@
+{
+  "split": "public",
+  "level": "symbol",
+  "description": "Cross-concern calls from spectral engine directly to synthesis layer, bypassing structural model"
+}

@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
+from topo_parser_python.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
 from topo_benchmark.codegraph_io import deserialize_graph, load_graph, save_graph, serialize_graph
 
 

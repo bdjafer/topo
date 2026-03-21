@@ -5,10 +5,8 @@ description = "Structural intelligence for codebases — spectral analysis of co
 requires-python = ">=3.11"
 dependencies = [
     "pycg",
-    "topo-parser",
+    "topo-parser-python",
     "topo-analyzer",
-    "topo-formatter",
-    "topo-cli",
 ]
 
 [dependency-groups]
@@ -19,14 +17,12 @@ dev = [
 
 [tool.uv.workspace]
 members = ["packages/*"]
-exclude = ["packages/topo-web", "packages/topo-cli-rs", "packages/topo-parser-rs", "packages/topo-benchmark"]
+exclude = ["packages/topo-web", "packages/topo-cli", "packages/topo-parser", "packages/topo-parser-rust", "packages/topo-benchmark"]
 
 [tool.uv.sources]
 pycg = { workspace = true }
-topo-parser = { workspace = true }
+topo-parser-python = { workspace = true }
 topo-analyzer = { workspace = true }
-topo-formatter = { workspace = true }
-topo-cli = { workspace = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

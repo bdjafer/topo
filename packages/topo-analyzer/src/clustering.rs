@@ -2,6 +2,8 @@
 //!
 //! Ports the custom implementations from topo_analyzer.modules.
 
+use crate::stats::{self, Rng};
+
 /// K-means++ clustering result.
 pub struct KMeansResult {
     /// Cluster assignment for each row (0-indexed).
@@ -10,45 +12,6 @@ pub struct KMeansResult {
     pub centroids: Vec<Vec<f64>>,
     /// Number of iterations run.
     pub iterations: usize,
-}
-
-/// Simple seeded RNG (matching Python's numpy RandomState(42) behavior isn't
-/// needed — we just need deterministic results).
-struct Rng {
-    state: u64,
-}
-
-impl Rng {
-    fn new(seed: u64) -> Self {
-        Self { state: seed }
-    }
-
-    fn next_u64(&mut self) -> u64 {
-        // xorshift64
-        self.state ^= self.state << 13;
-        self.state ^= self.state >> 7;
-        self.state ^= self.state << 17;
-        self.state
-    }
-
-    fn next_f64(&mut self) -> f64 {
-        (self.next_u64() >> 11) as f64 / (1u64 << 53) as f64
-    }
-
-    fn choice_weighted(&mut self, weights: &[f64]) -> usize {
-        let total: f64 = weights.iter().sum();
-        if total <= 0.0 {
-            return 0;
-        }
-        let mut r = self.next_f64() * total;
-        for (i, &w) in weights.iter().enumerate() {
-            r -= w;
-            if r <= 0.0 {
-                return i;
-            }
-        }
-        weights.len() - 1
-    }
 }
 
 /// K-means++ clustering on a row-major n×dim matrix.
@@ -214,11 +177,51 @@ pub fn estimate_k(data: &[Vec<f64>], max_k: usize, seed: u64) -> usize {
     best_k
 }
 
+/// Compute mean silhouette of random k-partitions as a baseline.
+///
+/// Used for data-adaptive degeneracy detection: if spectral clustering
+/// isn't meaningfully better than random partitioning, it's degenerate.
+pub fn random_baseline_silhouette(
+    data: &[Vec<f64>],
+    k: usize,
+    n_permutations: usize,
+    seed: u64,
+) -> f64 {
+    let n = data.len();
+    if n == 0 || k == 0 || data[0].is_empty() {
+        return 0.0;
+    }
+    let dim = data[0].len();
+    let mut rng = Rng::new(seed);
+    let mut total = 0.0;
+
+    for _ in 0..n_permutations {
+        let labels: Vec<usize> = (0..n).map(|_| rng.next_usize(k)).collect();
+
+        // Compute centroids for random partition.
+        let mut centroids = vec![vec![0.0; dim]; k];
+        let mut counts = vec![0usize; k];
+        for (i, &label) in labels.iter().enumerate() {
+            counts[label] += 1;
+            for (j, &v) in data[i].iter().enumerate() {
+                centroids[label][j] += v;
+            }
+        }
+        for c in 0..k {
+            if counts[c] > 0 {
+                for v in &mut centroids[c] {
+                    *v /= counts[c] as f64;
+                }
+            }
+        }
+        total += silhouette_score(data, &labels, &centroids);
+    }
+
+    total / n_permutations as f64
+}
+
 fn squared_distance(a: &[f64], b: &[f64]) -> f64 {
-    a.iter()
-        .zip(b.iter())
-        .map(|(x, y)| (x - y) * (x - y))
-        .sum()
+    stats::squared_distance(a, b)
 }
 
 #[cfg(test)]

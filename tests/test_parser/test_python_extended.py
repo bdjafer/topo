@@ -3,8 +3,8 @@
 import textwrap
 from pathlib import Path
 
-from topo_parser.graph import EdgeKind, NodeKind
-from topo_parser.python import parse_python_project
+from topo_parser_python.graph import EdgeKind, NodeKind
+from topo_parser_python.python import parse_python_project
 
 
 def test_src_layout_module_ids(tmp_path: Path):

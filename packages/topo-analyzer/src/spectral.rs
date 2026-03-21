@@ -94,6 +94,28 @@ pub fn decompose(graph: &Graph, k: usize) -> SpectralResult {
     }
 }
 
+/// Estimate k from the eigengap heuristic (von Luxburg 2007).
+///
+/// Finds the largest jump between consecutive eigenvalues: k = argmax(λ_{i+1} - λ_i) + 1.
+/// Eigenvalues must be sorted ascending (as produced by `decompose_core`).
+/// Returns at least 2.
+pub fn eigengap_k(eigenvalues: &[f64]) -> usize {
+    if eigenvalues.len() < 2 {
+        return 2;
+    }
+    let search = eigenvalues.len().min(20);
+    let best_gap_idx = (0..search - 1)
+        .max_by(|&i, &j| {
+            let gap_i = eigenvalues[i + 1] - eigenvalues[i];
+            let gap_j = eigenvalues[j + 1] - eigenvalues[j];
+            gap_i
+                .partial_cmp(&gap_j)
+                .unwrap_or(std::cmp::Ordering::Equal)
+        })
+        .unwrap_or(0);
+    (best_gap_idx + 1).max(2)
+}
+
 /// Extract the symmetric adjacency sub-matrix for a component.
 /// Returns a dense n×n row-major matrix.
 fn extract_subgraph(graph: &Graph, component: &[usize]) -> Vec<f64> {

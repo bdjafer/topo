@@ -22,12 +22,12 @@ def test_layered_app_aligns_with_package_structure():
     assert nmi > 0.6
     assert not any(
         f["kind"] == "reverse_dependency"
-        for f in result.findings
+        for f in result.issues
     )
 
 
 def test_reverse_flow_fixture_reports_bidirectional_dependency():
-    """A fixture with reverse package flow should surface a reverse dependency finding."""
+    """A fixture with reverse package flow should surface a reverse dependency issue."""
     result = analyze_fixture("reverse_flow_app")
 
     mod_labels = {m.id: m.label for m in result.modules}
@@ -43,5 +43,5 @@ def test_reverse_flow_fixture_reports_bidirectional_dependency():
     assert data_to_api, f"Expected data→api dependency in {dependency_pairs}"
     assert any(
         f["kind"] == "reverse_dependency"
-        for f in result.findings
+        for f in result.issues
     )

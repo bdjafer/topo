@@ -31,6 +31,11 @@ pub struct Graph {
     pub node_lines: Vec<Option<u32>>,
     /// Total edge count (after filtering).
     pub edge_count: usize,
+    /// In-degree across ALL edge kinds (including filtered-out ones like CONTAINS).
+    /// Used for orphan detection — a node with CONTAINS edges isn't orphaned.
+    pub full_in_degrees: Vec<usize>,
+    /// Out-degree across ALL edge kinds.
+    pub full_out_degrees: Vec<usize>,
 }
 
 impl Graph {
@@ -53,6 +58,18 @@ impl Graph {
         let mut predecessors: Vec<Vec<usize>> = vec![Vec::new(); n];
         let mut typed_edges: HashMap<String, Vec<(usize, usize)>> = HashMap::new();
         let mut edge_count = 0usize;
+
+        // Full-degree arrays: count ALL edge kinds (before filtering) for orphan detection.
+        let mut full_in_degrees = vec![0usize; n];
+        let mut full_out_degrees = vec![0usize; n];
+        for edge in &input.edges {
+            let Some(&src) = node_index.get(&edge.source) else { continue };
+            let Some(&tgt) = node_index.get(&edge.target) else { continue };
+            if src != tgt {
+                full_out_degrees[src] += 1;
+                full_in_degrees[tgt] += 1;
+            }
+        }
 
         let allowed_kinds: Option<HashSet<&str>> = input
             .edge_kinds
@@ -104,6 +121,8 @@ impl Graph {
             node_files,
             node_lines,
             edge_count,
+            full_in_degrees,
+            full_out_degrees,
         }
     }
 

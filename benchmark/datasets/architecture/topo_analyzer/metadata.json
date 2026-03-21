@@ -1,0 +1,6 @@
+{
+  "split": "public",
+  "level": "symbol",
+  "description": "topo-analyzer crate: 110 nodes grouped into 4 architectural concerns (spectral_engine, structural_model, synthesis, infrastructure). Non-circular: directory grouping gives 1 cluster, gold has 4.",
+  "label_provenance": "Architect judgment. Modules grouped by architectural concern, not file structure. spectral/clustering/algorithms = computation core, modules/roles/anomalies = structural interpretation, issues = synthesis, types/graph = infrastructure."
+}

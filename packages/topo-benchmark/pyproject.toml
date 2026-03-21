@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Benchmark harness for topo-analyzer"
 requires-python = ">=3.11"
 dependencies = [
-    "topo-parser",
+    "topo-parser-python",
     "topo-analyzer",
     "networkx>=3.0",
     "numpy>=1.24",
@@ -21,5 +21,5 @@ build-backend = "hatchling.build"
 packages = ["src/topo_benchmark"]
 
 [tool.uv.sources]
-topo-parser = { workspace = true }
+topo-parser-python = { workspace = true }
 topo-analyzer = { workspace = true }

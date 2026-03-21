@@ -1,0 +1,2006 @@
+{
+  "nodes": [
+    {
+      "id": "topo_analyzer",
+      "kind": "module",
+      "file": "src/lib.rs",
+      "line": 1,
+      "name": "topo_analyzer"
+    },
+    {
+      "id": "topo_analyzer.algorithms",
+      "kind": "module",
+      "file": "src/algorithms.rs",
+      "line": 1,
+      "name": "algorithms"
+    },
+    {
+      "id": "topo_analyzer.algorithms.brandes_betweenness",
+      "kind": "function",
+      "file": "src/algorithms.rs",
+      "line": 70,
+      "name": "brandes_betweenness"
+    },
+    {
+      "id": "topo_analyzer.algorithms.tarjan_scc",
+      "kind": "function",
+      "file": "src/algorithms.rs",
+      "line": 5,
+      "name": "tarjan_scc"
+    },
+    {
+      "id": "topo_analyzer.analyze",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 39,
+      "name": "analyze"
+    },
+    {
+      "id": "topo_analyzer.analyze_full",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 369,
+      "name": "analyze_full"
+    },
+    {
+      "id": "topo_analyzer.analyze_full_json",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 668,
+      "name": "analyze_full_json"
+    },
+    {
+      "id": "topo_analyzer.analyze_json",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 201,
+      "name": "analyze_json"
+    },
+    {
+      "id": "topo_analyzer.anomalies",
+      "kind": "module",
+      "file": "src/anomalies.rs",
+      "line": 1,
+      "name": "anomalies"
+    },
+    {
+      "id": "topo_analyzer.anomalies.Anomaly",
+      "kind": "class",
+      "file": "src/anomalies.rs",
+      "line": 14,
+      "name": "Anomaly"
+    },
+    {
+      "id": "topo_analyzer.anomalies.AnomalyKind",
+      "kind": "class",
+      "file": "src/anomalies.rs",
+      "line": 24,
+      "name": "AnomalyKind"
+    },
+    {
+      "id": "topo_analyzer.anomalies.AnomalyKind.as_str",
+      "kind": "function",
+      "file": "src/anomalies.rs",
+      "line": 33,
+      "name": "as_str"
+    },
+    {
+      "id": "topo_analyzer.anomalies.build_node_to_module",
+      "kind": "function",
+      "file": "src/anomalies.rs",
+      "line": 72,
+      "name": "build_node_to_module"
+    },
+    {
+      "id": "topo_analyzer.anomalies.detect_all",
+      "kind": "function",
+      "file": "src/anomalies.rs",
+      "line": 43,
+      "name": "detect_all"
+    },
+    {
+      "id": "topo_analyzer.anomalies.detect_cross_module",
+      "kind": "function",
+      "file": "src/anomalies.rs",
+      "line": 89,
+      "name": "detect_cross_module"
+    },
+    {
+      "id": "topo_analyzer.anomalies.detect_layer_discrepancies",
+      "kind": "function",
+      "file": "src/anomalies.rs",
+      "line": 379,
+      "name": "detect_layer_discrepancies"
+    },
+    {
+      "id": "topo_analyzer.anomalies.detect_spectral_outliers",
+      "kind": "function",
+      "file": "src/anomalies.rs",
+      "line": 235,
+      "name": "detect_spectral_outliers"
+    },
+    {
+      "id": "topo_analyzer.anomalies.euclidean_dist",
+      "kind": "function",
+      "file": "src/anomalies.rs",
+      "line": 538,
+      "name": "euclidean_dist"
+    },
+    {
+      "id": "topo_analyzer.anomalies.sccs_to_anomalies",
+      "kind": "function",
+      "file": "src/anomalies.rs",
+      "line": 349,
+      "name": "sccs_to_anomalies"
+    },
+    {
+      "id": "topo_analyzer.anomalies.sorted_vec",
+      "kind": "function",
+      "file": "src/anomalies.rs",
+      "line": 546,
+      "name": "sorted_vec"
+    },
+    {
+      "id": "topo_analyzer.clustering",
+      "kind": "module",
+      "file": "src/clustering.rs",
+      "line": 1,
+      "name": "clustering"
+    },
+    {
+      "id": "topo_analyzer.clustering.KMeansResult",
+      "kind": "class",
+      "file": "src/clustering.rs",
+      "line": 5,
+      "name": "KMeansResult"
+    },
+    {
+      "id": "topo_analyzer.clustering.Rng",
+      "kind": "class",
+      "file": "src/clustering.rs",
+      "line": 15,
+      "name": "Rng"
+    },
+    {
+      "id": "topo_analyzer.clustering.Rng.choice_weighted",
+      "kind": "function",
+      "file": "src/clustering.rs",
+      "line": 38,
+      "name": "choice_weighted"
+    },
+    {
+      "id": "topo_analyzer.clustering.Rng.new",
+      "kind": "function",
+      "file": "src/clustering.rs",
+      "line": 22,
+      "name": "new"
+    },
+    {
+      "id": "topo_analyzer.clustering.Rng.next_f64",
+      "kind": "function",
+      "file": "src/clustering.rs",
+      "line": 34,
+      "name": "next_f64"
+    },
+    {
+      "id": "topo_analyzer.clustering.Rng.next_u64",
+      "kind": "function",
+      "file": "src/clustering.rs",
+      "line": 26,
+      "name": "next_u64"
+    },
+    {
+      "id": "topo_analyzer.clustering.estimate_k",
+      "kind": "function",
+      "file": "src/clustering.rs",
+      "line": 197,
+      "name": "estimate_k"
+    },
+    {
+      "id": "topo_analyzer.clustering.kmeans",
+      "kind": "function",
+      "file": "src/clustering.rs",
+      "line": 54,
+      "name": "kmeans"
+    },
+    {
+      "id": "topo_analyzer.clustering.silhouette_score",
+      "kind": "function",
+      "file": "src/clustering.rs",
+      "line": 150,
+      "name": "silhouette_score"
+    },
+    {
+      "id": "topo_analyzer.clustering.squared_distance",
+      "kind": "function",
+      "file": "src/clustering.rs",
+      "line": 217,
+      "name": "squared_distance"
+    },
+    {
+      "id": "topo_analyzer.empty_analysis_output",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 676,
+      "name": "empty_analysis_output"
+    },
+    {
+      "id": "topo_analyzer.empty_output",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 186,
+      "name": "empty_output"
+    },
+    {
+      "id": "topo_analyzer.graph",
+      "kind": "module",
+      "file": "src/graph.rs",
+      "line": 1,
+      "name": "graph"
+    },
+    {
+      "id": "topo_analyzer.graph.Graph",
+      "kind": "class",
+      "file": "src/graph.rs",
+      "line": 7,
+      "name": "Graph"
+    },
+    {
+      "id": "topo_analyzer.graph.Graph.anchor",
+      "kind": "function",
+      "file": "src/graph.rs",
+      "line": 181,
+      "name": "anchor"
+    },
+    {
+      "id": "topo_analyzer.graph.Graph.connected_components",
+      "kind": "function",
+      "file": "src/graph.rs",
+      "line": 124,
+      "name": "connected_components"
+    },
+    {
+      "id": "topo_analyzer.graph.Graph.edges_of_kind",
+      "kind": "function",
+      "file": "src/graph.rs",
+      "line": 176,
+      "name": "edges_of_kind"
+    },
+    {
+      "id": "topo_analyzer.graph.Graph.from_input",
+      "kind": "function",
+      "file": "src/graph.rs",
+      "line": 37,
+      "name": "from_input"
+    },
+    {
+      "id": "topo_analyzer.graph.Graph.in_degree",
+      "kind": "function",
+      "file": "src/graph.rs",
+      "line": 166,
+      "name": "in_degree"
+    },
+    {
+      "id": "topo_analyzer.graph.Graph.out_degree",
+      "kind": "function",
+      "file": "src/graph.rs",
+      "line": 171,
+      "name": "out_degree"
+    },
+    {
+      "id": "topo_analyzer.graph.Graph.symmetric_adjacency",
+      "kind": "function",
+      "file": "src/graph.rs",
+      "line": 110,
+      "name": "symmetric_adjacency"
+    },
+    {
+      "id": "topo_analyzer.is_in_scope",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 325,
+      "name": "is_in_scope"
+    },
+    {
+      "id": "topo_analyzer.issues",
+      "kind": "module",
+      "file": "src/issues.rs",
+      "line": 1,
+      "name": "issues"
+    },
+    {
+      "id": "topo_analyzer.issues.IssuesContext",
+      "kind": "class",
+      "file": "src/issues.rs",
+      "line": 14,
+      "name": "IssuesContext"
+    },
+    {
+      "id": "topo_analyzer.issues.anomaly_title",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 729,
+      "name": "anomaly_title"
+    },
+    {
+      "id": "topo_analyzer.issues.build_issues",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 29,
+      "name": "build_issues"
+    },
+    {
+      "id": "topo_analyzer.issues.confidence_label",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 748,
+      "name": "confidence_label"
+    },
+    {
+      "id": "topo_analyzer.issues.detect_fragile_hubs",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 443,
+      "name": "detect_fragile_hubs"
+    },
+    {
+      "id": "topo_analyzer.issues.detect_god_modules",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 340,
+      "name": "detect_god_modules"
+    },
+    {
+      "id": "topo_analyzer.issues.detect_low_cohesion",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 400,
+      "name": "detect_low_cohesion"
+    },
+    {
+      "id": "topo_analyzer.issues.detect_orphan_issues",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 272,
+      "name": "detect_orphan_issues"
+    },
+    {
+      "id": "topo_analyzer.issues.detect_phantom_imports",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 585,
+      "name": "detect_phantom_imports"
+    },
+    {
+      "id": "topo_analyzer.issues.detect_reverse_dependencies",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 191,
+      "name": "detect_reverse_dependencies"
+    },
+    {
+      "id": "topo_analyzer.issues.detect_wide_interfaces",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 506,
+      "name": "detect_wide_interfaces"
+    },
+    {
+      "id": "topo_analyzer.issues.issue_id",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 666,
+      "name": "issue_id"
+    },
+    {
+      "id": "topo_analyzer.issues.round2",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 768,
+      "name": "round2"
+    },
+    {
+      "id": "topo_analyzer.issues.severity_label",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 738,
+      "name": "severity_label"
+    },
+    {
+      "id": "topo_analyzer.issues.sorted_join",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 762,
+      "name": "sorted_join"
+    },
+    {
+      "id": "topo_analyzer.issues.top_package",
+      "kind": "function",
+      "file": "src/issues.rs",
+      "line": 758,
+      "name": "top_package"
+    },
+    {
+      "id": "topo_analyzer.modules",
+      "kind": "module",
+      "file": "src/modules.rs",
+      "line": 1,
+      "name": "modules"
+    },
+    {
+      "id": "topo_analyzer.modules.EnrichedModule",
+      "kind": "class",
+      "file": "src/modules.rs",
+      "line": 10,
+      "name": "EnrichedModule"
+    },
+    {
+      "id": "topo_analyzer.modules.EnrichedModule.to_output",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 22,
+      "name": "to_output"
+    },
+    {
+      "id": "topo_analyzer.modules.annotate_modules",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 72,
+      "name": "annotate_modules"
+    },
+    {
+      "id": "topo_analyzer.modules.build_module_dependencies",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 182,
+      "name": "build_module_dependencies"
+    },
+    {
+      "id": "topo_analyzer.modules.deduplicate_labels",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 333,
+      "name": "deduplicate_labels"
+    },
+    {
+      "id": "topo_analyzer.modules.euclidean_dist",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 382,
+      "name": "euclidean_dist"
+    },
+    {
+      "id": "topo_analyzer.modules.is_degenerate",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 224,
+      "name": "is_degenerate"
+    },
+    {
+      "id": "topo_analyzer.modules.modularity_q",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 283,
+      "name": "modularity_q"
+    },
+    {
+      "id": "topo_analyzer.modules.module_label",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 36,
+      "name": "module_label"
+    },
+    {
+      "id": "topo_analyzer.modules.package_grouping",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 253,
+      "name": "package_grouping"
+    },
+    {
+      "id": "topo_analyzer.modules.round4",
+      "kind": "function",
+      "file": "src/modules.rs",
+      "line": 390,
+      "name": "round4"
+    },
+    {
+      "id": "topo_analyzer.owning_module_id",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 354,
+      "name": "owning_module_id"
+    },
+    {
+      "id": "topo_analyzer.package_grouping",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 167,
+      "name": "package_grouping"
+    },
+    {
+      "id": "topo_analyzer.project_input",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 209,
+      "name": "project_input"
+    },
+    {
+      "id": "topo_analyzer.projected_node_id",
+      "kind": "function",
+      "file": "src/lib.rs",
+      "line": 336,
+      "name": "projected_node_id"
+    },
+    {
+      "id": "topo_analyzer.roles",
+      "kind": "module",
+      "file": "src/roles.rs",
+      "line": 1,
+      "name": "roles"
+    },
+    {
+      "id": "topo_analyzer.roles.Role",
+      "kind": "class",
+      "file": "src/roles.rs",
+      "line": 22,
+      "name": "Role"
+    },
+    {
+      "id": "topo_analyzer.roles.Role.as_str",
+      "kind": "function",
+      "file": "src/roles.rs",
+      "line": 33,
+      "name": "as_str"
+    },
+    {
+      "id": "topo_analyzer.roles.classify_node",
+      "kind": "function",
+      "file": "src/roles.rs",
+      "line": 91,
+      "name": "classify_node"
+    },
+    {
+      "id": "topo_analyzer.roles.classify_roles",
+      "kind": "function",
+      "file": "src/roles.rs",
+      "line": 45,
+      "name": "classify_roles"
+    },
+    {
+      "id": "topo_analyzer.roles.median",
+      "kind": "function",
+      "file": "src/roles.rs",
+      "line": 167,
+      "name": "median"
+    },
+    {
+      "id": "topo_analyzer.roles.percentile_ranks",
+      "kind": "function",
+      "file": "src/roles.rs",
+      "line": 145,
+      "name": "percentile_ranks"
+    },
+    {
+      "id": "topo_analyzer.roles.round4",
+      "kind": "function",
+      "file": "src/roles.rs",
+      "line": 181,
+      "name": "round4"
+    },
+    {
+      "id": "topo_analyzer.spectral",
+      "kind": "module",
+      "file": "src/spectral.rs",
+      "line": 1,
+      "name": "spectral"
+    },
+    {
+      "id": "topo_analyzer.spectral.DecompResult",
+      "kind": "class",
+      "file": "src/spectral.rs",
+      "line": 10,
+      "name": "DecompResult"
+    },
+    {
+      "id": "topo_analyzer.spectral.SpectralResult",
+      "kind": "class",
+      "file": "src/spectral.rs",
+      "line": 18,
+      "name": "SpectralResult"
+    },
+    {
+      "id": "topo_analyzer.spectral.decompose",
+      "kind": "function",
+      "file": "src/spectral.rs",
+      "line": 33,
+      "name": "decompose"
+    },
+    {
+      "id": "topo_analyzer.spectral.decompose_core",
+      "kind": "function",
+      "file": "src/spectral.rs",
+      "line": 120,
+      "name": "decompose_core"
+    },
+    {
+      "id": "topo_analyzer.spectral.extract_subgraph",
+      "kind": "function",
+      "file": "src/spectral.rs",
+      "line": 97,
+      "name": "extract_subgraph"
+    },
+    {
+      "id": "topo_analyzer.types",
+      "kind": "module",
+      "file": "src/types.rs",
+      "line": 1,
+      "name": "types"
+    },
+    {
+      "id": "topo_analyzer.types.AnalysisOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 239,
+      "name": "AnalysisOutput"
+    },
+    {
+      "id": "topo_analyzer.types.AnalyzerInput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 63,
+      "name": "AnalyzerInput"
+    },
+    {
+      "id": "topo_analyzer.types.AnalyzerOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 113,
+      "name": "AnalyzerOutput"
+    },
+    {
+      "id": "topo_analyzer.types.AnchorOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 132,
+      "name": "AnchorOutput"
+    },
+    {
+      "id": "topo_analyzer.types.ArchitectureOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 197,
+      "name": "ArchitectureOutput"
+    },
+    {
+      "id": "topo_analyzer.types.ComponentResult",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 104,
+      "name": "ComponentResult"
+    },
+    {
+      "id": "topo_analyzer.types.CoverageOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 155,
+      "name": "CoverageOutput"
+    },
+    {
+      "id": "topo_analyzer.types.DependencyOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 188,
+      "name": "DependencyOutput"
+    },
+    {
+      "id": "topo_analyzer.types.EdgeEntry",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 21,
+      "name": "EdgeEntry"
+    },
+    {
+      "id": "topo_analyzer.types.HealthOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 233,
+      "name": "HealthOutput"
+    },
+    {
+      "id": "topo_analyzer.types.IssueOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 219,
+      "name": "IssueOutput"
+    },
+    {
+      "id": "topo_analyzer.types.ModuleOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 175,
+      "name": "ModuleOutput"
+    },
+    {
+      "id": "topo_analyzer.types.NodeEntry",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 10,
+      "name": "NodeEntry"
+    },
+    {
+      "id": "topo_analyzer.types.ProjectionInput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 40,
+      "name": "ProjectionInput"
+    },
+    {
+      "id": "topo_analyzer.types.RoleOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 206,
+      "name": "RoleOutput"
+    },
+    {
+      "id": "topo_analyzer.types.ScopeInput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 29,
+      "name": "ScopeInput"
+    },
+    {
+      "id": "topo_analyzer.types.ScopeOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 144,
+      "name": "ScopeOutput"
+    },
+    {
+      "id": "topo_analyzer.types.SpectralOutput",
+      "kind": "class",
+      "file": "src/types.rs",
+      "line": 164,
+      "name": "SpectralOutput"
+    },
+    {
+      "id": "topo_analyzer.types.default_true",
+      "kind": "function",
+      "file": "src/types.rs",
+      "line": 59,
+      "name": "default_true"
+    }
+  ],
+  "edges": [
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.algorithms",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.algorithms",
+      "target": "topo_analyzer.algorithms.tarjan_scc",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.algorithms",
+      "target": "topo_analyzer.algorithms.brandes_betweenness",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.anomalies",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.Anomaly",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.detect_all",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.build_node_to_module",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.detect_cross_module",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.detect_spectral_outliers",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.sccs_to_anomalies",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.detect_layer_discrepancies",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.euclidean_dist",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.sorted_vec",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.anomalies.AnomalyKind",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.anomalies.AnomalyKind",
+      "target": "topo_analyzer.anomalies.AnomalyKind.as_str",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.clustering",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering",
+      "target": "topo_analyzer.clustering.KMeansResult",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering",
+      "target": "topo_analyzer.clustering.Rng",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering",
+      "target": "topo_analyzer.clustering.kmeans",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering",
+      "target": "topo_analyzer.clustering.silhouette_score",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering",
+      "target": "topo_analyzer.clustering.estimate_k",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering",
+      "target": "topo_analyzer.clustering.squared_distance",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering.Rng",
+      "target": "topo_analyzer.clustering.Rng.new",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering.Rng",
+      "target": "topo_analyzer.clustering.Rng.next_u64",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering.Rng",
+      "target": "topo_analyzer.clustering.Rng.next_f64",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.clustering.Rng",
+      "target": "topo_analyzer.clustering.Rng.choice_weighted",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.issues",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.IssuesContext",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.build_issues",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.detect_reverse_dependencies",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.detect_orphan_issues",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.detect_god_modules",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.detect_low_cohesion",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.detect_fragile_hubs",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.detect_wide_interfaces",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.detect_phantom_imports",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.issue_id",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.anomaly_title",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.severity_label",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.confidence_label",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.top_package",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.sorted_join",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.issues.round2",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.graph",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.graph",
+      "target": "topo_analyzer.graph.Graph",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph",
+      "target": "topo_analyzer.graph.Graph.from_input",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph",
+      "target": "topo_analyzer.graph.Graph.symmetric_adjacency",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph",
+      "target": "topo_analyzer.graph.Graph.connected_components",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph",
+      "target": "topo_analyzer.graph.Graph.in_degree",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph",
+      "target": "topo_analyzer.graph.Graph.out_degree",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph",
+      "target": "topo_analyzer.graph.Graph.edges_of_kind",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph",
+      "target": "topo_analyzer.graph.Graph.anchor",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.modules",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.EnrichedModule",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.module_label",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.annotate_modules",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.build_module_dependencies",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.is_degenerate",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.package_grouping",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.modularity_q",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.deduplicate_labels",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.euclidean_dist",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.modules.round4",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.modules.EnrichedModule",
+      "target": "topo_analyzer.modules.EnrichedModule.to_output",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.roles",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.roles",
+      "target": "topo_analyzer.roles.classify_roles",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.roles",
+      "target": "topo_analyzer.roles.classify_node",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.roles",
+      "target": "topo_analyzer.roles.percentile_ranks",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.roles",
+      "target": "topo_analyzer.roles.median",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.roles",
+      "target": "topo_analyzer.roles.round4",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.roles",
+      "target": "topo_analyzer.roles.Role",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.roles.Role",
+      "target": "topo_analyzer.roles.Role.as_str",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.spectral",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.spectral",
+      "target": "topo_analyzer.spectral.DecompResult",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.spectral",
+      "target": "topo_analyzer.spectral.SpectralResult",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.spectral",
+      "target": "topo_analyzer.spectral.decompose",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.spectral",
+      "target": "topo_analyzer.spectral.extract_subgraph",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.spectral",
+      "target": "topo_analyzer.spectral.decompose_core",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.types",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.default_true",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.NodeEntry",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.EdgeEntry",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.ScopeInput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.ProjectionInput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.AnalyzerInput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.ComponentResult",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.AnalyzerOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.AnchorOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.ScopeOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.CoverageOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.SpectralOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.ModuleOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.DependencyOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.ArchitectureOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.RoleOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.IssueOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.HealthOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer.types",
+      "target": "topo_analyzer.types.AnalysisOutput",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.analyze",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.package_grouping",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.empty_output",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.analyze_json",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.project_input",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.is_in_scope",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.projected_node_id",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.owning_module_id",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.analyze_full",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.analyze_full_json",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.empty_analysis_output",
+      "kind": "contains"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.types",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.algorithms",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.anomalies",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.clustering",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.graph",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.issues",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.modules",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.roles",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer",
+      "target": "topo_analyzer.spectral",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.types",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.modules",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.anomalies",
+      "target": "topo_analyzer.graph",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.types",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.anomalies",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.modules",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.issues",
+      "target": "topo_analyzer.graph",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.graph",
+      "target": "topo_analyzer.types",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.types",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.modules",
+      "target": "topo_analyzer.graph",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.roles",
+      "target": "topo_analyzer.graph",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.roles",
+      "target": "topo_analyzer.types",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.spectral",
+      "target": "topo_analyzer.graph",
+      "kind": "imports"
+    },
+    {
+      "source": "topo_analyzer.project_input",
+      "target": "topo_analyzer.is_in_scope",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.project_input",
+      "target": "topo_analyzer.projected_node_id",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_wide_interfaces",
+      "target": "topo_analyzer.issues.round2",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_wide_interfaces",
+      "target": "topo_analyzer.issues.severity_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.detect_all",
+      "target": "topo_analyzer.anomalies.build_node_to_module",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.detect_all",
+      "target": "topo_analyzer.anomalies.detect_cross_module",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.detect_all",
+      "target": "topo_analyzer.anomalies.detect_spectral_outliers",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.detect_all",
+      "target": "topo_analyzer.anomalies.sccs_to_anomalies",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.detect_all",
+      "target": "topo_analyzer.anomalies.detect_layer_discrepancies",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_reverse_dependencies",
+      "target": "topo_analyzer.issues.top_package",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_reverse_dependencies",
+      "target": "topo_analyzer.graph.Graph.anchor",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_reverse_dependencies",
+      "target": "topo_analyzer.issues.round2",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_reverse_dependencies",
+      "target": "topo_analyzer.issues.severity_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_reverse_dependencies",
+      "target": "topo_analyzer.issues.confidence_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.project_input",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.graph.Graph.from_input",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.empty_analysis_output",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.spectral.decompose",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.modules.package_grouping",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.package_grouping",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.clustering.estimate_k",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.clustering.kmeans",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.clustering.silhouette_score",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.modules.annotate_modules",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.modules.is_degenerate",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.modules.build_module_dependencies",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.algorithms.brandes_betweenness",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.roles.classify_roles",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.algorithms.tarjan_scc",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.anomalies.detect_all",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.modules.modularity_q",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.issues.build_issues",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.modules.round4",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full",
+      "target": "topo_analyzer.modules.EnrichedModule.to_output",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.detect_cross_module",
+      "target": "topo_analyzer.anomalies.sorted_vec",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.detect_cross_module",
+      "target": "topo_analyzer.graph.Graph.anchor",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.modules.annotate_modules",
+      "target": "topo_analyzer.modules.module_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.modules.annotate_modules",
+      "target": "topo_analyzer.modules.euclidean_dist",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.modules.annotate_modules",
+      "target": "topo_analyzer.modules.deduplicate_labels",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.clustering.Rng.next_f64",
+      "target": "topo_analyzer.clustering.Rng.next_u64",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.detect_layer_discrepancies",
+      "target": "topo_analyzer.graph.Graph.edges_of_kind",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.spectral.decompose",
+      "target": "topo_analyzer.graph.Graph.connected_components",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.spectral.decompose",
+      "target": "topo_analyzer.spectral.extract_subgraph",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.spectral.decompose",
+      "target": "topo_analyzer.spectral.decompose_core",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_orphan_issues",
+      "target": "topo_analyzer.issues.issue_id",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.graph.Graph.from_input",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.empty_output",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.spectral.decompose",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.package_grouping",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.clustering.estimate_k",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.clustering.kmeans",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.clustering.silhouette_score",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.algorithms.brandes_betweenness",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.algorithms.tarjan_scc",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze",
+      "target": "topo_analyzer.graph.Graph.connected_components",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.projected_node_id",
+      "target": "topo_analyzer.owning_module_id",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.clustering.silhouette_score",
+      "target": "topo_analyzer.clustering.squared_distance",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.clustering.kmeans",
+      "target": "topo_analyzer.clustering.Rng.new",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.clustering.kmeans",
+      "target": "topo_analyzer.clustering.Rng.next_u64",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.clustering.kmeans",
+      "target": "topo_analyzer.clustering.squared_distance",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.clustering.kmeans",
+      "target": "topo_analyzer.clustering.Rng.choice_weighted",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_fragile_hubs",
+      "target": "topo_analyzer.issues.issue_id",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_fragile_hubs",
+      "target": "topo_analyzer.issues.round2",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_fragile_hubs",
+      "target": "topo_analyzer.issues.severity_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_full_json",
+      "target": "topo_analyzer.analyze_full",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.analyze_json",
+      "target": "topo_analyzer.analyze",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_phantom_imports",
+      "target": "topo_analyzer.graph.Graph.edges_of_kind",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_phantom_imports",
+      "target": "topo_analyzer.issues.round2",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_phantom_imports",
+      "target": "topo_analyzer.issues.severity_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_low_cohesion",
+      "target": "topo_analyzer.issues.issue_id",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_low_cohesion",
+      "target": "topo_analyzer.issues.round2",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_low_cohesion",
+      "target": "topo_analyzer.issues.severity_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_low_cohesion",
+      "target": "topo_analyzer.issues.confidence_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_low_cohesion",
+      "target": "topo_analyzer.graph.Graph.anchor",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_god_modules",
+      "target": "topo_analyzer.issues.issue_id",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_god_modules",
+      "target": "topo_analyzer.issues.round2",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_god_modules",
+      "target": "topo_analyzer.issues.severity_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.detect_god_modules",
+      "target": "topo_analyzer.graph.Graph.anchor",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.modules.EnrichedModule.to_output",
+      "target": "topo_analyzer.modules.round4",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.sccs_to_anomalies",
+      "target": "topo_analyzer.graph.Graph.anchor",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.clustering.Rng.choice_weighted",
+      "target": "topo_analyzer.clustering.Rng.next_f64",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.modules.modularity_q",
+      "target": "topo_analyzer.modules.round4",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.anomalies.detect_spectral_outliers",
+      "target": "topo_analyzer.anomalies.euclidean_dist",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.clustering.estimate_k",
+      "target": "topo_analyzer.clustering.kmeans",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.clustering.estimate_k",
+      "target": "topo_analyzer.clustering.silhouette_score",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.roles.classify_roles",
+      "target": "topo_analyzer.graph.Graph.in_degree",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.roles.classify_roles",
+      "target": "topo_analyzer.graph.Graph.out_degree",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.roles.classify_roles",
+      "target": "topo_analyzer.roles.percentile_ranks",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.roles.classify_roles",
+      "target": "topo_analyzer.roles.median",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.roles.classify_roles",
+      "target": "topo_analyzer.roles.classify_node",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.roles.classify_roles",
+      "target": "topo_analyzer.roles.Role.as_str",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.roles.classify_roles",
+      "target": "topo_analyzer.roles.round4",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.roles.classify_roles",
+      "target": "topo_analyzer.graph.Graph.anchor",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.round2",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.severity_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.detect_reverse_dependencies",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.issue_id",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.anomalies.AnomalyKind.as_str",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.anomaly_title",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.confidence_label",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.detect_orphan_issues",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.detect_god_modules",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.detect_low_cohesion",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.detect_fragile_hubs",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.detect_wide_interfaces",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.issues.build_issues",
+      "target": "topo_analyzer.issues.detect_phantom_imports",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph.from_input",
+      "target": "topo_analyzer.spectral.decompose",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph.from_input",
+      "target": "topo_analyzer.clustering.kmeans",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph.from_input",
+      "target": "topo_analyzer.modules.annotate_modules",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph.from_input",
+      "target": "topo_analyzer.roles.classify_roles",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph.from_input",
+      "target": "topo_analyzer.anomalies.detect_all",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph.from_input",
+      "target": "topo_analyzer.issues.build_issues",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph.symmetric_adjacency",
+      "target": "topo_analyzer.algorithms.tarjan_scc",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph.symmetric_adjacency",
+      "target": "topo_analyzer.algorithms.brandes_betweenness",
+      "kind": "calls"
+    },
+    {
+      "source": "topo_analyzer.graph.Graph.connected_components",
+      "target": "topo_analyzer.modules.modularity_q",
+      "kind": "calls"
+    }
+  ]
+}

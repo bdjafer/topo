@@ -9,7 +9,7 @@ from typing import Callable
 
 from topo_analyzer.analysis import StructuralAnalysis, analyze
 from topo_analyzer.projection import AnalysisLevel, AnalysisProjectionConfig
-from topo_parser.graph import CodeGraph, EdgeKind
+from topo_parser_python.graph import CodeGraph, EdgeKind
 
 from topo_benchmark.baselines import directory_partition, louvain_partition
 from topo_benchmark.datasets import (

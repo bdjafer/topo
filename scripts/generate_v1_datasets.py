@@ -10,8 +10,8 @@ import json
 from copy import deepcopy
 from pathlib import Path
 
-from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
-from topo_parser.python import parse_python_project
+from topo_parser_python.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
+from topo_parser_python.python import parse_python_project
 from topo_benchmark.codegraph_io import save_graph, serialize_graph
 
 REPO_ROOT = Path(__file__).resolve().parents[1]

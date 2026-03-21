@@ -1,0 +1,22 @@
+[package]
+name = "topo-parser-rust"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "topo_parser_rust"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+dunce = "1"
+
+# rust-analyzer semantic analysis — all ra_ap_* must be same version
+ra_ap_load-cargo = "0.0.324"
+ra_ap_project_model = "0.0.324"
+ra_ap_hir = "0.0.324"
+ra_ap_ide_db = "0.0.324"
+ra_ap_vfs = "0.0.324"
+ra_ap_syntax = "0.0.324"
+ra_ap_base_db = "0.0.324"

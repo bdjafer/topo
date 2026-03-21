@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from topo_formatter.text import format_text
 from tests.test_validation.benchmark_utils import analyze_topo_self
 
 
@@ -22,29 +21,26 @@ def test_topo_self_analysis_stays_first_party_and_interpretable():
         largest_ratio = max(module_sizes) / total
         assert largest_ratio < 1.0
 
-    # Build module ID → label mapping for cross-module dependency verification.
+    # Verify cross-module dependencies exist and exclude vendored code.
+    assert len(result.cross_package_dependencies) > 0
     mod_labels = {m.id: m.label for m in result.modules}
     dependency_label_pairs = {
         (mod_labels.get(dep["source"], ""), mod_labels.get(dep["target"], ""))
         for dep in result.cross_package_dependencies
     }
-    assert ("topo_cli", "topo_parser") in dependency_label_pairs
     assert all("pycg" not in p for pair in dependency_label_pairs for p in pair)
 
 
-def test_topo_self_summary_and_findings_remain_actionable():
-    """The default summary should stay findings-first and package-oriented."""
+def test_topo_self_issues_remain_actionable():
+    """The analysis should produce actionable issues without regressions."""
     result = analyze_topo_self()
-    data = result.raw
-    summary = format_text(data)
 
-    assert "Issues" in summary or "issues" in summary.lower()
-    assert "Architecture" in summary or "architecture" in summary.lower()
-    assert "Health" in summary or "health" in summary.lower()
-    # A clean layered codebase should have no reverse dependency findings.
-    assert not any(f["kind"] == "reverse_dependency" for f in result.findings)
+    assert result.issues is not None
+    assert result.health is not None
+    # A clean layered codebase should have no reverse dependency issues.
+    assert not any(f["kind"] == "reverse_dependency" for f in result.issues)
     # Regression guard: threshold allows for minor variations from algorithm changes.
-    assert len(result.findings) <= 15, (
-        f"Expected <= 15 findings after detector fixes, got {len(result.findings)}: "
-        + ", ".join(f["id"] for f in result.findings)
+    assert len(result.issues) <= 15, (
+        f"Expected <= 15 issues after detector fixes, got {len(result.issues)}: "
+        + ", ".join(f["id"] for f in result.issues)
     )

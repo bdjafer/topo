@@ -1,0 +1,26 @@
+{
+  "ordering": [
+    ["clean", "mutated"]
+  ],
+  "required_expectations": [
+    {
+      "variants": ["clean", "mutated"],
+      "signal": "has_finding",
+      "signal_args": {"kind": "cycle_member"},
+      "direction": "present_in_second_not_first"
+    },
+    {
+      "variants": ["clean", "mutated"],
+      "signal": "cross_package_dep_count",
+      "direction": "higher_in_second"
+    }
+  ],
+  "mutated_region": {
+    "nodes": [
+      "topo_analyzer.roles.classify_roles",
+      "topo_analyzer.spectral.decompose",
+      "topo_analyzer.roles.classify_node",
+      "topo_analyzer.clustering.kmeans"
+    ]
+  }
+}

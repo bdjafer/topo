@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Callable
 
 from topo_analyzer.analysis import StructuralAnalysis
-from topo_parser.graph import CodeGraph
+from topo_parser_python.graph import CodeGraph
 
 from topo_benchmark import signals
 from topo_benchmark.scoring import geometric_mean

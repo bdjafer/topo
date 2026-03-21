@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from topo_parser.graph import CodeGraph
+from topo_parser_python.graph import CodeGraph
 
 
 def load_gold_labels(codebase: str, labels_root: Path) -> dict:

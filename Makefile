@@ -11,7 +11,7 @@ wasm-build:
 
 ## Parse this codebase and analyze it via WASM
 wasm-analyze:
-	uv run topo parse packages/ -o /tmp/topo-graph.json
+	cargo run -p topo-cli -- parse packages/ -o /tmp/topo-graph.json
 	node packages/topo-web/bin/topo-wasm.mjs /tmp/topo-graph.json
 
 ## Run WASM end-to-end tests (includes parsing + analysis + assertions)
@@ -24,19 +24,15 @@ wasm-dev:
 
 # ── Python ─────────────────────────────────────────────────────────
 
-.PHONY: test lint
+.PHONY: test
 
 ## Run all Python tests
 test:
 	uv run pytest -x -q
 
-## Run the full analysis on this codebase via Python
-analyze:
-	uv run topo packages/
-
 # ── Rust ───────────────────────────────────────────────────────────
 
-.PHONY: rust-test rust-build
+.PHONY: rust-test rust-build rust-analyze analyze
 
 ## Run Rust unit tests (all workspace crates)
 rust-test:
@@ -46,6 +42,6 @@ rust-test:
 rust-build:
 	cargo build --workspace --release
 
-## Analyze the Rust analyzer crate with itself
-rust-analyze:
-	cargo run -p topo-cli-rs -- packages/topo-analyzer/
+## Run the full analysis on this repo (all Rust packages)
+analyze:
+	cargo run -p topo-cli --release -- .

@@ -2,6 +2,30 @@
 resolver = "2"
 members = [
     "packages/topo-analyzer",
-    "packages/topo-cli-rs",
-    "packages/topo-parser-rs",
+    "packages/topo-benchmark",
+    "packages/topo-cli",
+    "packages/topo-formatter",
+    "packages/topo-parser",
+    "packages/topo-parser-rust",
 ]
+
+# Optimize ra_ap_* and salsa in dev builds — unusably slow at opt-level 0.
+# Measured: 43.8s (debug) → 3.7s (release) for the same parse.
+[profile.dev.package.salsa]
+opt-level = 2
+[profile.dev.package.ra_ap_hir]
+opt-level = 2
+[profile.dev.package.ra_ap_hir_def]
+opt-level = 2
+[profile.dev.package.ra_ap_hir_expand]
+opt-level = 2
+[profile.dev.package.ra_ap_hir_ty]
+opt-level = 2
+[profile.dev.package.ra_ap_syntax]
+opt-level = 2
+[profile.dev.package.ra_ap_parser]
+opt-level = 2
+[profile.dev.package.ra_ap_ide_db]
+opt-level = 2
+[profile.dev.package.ra_ap_mbe]
+opt-level = 2

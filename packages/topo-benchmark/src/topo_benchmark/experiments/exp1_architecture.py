@@ -19,8 +19,8 @@ from pathlib import Path
 
 from topo_analyzer.analysis import StructuralAnalysis, analyze
 from topo_analyzer.projection import AnalysisLevel, AnalysisProjectionConfig
-from topo_parser.graph import CodeGraph, EdgeKind, NodeKind
-from topo_parser.python import parse_python_project
+from topo_parser_python.graph import CodeGraph, EdgeKind, NodeKind
+from topo_parser_python.python import parse_python_project
 
 from topo_benchmark.baselines import (
     directory_partition,

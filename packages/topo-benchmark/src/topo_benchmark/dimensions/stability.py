@@ -6,7 +6,7 @@ from collections import Counter
 from typing import Callable
 
 from topo_analyzer.analysis import StructuralAnalysis
-from topo_parser.graph import CodeGraph
+from topo_parser_python.graph import CodeGraph
 
 from topo_benchmark.scoring import compute_ari, geometric_mean
 from topo_benchmark.signals import partition_labels

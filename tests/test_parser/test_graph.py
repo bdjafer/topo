@@ -1,6 +1,6 @@
 """Tests for the core graph data model."""
 
-from topo_parser.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
+from topo_parser_python.graph import CodeGraph, Edge, EdgeKind, Node, NodeKind
 
 
 def test_add_node():

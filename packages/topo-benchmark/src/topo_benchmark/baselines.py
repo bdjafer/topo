@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import networkx as nx
 
-from topo_parser.graph import CodeGraph, EdgeKind
+from topo_parser_python.graph import CodeGraph, EdgeKind
 
 
 def directory_partition(graph: CodeGraph) -> dict[str, str]:

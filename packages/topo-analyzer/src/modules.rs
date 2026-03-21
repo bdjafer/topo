@@ -5,6 +5,7 @@
 use std::collections::HashMap;
 
 use crate::graph::Graph;
+use crate::stats;
 use crate::types::{DependencyOutput, ModuleOutput};
 
 /// Internal module representation before serialization.
@@ -171,6 +172,11 @@ pub fn annotate_modules(
         });
     }
 
+    // Deduplicate labels: when two modules share the same label, extend
+    // each with its most distinctive sub-component so that downstream
+    // consumers (issue detection, formatters) get unique identifiers.
+    deduplicate_labels(&mut modules);
+
     modules
 }
 
@@ -325,16 +331,61 @@ pub fn modularity_q(
     Some(round4(q))
 }
 
+/// Ensure all module labels are unique. When two modules share a label,
+/// extend each with its most frequent next-level component. Repeats
+/// until all non-unassigned labels are unique, falling back to group IDs
+/// if sub-component disambiguation is exhausted.
+fn deduplicate_labels(modules: &mut [EnrichedModule]) {
+    for _round in 0..5 {
+        let mut label_counts: HashMap<String, usize> = HashMap::new();
+        for m in modules.iter().filter(|m| !m.unassigned) {
+            *label_counts.entry(m.label.clone()).or_default() += 1;
+        }
+
+        let has_dups = label_counts.values().any(|&c| c > 1);
+        if !has_dups {
+            return;
+        }
+
+        for m in modules.iter_mut() {
+            if m.unassigned || label_counts.get(&m.label).copied().unwrap_or(0) <= 1 {
+                continue;
+            }
+            // Find the most common sub-component after the current label prefix.
+            let prefix = format!("{}.", m.label);
+            let mut sub_counts: HashMap<&str, usize> = HashMap::new();
+            for nid in &m.node_ids {
+                if let Some(rest) = nid.strip_prefix(&prefix) {
+                    let sub = rest.split('.').next().unwrap_or(rest);
+                    *sub_counts.entry(sub).or_default() += 1;
+                }
+            }
+            if let Some((&sub, _)) = sub_counts.iter().max_by_key(|&(_, &count)| count) {
+                m.label = format!("{}.{}", m.label, sub);
+            } else {
+                m.label = format!("{} (group {})", m.label, m.id);
+            }
+        }
+    }
+
+    // Final pass: any remaining duplicates get group IDs.
+    let mut label_counts: HashMap<String, usize> = HashMap::new();
+    for m in modules.iter().filter(|m| !m.unassigned) {
+        *label_counts.entry(m.label.clone()).or_default() += 1;
+    }
+    for m in modules.iter_mut() {
+        if !m.unassigned && label_counts.get(&m.label).copied().unwrap_or(0) > 1 {
+            m.label = format!("{} (group {})", m.label, m.id);
+        }
+    }
+}
+
 fn euclidean_dist(a: &[f64], b: &[f64]) -> f64 {
-    a.iter()
-        .zip(b.iter())
-        .map(|(x, y)| (x - y) * (x - y))
-        .sum::<f64>()
-        .sqrt()
+    stats::euclidean_dist(a, b)
 }
 
 pub(crate) fn round4(v: f64) -> f64 {
-    (v * 10000.0).round() / 10000.0
+    stats::round4(v)
 }
 
 #[cfg(test)]

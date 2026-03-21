@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from topo_parser.graph import CodeGraph
+from topo_parser_python.graph import CodeGraph
 
 
 def serialize_graph(graph: CodeGraph) -> dict:

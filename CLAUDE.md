@@ -4,19 +4,21 @@
 
 Monorepo with packages under `packages/`:
 
-- **topo-parser** (Python): Source code → typed multilayer graph. Parses Python codebases into nodes (functions, classes, modules) and edges (calls, imports, inheritance, co-location).
-- **topo-analyzer** (Rust, via PyO3/maturin): Graph → structural intelligence. Spectral decomposition, module detection, role classification, anomaly detection. Exposes `topo_analyzer.analyze_full()` to Python.
-- **topo-cli** (Python): Developer-facing interface. CLI commands that run the pipeline and produce human/LLM-readable output. Contains `projection.py` (config/policy) and `_rust_backend.py` (Rust bridge).
-- **topo-formatter** (Python): Formats analysis output as text/JSON.
-- **topo-cli-rs** (Rust): Native Rust CLI (uses topo-analyzer directly).
+- **topo-parser** (Rust): Unified parser entry point — shared graph types, language detection, multi-language dispatch.
+- **topo-parser-python** (Python): Parses Python codebases into typed multilayer graphs (nodes + edges).
+- **topo-parser-rust** (Rust): Parses Rust codebases using rust-analyzer's `ra_ap_*` semantic analysis engine.
+- **topo-analyzer** (Rust): Spectral decomposition, module detection, role classification, anomaly detection. Also builds as PyO3 extension and WASM.
+- **topo-formatter** (Rust): Human-readable text formatter for analysis output. Also builds as PyO3 extension.
+- **topo-cli** (Rust): Developer-facing CLI. Thin shell around topo-parser + topo-analyzer + topo-formatter.
 - **topo-web** (TypeScript): Browser UI via WASM build of topo-analyzer.
 
 ## Development
 
 ```bash
-uv sync                    # Install all packages in dev mode
-uv run pytest              # Run all tests
-uv run topo <path>         # Run the CLI
+cargo build --workspace    # Build all Rust crates
+cargo test --workspace     # Run all Rust tests
+cargo run -p topo-cli -- <path>  # Run the CLI
+uv run pytest              # Run Python tests
 ```
 
 ## Design Decisions

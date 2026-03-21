@@ -1,6 +1,6 @@
 //! Structural anomaly detection.
 //!
-//! Identifies structural findings: cross-module boundary violations,
+//! Identifies structural anomalies: cross-module boundary violations,
 //! spectral outliers, dependency cycles, and cross-layer discrepancies.
 //!
 //! Ports logic from Python topo_analyzer.anomalies.
@@ -47,12 +47,19 @@ pub fn detect_all(
     fingerprints: &HashMap<String, Vec<f64>>,
     sccs: &[Vec<String>],
     edge_kinds: &[String],
+    package_fallback: bool,
 ) -> Vec<Anomaly> {
     let node_to_module = build_node_to_module(modules);
     let mut anomalies = Vec::new();
 
     anomalies.extend(detect_cross_module(graph, modules, &node_to_module));
-    anomalies.extend(detect_spectral_outliers(modules, fingerprints, graph));
+    anomalies.extend(detect_spectral_outliers(
+        modules,
+        fingerprints,
+        graph,
+        &node_to_module,
+        package_fallback,
+    ));
     anomalies.extend(sccs_to_anomalies(sccs, graph));
     anomalies.extend(detect_layer_discrepancies(graph, edge_kinds));
 
@@ -167,16 +174,21 @@ fn detect_cross_module(
                 }
             }
 
+            let sorted_ids = sorted_vec(node_ids);
+            let anchors: Vec<AnchorOutput> = sorted_ids
+                .iter()
+                .filter_map(|nid| graph.node_index.get(nid.as_str()).map(|&i| graph.anchor(i)))
+                .collect();
             anomalies.push(Anomaly {
                 kind: AnomalyKind::CrossModule,
-                node_ids: sorted_vec(node_ids),
+                node_ids: sorted_ids,
                 description: format!(
                     "Bidirectional dependency between module {} and module {}: {} forward edges, {} reverse edges",
                     pair.0, pair.1, fwd_total, rev_total
                 ),
                 severity: (0.35 + reverse_share).min(1.0),
                 confidence: (0.5 + total as f64 / 20.0).min(1.0),
-                anchors: Vec::new(),
+                anchors,
             });
             continue;
         }
@@ -203,16 +215,21 @@ fn detect_cross_module(
             }
         }
 
+        let sorted_ids = sorted_vec(node_ids);
+        let anchors: Vec<AnchorOutput> = sorted_ids
+            .iter()
+            .filter_map(|nid| graph.node_index.get(nid.as_str()).map(|&i| graph.anchor(i)))
+            .collect();
         anomalies.push(Anomaly {
             kind: AnomalyKind::CrossModule,
-            node_ids: sorted_vec(node_ids),
+            node_ids: sorted_ids,
             description: format!(
                 "Unusual dependency from module {} to module {}: {} edges ({:.0}% of typical cross-module coupling)",
                 dir_pair.0, dir_pair.1, active_total, minority_ratio * 100.0
             ),
             severity: (0.3 + (1.0 - minority_ratio) * 0.5).min(1.0),
             confidence: (0.4 + active_total as f64 / 10.0).min(1.0),
-            anchors: Vec::new(),
+            anchors,
         });
     }
     anomalies
@@ -226,12 +243,15 @@ fn detect_spectral_outliers(
     modules: &[EnrichedModule],
     fingerprints: &HashMap<String, Vec<f64>>,
     graph: &Graph,
+    _node_to_module: &HashMap<String, usize>,
+    package_fallback: bool,
 ) -> Vec<Anomaly> {
-    let threshold_sigma = 2.0;
+    let base_threshold = 2.0;
 
     // Precompute centroids for non-trivial modules.
     let mut centroids: HashMap<usize, Vec<f64>> = HashMap::new();
     let mut module_labels: HashMap<usize, String> = HashMap::new();
+    let mut module_confidence: HashMap<usize, f64> = HashMap::new();
     for m in modules {
         if m.unassigned || m.node_ids.len() < 3 {
             continue;
@@ -257,6 +277,18 @@ fn detect_spectral_outliers(
         }
         centroids.insert(m.id, centroid);
         module_labels.insert(m.id, m.label.clone());
+        module_confidence.insert(m.id, m.confidence);
+    }
+
+    // Build module membership sets for edge validation.
+    let mut module_members: HashMap<usize, HashSet<usize>> = HashMap::new();
+    for m in modules {
+        let members: HashSet<usize> = m
+            .node_ids
+            .iter()
+            .filter_map(|nid| graph.node_index.get(nid).copied())
+            .collect();
+        module_members.insert(m.id, members);
     }
 
     let mut anomalies = Vec::new();
@@ -273,6 +305,15 @@ fn detect_spectral_outliers(
             continue;
         }
 
+        // Adaptive threshold: scale by module confidence.
+        // Package-fallback modules have low confidence → higher threshold → fewer false positives.
+        let confidence = module_confidence.get(&m.id).copied().unwrap_or(0.5);
+        let effective_threshold = if package_fallback {
+            base_threshold / confidence.max(0.3)
+        } else {
+            base_threshold
+        };
+
         let distances: Vec<f64> = fps.iter().map(|(_, fp)| euclidean_dist(fp, centroid)).collect();
         let mean_dist: f64 = distances.iter().sum::<f64>() / distances.len() as f64;
         let variance: f64 =
@@ -282,27 +323,50 @@ fn detect_spectral_outliers(
             continue;
         }
 
+        let mut module_outliers = Vec::new();
+
         for (idx, (nid, fp)) in fps.iter().enumerate() {
             let z_score = (distances[idx] - mean_dist) / std_dist;
-            if z_score <= threshold_sigma {
+            if z_score <= effective_threshold {
                 continue;
             }
 
-            // Find nearest alternative module.
+            // Find nearest alternative module, but only report it if the node
+            // has actual edges to that module (prevents misleading suggestions).
             let mut nearest_label = String::new();
-            let mut nearest_dist = f64::INFINITY;
-            for (&other_id, other_centroid) in &centroids {
-                if other_id == m.id {
-                    continue;
+            let node_idx = graph.node_index.get(*nid).copied();
+
+            if let Some(ni) = node_idx {
+                let mut best_dist = f64::INFINITY;
+                let mut best_label = String::new();
+
+                for (&other_id, other_centroid) in &centroids {
+                    if other_id == m.id {
+                        continue;
+                    }
+                    let d = euclidean_dist(fp, other_centroid);
+                    if d >= best_dist {
+                        continue;
+                    }
+
+                    // Check for actual edge coupling to this module.
+                    let other_members = module_members.get(&other_id);
+                    let has_coupling = other_members.is_some_and(|members| {
+                        graph.successors[ni]
+                            .iter()
+                            .chain(graph.predecessors[ni].iter())
+                            .any(|neighbor| members.contains(neighbor))
+                    });
+
+                    if has_coupling {
+                        best_dist = d;
+                        best_label = module_labels
+                            .get(&other_id)
+                            .cloned()
+                            .unwrap_or_else(|| other_id.to_string());
+                    }
                 }
-                let d = euclidean_dist(fp, other_centroid);
-                if d < nearest_dist {
-                    nearest_dist = d;
-                    nearest_label = module_labels
-                        .get(&other_id)
-                        .cloned()
-                        .unwrap_or_else(|| other_id.to_string());
-                }
+                nearest_label = best_label;
             }
 
             let mut desc = format!(
@@ -313,20 +377,26 @@ fn detect_spectral_outliers(
                 desc.push_str(&format!("; nearest alternative: {}", nearest_label));
             }
 
-            let anchors = if let Some(&node_idx) = graph.node_index.get(*nid) {
-                vec![graph.anchor(node_idx)]
+            let anchors = if let Some(ni) = node_idx {
+                vec![graph.anchor(ni)]
             } else {
                 Vec::new()
             };
 
-            anomalies.push(Anomaly {
+            module_outliers.push(Anomaly {
                 kind: AnomalyKind::SpectralOutlier,
                 node_ids: vec![nid.to_string()],
                 description: desc,
-                severity: (z_score / 4.0).min(1.0),
-                confidence: m.confidence.max(0.4),
+                severity: ((z_score - effective_threshold) / effective_threshold).clamp(0.0, 1.0),
+                confidence: confidence.max(0.4),
                 anchors,
             });
+        }
+
+        // Per-module cap: if >50% of members flagged, suppress all (the module
+        // assignment is the problem, not individual nodes).
+        if module_outliers.len() * 2 <= fps.len() {
+            anomalies.extend(module_outliers);
         }
     }
     anomalies
@@ -337,11 +407,19 @@ fn detect_spectral_outliers(
 // ---------------------------------------------------------------------------
 
 fn sccs_to_anomalies(sccs: &[Vec<String>], graph: &Graph) -> Vec<Anomaly> {
-    sccs.iter()
-        .filter(|c| c.len() > 1)
-        .map(|component| {
+    let non_trivial: Vec<&Vec<String>> = sccs.iter().filter(|c| c.len() > 1).collect();
+    if non_trivial.is_empty() {
+        return Vec::new();
+    }
+    let sizes_f: Vec<f64> = non_trivial.iter().map(|c| c.len() as f64).collect();
+    let size_pcts = crate::stats::percentile_ranks(&sizes_f);
+
+    non_trivial
+        .iter()
+        .enumerate()
+        .map(|(ci, component)| {
             let node_ids = {
-                let mut ids = component.clone();
+                let mut ids = (*component).clone();
                 ids.sort();
                 ids
             };
@@ -350,12 +428,15 @@ fn sccs_to_anomalies(sccs: &[Vec<String>], graph: &Graph) -> Vec<Anomaly> {
                 .filter_map(|nid| graph.node_index.get(nid).map(|&i| graph.anchor(i)))
                 .collect();
             let len = node_ids.len();
+            // Severity from percentile rank of this SCC's size among all SCCs.
+            // If there's only one SCC, use 0.5 as default.
+            let sev = if non_trivial.len() == 1 { 0.5 } else { size_pcts[ci] };
             Anomaly {
                 kind: AnomalyKind::CycleMember,
                 node_ids,
                 description: format!("Strongly connected dependency group of {} nodes", len),
-                severity: (len as f64 / 8.0).min(1.0),
-                confidence: (0.4 + len as f64 / 10.0).min(1.0),
+                severity: sev.clamp(0.3, 1.0),
+                confidence: 0.9, // cycle detection is deterministic
                 anchors,
             }
         })
@@ -367,7 +448,6 @@ fn sccs_to_anomalies(sccs: &[Vec<String>], graph: &Graph) -> Vec<Anomaly> {
 // ---------------------------------------------------------------------------
 
 fn detect_layer_discrepancies(graph: &Graph, edge_kinds: &[String]) -> Vec<Anomaly> {
-    let gap_threshold = 0.4;
     if edge_kinds.len() < 2 {
         return Vec::new();
     }
@@ -436,7 +516,16 @@ fn detect_layer_discrepancies(graph: &Graph, edge_kinds: &[String]) -> Vec<Anoma
     .into_iter()
     .collect();
 
-    let mut anomalies = Vec::new();
+    // Pass 1: Compute best gap for each eligible node.
+    struct GapEntry<'a> {
+        node: usize,
+        gap: f64,
+        ka: &'a str,
+        kb: &'a str,
+    }
+    let mut candidates: Vec<GapEntry> = Vec::new();
+    let mut all_gaps: Vec<f64> = Vec::new();
+
     for i in 0..graph.n {
         let max_deg: usize = active_kinds
             .iter()
@@ -455,13 +544,9 @@ fn detect_layer_discrepancies(graph: &Graph, edge_kinds: &[String]) -> Vec<Anoma
             continue;
         }
 
-        // Node must have percentiles in at least 2 layers.
         let node_active: Vec<&str> = active_kinds
             .iter()
-            .filter(|&&k| {
-                let pcts = &layer_percentiles[k];
-                !pcts[i].is_nan()
-            })
+            .filter(|&&k| !layer_percentiles[k][i].is_nan())
             .copied()
             .collect();
         if node_active.len() < 2 {
@@ -472,44 +557,45 @@ fn detect_layer_discrepancies(graph: &Graph, edge_kinds: &[String]) -> Vec<Anoma
         let mut best_pair: Option<(&str, &str)> = None;
         for (ai, &ka) in node_active.iter().enumerate() {
             for &kb in &node_active[ai + 1..] {
-                let pct_a = layer_percentiles[ka][i];
-                let pct_b = layer_percentiles[kb][i];
-                let gap = (pct_a - pct_b).abs();
+                let gap = (layer_percentiles[ka][i] - layer_percentiles[kb][i]).abs();
                 if gap > best_gap {
                     best_gap = gap;
                     best_pair = Some((ka, kb));
                 }
             }
         }
+        if let Some((ka, kb)) = best_pair {
+            all_gaps.push(best_gap);
+            candidates.push(GapEntry { node: i, gap: best_gap, ka, kb });
+        }
+    }
 
-        if best_gap <= gap_threshold {
+    // Pass 2: Tukey fence on gap distribution as threshold.
+    let gap_threshold = crate::stats::tukey_upper_fence(&all_gaps);
+    let gap_pcts = crate::stats::percentile_ranks(&all_gaps);
+
+    let mut anomalies = Vec::new();
+    for (ci, entry) in candidates.iter().enumerate() {
+        if entry.gap <= gap_threshold {
             continue;
         }
-        let Some((ka, kb)) = best_pair else { continue };
 
-        let pct_a = layer_percentiles[ka][i];
-        let pct_b = layer_percentiles[kb][i];
-        let label_a = kind_labels.get(ka).copied().unwrap_or(ka);
-        let label_b = kind_labels.get(kb).copied().unwrap_or(kb);
+        let i = entry.node;
+        let pct_a = layer_percentiles[entry.ka][i];
+        let pct_b = layer_percentiles[entry.kb][i];
+        let label_a = kind_labels.get(entry.ka).copied().unwrap_or(entry.ka);
+        let label_b = kind_labels.get(entry.kb).copied().unwrap_or(entry.kb);
         let nid = &graph.node_ids[i];
 
         let desc = if pct_a >= pct_b {
             format!(
                 "{} is {}-central (p{:.0}%) but {}-peripheral (p{:.0}%)",
-                nid,
-                label_a,
-                pct_a * 100.0,
-                label_b,
-                pct_b * 100.0
+                nid, label_a, pct_a * 100.0, label_b, pct_b * 100.0
             )
         } else {
             format!(
                 "{} is {}-central (p{:.0}%) but {}-peripheral (p{:.0}%)",
-                nid,
-                label_b,
-                pct_b * 100.0,
-                label_a,
-                pct_a * 100.0
+                nid, label_b, pct_b * 100.0, label_a, pct_a * 100.0
             )
         };
 
@@ -517,7 +603,7 @@ fn detect_layer_discrepancies(graph: &Graph, edge_kinds: &[String]) -> Vec<Anoma
             kind: AnomalyKind::LayerDiscrepancy,
             node_ids: vec![nid.clone()],
             description: desc,
-            severity: (0.3 + best_gap * 0.7).min(1.0),
+            severity: gap_pcts[ci],
             confidence: 0.6,
             anchors: vec![graph.anchor(i)],
         });
@@ -526,11 +612,7 @@ fn detect_layer_discrepancies(graph: &Graph, edge_kinds: &[String]) -> Vec<Anoma
 }
 
 fn euclidean_dist(a: &[f64], b: &[f64]) -> f64 {
-    a.iter()
-        .zip(b.iter())
-        .map(|(x, y)| (x - y) * (x - y))
-        .sum::<f64>()
-        .sqrt()
+    crate::stats::euclidean_dist(a, b)
 }
 
 fn sorted_vec(set: HashSet<String>) -> Vec<String> {
