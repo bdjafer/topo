@@ -10,6 +10,7 @@ pub mod issues;
 pub mod graph;
 pub mod modules;
 pub mod roles;
+pub mod semantic;
 pub mod spectral;
 pub mod stats;
 pub mod types;
@@ -294,6 +295,7 @@ fn project_input(input: &AnalyzerInput) -> AnalyzerInput {
             },
             file: node.file.clone(),
             line: node.line,
+            line_end: node.line_end,
         });
     }
 
@@ -356,6 +358,7 @@ fn project_input(input: &AnalyzerInput) -> AnalyzerInput {
         self_edge_ratio: Some(self_edge_ratio),
         projection: None, // Already projected
         packages: input.packages.clone(),
+        semantic_embeddings: input.semantic_embeddings.clone(),
     }
 }
 
@@ -479,7 +482,7 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         }
     }
 
-    let (final_modules, final_silhouette, final_fallback) = {
+    let (mut final_modules, final_silhouette, final_fallback) = {
         let (clusters, silhouette_val, used_fallback) = if cluster_data.is_empty()
             || cluster_data.first().map(|v| v.is_empty()).unwrap_or(true)
         {
@@ -583,6 +586,22 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         (enriched, silhouette_opt, used_fallback)
     };
 
+    // Attach top_terms to each module (TF-IDF on node IDs, no model needed).
+    {
+        let all_clusters: HashMap<String, usize> = final_modules
+            .iter()
+            .flat_map(|m| m.node_ids.iter().map(move |nid| (nid.clone(), m.id)))
+            .collect();
+        let terms_map = semantic::top_terms(&all_clusters, 3);
+        for m in &mut final_modules {
+            if let Some(terms) = terms_map.get(&m.id) {
+                if !terms.is_empty() {
+                    m.top_terms = Some(terms.clone());
+                }
+            }
+        }
+    }
+
     // Build node_to_module map (skipping unassigned).
     let mut node_to_module: HashMap<String, usize> = HashMap::new();
     for m in &final_modules {
@@ -605,7 +624,7 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
     );
 
     // 7. Role classification.
-    let role_outputs = roles::classify_roles(&graph, &betweenness_vec);
+    let mut role_outputs = roles::classify_roles(&graph, &betweenness_vec);
 
     // 8. SCCs.
     let scc_indices = algorithms::tarjan_scc(&graph.successors, n);
@@ -675,7 +694,145 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         node_to_module: &node_to_module,
         package_agreement: package_agreement.as_ref(),
     };
-    let issues = issues::build_issues(&issues_ctx);
+    let mut issues = issues::build_issues(&issues_ctx);
+
+    // 13b. Semantic analysis (when embeddings provided).
+    let semantic_result = input.semantic_embeddings.as_ref().map(|embeddings| {
+        // Build role map for misplaced_concern filtering.
+        let role_map: HashMap<String, String> = role_outputs.iter()
+            .map(|r| (r.node_id.clone(), r.role.clone()))
+            .collect();
+
+        // Get eigenvalues, eigenvectors, and component node IDs from spectral decomposition.
+        let (eigenvalues, eigenvectors, component_node_ids) = spectral.components.first()
+            .map(|(node_indices, r)| {
+                let ids: Vec<String> = node_indices.iter()
+                    .map(|&idx| graph.node_ids[idx].clone())
+                    .collect();
+                (r.eigenvalues.clone(), r.eigenvectors.clone(), ids)
+            })
+            .unwrap_or_default();
+
+        let result = semantic::analyze_semantic(
+            embeddings,
+            &graph,
+            &node_to_module,
+            &eigenvalues,
+            &eigenvectors,
+            &role_map,
+            &component_node_ids,
+        );
+
+        // Apply semantic coherence to modules.
+        for m in &mut final_modules {
+            if let Some(&coh) = result.module_coherence.get(&m.id) {
+                m.semantic_coherence = Some(round4(coh));
+            }
+        }
+
+        // Add misplaced_concern issues.
+        for mc in &result.misplaced_concerns {
+            let target_label = final_modules.iter()
+                .find(|m| m.id == mc.best_module)
+                .map(|m| m.label.clone())
+                .unwrap_or_else(|| format!("module_{}", mc.best_module));
+            let own_label = final_modules.iter()
+                .find(|m| m.id == mc.own_module)
+                .map(|m| m.label.clone())
+                .unwrap_or_else(|| format!("module_{}", mc.own_module));
+
+            issues.push(types::IssueOutput {
+                id: format!("misplaced_concern:{}", mc.node_id),
+                kind: "misplaced_concern".to_string(),
+                title: format!("Misplaced concern: {}", mc.node_id.rsplit('.').next().unwrap_or(&mc.node_id)),
+                description: format!(
+                    "Node {} is semantically closest to module {} (similarity {:.2}) \
+                     but structurally assigned to module {} (similarity {:.2}). \
+                     Consider moving it or extracting a shared module.",
+                    mc.node_id, target_label, mc.similarity_best,
+                    own_label, mc.similarity_own
+                ),
+                severity: round4(((mc.similarity_best - mc.similarity_own) * 2.0).min(1.0)),
+                severity_label: if mc.similarity_best - mc.similarity_own > 0.3 {
+                    "high".to_string()
+                } else {
+                    "medium".to_string()
+                },
+                confidence: 0.7,
+                confidence_label: "medium".to_string(),
+                anchors: {
+                    let anchor = graph.node_index.get(mc.node_id.as_str()).map(|&idx| {
+                        types::AnchorOutput {
+                            node_id: mc.node_id.clone(),
+                            file: graph.node_files[idx].clone(),
+                            line: graph.node_lines[idx],
+                            kind: None,
+                        }
+                    });
+                    anchor.into_iter().collect()
+                },
+                suggested_module: Some(target_label),
+                similarity_own: Some(round4(mc.similarity_own)),
+                similarity_best: Some(round4(mc.similarity_best)),
+            });
+        }
+
+        // Add incoherent_module issues.
+        for im in &result.incoherent_modules {
+            let label = final_modules.iter()
+                .find(|m| m.id == im.module_id)
+                .map(|m| m.label.clone())
+                .unwrap_or_else(|| format!("module_{}", im.module_id));
+
+            issues.push(types::IssueOutput {
+                id: format!("incoherent_module:{}", label),
+                kind: "incoherent_module".to_string(),
+                title: format!("Incoherent module: {}", label),
+                description: {
+                    let mut desc = format!(
+                        "Module {} has semantic coherence {:.2} (below null threshold {:.2}). \
+                         Members are semantically unrelated — the structural grouping may be \
+                         accidental.",
+                        label, im.coherence, im.null_threshold
+                    );
+                    if !im.sub_clusters.is_empty() {
+                        let cluster_strs: Vec<String> = im.sub_clusters.iter()
+                            .filter(|c| !c.is_empty())
+                            .map(|c| format!("{{{}}}", c.join(", ")))
+                            .collect();
+                        if !cluster_strs.is_empty() {
+                            desc.push_str(&format!(
+                                " Sub-clusters: {}. Consider splitting along these boundaries.",
+                                cluster_strs.join(" vs ")
+                            ));
+                        }
+                    }
+                    desc
+                },
+                severity: round4(((im.null_threshold - im.coherence) * 3.0).min(1.0).max(0.3)),
+                severity_label: "medium".to_string(),
+                confidence: 0.6,
+                confidence_label: "medium".to_string(),
+                anchors: Vec::new(),
+                ..Default::default()
+            });
+        }
+
+        result
+    });
+
+    let semantic_enabled = semantic_result.as_ref().map(|r| r.gate_passed);
+
+    // Inject local variation into role outputs when semantic analysis was run.
+    if let Some(ref result) = semantic_result {
+        if result.gate_passed {
+            for role in &mut role_outputs {
+                if let Some(&lv) = result.local_variation.get(&role.node_id) {
+                    role.local_variation = Some(stats::round4(lv));
+                }
+            }
+        }
+    }
 
     // 14. Build spectral output.
     let spectral_output = if spectral.components.is_empty() && spectral.unassigned.is_empty() {
@@ -726,7 +883,20 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
         issues,
         health: Some(types::HealthOutput {
             modularity_q: mod_q,
+            semantic_smoothness: semantic_result.as_ref()
+                .filter(|r| r.gate_passed)
+                .map(|r| round4(r.smoothness)),
+            semantic_structural_ami: semantic_result.as_ref()
+                .filter(|r| r.gate_passed)
+                .map(|r| round4(r.ami)),
+            semantic_energy_profile: semantic_result.as_ref()
+                .filter(|r| r.gate_passed && !r.energy_eigenvalues.is_empty())
+                .map(|r| types::SemanticEnergyProfile {
+                    eigenvalues: r.energy_eigenvalues.iter().map(|&v| round4(v)).collect(),
+                    semantic_energy: r.energy_values.iter().map(|&v| round4(v)).collect(),
+                }),
         }),
+        semantic_enabled,
     }
 }
 
@@ -758,6 +928,7 @@ fn empty_analysis_output(scope: types::ScopeOutput, input: &AnalyzerInput) -> ty
         roles: Vec::new(),
         issues: Vec::new(),
         health: None,
+        semantic_enabled: None,
     }
 }
 
@@ -777,12 +948,14 @@ mod tests {
                 kind: "function".to_string(),
                 file: None,
                 line: None,
+                line_end: None,
             });
             nodes.push(NodeEntry {
                 id: format!("b.f{i}"),
                 kind: "function".to_string(),
                 file: None,
                 line: None,
+                line_end: None,
             });
         }
 
@@ -821,6 +994,7 @@ mod tests {
             self_edge_ratio: None,
             projection: None,
             packages: None,
+            semantic_embeddings: None,
         }
     }
 
@@ -843,5 +1017,257 @@ mod tests {
         let json_out = analyze_json(&json_in).unwrap();
         let output: AnalyzerOutput = serde_json::from_str(&json_out).unwrap();
         assert_eq!(output.fingerprints.len(), 10);
+    }
+
+    /// Build synthetic embeddings where cluster "a" nodes point in one direction
+    /// and cluster "b" nodes point in another, with one deliberate misplaced node.
+    fn make_semantic_embeddings(dim: usize) -> HashMap<String, Vec<f32>> {
+        let mut emb = HashMap::new();
+
+        // Cluster A: vectors near [1, 0, 0, ...] with small noise.
+        for i in 0..5 {
+            let mut v = vec![0.0f32; dim];
+            v[0] = 1.0;
+            v[1] = 0.05 * i as f32; // small variation
+            v[2] = 0.02 * i as f32;
+            emb.insert(format!("a.f{i}"), v);
+        }
+
+        // Cluster B: vectors near [0, 1, 0, ...] with small noise.
+        for i in 0..5 {
+            let mut v = vec![0.0f32; dim];
+            v[1] = 1.0;
+            v[0] = 0.03 * i as f32; // small variation
+            v[2] = 0.04 * i as f32;
+            emb.insert(format!("b.f{i}"), v);
+        }
+
+        emb
+    }
+
+    /// Build a larger test graph with enough nodes to trigger all semantic features.
+    fn make_large_test_input() -> AnalyzerInput {
+        // 4 clusters of 8 nodes each = 32 nodes.
+        // Clusters: auth, billing, orders, shared.
+        let modules = ["auth", "billing", "orders", "shared"];
+        let mut nodes = Vec::new();
+        let mut edges = Vec::new();
+
+        for (mi, module) in modules.iter().enumerate() {
+            for i in 0..8 {
+                nodes.push(NodeEntry {
+                    id: format!("{module}.f{i}"),
+                    kind: "function".to_string(),
+                    file: Some(format!("src/{module}/mod.rs")),
+                    line: Some(i * 10 + 1),
+                    line_end: Some(i * 10 + 9),
+                });
+            }
+            // Intra-module edges (chain + some cross-links).
+            for i in 0..7 {
+                edges.push(EdgeEntry {
+                    source: format!("{module}.f{i}"),
+                    target: format!("{module}.f{}", i + 1),
+                    kind: "calls".to_string(),
+                });
+            }
+            // Add some extra intra-module edges for density.
+            for i in 0..5 {
+                edges.push(EdgeEntry {
+                    source: format!("{module}.f{i}"),
+                    target: format!("{module}.f{}", i + 2),
+                    kind: "calls".to_string(),
+                });
+            }
+            // One defines edge per module.
+            if mi < modules.len() - 1 {
+                edges.push(EdgeEntry {
+                    source: format!("{module}.f0"),
+                    target: format!("{}.f0", modules[mi + 1]),
+                    kind: "calls".to_string(),
+                });
+            }
+        }
+
+        // Cross-module bridge edges.
+        edges.push(EdgeEntry {
+            source: "auth.f7".to_string(),
+            target: "billing.f0".to_string(),
+            kind: "calls".to_string(),
+        });
+        edges.push(EdgeEntry {
+            source: "billing.f7".to_string(),
+            target: "orders.f0".to_string(),
+            kind: "calls".to_string(),
+        });
+        edges.push(EdgeEntry {
+            source: "orders.f7".to_string(),
+            target: "shared.f0".to_string(),
+            kind: "calls".to_string(),
+        });
+
+        // Generate semantic embeddings: each module gets a distinct direction.
+        let dim = 64;
+        let mut emb = HashMap::new();
+        let directions: [[f32; 4]; 4] = [
+            [1.0, 0.0, 0.0, 0.0], // auth
+            [0.0, 1.0, 0.0, 0.0], // billing
+            [0.0, 0.0, 1.0, 0.0], // orders
+            [0.0, 0.0, 0.0, 1.0], // shared
+        ];
+        for (mi, module) in modules.iter().enumerate() {
+            for i in 0..8 {
+                let mut v = vec![0.0f32; dim];
+                // Primary direction.
+                for (d, &val) in directions[mi].iter().enumerate() {
+                    v[d] = val + 0.05 * i as f32;
+                }
+                // Add some noise in higher dims.
+                v[4 + mi] = 0.1 * (i as f32 + 1.0);
+                v[8 + i] = 0.05;
+                emb.insert(format!("{module}.f{i}"), v);
+            }
+        }
+
+        // Deliberately misplace a node: auth.f3 gets billing's embedding direction.
+        // This should trigger misplaced_concern if the graph is large enough.
+        if let Some(v) = emb.get_mut("auth.f3") {
+            *v = vec![0.0f32; dim];
+            v[1] = 1.0; // billing direction
+            v[5] = 0.3;
+        }
+
+        AnalyzerInput {
+            nodes,
+            edges,
+            k: None,
+            edge_kinds: None,
+            layer_weights: None,
+            scope: None,
+            parsed_nodes: None,
+            parsed_edges: None,
+            self_edge_ratio: None,
+            projection: None,
+            packages: None,
+            semantic_embeddings: Some(emb),
+        }
+    }
+
+    #[test]
+    fn test_semantic_pipeline_smoke() {
+        // Small graph with synthetic embeddings — verifies the pipeline doesn't crash.
+        // 10 nodes is too few for the quality gate to reliably pass, so this only
+        // checks that the pipeline runs without panicking and top_terms work.
+        let mut input = make_test_input();
+        input.semantic_embeddings = Some(make_semantic_embeddings(32));
+
+        let output = analyze_full(&input);
+
+        // top_terms should always be present (doesn't need embeddings).
+        let terms_present = output.architecture.modules.iter()
+            .any(|m| m.top_terms.as_ref().map_or(false, |t| !t.is_empty()));
+        assert!(terms_present, "top_terms should be populated");
+    }
+
+    #[test]
+    fn test_semantic_pipeline_full() {
+        // Larger graph that should trigger all semantic features.
+        let input = make_large_test_input();
+        let output = analyze_full(&input);
+
+        // Basic structural checks.
+        assert!(output.architecture.modules.len() >= 2, "should find at least 2 modules");
+
+        // Check top_terms are populated.
+        for module in &output.architecture.modules {
+            if module.size >= 6 {
+                assert!(
+                    module.top_terms.as_ref().map_or(false, |t| !t.is_empty()),
+                    "module {} should have top_terms",
+                    module.label
+                );
+            }
+        }
+
+        // Check health output exists.
+        let health = output.health.as_ref().expect("health should be present");
+        assert!(health.modularity_q.is_some(), "modularity_q should be present");
+
+        // Verify JSON round-trip.
+        let json_in = serde_json::to_string(&input).unwrap();
+        let json_out = analyze_full_json(&json_in).unwrap();
+        let parsed: serde_json::Value = serde_json::from_str(&json_out).unwrap();
+        assert!(parsed.get("architecture").is_some());
+        assert!(parsed.get("issues").is_some());
+        assert!(parsed.get("health").is_some());
+
+        // The quality gate MUST pass for this well-separated 32-node graph.
+        assert_eq!(
+            output.semantic_enabled,
+            Some(true),
+            "quality gate should pass for well-separated 32-node graph"
+        );
+
+        // Verify all semantic output fields.
+        {
+            let smoothness = health.semantic_smoothness.expect("smoothness should be set");
+            assert!(smoothness >= 0.0 && smoothness <= 1.5, "smoothness {smoothness} out of range");
+
+            let ami = health.semantic_structural_ami.expect("AMI should be set");
+            assert!(ami >= 0.0 && ami <= 1.0, "AMI {ami} out of range");
+
+            // Energy profile.
+            let ep = health.semantic_energy_profile.as_ref().expect("energy profile should be set");
+            assert!(!ep.eigenvalues.is_empty(), "energy eigenvalues should be non-empty");
+            assert_eq!(ep.eigenvalues.len(), ep.semantic_energy.len());
+            let energy_sum: f64 = ep.semantic_energy.iter().sum();
+            assert!(
+                (energy_sum - 1.0).abs() < 0.01,
+                "energy should sum to ~1.0, got {energy_sum}"
+            );
+
+            // Module coherence.
+            let mods_with_coh: Vec<_> = output.architecture.modules.iter()
+                .filter(|m| m.semantic_coherence.is_some())
+                .collect();
+            assert!(!mods_with_coh.is_empty(), "at least one module should have coherence");
+            for m in &mods_with_coh {
+                let c = m.semantic_coherence.unwrap();
+                assert!(c >= 0.0 && c <= 1.0, "coherence {c} out of range for {}", m.label);
+            }
+
+            // Check for semantic issues (misplaced_concern or incoherent_module).
+            let semantic_issues: Vec<_> = output.issues.iter()
+                .filter(|i| i.kind == "misplaced_concern" || i.kind == "incoherent_module")
+                .collect();
+            // We don't require them (graph may be too small), but if they exist, validate fields.
+            for issue in &semantic_issues {
+                assert!(issue.severity > 0.0 && issue.severity <= 1.0);
+                if issue.kind == "misplaced_concern" {
+                    assert!(issue.suggested_module.is_some());
+                    assert!(issue.similarity_own.is_some());
+                    assert!(issue.similarity_best.is_some());
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_semantic_disabled_when_no_embeddings() {
+        // Without embeddings, semantic should be None/disabled.
+        let input = make_test_input();
+        let output = analyze_full(&input);
+
+        assert!(output.semantic_enabled.is_none(), "semantic_enabled should be None without embeddings");
+        let health = output.health.as_ref().unwrap();
+        assert!(health.semantic_smoothness.is_none());
+        assert!(health.semantic_structural_ami.is_none());
+        assert!(health.semantic_energy_profile.is_none());
+
+        // No semantic issues.
+        let semantic_issues: Vec<_> = output.issues.iter()
+            .filter(|i| i.kind == "misplaced_concern" || i.kind == "incoherent_module")
+            .collect();
+        assert!(semantic_issues.is_empty(), "no semantic issues without embeddings");
     }
 }

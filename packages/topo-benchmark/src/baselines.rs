@@ -337,6 +337,7 @@ mod tests {
                     kind: "module".to_string(),
                     file: None,
                     line: None,
+                    line_end: None,
                 })
                 .collect(),
             edges: edges
@@ -356,6 +357,7 @@ mod tests {
             self_edge_ratio: None,
             projection: None,
             packages: None,
+            semantic_embeddings: None,
         }
     }
 

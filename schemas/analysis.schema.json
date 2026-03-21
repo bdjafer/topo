@@ -78,7 +78,9 @@
               "cohesion":   { "type": ["number", "null"], "description": "Internal tightness (avg intra-module distance). Lower = tighter." },
               "separation": { "type": ["number", "null"], "description": "Distinctness from other modules (nearest centroid distance). Higher = more distinct." },
               "confidence": { "type": "number", "description": "How reliably this module was detected. 0-1." },
-              "unassigned": { "type": "boolean", "description": "True if this is a catch-all for nodes that didn't cluster." }
+              "unassigned": { "type": "boolean", "description": "True if this is a catch-all for nodes that didn't cluster." },
+              "top_terms":  { "type": "array", "items": { "type": "string" }, "description": "Top TF-IDF terms from node ID tokenization. Available without semantic embeddings." },
+              "semantic_coherence": { "type": ["number", "null"], "description": "Average pairwise cosine similarity of semantic embeddings within this module. Null if module < 6 members or semantic analysis disabled." }
             }
           }
         },
@@ -133,7 +135,8 @@
           "betweenness":  { "type": "number", "description": "Fraction of shortest paths passing through this node." },
           "in_degree":    { "type": "integer" },
           "out_degree":   { "type": "integer" },
-          "anchor":       { "$ref": "#/$defs/anchor" }
+          "anchor":       { "$ref": "#/$defs/anchor" },
+          "local_variation": { "type": "number", "description": "Semantic local variation: how much this node disagrees with its structural neighbors. Only present with semantic analysis." }
         }
       }
     },
@@ -153,7 +156,10 @@
           "severity_label":   { "type": "string", "enum": ["high", "medium", "low"] },
           "confidence":       { "type": "number", "minimum": 0, "maximum": 1 },
           "confidence_label": { "type": "string", "enum": ["high", "medium", "low"] },
-          "anchors":          { "type": "array", "items": { "$ref": "#/$defs/anchor" } }
+          "anchors":          { "type": "array", "items": { "$ref": "#/$defs/anchor" } },
+          "suggested_module": { "type": "string", "description": "For misplaced_concern: the module the node should move to." },
+          "similarity_own":   { "type": "number", "description": "For misplaced_concern: cosine similarity to own module centroid." },
+          "similarity_best":  { "type": "number", "description": "For misplaced_concern: cosine similarity to best other module centroid." }
         }
       }
     },
@@ -163,8 +169,23 @@
       "description": "Structural health. Newman's modularity Q measures how well detected modules explain the edge structure vs random assignment. Null if the graph has no edges.",
       "required": ["modularity_q"],
       "properties": {
-        "modularity_q": { "type": "number", "description": "Newman's modularity Q. Higher = module boundaries explain more of the edge structure. >0.3 significant, >0.5 strong, 0 = no better than random." }
+        "modularity_q": { "type": "number", "description": "Newman's modularity Q. Higher = module boundaries explain more of the edge structure. >0.3 significant, >0.5 strong, 0 = no better than random." },
+        "semantic_smoothness": { "type": "number", "description": "Rayleigh quotient measuring how smoothly semantics vary over the graph. Lower = better organized. Null if semantic analysis not enabled." },
+        "semantic_structural_ami": { "type": "number", "description": "Adjusted Mutual Information between structural and semantic partitions. Higher = better alignment." },
+        "semantic_energy_profile": {
+          "type": "object",
+          "description": "GFT energy profile: how semantic disagreement distributes across structural scales.",
+          "properties": {
+            "eigenvalues": { "type": "array", "items": { "type": "number" } },
+            "semantic_energy": { "type": "array", "items": { "type": "number" } }
+          }
+        }
       }
+    },
+
+    "semantic_enabled": {
+      "type": "boolean",
+      "description": "Whether semantic analysis was attempted and the quality gate passed."
     }
   },
 

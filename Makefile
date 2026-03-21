@@ -42,6 +42,16 @@ rust-test:
 rust-build:
 	cargo build --workspace --release
 
-## Run the full analysis on this repo (all Rust packages)
+## Run the full analysis on this repo (with semantic embeddings)
 analyze:
-	cargo run -p topo-cli --release -- .
+	cargo build -p topo-cli --release
+	./target/release/topo parse . -o /tmp/topo-graph.json
+	python3 scripts/generate_embeddings.py /tmp/topo-graph.json --timeout 180 -o /tmp/topo-embeddings.json
+	./target/release/topo analyze --input /tmp/topo-graph.json --embeddings /tmp/topo-embeddings.json
+
+## Run analysis on a specific project (usage: make analyze-project PATH=<path>)
+analyze-project:
+	cargo build -p topo-cli --release
+	./target/release/topo parse $(PATH) -o /tmp/topo-graph.json
+	python3 scripts/generate_embeddings.py /tmp/topo-graph.json --timeout 300 -o /tmp/topo-embeddings.json
+	./target/release/topo analyze --input /tmp/topo-graph.json --embeddings /tmp/topo-embeddings.json

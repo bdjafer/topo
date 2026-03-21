@@ -1,5 +1,8 @@
 mod args;
 mod cache;
+#[cfg(feature = "semantic")]
+mod embed;
+mod health;
 mod policy;
 
 use std::collections::HashMap;
@@ -26,6 +29,7 @@ fn run() -> Result<()> {
         Some(Command::Parse(args)) => cmd_parse(args, cli.no_cache),
         Some(Command::Analyze(args)) => cmd_analyze(args, cli.no_cache),
         Some(Command::Cache(args)) => cmd_cache(args),
+        Some(Command::Health(args)) => cmd_health(args),
         None => {
             let path = cli
                 .path
@@ -163,6 +167,28 @@ fn cmd_cache(args: args::CacheArgs) -> Result<()> {
     }
 }
 
+// ── Health command ──
+
+fn cmd_health(args: args::HealthArgs) -> Result<()> {
+    eprintln!("Tracking structural health over git history...");
+
+    let snapshots = health::run_health(
+        &args.path,
+        args.since.as_deref(),
+        &args.sample,
+        args.max_commits,
+        args.language.as_deref(),
+    )?;
+
+    if args.as_json {
+        println!("{}", serde_json::to_string_pretty(&snapshots)?);
+    } else {
+        println!("{}", health::format_health_text(&snapshots));
+    }
+
+    Ok(())
+}
+
 // ── Shared analysis + output ──
 
 fn run_analysis(
@@ -225,7 +251,7 @@ fn run_analysis(
     };
 
     // Build the AnalyzerInput JSON
-    let analyzer_input = serde_json::json!({
+    let mut analyzer_input = serde_json::json!({
         "nodes": nodes,
         "edges": edges,
         "k": args.n_modules,
@@ -242,27 +268,67 @@ fn run_analysis(
         "packages": packages_opt,
     });
 
+    // Load pre-computed semantic embeddings if provided.
+    if let Some(ref emb_path) = args.embeddings {
+        let emb_json = std::fs::read_to_string(emb_path)
+            .map_err(|e| anyhow::anyhow!("Failed to read embeddings file: {e}"))?;
+        let emb_data: serde_json::Value = serde_json::from_str(&emb_json)
+            .map_err(|e| anyhow::anyhow!("Invalid embeddings JSON: {e}"))?;
+        analyzer_input["semantic_embeddings"] = emb_data;
+    } else if args.semantic {
+        #[cfg(feature = "semantic")]
+        {
+            if let Some(root) = project_root {
+                eprintln!("Generating semantic embeddings...");
+                let graph_value: serde_json::Value = serde_json::from_str(&graph_json)?;
+                let embeddings = embed::generate_embeddings(&graph_value, root)?;
+                let emb_value = serde_json::to_value(&embeddings)?;
+                analyzer_input["semantic_embeddings"] = emb_value;
+            } else {
+                bail!("--semantic requires a project path for source text extraction. Use --embeddings <file> for pre-parsed graphs.");
+            }
+        }
+        #[cfg(not(feature = "semantic"))]
+        {
+            bail!("--semantic requires the `semantic` feature. Build with: cargo build -p topo-cli --features semantic\nOr use --embeddings <file> for pre-computed embeddings.");
+        }
+    }
+
     let input_str = serde_json::to_string(&analyzer_input)?;
     let output_str = topo_analyzer::analyze_full_json(&input_str)
         .map_err(|e| anyhow::anyhow!("Analysis failed: {e}"))?;
 
-    if args.as_json {
-        // Pretty-print the JSON output
-        let output: serde_json::Value = serde_json::from_str(&output_str)?;
-        println!("{}", serde_json::to_string_pretty(&output)?);
-    } else {
-        let data: serde_json::Value = serde_json::from_str(&output_str)?;
-        let ignores = policy.map(|p| &p.ignores).cloned().unwrap_or_default();
-        let use_color = !args.no_color && atty_stdout();
-        let text = topo_formatter::format_text(
-            &data,
-            args.verbose,
-            args.diagnostics,
-            &ignores,
-            project_root,
-            use_color,
-        );
-        print!("{text}");
+    let format = args.format.as_deref().unwrap_or(if args.as_json { "json" } else { "text" });
+    match format {
+        "json" => {
+            let output: serde_json::Value = serde_json::from_str(&output_str)?;
+            println!("{}", serde_json::to_string_pretty(&output)?);
+        }
+        "context" => {
+            let data: serde_json::Value = serde_json::from_str(&output_str)?;
+            let text = topo_formatter::format_context(&data);
+            print!("{text}");
+        }
+        "domain" => {
+            let data: serde_json::Value = serde_json::from_str(&output_str)?;
+            let text = topo_formatter::domain::format_domain(&data);
+            print!("{text}");
+        }
+        _ => {
+            // "text" or default
+            let data: serde_json::Value = serde_json::from_str(&output_str)?;
+            let ignores = policy.map(|p| &p.ignores).cloned().unwrap_or_default();
+            let use_color = !args.no_color && atty_stdout();
+            let text = topo_formatter::format_text(
+                &data,
+                args.verbose,
+                args.diagnostics,
+                &ignores,
+                project_root,
+                use_color,
+            );
+            print!("{text}");
+        }
     }
 
     Ok(())

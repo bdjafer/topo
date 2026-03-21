@@ -33,6 +33,11 @@
             "minimum": 1,
             "description": "Line number where the entity is defined."
           },
+          "line_end": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Line number where the entity ends. Used for source text extraction in semantic analysis."
+          },
           "name": {
             "type": "string",
             "description": "Short name (leaf of the qualified path)."

@@ -39,6 +39,7 @@ class Node:
     file: str  # Source file path (metadata, not a filesystem reference)
     line: int
     name: str  # Short name, e.g. "method"
+    line_end: int | None = None  # End line for source text extraction
 
     def __hash__(self) -> int:
         return hash(self.id)
@@ -88,9 +89,15 @@ class CodeGraph:
 
     def to_dict(self) -> dict:
         """Serialize to a JSON-compatible dict — the canonical wire format."""
+        def _node_dict(n: Node) -> dict:
+            d = {"id": n.id, "kind": n.kind.value, "file": n.file, "line": n.line, "name": n.name}
+            if n.line_end is not None:
+                d["line_end"] = n.line_end
+            return d
+
         return {
             "nodes": [
-                {"id": n.id, "kind": n.kind.value, "file": n.file, "line": n.line, "name": n.name}
+                _node_dict(n)
                 for n in sorted(self.nodes.values(), key=lambda n: n.id)
             ],
             "edges": [
@@ -110,6 +117,7 @@ class CodeGraph:
                 file=nd["file"],
                 line=nd["line"],
                 name=nd["name"],
+                line_end=nd.get("line_end"),
             ))
         for ed in data["edges"]:
             graph.add_edge(Edge(

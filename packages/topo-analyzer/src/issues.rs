@@ -47,6 +47,7 @@ pub fn build_issues(ctx: &IssuesContext) -> Vec<IssueOutput> {
             confidence: 0.9,
             confidence_label: "high".to_string(),
             anchors: Vec::new(),
+            ..Default::default()
         });
     }
 
@@ -68,6 +69,7 @@ pub fn build_issues(ctx: &IssuesContext) -> Vec<IssueOutput> {
             confidence: 0.9,
             confidence_label: "high".to_string(),
             anchors: Vec::new(),
+            ..Default::default()
         });
     }
 
@@ -87,6 +89,7 @@ pub fn build_issues(ctx: &IssuesContext) -> Vec<IssueOutput> {
             confidence: 0.8,
             confidence_label: "high".to_string(),
             anchors: Vec::new(),
+            ..Default::default()
         });
     }
 
@@ -148,6 +151,7 @@ pub fn build_issues(ctx: &IssuesContext) -> Vec<IssueOutput> {
             confidence: round2(anomaly.confidence),
             confidence_label: confidence_label(anomaly.confidence),
             anchors: anomaly.anchors.clone(),
+            ..Default::default()
         });
     }
 
@@ -265,6 +269,7 @@ fn detect_reverse_dependencies(ctx: &IssuesContext) -> Vec<IssueOutput> {
             confidence: round2(conf),
             confidence_label: confidence_label(conf),
             anchors,
+            ..Default::default()
         });
     }
     issues
@@ -311,6 +316,7 @@ fn detect_orphan_issues(ctx: &IssuesContext) -> Vec<IssueOutput> {
                         .map(|&i| ctx.graph.anchor(i))
                 })
                 .collect(),
+            ..Default::default()
         }];
     }
 
@@ -333,6 +339,7 @@ fn detect_orphan_issues(ctx: &IssuesContext) -> Vec<IssueOutput> {
                 confidence: 0.7,
                 confidence_label: "medium".to_string(),
                 anchors,
+                ..Default::default()
             }
         })
         .collect()
@@ -399,6 +406,7 @@ fn detect_god_modules(ctx: &IssuesContext) -> Vec<IssueOutput> {
                     .take(3)
                     .filter_map(|nid| ctx.graph.node_index.get(nid).map(|&i| ctx.graph.anchor(i)))
                     .collect(),
+                ..Default::default()
             });
         }
     }
@@ -442,6 +450,7 @@ fn detect_low_cohesion(ctx: &IssuesContext) -> Vec<IssueOutput> {
                     .take(3)
                     .filter_map(|nid| ctx.graph.node_index.get(nid).map(|&i| ctx.graph.anchor(i)))
                     .collect(),
+                ..Default::default()
             });
         }
     }
@@ -505,6 +514,7 @@ fn detect_fragile_hubs(ctx: &IssuesContext) -> Vec<IssueOutput> {
                 confidence: 0.8,
                 confidence_label: "high".to_string(),
                 anchors,
+                ..Default::default()
             });
         }
     }
@@ -589,6 +599,7 @@ fn detect_wide_interfaces(ctx: &IssuesContext) -> Vec<IssueOutput> {
             confidence: 0.6,
             confidence_label: "medium".to_string(),
             anchors: Vec::new(),
+            ..Default::default()
         });
     }
     issues
@@ -670,6 +681,7 @@ fn detect_phantom_imports(ctx: &IssuesContext) -> Vec<IssueOutput> {
             confidence: 0.5,
             confidence_label: "medium".to_string(),
             anchors: Vec::new(),
+            ..Default::default()
         });
     }
     issues
@@ -806,6 +818,7 @@ fn detect_cross_package_coupling(ctx: &IssuesContext) -> Vec<IssueOutput> {
             confidence: round2(agreement.nmi.max(0.3)),
             confidence_label: confidence_label(agreement.nmi.max(0.3)),
             anchors: Vec::new(),
+            ..Default::default()
         });
     }
     issues

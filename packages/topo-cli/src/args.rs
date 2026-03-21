@@ -46,6 +46,34 @@ pub enum Command {
     Analyze(AnalyzeArgs),
     /// Manage the parse cache.
     Cache(CacheArgs),
+    /// Track structural health metrics over git history.
+    Health(HealthArgs),
+}
+
+#[derive(Parser)]
+pub struct HealthArgs {
+    /// Path to project root.
+    pub path: PathBuf,
+
+    /// Only consider commits after this date (YYYY-MM-DD).
+    #[arg(long)]
+    pub since: Option<String>,
+
+    /// Sampling strategy: weekly, monthly, or every N commits.
+    #[arg(long, default_value = "weekly")]
+    pub sample: String,
+
+    /// Maximum number of commits to analyze.
+    #[arg(long, default_value = "20")]
+    pub max_commits: usize,
+
+    /// Output as JSON.
+    #[arg(long = "json")]
+    pub as_json: bool,
+
+    /// Source language (auto-detected if omitted).
+    #[arg(long, value_parser = ["rust", "python"])]
+    pub language: Option<String>,
 }
 
 #[derive(Parser)]
@@ -124,6 +152,19 @@ pub struct AnalysisArgs {
     /// Disable colored output.
     #[arg(long = "no-color")]
     pub no_color: bool,
+
+    /// Output format: text (default), json, context (LLM narrative), domain (bounded contexts).
+    #[arg(long, value_parser = ["text", "json", "context", "domain"])]
+    pub format: Option<String>,
+
+    /// Enable semantic analysis (requires jina-embeddings model, ~300MB download).
+    #[arg(long)]
+    pub semantic: bool,
+
+    /// Path to pre-computed embeddings JSON file (node_id -> 768-dim vector).
+    /// Alternative to --semantic for CI or environments without model access.
+    #[arg(long)]
+    pub embeddings: Option<std::path::PathBuf>,
 }
 
 #[derive(Parser)]

@@ -55,8 +55,12 @@ pub fn format_text(
         .unwrap_or(analyzed_nodes);
 
     lines.push(s.bold(&format!("topo — {root_label}")));
+    let semantic_flag = data.get("semantic_enabled")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(false);
+    let semantic_str = if semantic_flag { " [semantic: on]" } else { "" };
     lines.push(format!(
-        "{analyzed_nodes} nodes, {analyzed_edges} edges ({parsed_nodes} symbols parsed)"
+        "{analyzed_nodes} nodes, {analyzed_edges} edges ({parsed_nodes} symbols parsed){semantic_str}"
     ));
 
     // ── Issues ──
@@ -106,6 +110,12 @@ pub fn format_text(
                     let path = relative_path(file, project_root);
                     lines.push(format!("    → {}", s.cyan(&format!("{path}:{line}"))));
                 }
+            }
+            // Extra detail for semantic issues.
+            if let Some(suggested) = issue.get("suggested_module").and_then(|v| v.as_str()) {
+                let sim_own = issue.get("similarity_own").and_then(|v| v.as_f64()).unwrap_or(0.0);
+                let sim_best = issue.get("similarity_best").and_then(|v| v.as_f64()).unwrap_or(0.0);
+                lines.push(format!("    suggested module: {suggested} (similarity: {sim_best:.2} vs own: {sim_own:.2})"));
             }
             lines.push(String::new());
         }
@@ -218,7 +228,27 @@ pub fn format_text(
                     } else {
                         label.to_string()
                     };
-                    lines.push(format!("  {display_label} ({size} nodes)"));
+                    // Module headline with optional top_terms and semantic coherence.
+                    let top_terms = module.get("top_terms")
+                        .and_then(|v| v.as_array())
+                        .map(|arr| arr.iter().filter_map(|v| v.as_str()).collect::<Vec<_>>().join(", "));
+                    let sem_coh = module.get("semantic_coherence").and_then(|v| v.as_f64());
+
+                    let mut extras = Vec::new();
+                    if let Some(ref terms) = top_terms {
+                        if !terms.is_empty() {
+                            extras.push(format!("terms: {terms}"));
+                        }
+                    }
+                    if let Some(coh) = sem_coh {
+                        extras.push(format!("semantic coherence: {coh:.2}"));
+                    }
+
+                    if extras.is_empty() {
+                        lines.push(format!("  {display_label} ({size} nodes)"));
+                    } else {
+                        lines.push(format!("  {display_label} ({size} nodes, {})", extras.join(", ")));
+                    }
 
                     if let Some(members) = module.get("members").and_then(|v| v.as_array()) {
                         let member_names: Vec<String> = members
@@ -398,6 +428,14 @@ pub fn format_text(
             .and_then(|v| v.as_f64());
         let q_str = q.map(|v| format!("{v:.3}")).unwrap_or_else(|| "n/a".into());
         lines.push(format!("  Modularity Q: {q_str}"));
+
+        // Semantic health metrics (only when semantic analysis was run).
+        if let Some(smoothness) = health.get("semantic_smoothness").and_then(|v| v.as_f64()) {
+            lines.push(format!("  Semantic smoothness: {smoothness:.3} (lower = better organized)"));
+        }
+        if let Some(ami) = health.get("semantic_structural_ami").and_then(|v| v.as_f64()) {
+            lines.push(format!("  Structural-semantic AMI: {ami:.3} (higher = better alignment)"));
+        }
     }
 
     // ── Diagnostics ──

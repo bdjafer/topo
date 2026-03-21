@@ -12,6 +12,8 @@ pub struct Node {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub line: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub line_end: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
 

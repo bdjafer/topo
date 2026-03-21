@@ -95,6 +95,7 @@ pub fn classify_roles(graph: &Graph, betweenness: &[f64]) -> Vec<RoleOutput> {
             in_degree: in_degrees[i],
             out_degree: out_degrees[i],
             anchor: Some(graph.anchor(i)),
+            local_variation: None, // Set later by semantic analysis.
         });
     }
     roles

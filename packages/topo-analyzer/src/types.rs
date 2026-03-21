@@ -16,6 +16,8 @@ pub struct NodeEntry {
     pub file: Option<String>,
     #[serde(default)]
     pub line: Option<u32>,
+    #[serde(default)]
+    pub line_end: Option<u32>,
 }
 
 /// An edge in the code graph.
@@ -95,6 +97,10 @@ pub struct AnalyzerInput {
     /// module assignment. The parser populates this from workspace structure.
     #[serde(default)]
     pub packages: Option<Vec<String>>,
+    /// Pre-computed semantic embeddings: node_id -> 768-dim vector.
+    /// Optional — when present, enables semantic analysis tools.
+    #[serde(default)]
+    pub semantic_embeddings: Option<HashMap<String, Vec<f32>>>,
 }
 
 // ---------------------------------------------------------------------------
@@ -186,6 +192,13 @@ pub struct ModuleOutput {
     /// Nodes assigned via defines-tree propagation (not spectral clustering).
     #[serde(skip_serializing_if = "is_zero")]
     pub propagated_count: usize,
+    /// Top TF-IDF terms from node ID tokenization. Available without semantic embeddings.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub top_terms: Option<Vec<String>>,
+    /// Average pairwise cosine similarity of semantic embeddings within this module.
+    /// Null if module size < 6 or semantic analysis not enabled.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub semantic_coherence: Option<f64>,
 }
 
 fn is_zero(v: &usize) -> bool {
@@ -244,10 +257,14 @@ pub struct RoleOutput {
     pub out_degree: usize,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub anchor: Option<AnchorOutput>,
+    /// Semantic local variation: how much this node disagrees with its structural neighbors.
+    /// Only present when semantic analysis is enabled.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub local_variation: Option<f64>,
 }
 
 /// A prioritized structural issue.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct IssueOutput {
     pub id: String,
     pub kind: String,
@@ -258,12 +275,37 @@ pub struct IssueOutput {
     pub confidence: f64,
     pub confidence_label: String,
     pub anchors: Vec<AnchorOutput>,
+    /// For misplaced_concern: the module the node should move to.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub suggested_module: Option<String>,
+    /// For misplaced_concern: cosine similarity to own module centroid.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub similarity_own: Option<f64>,
+    /// For misplaced_concern: cosine similarity to best other module centroid.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub similarity_best: Option<f64>,
+}
+
+/// Semantic energy profile: how disagreement distributes across structural scales.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SemanticEnergyProfile {
+    pub eigenvalues: Vec<f64>,
+    pub semantic_energy: Vec<f64>,
 }
 
 /// Structural health metrics.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HealthOutput {
     pub modularity_q: Option<f64>,
+    /// Rayleigh quotient: how smoothly semantics vary over the graph. Lower = better organized.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub semantic_smoothness: Option<f64>,
+    /// AMI between structural clusters and semantic clusters. Higher = better alignment.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub semantic_structural_ami: Option<f64>,
+    /// GFT energy profile: semantic energy at each structural scale.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub semantic_energy_profile: Option<SemanticEnergyProfile>,
 }
 
 /// Complete analysis output matching analysis.schema.json.
@@ -276,4 +318,7 @@ pub struct AnalysisOutput {
     pub roles: Vec<RoleOutput>,
     pub issues: Vec<IssueOutput>,
     pub health: Option<HealthOutput>,
+    /// Whether semantic analysis was attempted and the quality gate passed.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub semantic_enabled: Option<bool>,
 }

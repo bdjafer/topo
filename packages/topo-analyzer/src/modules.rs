@@ -19,6 +19,10 @@ pub struct EnrichedModule {
     pub unassigned: bool,
     /// Nodes assigned via defines-tree propagation, not spectral clustering.
     pub propagated_count: usize,
+    /// Top TF-IDF terms from node ID tokenization.
+    pub top_terms: Option<Vec<String>>,
+    /// Semantic coherence (avg pairwise cosine similarity).
+    pub semantic_coherence: Option<f64>,
 }
 
 impl EnrichedModule {
@@ -33,6 +37,8 @@ impl EnrichedModule {
             confidence: round4(self.confidence),
             unassigned: self.unassigned,
             propagated_count: self.propagated_count,
+            top_terms: self.top_terms.clone(),
+            semantic_coherence: self.semantic_coherence.map(|v| round4(v)),
         }
     }
 }
@@ -187,6 +193,8 @@ pub fn annotate_modules(
             confidence,
             unassigned: is_unassigned,
             propagated_count: 0,
+            top_terms: None,
+            semantic_coherence: None,
         });
     }
 
@@ -295,6 +303,8 @@ pub fn package_grouping(node_ids: &[String]) -> Vec<EnrichedModule> {
                 confidence: 0.5,
                 unassigned: false,
                 propagated_count: 0,
+                top_terms: None,
+                semantic_coherence: None,
             }
         })
         .collect()

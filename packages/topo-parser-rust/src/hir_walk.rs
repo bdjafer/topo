@@ -53,7 +53,7 @@ fn extract_module(
     entity_map: &mut HashMap<HirEntity, String>,
 ) {
     // Get file + line for this module.
-    let (file_str, line) = module_source_location(db, vfs, mapper, module);
+    let (file_str, line, line_end) = module_source_location(db, vfs, mapper, module);
 
     // Add module node.
     let name = module
@@ -66,6 +66,7 @@ fn extract_module(
         kind: "module",
         file: file_str,
         line,
+        line_end,
         name: Some(name),
     });
     entity_map.insert(HirEntity::Module(*module), module_id.to_string());
@@ -129,13 +130,14 @@ fn extract_function(
     let name = func.name(db).as_str().to_string();
     let fn_id = format!("{parent_id}.{name}");
 
-    let (file_str, line) = function_source_location(db, vfs, mapper, func);
+    let (file_str, line, line_end) = function_source_location(db, vfs, mapper, func);
 
     graph.add_node(Node {
         id: fn_id.clone(),
         kind: "function",
         file: file_str,
         line,
+        line_end,
         name: Some(name),
     });
     entity_map.insert(HirEntity::Function(*func), fn_id.clone());
@@ -161,13 +163,14 @@ fn extract_struct(
     let name = s.name(db).as_str().to_string();
     let id = format!("{module_id}.{name}");
 
-    let (file_str, line) = struct_source_location(db, vfs, mapper, s);
+    let (file_str, line, line_end) = struct_source_location(db, vfs, mapper, s);
 
     graph.add_node(Node {
         id: id.clone(),
         kind: "class",
         file: file_str,
         line,
+        line_end,
         name: Some(name),
     });
     entity_map.insert(HirEntity::Struct(*s), id.clone());
@@ -192,13 +195,14 @@ fn extract_enum(
     let name = e.name(db).as_str().to_string();
     let id = format!("{module_id}.{name}");
 
-    let (file_str, line) = enum_source_location(db, vfs, mapper, e);
+    let (file_str, line, line_end) = enum_source_location(db, vfs, mapper, e);
 
     graph.add_node(Node {
         id: id.clone(),
         kind: "class",
         file: file_str,
         line,
+        line_end,
         name: Some(name),
     });
     entity_map.insert(HirEntity::Enum(*e), id.clone());
@@ -223,13 +227,14 @@ fn extract_trait(
     let name = t.name(db).as_str().to_string();
     let trait_id = format!("{module_id}.{name}");
 
-    let (file_str, line) = trait_source_location(db, vfs, mapper, t);
+    let (file_str, line, line_end) = trait_source_location(db, vfs, mapper, t);
 
     graph.add_node(Node {
         id: trait_id.clone(),
         kind: "class",
         file: file_str,
         line,
+        line_end,
         name: Some(name),
     });
     entity_map.insert(HirEntity::Trait(*t), trait_id.clone());
@@ -295,13 +300,14 @@ fn extract_impl_methods(
                 continue;
             }
 
-            let (file_str, line) = function_source_location(db, vfs, mapper, &f);
+            let (file_str, line, line_end) = function_source_location(db, vfs, mapper, &f);
 
             graph.add_node(Node {
                 id: fn_id.clone(),
                 kind: "function",
                 file: file_str,
                 line,
+                line_end,
                 name: Some(name),
             });
             entity_map.insert(HirEntity::Function(f), fn_id.clone());
@@ -322,20 +328,20 @@ fn module_source_location(
     vfs: &Vfs,
     mapper: &SourceMapper,
     module: &hir::Module,
-) -> (Option<String>, Option<u32>) {
+) -> (Option<String>, Option<u32>, Option<u32>) {
     let source = module.definition_source(db);
     let file_id = source.file_id.file_id();
     let file_str = file_id.and_then(|fid| mapper.file_path(vfs, db, fid));
-    let line = match &source.value {
+    let (line, line_end) = match &source.value {
         hir::ModuleSource::Module(m) => {
-            file_id.and_then(|fid| {
-                let offset = m.syntax().text_range().start();
-                        mapper.line_number(db, fid, offset)
-            })
+            let range = m.syntax().text_range();
+            let l = file_id.and_then(|fid| mapper.line_number(db, fid, range.start()));
+            let le = file_id.and_then(|fid| mapper.line_number(db, fid, range.end()));
+            (l, le)
         }
-        _ => Some(1),
+        _ => (Some(1), None),
     };
-    (file_str, line)
+    (file_str, line, line_end)
 }
 
 fn function_source_location(
@@ -343,15 +349,14 @@ fn function_source_location(
     vfs: &Vfs,
     mapper: &SourceMapper,
     func: &hir::Function,
-) -> (Option<String>, Option<u32>) {
-    let Some(src) = func.source(db) else { return (None, None) };
+) -> (Option<String>, Option<u32>, Option<u32>) {
+    let Some(src) = func.source(db) else { return (None, None, None) };
     let file_id = src.file_id.file_id();
     let file_str = file_id.and_then(|fid| mapper.file_path(vfs, db, fid));
-    let line = file_id.and_then(|fid| {
-        let offset = src.value.syntax().text_range().start();
-                mapper.line_number(db, fid, offset)
-    });
-    (file_str, line)
+    let range = src.value.syntax().text_range();
+    let line = file_id.and_then(|fid| mapper.line_number(db, fid, range.start()));
+    let line_end = file_id.and_then(|fid| mapper.line_number(db, fid, range.end()));
+    (file_str, line, line_end)
 }
 
 fn struct_source_location(
@@ -359,15 +364,14 @@ fn struct_source_location(
     vfs: &Vfs,
     mapper: &SourceMapper,
     s: &hir::Struct,
-) -> (Option<String>, Option<u32>) {
-    let Some(src) = s.source(db) else { return (None, None) };
+) -> (Option<String>, Option<u32>, Option<u32>) {
+    let Some(src) = s.source(db) else { return (None, None, None) };
     let file_id = src.file_id.file_id();
     let file_str = file_id.and_then(|fid| mapper.file_path(vfs, db, fid));
-    let line = file_id.and_then(|fid| {
-        let offset = src.value.syntax().text_range().start();
-                mapper.line_number(db, fid, offset)
-    });
-    (file_str, line)
+    let range = src.value.syntax().text_range();
+    let line = file_id.and_then(|fid| mapper.line_number(db, fid, range.start()));
+    let line_end = file_id.and_then(|fid| mapper.line_number(db, fid, range.end()));
+    (file_str, line, line_end)
 }
 
 fn enum_source_location(
@@ -375,15 +379,14 @@ fn enum_source_location(
     vfs: &Vfs,
     mapper: &SourceMapper,
     e: &hir::Enum,
-) -> (Option<String>, Option<u32>) {
-    let Some(src) = e.source(db) else { return (None, None) };
+) -> (Option<String>, Option<u32>, Option<u32>) {
+    let Some(src) = e.source(db) else { return (None, None, None) };
     let file_id = src.file_id.file_id();
     let file_str = file_id.and_then(|fid| mapper.file_path(vfs, db, fid));
-    let line = file_id.and_then(|fid| {
-        let offset = src.value.syntax().text_range().start();
-                mapper.line_number(db, fid, offset)
-    });
-    (file_str, line)
+    let range = src.value.syntax().text_range();
+    let line = file_id.and_then(|fid| mapper.line_number(db, fid, range.start()));
+    let line_end = file_id.and_then(|fid| mapper.line_number(db, fid, range.end()));
+    (file_str, line, line_end)
 }
 
 fn trait_source_location(
@@ -391,15 +394,14 @@ fn trait_source_location(
     vfs: &Vfs,
     mapper: &SourceMapper,
     t: &hir::Trait,
-) -> (Option<String>, Option<u32>) {
-    let Some(src) = t.source(db) else { return (None, None) };
+) -> (Option<String>, Option<u32>, Option<u32>) {
+    let Some(src) = t.source(db) else { return (None, None, None) };
     let file_id = src.file_id.file_id();
     let file_str = file_id.and_then(|fid| mapper.file_path(vfs, db, fid));
-    let line = file_id.and_then(|fid| {
-        let offset = src.value.syntax().text_range().start();
-                mapper.line_number(db, fid, offset)
-    });
-    (file_str, line)
+    let range = src.value.syntax().text_range();
+    let line = file_id.and_then(|fid| mapper.line_number(db, fid, range.start()));
+    let line_end = file_id.and_then(|fid| mapper.line_number(db, fid, range.end()));
+    (file_str, line, line_end)
 }
 
 // ── Import extraction ───────────────────────────────────────────────────
