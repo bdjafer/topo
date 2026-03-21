@@ -1,0 +1,1640 @@
+topo — /private/tmp/ripgrep
+2502 nodes, 2383 edges (2502 symbols parsed)
+
+── Issues (228) ────────────────────────────────────────
+
+  [high] cycle:rg.flags,rg.flags.complete,rg.flags.complete.fish,rg.flags.defs,rg.flags.doc,rg.flags.doc.help,rg.flags.doc.man,rg.flags.parse
+    Strongly connected dependency group of 8 nodes
+    → crates/core/flags/mod.rs:1
+
+  [high] spectral-outlier:grep_pcre2.matcher.RegexMatcherBuilder.new
+    Node grep_pcre2.matcher.RegexMatcherBuilder.new is 6.0σ from module 2 centroid; nearest alternative: rg (+ integration)
+    → crates/pcre2/src/matcher.rs:21
+
+  [high] spectral-outlier:grep_printer.summary.Summary.into_inner
+    Node grep_printer.summary.Summary.into_inner is 5.7σ from module 2 centroid; nearest alternative: rg (+ grep_printer)
+    → crates/printer/src/summary.rs:468
+
+  [high] spectral-outlier:grep_printer.summary.SummarySink
+    Node grep_printer.summary.SummarySink is 6.0σ from module 2 centroid; nearest alternative: rg + globset (+ ignore)
+    → crates/printer/src/summary.rs:475
+
+  [high] spectral-outlier:grep_regex.matcher.RegexCaptures
+    Node grep_regex.matcher.RegexCaptures is 5.9σ from module 2 centroid; nearest alternative: rg (+ integration)
+    → crates/regex/src/matcher.rs:509
+
+  [high] spectral-outlier:integration.util.Dir.try_create_bytes
+    Node integration.util.Dir.try_create_bytes is 6.3σ from module 2 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → tests/util.rs:129
+
+  [high] spectral-outlier:integration.util.RegexMatcher
+    Node integration.util.RegexMatcher is 5.9σ from module 2 centroid; nearest alternative: rg (+ integration)
+    → crates/matcher/tests/util.rs:8
+
+  [high] spectral-outlier:rg.flags.defs.TypeList.update
+    Node rg.flags.defs.TypeList.update is 4.2σ from module 2 centroid
+    → crates/core/flags/defs.rs:7092
+
+  [high] spectral-outlier:integration.util.repeat
+    Node integration.util.repeat is 5.1σ from module 7 centroid; nearest alternative: rg (+ globset)
+    → tests/util.rs:429
+
+  [high] spectral-outlier:grep_printer.jsont.Context.serialize
+    Node grep_printer.jsont.Context.serialize is 5.4σ from module 10 centroid; nearest alternative: rg (+ globset)
+    → crates/printer/src/jsont.rs:120
+
+  [high] spectral-outlier:grep_searcher.sink.sinks.Bytes
+    Node grep_searcher.sink.sinks.Bytes is 5.7σ from module 10 centroid; nearest alternative: rg + globset (+ ignore)
+    → crates/searcher/src/sink.rs:624
+
+  [high] spectral-outlier:integration.misc.sort_setup
+    Node integration.misc.sort_setup is 5.8σ from module 10 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → tests/misc.rs:1081
+
+  [high] spectral-outlier:integration.util.Dir.path
+    Node integration.util.Dir.path is 6.0σ from module 10 centroid
+    → tests/util.rs:188
+
+  [high] spectral-outlier:integration.util.RegexCaptures
+    Node integration.util.RegexCaptures is 5.5σ from module 10 centroid; nearest alternative: rg (+ integration)
+    → crates/matcher/tests/util.rs:85
+
+  [high] spectral-outlier:integration.util.RegexMatcherNoCaps
+    Node integration.util.RegexMatcherNoCaps is 5.5σ from module 10 centroid; nearest alternative: rg (+ integration)
+    → crates/matcher/tests/util.rs:66
+
+  [high] spectral-outlier:integration.util.TestCommand.assert_err
+    Node integration.util.TestCommand.assert_err is 5.7σ from module 10 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → tests/util.rs:324
+
+  [high] spectral-outlier:rg.flags.defs.MaxFilesize.update
+    Node rg.flags.defs.MaxFilesize.update is 4.2σ from module 10 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:3941
+
+  [high] spectral-outlier:rg.flags.defs.convert.human_readable_u64
+    Node rg.flags.defs.convert.human_readable_u64 is 4.1σ from module 10 centroid; nearest alternative: rg (+ integration)
+    → crates/core/flags/defs.rs:7499
+
+  [high] spectral-outlier:rg.flags.defs.convert.human_readable_usize
+    Node rg.flags.defs.convert.human_readable_usize is 4.0σ from module 10 centroid
+    → crates/core/flags/defs.rs:7503
+
+  [high] spectral-outlier:integration.util.Dir.is_pcre2
+    Node integration.util.Dir.is_pcre2 is 7.7σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → tests/util.rs:91
+
+  [high] spectral-outlier:integration.util.Dir.try_create
+    Node integration.util.Dir.try_create is 7.6σ from module 4 centroid; nearest alternative: grep_printer + grep_searcher
+    → tests/util.rs:103
+
+  [high] spectral-outlier:rg.flags.defs.Unrestricted.update
+    Node rg.flags.defs.Unrestricted.update is 4.9σ from module 4 centroid
+    → crates/core/flags/defs.rs:7147
+
+  [high] spectral-outlier:integration.util.Dir.pcre2
+    Node integration.util.Dir.pcre2 is 4.3σ from module 9 centroid
+    → tests/util.rs:86
+
+  [high] spectral-outlier:integration.util.Dir.remove
+    Node integration.util.Dir.remove is 4.2σ from module 9 centroid; nearest alternative: rg (+ globset)
+    → tests/util.rs:142
+
+  [high] spectral-outlier:integration.util.setup_pcre2
+    Node integration.util.setup_pcre2 is 4.2σ from module 9 centroid; nearest alternative: rg (+ ignore)
+    → tests/util.rs:28
+
+  [high] spectral-outlier:grep_pcre2.matcher.RegexCaptures
+    Node grep_pcre2.matcher.RegexCaptures is 4.9σ from module 0 centroid; nearest alternative: rg (+ integration)
+    → crates/pcre2/src/matcher.rs:371
+
+  [high] spectral-outlier:grep_printer.jsont.SubMatch.serialize
+    Node grep_printer.jsont.SubMatch.serialize is 4.8σ from module 0 centroid; nearest alternative: rg (+ globset)
+    → crates/printer/src/jsont.rs:143
+
+  [high] spectral-outlier:grep_printer.standard.Standard.into_inner
+    Node grep_printer.standard.Standard.into_inner is 4.8σ from module 0 centroid; nearest alternative: rg (+ grep_printer)
+    → crates/printer/src/standard.rs:624
+
+  [high] spectral-outlier:grep_regex.matcher.RegexMatcher
+    Node grep_regex.matcher.RegexMatcher is 4.9σ from module 0 centroid; nearest alternative: rg (+ integration)
+    → crates/regex/src/matcher.rs:364
+
+  [high] spectral-outlier:integration.util.Dir.command
+    Node integration.util.Dir.command is 5.1σ from module 0 centroid; nearest alternative: rg + grep_printer
+    → tests/util.rs:155
+
+  [high] spectral-outlier:integration.util.TestCommand.expect_success
+    Node integration.util.TestCommand.expect_success is 4.8σ from module 0 centroid; nearest alternative: rg + grep_regex (+ grep_matcher)
+    → tests/util.rs:390
+
+  [high] spectral-outlier:integration.util.TestCommand.pipe
+    Node integration.util.TestCommand.pipe is 5.1σ from module 0 centroid
+    → tests/util.rs:290
+
+  [high] spectral-outlier:rg.flags.defs.SortFiles.update
+    Node rg.flags.defs.SortFiles.update is 4.6σ from module 0 centroid
+    → crates/core/flags/defs.rs:6144
+
+  [high] spectral-outlier:grep_searcher.sink.sinks.UTF8
+    Node grep_searcher.sink.sinks.UTF8 is 6.0σ from module 3 centroid; nearest alternative: rg + globset (+ ignore)
+    → crates/searcher/src/sink.rs:524
+
+  [high] spectral-outlier:integration.util.Dir.create_size
+    Node integration.util.Dir.create_size is 6.2σ from module 3 centroid; nearest alternative: rg (+ globset)
+    → tests/util.rs:115
+
+  [high] spectral-outlier:integration.util.Dir.link_dir
+    Node integration.util.Dir.link_dir is 6.2σ from module 3 centroid; nearest alternative: rg (+ globset)
+    → tests/util.rs:193
+
+  [high] spectral-outlier:integration.util.Dir.link_file
+    Node integration.util.Dir.link_file is 6.2σ from module 3 centroid
+    → tests/util.rs:215
+
+  [high] spectral-outlier:rg.flags.defs.IgnoreCase
+    Node rg.flags.defs.IgnoreCase is 4.1σ from module 3 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:3061
+
+  [high] spectral-outlier:rg.flags.defs.convert.u64
+    Node rg.flags.defs.convert.u64 is 4.1σ from module 3 centroid; nearest alternative: rg (+ integration)
+    → crates/core/flags/defs.rs:7495
+
+  [high] spectral-outlier:integration.util.Dir.create_dir
+    Node integration.util.Dir.create_dir is 4.5σ from module 8 centroid; nearest alternative: rg + globset (+ integration)
+    → tests/util.rs:148
+
+  [high] spectral-outlier:integration.util.setup
+    Node integration.util.setup is 4.5σ from module 8 centroid; nearest alternative: rg (+ globset)
+    → tests/util.rs:17
+
+  [high] spectral-outlier:rg.flags.defs.MaxDepth
+    Node rg.flags.defs.MaxDepth is 4.0σ from module 2 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:3841
+
+  [high] spectral-outlier:rg.flags.lowargs.Mode.update
+    Node rg.flags.lowargs.Mode.update is 4.0σ from module 2 centroid
+    → crates/core/flags/lowargs.rs:173
+
+  [high] wide-interface:grep_printer + grep_searcher,rg (+ grep_printer)
+    311 distinct coupling points between grep_printer + grep_searcher and rg (+ grep_printer) (median is 11). Consider narrowing the interface.
+
+  [high] spectral-outlier:grep_printer.counter.CounterWriter.into_inner
+    Node grep_printer.counter.CounterWriter.into_inner is 4.0σ from module 10 centroid; nearest alternative: grep_printer + grep_searcher
+    → crates/printer/src/counter.rs:46
+
+  [high] wide-interface:rg (+ grep_printer),rg + grep_printer
+    180 distinct coupling points between rg + grep_printer and rg (+ grep_printer) (median is 11). Consider narrowing the interface.
+
+  [high] spectral-outlier:grep_cli.human.parse_human_readable_size
+    Node grep_cli.human.parse_human_readable_size is 3.9σ from module 10 centroid
+    → crates/cli/src/human.rs:71
+
+  [high] wide-interface:ignore + rg,rg (+ ignore)
+    174 distinct coupling points between rg (+ ignore) and ignore + rg (median is 11). Consider narrowing the interface.
+
+  [high] spectral-outlier:rg.flags.defs.NoIgnoreFiles
+    Node rg.flags.defs.NoIgnoreFiles is 3.9σ from module 2 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:4392
+
+  [high] spectral-outlier:integration.util.TestCommand.output
+    Node integration.util.TestCommand.output is 3.9σ from module 8 centroid; nearest alternative: rg (+ ignore)
+    → tests/util.rs:310
+
+  [high] wide-interface:rg (+ grep_printer),rg + grep_regex (+ grep_matcher)
+    82 distinct coupling points between rg + grep_regex (+ grep_matcher) and rg (+ grep_printer) (median is 11). Consider narrowing the interface.
+
+  [high] spectral-outlier:integration.util.cross_runner
+    Node integration.util.cross_runner is 3.8σ from module 5 centroid
+    → tests/util.rs:453
+
+  [high] spectral-outlier:integration.util.Dir.bin
+    Node integration.util.Dir.bin is 3.8σ from module 5 centroid; nearest alternative: rg (+ ignore)
+    → tests/util.rs:175
+
+  [high] wide-interface:rg (+ ignore),rg + globset (+ ignore)
+    78 distinct coupling points between rg (+ ignore) and rg + globset (+ ignore) (median is 11). Consider narrowing the interface.
+
+  [high] wide-interface:rg (+ grep_printer),rg (+ integration)
+    78 distinct coupling points between rg (+ integration) and rg (+ grep_printer) (median is 11). Consider narrowing the interface.
+
+  [high] wide-interface:rg (+ globset),rg (+ ignore)
+    69 distinct coupling points between rg (+ ignore) and rg (+ globset) (median is 11). Consider narrowing the interface.
+
+  [high] spectral-outlier:rg.flags.defs.Context
+    Node rg.flags.defs.Context is 3.7σ from module 3 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:966
+
+  [high] cross-module:grep_regex.matcher.RegexCaptures.captures_mut,grep_regex.matcher.RegexCaptures.new,grep_regex.matcher.RegexMatcher,grep_regex.matcher.RegexMatcher.captures_at,grep_regex.matcher.RegexMatcher.find_at,grep_regex.matcher.RegexMatcher.new_captures,rg.flags.Flag,rg.flags.FlagValue.unwrap_switch,rg.flags.defs.Encoding,rg.flags.defs.JSON.update,rg.flags.defs.NoIgnoreFiles,rg.flags.defs.NoIgnoreFiles.update
+    Bidirectional dependency between module 0 and module 2: 6 forward edges, 6 reverse edges
+    → crates/regex/src/matcher.rs:547
+
+  [high] cross-module:grep_printer.standard.StandardSink,grep_searcher.sink.Sink,ignore.types.Selection.is_negated,ignore.types.TypesBuilder.build,integration.util.Dir.new,integration.util.Dir.remove,integration.util.nice_err,integration.util.setup_pcre2
+    Bidirectional dependency between module 6 and module 9: 2 forward edges, 2 reverse edges
+    → crates/printer/src/standard.rs:631
+
+  [high] cross-module:grep_printer.json.JSONSink,grep_searcher.sink.Sink,rg.flags.FlagValue.unwrap_value,rg.flags.defs.FieldContextSeparator.update
+    Bidirectional dependency between module 1 and module 9: 1 forward edges, 1 reverse edges
+    → crates/printer/src/json.rs:546
+
+  [high] cross-module:grep_pcre2.matcher.RegexMatcher.new,grep_pcre2.matcher.RegexMatcherBuilder.build,rg.flags.defs.convert.str,rg.flags.defs.convert.usize
+    Bidirectional dependency between module 5 and module 6: 1 forward edges, 1 reverse edges
+    → crates/pcre2/src/matcher.rs:303
+
+  [high] cycle:ignore,ignore.dir,ignore.gitignore,ignore.overrides,ignore.pathutil,ignore.types,ignore.walk
+    Strongly connected dependency group of 7 nodes
+    → crates/ignore/src/lib.rs:1
+
+  [high] spectral-outlier:rg.flags.defs.Column
+    Node rg.flags.defs.Column is 3.6σ from module 10 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:913
+
+  [high] spectral-outlier:integration.util.Dir.new
+    Node integration.util.Dir.new is 3.6σ from module 6 centroid; nearest alternative: rg + globset (+ integration)
+    → tests/util.rs:67
+
+  [high] cross-module:grep_printer.path.PathPrinterBuilder.build,ignore.walk.WalkBuilder.build_parallel,ignore.walk.WalkParallel.run,rg.files_parallel,rg.flags.hiargs.HiArgs.haystack_builder,rg.flags.hiargs.HiArgs.stdout,rg.flags.hiargs.HiArgs.walk_builder,rg.search_parallel
+    Bidirectional dependency between module 3 and module 4: 13 forward edges, 17 reverse edges
+    → crates/printer/src/path.rs:43
+
+  [high] spectral-outlier:integration.util.TestCommand.stdout
+    Node integration.util.TestCommand.stdout is 3.5σ from module 5 centroid; nearest alternative: rg + grep_regex (+ grep_matcher)
+    → tests/util.rs:284
+
+  [medium] spectral-outlier:integration.util.strip_jemalloc_nonsense
+    Node integration.util.strip_jemalloc_nonsense is 3.5σ from module 6 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → tests/util.rs:496
+
+  [medium] spectral-outlier:grep_searcher.sink.sinks.Lossy
+    Node grep_searcher.sink.sinks.Lossy is 3.4σ from module 5 centroid; nearest alternative: rg + globset (+ ignore)
+    → crates/searcher/src/sink.rs:570
+
+  [medium] spectral-outlier:rg.flags.defs.Type
+    Node rg.flags.defs.Type is 3.4σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:6761
+
+  [medium] cross-module:grep_matcher.Captures,grep_matcher.Matcher,grep_pcre2.matcher.RegexCaptures,grep_regex.matcher.RegexMatcher,integration.util.Dir.bin,integration.util.Dir.command,rg.flags.Flag,rg.flags.defs.Color,rg.flags.defs.Engine,rg.flags.defs.FieldMatchSeparator
+    Bidirectional dependency between module 0 and module 5: 3 forward edges, 6 reverse edges
+    → crates/matcher/src/lib.rs:364
+
+  [medium] cross-module:grep_matcher.Captures,grep_pcre2.matcher.RegexMatcher.new,grep_pcre2.matcher.RegexMatcherBuilder.new,grep_regex.matcher.RegexCaptures,grep_searcher.sink.sinks.Lossy,grep_searcher.sink.sinks.Lossy.matched,rg.flags.defs.Encoding,rg.flags.defs.Encoding.update,rg.flags.defs.Generate.update,rg.flags.defs.convert.str
+    Bidirectional dependency between module 2 and module 5: 4 forward edges, 2 reverse edges
+    → crates/matcher/src/lib.rs:364
+
+  [medium] cross-module:grep_printer.summary.SummarySink,grep_searcher.sink.Sink,rg.flags.defs.FilesWithMatches,rg.flags.defs.FilesWithMatches.update,rg.flags.defs.TypeList,rg.flags.defs.TypeList.update
+    Bidirectional dependency between module 2 and module 9: 1 forward edges, 2 reverse edges
+    → crates/printer/src/summary.rs:475
+
+  [medium] cross-module:rg.files,rg.files_parallel,rg.flags.defs.convert.str,rg.flags.defs.convert.u64,rg.run
+    Bidirectional dependency between module 3 and module 5: 1 forward edges, 2 reverse edges
+    → crates/core/main.rs:231
+
+  [medium] cross-module:integration.util.Dir.create_dir,integration.util.repeat,rg.flags.defs.PathSeparator,rg.flags.defs.PathSeparator.update,rg.flags.defs.TypeAdd,rg.flags.defs.TypeAdd.update
+    Bidirectional dependency between module 7 and module 8: 2 forward edges, 1 reverse edges
+    → tests/util.rs:148
+
+  [medium] cross-module:grep_searcher.sink.Sink,grep_searcher.sink.sinks.Lossy
+    Unusual dependency from module 5 to module 9: 1 edges (25% of typical cross-module coupling)
+    → crates/searcher/src/sink.rs:62
+
+  [medium] cross-module:integration.util.TestCommand.output,integration.util.TestCommand.stdout
+    Unusual dependency from module 5 to module 8: 1 edges (25% of typical cross-module coupling)
+    → tests/util.rs:310
+
+  [medium] cross-module:rg.flags.FlagValue.unwrap_value,rg.flags.defs.FieldMatchSeparator.update
+    Unusual dependency from module 7 to module 1: 1 edges (25% of typical cross-module coupling)
+    → crates/core/flags/mod.rs:286
+
+  [medium] cross-module:globset.GlobSetBuilder.build,ignore.gitignore.GitignoreBuilder.build
+    Unusual dependency from module 3 to module 7: 1 edges (25% of typical cross-module coupling)
+    → crates/globset/src/lib.rs:503
+
+  [medium] cross-module:rg.flags.defs.FieldMatchSeparator,rg.flags.defs.FieldMatchSeparator.update
+    Unusual dependency from module 5 to module 7: 1 edges (25% of typical cross-module coupling)
+    → crates/core/flags/defs.rs:1850
+
+  [medium] spectral-outlier:rg.flags.hiargs.HiArgs.printer_summary
+    Node rg.flags.hiargs.HiArgs.printer_summary is 3.4σ from module 4 centroid
+    → crates/core/flags/hiargs.rs:638
+
+  [medium] low-cohesion:rg (+ globset)
+    Module rg (+ globset) has higher internal spread (0.183) than distinctness (0.085) — members may belong to different concerns.
+    → crates/globset/benches/bench.rs:24
+
+  [medium] spectral-outlier:integration.util.nice_err
+    Node integration.util.nice_err is 3.4σ from module 6 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → tests/util.rs:422
+
+  [medium] cross-module:globset.glob.Glob,globset.glob.Glob.literal,globset.glob.Glob.regex,globset.glob.MatchStrategy,globset.glob.MatchStrategy.new,rg.flags.Flag,rg.flags.defs.MaxFilesize,rg.flags.defs.MultilineDotall,rg.flags.defs.MultilineDotall.update,rg.flags.defs.NoIgnoreGlobal,rg.flags.defs.NoIgnoreGlobal.update
+    Bidirectional dependency between module 0 and module 7: 21 forward edges, 10 reverse edges
+    → crates/globset/src/glob.rs:70
+
+  [medium] cycle:grep_searcher.searcher,grep_searcher.searcher.core,grep_searcher.searcher.glue,grep_searcher.sink,grep_searcher.sink.sinks
+    Strongly connected dependency group of 5 nodes
+    → crates/searcher/src/searcher/mod.rs:1
+
+  [medium] spectral-outlier:grep_printer.standard.StandardSink
+    Node grep_printer.standard.StandardSink is 3.3σ from module 6 centroid; nearest alternative: rg + globset (+ ignore)
+    → crates/printer/src/standard.rs:631
+
+  [medium] cross-module:grep_cli.decompress.DecompressionReader.close,grep_cli.process.CommandReader.close,grep_cli.process.CommandReaderBuilder.build,grep_cli.process.StderrReader.async,ignore.Match.is_none,ignore.dir.Ignore.matched,ignore.dir.Ignore.matched_dir_entry,ignore.dir.Ignore.matched_ignore,ignore.dir.Ignore.parents,ignore.gitignore.GitignoreBuilder.new,ignore.pathutil.strip_prefix
+    Bidirectional dependency between module 3 and module 9: 11 forward edges, 5 reverse edges
+    → crates/cli/src/decompress.rs:366
+
+  [medium] cross-package-coupling:module-10
+    Spectral analysis groups 405 nodes from 11 packages into one structural module: rg (117), grep_printer (95), integration (50), grep_searcher (42), grep_regex (29), grep_cli (27), grep_pcre2 (23), grep_matcher (19), grep (1), simplegrep (1), search_stdin (1). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [medium] cross-module:grep_printer.jsont.Data.from_bytes,grep_printer.jsont.Match.serialize,integration.util.Dir.create_bytes,integration.util.TestCommand.raw_output,integration.util.nice_err,integration.util.strip_jemalloc_nonsense,rg.flags.FlagValue.unwrap_value,rg.flags.defs.BeforeContext.update,rg.flags.defs.Context.update,rg.flags.defs.Threads.update
+    Bidirectional dependency between module 1 and module 6: 3 forward edges, 7 reverse edges
+    → crates/printer/src/jsont.rs:171
+
+  [medium] spectral-outlier:integration.util.Dir.create
+    Node integration.util.Dir.create is 3.3σ from module 1 centroid; nearest alternative: rg (+ grep_printer)
+    → tests/util.rs:97
+
+  [medium] cross-module:grep_cli.decompress.resolve_binary,grep_printer.standard.StandardSink,grep_printer.standard.StandardSink.has_match,grep_printer.standard.StandardSink.stats,ignore.types.FileTypeDef.name,rg.flags.hiargs.HiArgs.from_low_args,rg.flags.hiargs.hostname,rg.flags.hiargs.types,rg.types
+    Bidirectional dependency between module 4 and module 6: 5 forward edges, 2 reverse edges
+    → crates/cli/src/decompress.rs:400
+
+  [medium] spectral-outlier:rg.flags.defs.Heading
+    Node rg.flags.defs.Heading is 3.3σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:2602
+
+  [medium] spectral-outlier:rg.flags.defs.Encoding
+    Node rg.flags.defs.Encoding is 3.3σ from module 2 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:1541
+
+  [medium] low-cohesion:rg + grep_regex (+ grep_matcher)
+    Module rg + grep_regex (+ grep_matcher) has higher internal spread (0.150) than distinctness (0.079) — members may belong to different concerns.
+    → crates/matcher/src/lib.rs:312
+
+  [medium] fragile-hub:rg.search
+    rg.search is both a structural hub (degree 24) and a high-betweenness bottleneck — single point of failure.
+    → crates/core/main.rs:103
+
+  [medium] spectral-outlier:rg.flags.defs.FilesWithMatches
+    Node rg.flags.defs.FilesWithMatches is 3.2σ from module 9 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:2133
+
+  [medium] low-cohesion:ignore + rg
+    Module ignore + rg has higher internal spread (0.105) than distinctness (0.057) — members may belong to different concerns.
+    → crates/ignore/tests/gitignore_matched_path_or_any_parents_tests.rs:8
+
+  [medium] low-cohesion:rg (+ ignore)
+    Module rg (+ ignore) has higher internal spread (0.096) than distinctness (0.053) — members may belong to different concerns.
+    → crates/globset/benches/bench.rs:1
+
+  [medium] low-cohesion:rg + grep_regex (+ grep_pcre2)
+    Module rg + grep_regex (+ grep_pcre2) has higher internal spread (0.194) than distinctness (0.107) — members may belong to different concerns.
+    → crates/matcher/src/lib.rs:454
+
+  [medium] cross-package-coupling:module-2
+    Spectral analysis groups 406 nodes from 7 packages into one structural module: grep_printer (148), grep_searcher (127), grep_matcher (65), rg (43), integration (11), grep_regex (8), grep_pcre2 (4). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [medium] cross-package-coupling:module-9
+    Spectral analysis groups 114 nodes from 6 packages into one structural module: rg (40), globset (31), ignore (29), grep_cli (10), integration (3), grep_searcher (1). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [medium] cross-module:grep_cli.decompress.DecompressionReaderBuilder,grep_cli.decompress.DecompressionReaderBuilder.async_stderr,grep_cli.process.CommandReaderBuilder,grep_cli.process.CommandReaderBuilder.new,integration.util.Dir.command,integration.util.Dir.is_pcre2,rg.flags.FlagValue.unwrap_switch,rg.flags.defs.Binary.update,rg.flags.defs.Hidden.update,rg.flags.defs.NoIgnore.update
+    Bidirectional dependency between module 0 and module 4: 8 forward edges, 23 reverse edges
+    → crates/cli/src/decompress.rs:196
+
+  [medium] cross-module:grep_matcher.LineTerminator.as_byte,grep_matcher.LineTerminator.is_crlf,grep_printer.util.trim_line_terminator,grep_regex.config.has_line_terminator,grep_regex.strip.strip_from_match,grep_searcher.searcher.Searcher.search_reader,search_stdin.example
+    Bidirectional dependency between module 2 and module 8: 1 forward edges, 3 reverse edges
+    → crates/matcher/src/lib.rs:230
+
+  [medium] spectral-outlier:rg.flags.lowargs.FieldMatchSeparator.new
+    Node rg.flags.lowargs.FieldMatchSeparator.new is 3.2σ from module 7 centroid
+    → crates/core/flags/lowargs.rs:623
+
+  [medium] spectral-outlier:integration.util.Dir.create_bytes
+    Node integration.util.Dir.create_bytes is 3.2σ from module 1 centroid; nearest alternative: grep_printer + grep_searcher
+    → tests/util.rs:122
+
+  [medium] spectral-outlier:rg.flags.defs.LineNumberNo
+    Node rg.flags.defs.LineNumberNo is 3.2σ from module 0 centroid
+    → crates/core/flags/defs.rs:3565
+
+  [medium] low-cohesion:rg + globset (+ ignore)
+    Module rg + globset (+ ignore) has higher internal spread (0.140) than distinctness (0.085) — members may belong to different concerns.
+    → crates/globset/src/lib.rs:649
+
+  [medium] spectral-outlier:rg.flags.defs.FieldMatchSeparator.update
+    Node rg.flags.defs.FieldMatchSeparator.update is 3.2σ from module 7 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:1881
+
+  [medium] low-cohesion:rg (+ grep_printer)
+    Module rg (+ grep_printer) has higher internal spread (0.085) than distinctness (0.053) — members may belong to different concerns.
+    → crates/grep/src/lib.rs:1
+
+  [medium] low-cohesion:rg + grep_printer
+    Module rg + grep_printer has higher internal spread (0.093) than distinctness (0.058) — members may belong to different concerns.
+    → crates/cli/src/decompress.rs:264
+
+  [medium] cross-module:grep_regex.matcher.RegexMatcher,grep_regex.matcher.RegexMatcher.new,grep_regex.matcher.RegexMatcher.new_line_matcher,integration.util.Dir.command,integration.util.TestCommand.expect_success,integration.util.TestCommand.output,integration.util.setup,rg.flags.defs.AfterContext,rg.flags.defs.AfterContext.update,rg.flags.defs.BlockBuffered,rg.flags.defs.BlockBuffered.update
+    Bidirectional dependency between module 0 and module 8: 4 forward edges, 15 reverse edges
+    → crates/regex/src/matcher.rs:364
+
+  [medium] low-cohesion:rg + globset (+ integration)
+    Module rg + globset (+ integration) has higher internal spread (0.144) than distinctness (0.091) — members may belong to different concerns.
+    → crates/globset/src/lib.rs:645
+
+  [medium] cross-package-coupling:module-3
+    Spectral analysis groups 296 nodes from 9 packages into one structural module: ignore (144), rg (133), grep_printer (5), grep_cli (4), grep_searcher (3), integration (3), walk (2), gitignore_matched_path_or_any_parents_tests (1), globset (1). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [medium] fragile-hub:rg.flags
+    rg.flags is both a structural hub (degree 20) and a high-betweenness bottleneck — single point of failure.
+    → crates/core/flags/mod.rs:1
+
+  [medium] cross-module:grep_printer.json.JSONSink,grep_printer.json.JSONSink.has_match,grep_printer.json.JSONSink.stats
+    Unusual dependency from module 1 to module 4: 2 edges (50% of typical cross-module coupling)
+    → crates/printer/src/json.rs:546
+
+  [medium] cross-module:grep_searcher.sink.sinks.UTF8,grep_searcher.sink.sinks.UTF8.matched,rg.flags.defs.Count,rg.flags.defs.Count.update
+    Unusual dependency from module 3 to module 2: 2 edges (50% of typical cross-module coupling)
+    → crates/searcher/src/sink.rs:524
+
+  [medium] spectral-outlier:grep_pcre2.matcher.RegexMatcher.new
+    Node grep_pcre2.matcher.RegexMatcher.new is 3.1σ from module 5 centroid; nearest alternative: rg (+ globset)
+    → crates/pcre2/src/matcher.rs:303
+
+  [medium] spectral-outlier:rg.flags.defs.Help
+    Node rg.flags.defs.Help is 3.1σ from module 8 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:2661
+
+  [medium] low-cohesion:grep_printer + grep_searcher
+    Module grep_printer + grep_searcher has higher internal spread (0.094) than distinctness (0.062) — members may belong to different concerns.
+    → crates/matcher/src/lib.rs:355
+
+  [medium] spectral-outlier:grep_pcre2.matcher.RegexMatcherBuilder.build
+    Node grep_pcre2.matcher.RegexMatcherBuilder.build is 3.1σ from module 6 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/pcre2/src/matcher.rs:32
+
+  [medium] cross-package-coupling:module-6
+    Spectral analysis groups 140 nodes from 8 packages into one structural module: rg (72), globset (31), ignore (16), grep_cli (11), grep_printer (4), integration (3), bench (2), grep_pcre2 (1). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [medium] cross-module:rg.flags.defs.Color,rg.flags.defs.Color.update,rg.flags.defs.Colors.update,rg.flags.defs.Engine,rg.flags.defs.Engine.update,rg.flags.defs.Sort.update,rg.flags.defs.Sortr.update,rg.flags.defs.convert.str
+    Bidirectional dependency between module 1 and module 5: 9 forward edges, 2 reverse edges
+    → crates/core/flags/defs.rs:689
+
+  [medium] fragile-hub:grep_searcher.searcher.Searcher.search_reader
+    grep_searcher.searcher.Searcher.search_reader is both a structural hub (degree 12) and a high-betweenness bottleneck — single point of failure.
+    → crates/searcher/src/searcher/mod.rs:696
+
+  [medium] fragile-hub:rg.flags.hiargs
+    rg.flags.hiargs is both a structural hub (degree 8) and a high-betweenness bottleneck — single point of failure.
+    → crates/core/flags/hiargs.rs:1
+
+  [medium] fragile-hub:rg.search.SearchWorker.search
+    rg.search.SearchWorker.search is both a structural hub (degree 12) and a high-betweenness bottleneck — single point of failure.
+    → crates/core/search.rs:243
+
+  [medium] spectral-outlier:rg.flags.defs.NoMessages
+    Node rg.flags.defs.NoMessages is 3.1σ from module 0 centroid
+    → crates/core/flags/defs.rs:4636
+
+  [medium] cross-package-coupling:module-0
+    Spectral analysis groups 335 nodes from 11 packages into one structural module: rg (179), ignore (82), globset (39), grep_cli (14), grep_regex (8), grep_pcre2 (3), integration (3), bench (2), grep_printer (2), walk (2), gitignore_matched_path_or_any_parents_tests (1). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [medium] fragile-hub:grep_regex.matcher.RegexMatcherBuilder.build_many
+    grep_regex.matcher.RegexMatcherBuilder.build_many is both a structural hub (degree 12) and a high-betweenness bottleneck — single point of failure.
+    → crates/regex/src/matcher.rs:49
+
+  [medium] fragile-hub:rg.search.search_reader
+    rg.search.search_reader is both a structural hub (degree 11) and a high-betweenness bottleneck — single point of failure.
+    → crates/core/search.rs:412
+
+  [medium] cross-module:globset.GlobSetBuilder.build,grep_cli.decompress.DecompressionMatcherBuilder.build,ignore.types.Types.empty,ignore.types.TypesBuilder.build,rg.flags.defs.Threads,rg.flags.defs.Threads.update
+    Bidirectional dependency between module 6 and module 7: 5 forward edges, 1 reverse edges
+    → crates/globset/src/lib.rs:503
+
+  [medium] cross-package-coupling:module-4
+    Spectral analysis groups 307 nodes from 8 packages into one structural module: rg (172), grep_printer (83), grep_searcher (27), grep_cli (17), simplegrep (3), ignore (2), integration (2), grep_matcher (1). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [medium] spectral-outlier:rg.flags.defs.CountMatches.update
+    Node rg.flags.defs.CountMatches.update is 3.0σ from module 2 centroid
+    → crates/core/flags/defs.rs:1318
+
+  [medium] cycle:grep_regex.literal.Extractor.extract,grep_regex.literal.Extractor.extract_alternation,grep_regex.literal.Extractor.extract_concat,grep_regex.literal.Extractor.extract_repetition
+    Strongly connected dependency group of 4 nodes
+    → crates/regex/src/literal.rs:169
+
+  [medium] orphan:grep_searcher.sink.Box.error_message,grep_searcher.sink.Error.error_io,integration,integration.util,rg.search
+    grep_searcher.sink.Box.error_message, grep_searcher.sink.Error.error_io, integration, integration.util, ...
+    → crates/searcher/src/sink.rs:55
+
+  [medium] phantom-import:rg (+ grep_printer),rg + grep_printer
+    3 import(s) between rg + grep_printer and rg (+ grep_printer) with no corresponding calls — possibly unused coupling or type-only imports.
+
+  [medium] spectral-outlier:rg.flags.defs.MaxColumns
+    Node rg.flags.defs.MaxColumns is 3.0σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:3672
+
+  [medium] cross-package-coupling:module-8
+    Spectral analysis groups 157 nodes from 6 packages into one structural module: rg (93), grep_regex (53), grep_matcher (5), integration (3), search_stdin (2), grep_searcher (1). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [medium] cross-package-coupling:module-1
+    Spectral analysis groups 133 nodes from 6 packages into one structural module: rg (79), grep_regex (35), grep_pcre2 (7), grep_printer (5), grep_matcher (4), integration (3). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [medium] low-cohesion:rg (+ integration)
+    Module rg (+ integration) has higher internal spread (0.151) than distinctness (0.111) — members may belong to different concerns.
+    → crates/matcher/src/lib.rs:364
+
+  [medium] spectral-outlier:rg.flags.defs.Engine
+    Node rg.flags.defs.Engine is 3.0σ from module 5 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:1650
+
+  [medium] spectral-outlier:rg.flags.defs.DfaSizeLimit.update
+    Node rg.flags.defs.DfaSizeLimit.update is 3.0σ from module 10 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:1498
+
+  [medium] spectral-outlier:rg.flags.defs.RegexSizeLimit.update
+    Node rg.flags.defs.RegexSizeLimit.update is 3.0σ from module 10 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:5699
+
+  [medium] spectral-outlier:rg.flags.lowargs.ContextMode.set_after
+    Node rg.flags.lowargs.ContextMode.set_after is 3.0σ from module 8 centroid
+    → crates/core/flags/lowargs.rs:395
+
+  [medium] cross-module:grep_matcher.LineTerminator.as_byte,grep_printer.summary.SummarySink,grep_printer.summary.SummarySink.has_match,grep_printer.summary.SummarySink.stats,grep_printer.util.PrinterPath.as_bytes,grep_printer.util.PrinterPath.with_separator,grep_searcher.searcher.Config.line_buffer,grep_searcher.searcher.Searcher.search_file_maybe_path,grep_searcher.searcher.Searcher.search_path
+    Bidirectional dependency between module 2 and module 4: 2 forward edges, 13 reverse edges
+    → crates/matcher/src/lib.rs:230
+
+  [medium] cross-module:globset.GlobSet,globset.GlobSet.empty,grep_cli.process.CommandError,grep_cli.process.CommandError.is_empty,grep_cli.process.CommandReader,grep_cli.process.CommandReader.close,rg.flags.defs.AutoHybridRegex,rg.flags.defs.AutoHybridRegex.update,rg.flags.defs.IgnoreFileCaseInsensitive,rg.flags.defs.IgnoreFileCaseInsensitive.update,rg.flags.defs.InvertMatch,rg.flags.defs.InvertMatch.update
+    Bidirectional dependency between module 0 and module 3: 152 forward edges, 22 reverse edges
+    → crates/globset/src/lib.rs:298
+
+  [medium] cross-module:grep_regex.literal.Extractor.extract_untagged,grep_regex.literal.InnerLiterals.new,rg.flags.FlagValue.unwrap_value,rg.flags.defs.Glob,rg.flags.defs.Glob.update,rg.flags.defs.PathSeparator.update,rg.flags.defs.PreGlob.update,rg.flags.defs.Replace,rg.flags.defs.Replace.update
+    Bidirectional dependency between module 1 and module 8: 2 forward edges, 14 reverse edges
+    → crates/regex/src/literal.rs:150
+
+  [medium] cross-module:grep_matcher.LineTerminator.crlf,grep_searcher.searcher.Searcher.new,rg.flags.hiargs.HiArgs.matcher,rg.flags.hiargs.HiArgs.searcher,rg.search,rg.search_parallel,search_stdin.example
+    Bidirectional dependency between module 4 and module 8: 7 forward edges, 1 reverse edges
+    → crates/matcher/src/lib.rs:215
+
+  [medium] spectral-outlier:grep_pcre2.matcher.has_uppercase_literal
+    Node grep_pcre2.matcher.has_uppercase_literal is 3.0σ from module 1 centroid
+    → crates/pcre2/src/matcher.rs:407
+
+  [medium] cross-module:globset.glob,globset.glob.bytes_to_escaped_literal,globset.glob.char_to_escaped_literal,grep_printer.jsont.Data.from_bytes,grep_printer.jsont.SubMatch.serialize,rg.flags.Flag,rg.flags.defs.CaseSensitive,rg.flags.defs.Colors,rg.flags.defs.ContextSeparator
+    Bidirectional dependency between module 0 and module 6: 61 forward edges, 8 reverse edges
+    → crates/globset/src/glob.rs:1
+
+  [medium] spectral-outlier:rg.flags.defs.AfterContext.update
+    Node rg.flags.defs.AfterContext.update is 2.9σ from module 8 centroid; nearest alternative: rg (+ globset)
+    → crates/core/flags/defs.rs:186
+
+  [medium] spectral-outlier:rg.flags.defs.Files
+    Node rg.flags.defs.Files is 2.9σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:2090
+
+  [medium] spectral-outlier:grep_pcre2.matcher.RegexMatcher
+    Node grep_pcre2.matcher.RegexMatcher is 2.9σ from module 1 centroid; nearest alternative: rg (+ integration)
+    → crates/pcre2/src/matcher.rs:295
+
+  [medium] spectral-outlier:grep_matcher.NoCaptures
+    Node grep_matcher.NoCaptures is 2.9σ from module 1 centroid; nearest alternative: rg (+ integration)
+    → crates/matcher/src/lib.rs:454
+
+  [medium] cross-module:globset.glob.GlobMatcher,globset.glob.GlobMatcher.is_match,globset.glob.GlobMatcher.is_match_candidate,globset.pathutil,globset.pathutil.file_name,integration.util.Dir.command,integration.util.setup_pcre2,rg.flags.defs.ByteOffset,rg.flags.defs.ByteOffset.update,rg.flags.defs.NoIgnoreDot,rg.flags.defs.NoIgnoreDot.update
+    Bidirectional dependency between module 0 and module 9: 70 forward edges, 8 reverse edges
+    → crates/globset/src/glob.rs:109
+
+  [low] cross-module:grep_printer.jsont.Context.serialize,grep_printer.jsont.Data,grep_printer.jsont.Data.from_bytes,grep_printer.standard,grep_printer.standard.StandardSink,rg.flags.defs.ContextSeparator.update,rg.flags.lowargs.ContextSeparator.disabled,rg.flags.lowargs.ContextSeparator.new
+    Bidirectional dependency between module 6 and module 10: 2 forward edges, 19 reverse edges
+    → crates/printer/src/jsont.rs:120
+
+  [low] coverage:low-spectral
+    Only 55.0% of analyzed nodes received spectral fingerprints; disconnected components may limit clustering quality.
+
+  [low] spectral-outlier:grep_printer.json.JSONSink
+    Node grep_printer.json.JSONSink is 2.9σ from module 1 centroid; nearest alternative: rg + globset (+ ignore)
+    → crates/printer/src/json.rs:546
+
+  [low] cross-module:rg.flags.defs,rg.flags.defs.MaxFilesize,rg.flags.defs.MaxFilesize.update,rg.flags.defs.MultilineDotall,rg.flags.defs.NoIgnoreGlobal
+    Bidirectional dependency between module 7 and module 10: 1 forward edges, 10 reverse edges
+    → crates/core/flags/defs.rs:1
+
+  [low] cross-module:grep_cli.process.StderrReader.async,grep_cli.process.StderrReader.read_to_end,grep_cli.process.stderr_to_command_error,ignore.dir.IgnoreBuilder.new,ignore.types.Types.empty,rg.flags.defs.MaxCount,rg.flags.defs.MaxCount.update
+    Bidirectional dependency between module 3 and module 6: 10 forward edges, 1 reverse edges
+    → crates/cli/src/process.rs:279
+
+  [low] cross-package-coupling:module-7
+    Spectral analysis groups 81 nodes from 3 packages into one structural module: rg (59), globset (21), integration (1). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [low] cross-module:grep_printer.standard.StandardSink,grep_printer.standard.StandardSink.record_matches,grep_printer.standard.StandardSink.replace,grep_printer.standard.StandardSink.should_quit,rg.flags.defs.MaxDepth,rg.flags.defs.MaxDepth.update
+    Bidirectional dependency between module 2 and module 6: 1 forward edges, 11 reverse edges
+    → crates/printer/src/standard.rs:631
+
+  [low] cross-module:integration.util.Dir.create_dir,integration.util.Dir.new,integration.util.nice_err,integration.util.setup,rg.flags.defs.AfterContext.update,rg.flags.defs.convert.usize
+    Unusual dependency from module 8 to module 6: 3 edges (75% of typical cross-module coupling)
+    → tests/util.rs:148
+
+  [low] cross-module:grep_pcre2.matcher.RegexCaptures.new,grep_pcre2.matcher.RegexMatcher.new_captures,rg.flags.defs.FixedStrings,rg.flags.defs.FixedStrings.update,rg.flags.defs.HyperlinkFormat,rg.flags.defs.HyperlinkFormat.update,rg.flags.defs.MaxColumnsPreview,rg.flags.defs.MaxColumnsPreview.update
+    Bidirectional dependency between module 0 and module 1: 1 forward edges, 13 reverse edges
+    → crates/pcre2/src/matcher.rs:402
+
+  [low] cross-module:grep_printer.json.JSONSink,grep_printer.json.JSONSink.record_matches,grep_printer.json.JSONSink.should_quit,integration.util.Dir.create_bytes,integration.util.Dir.try_create_bytes,rg.flags.FlagValue.unwrap_value,rg.flags.defs.Generate.update
+    Bidirectional dependency between module 1 and module 2: 14 forward edges, 1 reverse edges
+    → crates/printer/src/json.rs:546
+
+  [low] spectral-outlier:rg.flags.defs.Text
+    Node rg.flags.defs.Text is 2.8σ from module 0 centroid
+    → crates/core/flags/defs.rs:6530
+
+  [low] spectral-outlier:rg.flags.defs.convert.string
+    Node rg.flags.defs.convert.string is 2.8σ from module 8 centroid
+    → crates/core/flags/defs.rs:7484
+
+  [low] cross-module:grep_cli,grep_cli.decompress,grep_cli.process,grep_printer.counter.CounterWriter.into_inner,grep_printer.standard.Standard.into_inner,ignore.walk,rg,rg.flags.defs.RegexSizeLimit,rg.flags.defs.RegexSizeLimit.update
+    Bidirectional dependency between module 0 and module 10: 2 forward edges, 39 reverse edges
+    → crates/cli/src/lib.rs:1
+
+  [low] spectral-outlier:grep_printer.jsont.Match.serialize
+    Node grep_printer.jsont.Match.serialize is 2.8σ from module 1 centroid; nearest alternative: rg (+ globset)
+    → crates/printer/src/jsont.rs:95
+
+  [low] spectral-outlier:grep_searcher.sink.Sink
+    Node grep_searcher.sink.Sink is 2.8σ from module 9 centroid; nearest alternative: grep_printer + grep_searcher
+    → crates/searcher/src/sink.rs:62
+
+  [low] spectral-outlier:rg.flags.defs.ByteOffset
+    Node rg.flags.defs.ByteOffset is 2.8σ from module 9 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:576
+
+  [low] spectral-outlier:grep_printer.json.JSON.into_inner
+    Node grep_printer.json.JSON.into_inner is 2.8σ from module 1 centroid; nearest alternative: rg (+ grep_printer)
+    → crates/printer/src/json.rs:539
+
+  [low] spectral-outlier:rg.flags.defs.Generate
+    Node rg.flags.defs.Generate is 2.8σ from module 2 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:2350
+
+  [low] spectral-outlier:rg.flags.FlagValue.unwrap_switch
+    Node rg.flags.FlagValue.unwrap_switch is 2.8σ from module 0 centroid; nearest alternative: rg + grep_printer
+    → crates/core/flags/mod.rs:269
+
+  [low] cross-module:grep_printer.counter.CounterWriter.into_inner,grep_printer.json.JSON.into_inner,rg.flags.FlagValue.unwrap_value,rg.flags.defs.DfaSizeLimit.update,rg.flags.defs.MaxFilesize.update,rg.flags.defs.RegexSizeLimit.update
+    Bidirectional dependency between module 1 and module 10: 1 forward edges, 61 reverse edges
+    → crates/printer/src/counter.rs:46
+
+  [low] spectral-outlier:rg.flags.defs.NoIgnore.update
+    Node rg.flags.defs.NoIgnore.update is 2.7σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:4260
+
+  [low] spectral-outlier:rg.flags.defs.NoIgnoreGlobal
+    Node rg.flags.defs.NoIgnoreGlobal is 2.7σ from module 7 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:4438
+
+  [low] spectral-outlier:rg.flags
+    Node rg.flags is 2.5σ from module 10 centroid
+    → crates/core/flags/mod.rs:1
+
+  [low] cross-module:grep_matcher.LineTerminator,grep_matcher.LineTerminator.crlf,grep_matcher.LineTerminator.is_crlf,integration.misc.sort_setup,integration.util.Dir.create_dir,rg.flags.defs.DfaSizeLimit,rg.flags.defs.DfaSizeLimit.update
+    Bidirectional dependency between module 8 and module 10: 1 forward edges, 81 reverse edges
+    → crates/matcher/src/lib.rs:183
+
+  [low] cross-module:grep_cli.escape,grep_cli.escape.escape,grep_matcher,rg,rg.flags.hiargs,rg.search
+    Bidirectional dependency between module 4 and module 10: 1 forward edges, 180 reverse edges
+    → crates/cli/src/escape.rs:1
+
+  [low] spectral-outlier:rg.flags.defs.Hidden.update
+    Node rg.flags.defs.Hidden.update is 2.7σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:2758
+
+  [low] spectral-outlier:rg.flags.lowargs.FieldContextSeparator.new
+    Node rg.flags.lowargs.FieldContextSeparator.new is 2.7σ from module 9 centroid
+    → crates/core/flags/lowargs.rs:589
+
+  [low] spectral-outlier:rg.flags.defs.MaxCount.update
+    Node rg.flags.defs.MaxCount.update is 2.7σ from module 3 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:3817
+
+  [low] spectral-outlier:rg.flags.defs.MaxColumns.update
+    Node rg.flags.defs.MaxColumns.update is 2.7σ from module 3 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:3704
+
+  [low] spectral-outlier:rg.flags.defs.TypeClear.update
+    Node rg.flags.defs.TypeClear.update is 2.7σ from module 8 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:6955
+
+  [low] cross-module:grep_matcher.interpolate,grep_matcher.interpolate.find_cap_ref,grep_matcher.interpolate.interpolate,grep_printer.counter.CounterWriter.into_inner,grep_printer.summary.Summary.into_inner,integration.test_matcher.matcher,integration.util.RegexMatcher.new
+    Bidirectional dependency between module 2 and module 10: 1 forward edges, 310 reverse edges
+    → crates/matcher/src/interpolate.rs:1
+
+  [low] spectral-outlier:rg.flags.defs.FieldContextSeparator.update
+    Node rg.flags.defs.FieldContextSeparator.update is 2.7σ from module 9 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:1773
+
+  [low] spectral-outlier:rg.flags.defs.HyperlinkFormat
+    Node rg.flags.defs.HyperlinkFormat is 2.7σ from module 0 centroid
+    → crates/core/flags/defs.rs:2844
+
+  [low] spectral-outlier:grep_pcre2.matcher.RegexMatcherBuilder.build_many
+    Node grep_pcre2.matcher.RegexMatcherBuilder.build_many is 2.7σ from module 1 centroid; nearest alternative: rg (+ globset)
+    → crates/pcre2/src/matcher.rs:41
+
+  [low] cross-package-coupling:module-5
+    Spectral analysis groups 119 nodes from 5 packages into one structural module: rg (111), integration (3), grep_matcher (2), grep_searcher (2), grep_pcre2 (1). This suggests tighter coupling across these package boundaries than the declared structure implies.
+
+  [low] spectral-outlier:integration.util.TestCommand.raw_output
+    Node integration.util.TestCommand.raw_output is 2.6σ from module 1 centroid; nearest alternative: rg (+ grep_printer)
+    → tests/util.rs:316
+
+  [low] spectral-outlier:rg.flags.defs.PreGlob
+    Node rg.flags.defs.PreGlob is 2.6σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:5470
+
+  [low] spectral-outlier:rg.flags.defs.SortFiles
+    Node rg.flags.defs.SortFiles is 2.6σ from module 0 centroid
+    → crates/core/flags/defs.rs:6112
+
+  [low] cycle:globset,globset.glob
+    Strongly connected dependency group of 2 nodes
+    → crates/globset/src/lib.rs:1
+
+  [low] cycle:grep_printer.hyperlink,grep_printer.util
+    Strongly connected dependency group of 2 nodes
+    → crates/printer/src/hyperlink.rs:1
+
+  [low] cycle:grep_regex.ast.AstAnalysis.from_ast_class_set,grep_regex.ast.AstAnalysis.from_ast_class_set_item
+    Strongly connected dependency group of 2 nodes
+    → crates/regex/src/ast.rs:92
+
+  [low] spectral-outlier:rg.flags.defs.InvertMatch
+    Node rg.flags.defs.InvertMatch is 2.6σ from module 3 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:3289
+
+  [low] spectral-outlier:rg.flags.defs.Hidden
+    Node rg.flags.defs.Hidden is 2.5σ from module 0 centroid
+    → crates/core/flags/defs.rs:2721
+
+  [low] spectral-outlier:ignore.gitignore.home_dir
+    Node ignore.gitignore.home_dir is 2.5σ from module 3 centroid
+    → crates/ignore/src/gitignore.rs:630
+
+  [low] spectral-outlier:rg.flags.defs.Colors
+    Node rg.flags.defs.Colors is 2.4σ from module 6 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:811
+
+  [low] spectral-outlier:rg.flags.defs.convert.str
+    Node rg.flags.defs.convert.str is 2.4σ from module 5 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:7477
+
+  [low] spectral-outlier:rg.flags.defs.Binary.update
+    Node rg.flags.defs.Binary.update is 2.4σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:481
+
+  [low] spectral-outlier:grep_searcher.searcher.Encoding.new
+    Node grep_searcher.searcher.Encoding.new is 2.4σ from module 5 centroid
+    → crates/searcher/src/searcher/mod.rs:130
+
+  [low] spectral-outlier:rg.flags.lowargs.ContextMode.set_before
+    Node rg.flags.lowargs.ContextMode.set_before is 2.4σ from module 6 centroid
+    → crates/core/flags/lowargs.rs:374
+
+  [low] spectral-outlier:rg.flags.lowargs.ContextMode.set_both
+    Node rg.flags.lowargs.ContextMode.set_both is 2.4σ from module 6 centroid
+    → crates/core/flags/lowargs.rs:415
+
+  [low] spectral-outlier:rg.flags.defs.NoIgnore
+    Node rg.flags.defs.NoIgnore is 2.3σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:4224
+
+  [low] spectral-outlier:rg.flags.defs.Encoding.update
+    Node rg.flags.defs.Encoding.update is 2.3σ from module 5 centroid
+    → crates/core/flags/defs.rs:1591
+
+  [low] spectral-outlier:grep_printer.jsont.Data.from_bytes
+    Node grep_printer.jsont.Data.from_bytes is 2.3σ from module 6 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/printer/src/jsont.rs:171
+
+  [low] spectral-outlier:rg.flags.defs.BeforeContext.update
+    Node rg.flags.defs.BeforeContext.update is 2.3σ from module 6 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:371
+
+  [low] spectral-outlier:rg.flags.defs.Pre
+    Node rg.flags.defs.Pre is 2.3σ from module 1 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:5352
+
+  [low] spectral-outlier:rg.flags.defs.Context.update
+    Node rg.flags.defs.Context.update is 2.3σ from module 6 centroid; nearest alternative: rg + grep_regex (+ grep_pcre2)
+    → crates/core/flags/defs.rs:1001
+
+  [low] spectral-outlier:rg.flags.defs.StopOnNonmatch
+    Node rg.flags.defs.StopOnNonmatch is 2.3σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:6471
+
+  [low] spectral-outlier:rg.flags.defs.ContextSeparator
+    Node rg.flags.defs.ContextSeparator is 2.3σ from module 6 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:1106
+
+  [low] spectral-outlier:rg.flags.defs.NoIgnoreParent
+    Node rg.flags.defs.NoIgnoreParent is 2.3σ from module 4 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:4535
+
+  [low] spectral-outlier:rg.flags.hiargs.HiArgs.printer_standard
+    Node rg.flags.hiargs.HiArgs.printer_standard is 2.2σ from module 4 centroid
+    → crates/core/flags/hiargs.rs:595
+
+  [low] spectral-outlier:rg.flags.defs.JSON
+    Node rg.flags.defs.JSON is 2.3σ from module 6 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:3347
+
+  [low] spectral-outlier:rg.flags.defs.convert.usize
+    Node rg.flags.defs.convert.usize is 2.2σ from module 6 centroid; nearest alternative: rg (+ integration)
+    → crates/core/flags/defs.rs:7491
+
+  [low] spectral-outlier:grep_matcher.Matcher
+    Node grep_matcher.Matcher is 2.2σ from module 5 centroid; nearest alternative: rg (+ ignore)
+    → crates/matcher/src/lib.rs:524
+
+  [low] spectral-outlier:grep_matcher.Captures
+    Node grep_matcher.Captures is 2.2σ from module 5 centroid; nearest alternative: rg (+ ignore)
+    → crates/matcher/src/lib.rs:364
+
+  [low] spectral-outlier:ignore.gitignore.gitconfig_excludes_path
+    Node ignore.gitignore.gitconfig_excludes_path is 2.2σ from module 3 centroid
+    → crates/ignore/src/gitignore.rs:535
+
+  [low] spectral-outlier:rg.flags.defs.FilesWithoutMatch.update
+    Node rg.flags.defs.FilesWithoutMatch.update is 2.1σ from module 2 centroid
+    → crates/core/flags/defs.rs:2206
+
+  [low] spectral-outlier:grep_searcher.line_buffer.LineBuffer.fill
+    Node grep_searcher.line_buffer.LineBuffer.fill is 2.1σ from module 2 centroid
+    → crates/searcher/src/line_buffer.rs:389
+
+  [low] spectral-outlier:grep_cli.human.ParseSizeError.overflow
+    Node grep_cli.human.ParseSizeError.overflow is 2.1σ from module 10 centroid
+    → crates/cli/src/human.rs:33
+
+  [low] spectral-outlier:grep_cli.human.ParseSizeError.int
+    Node grep_cli.human.ParseSizeError.int is 2.1σ from module 10 centroid
+    → crates/cli/src/human.rs:26
+
+  [low] spectral-outlier:rg.flags.defs.PathSeparator
+    Node rg.flags.defs.PathSeparator is 2.1σ from module 7 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:5085
+
+  [low] spectral-outlier:rg.flags.defs.Glob
+    Node rg.flags.defs.Glob is 2.1σ from module 1 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:2455
+
+  [low] spectral-outlier:rg.flags.defs.GlobCaseInsensitive
+    Node rg.flags.defs.GlobCaseInsensitive is 2.1σ from module 0 centroid
+    → crates/core/flags/defs.rs:2545
+
+  [low] spectral-outlier:rg.flags.defs.Follow
+    Node rg.flags.defs.Follow is 2.1σ from module 0 centroid
+    → crates/core/flags/defs.rs:2292
+
+  [low] spectral-outlier:grep_matcher.Matcher.find_iter
+    Node grep_matcher.Matcher.find_iter is 2.0σ from module 2 centroid
+    → crates/matcher/src/lib.rs:616
+
+  [low] spectral-outlier:rg.flags.defs.Debug
+    Node rg.flags.defs.Debug is 2.0σ from module 9 centroid; nearest alternative: rg (+ ignore)
+    → crates/core/flags/defs.rs:1415
+
+  ✖ 228 issues (66 high, 87 medium, 75 low)
+
+── Architecture ────────────────────────────────────────
+
+  rg (+ ignore) (335 nodes)
+    bench, bench.new_glob, gitignore_matched_path_or_any_parents_tests, globset, globset.BasenameLiteralStrategy, ...
+  rg + grep_regex (+ grep_pcre2) (133 nodes)
+    grep_matcher.NoCaptures, grep_matcher.NoCaptures.get, grep_matcher.NoCaptures.len, grep_matcher.NoCaptures.new, grep_pcre2.matcher.RegexMatcher, ...
+  grep_printer + grep_searcher (406 nodes)
+    grep_matcher.ByteSet.contains, grep_matcher.Captures.get, grep_matcher.Captures.interpolate, grep_matcher.LineTerminator.as_byte, grep_matcher.LineTerminator.as_bytes, ...
+  ignore + rg (296 nodes)
+    gitignore_matched_path_or_any_parents_tests.get_gitignore, globset.GlobSet.empty, grep_cli.process.CommandError.is_empty, grep_cli.process.CommandReader.close, grep_cli.process.StderrReader.async, ...
+  rg + grep_printer (307 nodes)
+    grep_cli.decompress.DecompressionReaderBuilder.async_stderr, grep_cli.escape.escape, grep_cli.escape.escape_os, grep_cli.hostname.gethostname, grep_cli.hostname.hostname, ...
+  rg (+ integration) (119 nodes)
+    grep_matcher.Captures, grep_matcher.Matcher, grep_pcre2.matcher.RegexMatcher.new, grep_searcher.searcher.Encoding.new, grep_searcher.sink.sinks.Lossy, ...
+  rg (+ globset) (140 nodes)
+    bench.new_reglob, bench.new_reglob_many, globset.Error.kind, globset.GlobSet.builder, globset.GlobSetBuilder.add, ...
+  rg + globset (+ integration) (81 nodes)
+    globset.BasenameLiteralStrategy.add, globset.BasenameLiteralStrategy.new, globset.ExtensionStrategy.add, globset.ExtensionStrategy.new, globset.GlobSet.new, ...
+  rg + grep_regex (+ grep_matcher) (157 nodes)
+    grep_matcher.ByteSet.full, grep_matcher.ByteSet.remove, grep_matcher.ByteSet.remove_all, grep_matcher.LineTerminator.crlf, grep_matcher.LineTerminator.is_crlf, ...
+  rg + globset (+ ignore) (114 nodes)
+    globset.BasenameLiteralStrategy.is_match, globset.BasenameLiteralStrategy.matches_into, globset.Candidate.new, globset.Candidate.path_prefix, globset.Candidate.path_suffix, ...
+  rg (+ grep_printer) (405 nodes)
+    grep, grep_cli, grep_cli.escape, grep_cli.escape.unescape, grep_cli.escape.unescape_os, ...
+  (unassigned: 6 nodes)
+
+  grep_printer + grep_searcher
+                │
+         ┌──────┴──┬───┬───┬───┬───┬───┬───┐
+         ▼         │   │   │   │   │   │   │
+  rg (+ globset)
+         │         │   │   │   │   │   │   │
+       ┌─┴──────┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬───┬───┬───┬───┬───┬───┐
+       ▼        │   │   │   │   │   │   │   │   │   │   │   │   │   │
+  ignore + rg
+       │        │   │   │   │   │   │   │   │   │   │   │   │   │   │
+       └┬───────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬───┬───┬───┐
+        ▼         │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+  rg (+ ignore)
+        │         │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+        └──┬──────┴───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬───┬───┬───┬───┬───┐
+           ▼            │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+  rg (+ grep_printer)
+           │            │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+           ├───────────┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┐└──┐└──┐└──┐└──┐└──┐
+           ▼           │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+  rg (+ integration)
+           │           │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+           └─┬─────────┴───┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┐
+             ▼              │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+  rg + globset (+ ignore)
+             │              │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+             └───┬──────────┴───┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴───┴───┴───┴───┘
+                 ▼                 │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+  rg + grep_regex (+ grep_pcre2)
+                 │                 │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+          ┌──────┴────┬───┬───┬───┬┴──┬┴──┬┴──┬┴──┬┴──┬┴──┬┴───┴───┴───┴───┴───┴───┴───┴───┘
+          ▼           │   │   │   │   │   │   │   │   │   │
+  rg + grep_printer
+          │           │   │   │   │   │   │   │   │   │   │
+          └───────┬───┴───┴───┴───┴──┬┴──┬┴──┬┴──┬┴──┬┴───┘
+                  ▼                  │   │   │   │   │
+  rg + grep_regex (+ grep_matcher)
+                  │                  │   │   │   │   │
+                ┌─┴──────────────────┴───┴───┴───┴───┘
+                ▼
+  rg + globset (+ integration)
+  ⟲ ignore + rg → grep_printer + grep_searcher (cycle)
+  ⟲ ignore + rg → rg (+ globset) (cycle)
+  ⟲ rg (+ globset) → grep_printer + grep_searcher (cycle)
+  ⟲ rg (+ grep_printer) → grep_printer + grep_searcher (cycle)
+  ⟲ rg (+ grep_printer) → ignore + rg (cycle)
+  ⟲ rg (+ grep_printer) → rg (+ globset) (cycle)
+  ⟲ rg (+ grep_printer) → rg (+ ignore) (cycle)
+  ⟲ rg (+ ignore) → grep_printer + grep_searcher (cycle)
+  ⟲ rg (+ ignore) → ignore + rg (cycle)
+  ⟲ rg (+ ignore) → rg (+ globset) (cycle)
+  ⟲ rg (+ integration) → grep_printer + grep_searcher (cycle)
+  ⟲ rg (+ integration) → ignore + rg (cycle)
+  ⟲ rg (+ integration) → rg (+ globset) (cycle)
+  ⟲ rg (+ integration) → rg (+ ignore) (cycle)
+  ⟲ rg + globset (+ ignore) → grep_printer + grep_searcher (cycle)
+  ⟲ rg + globset (+ ignore) → ignore + rg (cycle)
+  ⟲ rg + globset (+ ignore) → rg (+ globset) (cycle)
+  ⟲ rg + globset (+ ignore) → rg (+ ignore) (cycle)
+  ⟲ rg + globset (+ integration) → rg (+ globset) (cycle)
+  ⟲ rg + globset (+ integration) → rg (+ grep_printer) (cycle)
+  ⟲ rg + globset (+ integration) → rg (+ ignore) (cycle)
+  ⟲ rg + globset (+ integration) → rg + grep_regex (+ grep_matcher) (cycle)
+  ⟲ rg + globset (+ integration) → rg + grep_regex (+ grep_pcre2) (cycle)
+  ⟲ rg + grep_printer → grep_printer + grep_searcher (cycle)
+  ⟲ rg + grep_printer → ignore + rg (cycle)
+  ⟲ rg + grep_printer → rg (+ globset) (cycle)
+  ⟲ rg + grep_printer → rg (+ grep_printer) (cycle)
+  ⟲ rg + grep_printer → rg (+ ignore) (cycle)
+  ⟲ rg + grep_printer → rg + globset (+ ignore) (cycle)
+  ⟲ rg + grep_regex (+ grep_matcher) → grep_printer + grep_searcher (cycle)
+  ⟲ rg + grep_regex (+ grep_matcher) → rg (+ globset) (cycle)
+  ⟲ rg + grep_regex (+ grep_matcher) → rg (+ grep_printer) (cycle)
+  ⟲ rg + grep_regex (+ grep_matcher) → rg (+ ignore) (cycle)
+  ⟲ rg + grep_regex (+ grep_matcher) → rg + grep_printer (cycle)
+  ⟲ rg + grep_regex (+ grep_matcher) → rg + grep_regex (+ grep_pcre2) (cycle)
+  ⟲ rg + grep_regex (+ grep_pcre2) → grep_printer + grep_searcher (cycle)
+  ⟲ rg + grep_regex (+ grep_pcre2) → rg (+ globset) (cycle)
+  ⟲ rg + grep_regex (+ grep_pcre2) → rg (+ grep_printer) (cycle)
+  ⟲ rg + grep_regex (+ grep_pcre2) → rg (+ ignore) (cycle)
+  ⟲ rg + grep_regex (+ grep_pcre2) → rg (+ integration) (cycle)
+  ⟲ rg + grep_regex (+ grep_pcre2) → rg + globset (+ ignore) (cycle)
+
+── Package Agreement (NMI: 0.27) ───────────────────────
+
+  rg (+ ignore) spans: rg (179), ignore (82), globset (39), grep_cli (14), grep_regex (8), grep_pcre2 (3), integration (3), bench (2), grep_printer (2), walk (2), gitignore_matched_path_or_any_parents_tests (1)
+  rg + grep_regex (+ grep_pcre2) spans: rg (79), grep_regex (35), grep_pcre2 (7), grep_printer (5), grep_matcher (4), integration (3)
+  grep_printer + grep_searcher spans: grep_printer (148), grep_searcher (127), grep_matcher (65), rg (43), integration (11), grep_regex (8), grep_pcre2 (4)
+  ignore + rg spans: ignore (144), rg (133), grep_printer (5), grep_cli (4), grep_searcher (3), integration (3), walk (2), gitignore_matched_path_or_any_parents_tests (1), globset (1)
+  rg + grep_printer spans: rg (172), grep_printer (83), grep_searcher (27), grep_cli (17), simplegrep (3), ignore (2), integration (2), grep_matcher (1)
+  rg (+ integration) spans: rg (111), integration (3), grep_matcher (2), grep_searcher (2), grep_pcre2 (1)
+  rg (+ globset) spans: rg (72), globset (31), ignore (16), grep_cli (11), grep_printer (4), integration (3), bench (2), grep_pcre2 (1)
+  rg + globset (+ integration) spans: rg (59), globset (21), integration (1)
+  rg + grep_regex (+ grep_matcher) spans: rg (93), grep_regex (53), grep_matcher (5), integration (3), search_stdin (2), grep_searcher (1)
+  rg + globset (+ ignore) spans: rg (40), globset (31), ignore (29), grep_cli (10), integration (3), grep_searcher (1)
+  rg (+ grep_printer) spans: rg (117), grep_printer (95), integration (50), grep_searcher (42), grep_regex (29), grep_cli (27), grep_pcre2 (23), grep_matcher (19), grep (1), search_stdin (1), simplegrep (1)
+
+── Critical Nodes ──────────────────────────────────────
+
+  HUB          rg.flags.hiargs.HiArgs.walk_builder degree 25
+  HUB          rg.search                           degree 24
+  HUB          rg.flags                            degree 20
+  HUB          grep_matcher                        degree 19
+  HUB          rg.flags.hiargs.HiArgs.matcher_rust degree 18
+  HUB          rg.flags.hiargs.HiArgs.searcher     degree 18
+  HUB          grep_searcher.searcher              degree 17
+  HUB          rg.flags.hiargs.HiArgs.from_low_args degree 17
+  HUB          grep_searcher.searcher.core.Core.match_by_line_slow degree 16
+  HUB          grep_searcher.searcher.glue.MultiLine.run degree 15
+  HUB          grep_searcher.searcher.glue.MultiLine.sink_matched_inverted degree 15
+  HUB          ignore.walk.Worker.generate_work    degree 15
+  HUB          grep_printer.standard.StandardImpl.write_exceeded_line degree 14
+  HUB          grep_searcher.searcher.Searcher.multi_line_with_matcher degree 14
+  HUB          grep_searcher.searcher.core.Core.before_context_by_line degree 14
+  HUB          grep_searcher.searcher.core.Core.match_by_line_fast_invert degree 14
+  HUB          simplegrep.search                   degree 14
+  HUB          globset.GlobSet.new                 degree 13
+  HUB          grep_printer                        degree 13
+  HUB          grep_printer.standard.StandardImpl.write_line degree 13
+  HUB          grep_printer.standard.StandardImpl.write_prelude degree 13
+  HUB          grep_searcher.searcher.core.Core.find_by_line_fast degree 13
+  HUB          grep_searcher.sink                  degree 13
+  HUB          rg.flags.hiargs.HiArgs.printer_summary degree 13
+  HUB          rg.run                              degree 13
+  HUB          grep_printer.standard.StandardImpl.write_colored_line degree 12
+  HUB          grep_printer.standard.StandardImpl.write_colored_matches degree 12
+  HUB          grep_printer.standard.StandardImpl.write_line_term degree 12
+  HUB          grep_printer.util                   degree 12
+  HUB          grep_regex.matcher.RegexMatcherBuilder.build_many degree 12
+  HUB          grep_searcher.searcher.Searcher.search_reader degree 12
+  HUB          grep_searcher.searcher.glue.MultiLine.sink degree 12
+  HUB          ignore                              degree 12
+  HUB          ignore.dir.Ignore.matched           degree 12
+  HUB          ignore.types.TypesBuilder.build     degree 12
+  HUB          ignore.walk.DirEntry.path           degree 12
+  HUB          ignore.walk.WalkParallel.visit      degree 12
+  HUB          ignore.walk.Worker.run_one          degree 12
+  HUB          rg.files                            degree 12
+  HUB          rg.files_parallel                   degree 12
+  HUB          rg.search.SearchWorker.search       degree 12
+  HUB          grep_matcher.Match.is_empty         degree 11
+  HUB          grep_printer.standard               degree 11
+  HUB          grep_printer.standard.StandardImpl.write degree 11
+  HUB          grep_regex.literal.Extractor.extract degree 11
+  HUB          grep_searcher.searcher.core.Core.after_context_by_line degree 11
+  HUB          grep_searcher.searcher.core.Core.match_by_line_fast degree 11
+  HUB          rg.search.search_path               degree 11
+  HUB          rg.search.search_reader             degree 11
+  HUB          grep_printer.standard.Standard.sink_with_path degree 10
+  HUB          grep_printer.standard.StandardImpl.sink degree 10
+  HUB          grep_printer.standard.StandardImpl.sink_slow degree 10
+  HUB          grep_printer.summary                degree 10
+  HUB          grep_searcher.searcher.core.Core.sink_matched degree 10
+  HUB          ignore.gitignore.GitignoreBuilder.add degree 10
+  HUB          ignore.gitignore.GitignoreBuilder.add_line degree 10
+  HUB          ignore.walk                         degree 10
+  HUB          rg.flags.doc.help.generate_long_flag degree 10
+  HUB          globset.glob.Parser.parse           degree 9
+  HUB          grep_cli                            degree 9
+  HUB          grep_printer.standard.StandardImpl.start_hyperlink degree 9
+  HUB          grep_printer.summary.Summary.sink_with_path degree 9
+  HUB          grep_printer.util.Replacer.replace_all degree 9
+  HUB          grep_printer.util.find_iter_at_in_context degree 9
+  HUB          grep_regex                          degree 9
+  HUB          grep_regex.config                   degree 9
+  HUB          grep_regex.literal.Extractor.extract_concat degree 9
+  HUB          grep_searcher.searcher.Searcher.search_file_maybe_path degree 9
+  HUB          grep_searcher.searcher.Searcher.search_slice degree 9
+  HUB          grep_searcher.searcher.core.Core.detect_binary degree 9
+  HUB          grep_searcher.searcher.core.Core.other_context_by_line degree 9
+  HUB          grep_searcher.searcher.glue.ReadByLine.fill degree 9
+  HUB          grep_searcher.searcher.glue.SliceByLine.run degree 9
+  HUB          ignore.gitignore                    degree 9
+  HUB          ignore.gitignore.GitignoreBuilder.build_global degree 9
+  HUB          ignore.gitignore.GitignoreBuilder.new degree 9
+  HUB          ignore.overrides.Override.matched   degree 9
+  HUB          integration.util                    degree 9
+  HUB          rg.flags.doc.man.generate_flag      degree 9
+  HUB          rg.flags.hiargs.HiArgs.search_worker degree 9
+  HUB          globset                             degree 8
+  HUB          globset.Candidate.new               degree 8
+  HUB          globset.GlobSetMatchStrategy.is_match degree 8
+  HUB          globset.GlobSetMatchStrategy.matches_into degree 8
+  HUB          grep_printer.hyperlink              degree 8
+  HUB          grep_printer.hyperlink.Interpolator.begin degree 8
+  HUB          grep_printer.json                   degree 8
+  HUB          grep_printer.path.PathPrinter.write degree 8
+  HUB          grep_printer.standard.StandardImpl.sink_fast_multi_line degree 8
+  HUB          grep_printer.standard.StandardImpl.write_path degree 8
+  HUB          grep_printer.standard.StandardImpl.write_search_prelude degree 8
+  HUB          grep_printer.standard.StandardImpl.write_spec degree 8
+  HUB          grep_printer.util.trim_line_terminator degree 8
+  HUB          grep_searcher                       degree 8
+  HUB          grep_searcher.lines.LineStep.next_match degree 8
+  HUB          grep_searcher.searcher.Config.line_buffer degree 8
+  HUB          grep_searcher.searcher.glue.ReadByLine.run degree 8
+  HUB          ignore.dir                          degree 8
+  HUB          ignore.dir.Ignore.matched_ignore    degree 8
+  HUB          ignore.dir.create_gitignore         degree 8
+  HUB          ignore.gitignore.GitignoreBuilder.build degree 8
+  HUB          ignore.walk.WalkBuilder.add_ignore  degree 8
+  HUB          rg.flags.complete.fish.generate     degree 8
+  HUB          rg.flags.hiargs                     degree 8
+  HUB          rg.flags.hiargs.types               degree 8
+  HUB          globset.glob.MatchStrategy.new      degree 7
+  HUB          globset.glob.Parser.push_token      degree 7
+  HUB          grep_cli.decompress.DecompressionMatcherBuilder.build degree 7
+  HUB          grep_printer.json.JSONSink.record_matches degree 7
+  HUB          grep_printer.standard.PreludeWriter.config degree 7
+  HUB          grep_printer.standard.PreludeWriter.write_byte_offset degree 7
+  HUB          grep_printer.standard.PreludeWriter.write_column_number degree 7
+  HUB          grep_printer.standard.PreludeWriter.write_line_number degree 7
+  HUB          grep_printer.standard.PreludeWriter.write_separator degree 7
+  HUB          grep_printer.standard.StandardImpl.trim_ascii_prefix degree 7
+  HUB          grep_printer.standard.StandardImpl.write_binary_message degree 7
+  HUB          grep_printer.standard.StandardSink.record_matches degree 7
+  HUB          grep_printer.summary.SummarySink.write_path degree 7
+  HUB          grep_regex.literal.Extractor.cross  degree 7
+  HUB          grep_regex.literal.Extractor.extract_repetition degree 7
+  HUB          grep_regex.literal.Extractor.union  degree 7
+  HUB          grep_regex.literal.TSeq.choose      degree 7
+  HUB          grep_regex.matcher                  degree 7
+  HUB          grep_searcher.line_buffer.LineBuffer.fill degree 7
+  HUB          grep_searcher.lines                 degree 7
+  HUB          grep_searcher.searcher.core         degree 7
+  HUB          grep_searcher.searcher.core.Core.count_lines degree 7
+  HUB          grep_searcher.searcher.core.Core.sink_after_context degree 7
+  HUB          grep_searcher.searcher.core.Core.sink_other_context degree 7
+  HUB          grep_searcher.searcher.glue         degree 7
+  HUB          grep_searcher.searcher.glue.MultiLine.find degree 7
+  HUB          grep_searcher.searcher.glue.MultiLine.sink_context degree 7
+  HUB          ignore.dir.Ignore.add_child_path    degree 7
+  HUB          ignore.dir.Ignore.matched_dir_entry degree 7
+  HUB          ignore.gitignore.Gitignore.matched_stripped degree 7
+  HUB          ignore.types                        degree 7
+  HUB          ignore.types.Types.matched          degree 7
+  HUB          rg.flags.hiargs.HiArgs.path_printer_builder degree 7
+  HUB          rg.flags.hiargs.HiArgs.stdout       degree 7
+  HUB          rg.flags.hiargs.take_hyperlink_config degree 7
+  HUB          rg.flags.lowargs                    degree 7
+  HUB          rg.flags.parse.Parser.new           degree 7
+  HUB          globset.GlobSetBuilder.build        degree 6
+  HUB          globset.glob                        degree 6
+  HUB          grep_printer.standard.PreludeWriter.start degree 6
+  HUB          grep_printer.standard.StandardImpl.exceeds_max_columns degree 6
+  HUB          grep_printer.standard.StandardImpl.sink_fast degree 6
+  HUB          grep_printer.standard.StandardImpl.write_path_line degree 6
+  HUB          grep_regex.config.ConfiguredHIR.new degree 6
+  HUB          grep_regex.literal.Extractor.extract_class_bytes degree 6
+  HUB          grep_regex.literal.Extractor.extract_class_unicode degree 6
+  HUB          grep_regex.literal.InnerLiterals.new degree 6
+  HUB          grep_searcher.lines.locate          degree 6
+  HUB          grep_searcher.searcher.core.Core.is_line_by_line_fast degree 6
+  HUB          grep_searcher.searcher.core.Core.roll degree 6
+  HUB          grep_searcher.searcher.core.Core.sink_before_context degree 6
+  HUB          grep_searcher.searcher.glue.MultiLine.advance degree 6
+  HUB          ignore.dir.IgnoreBuilder.build      degree 6
+  HUB          ignore.gitignore.Gitignore.empty    degree 6
+  HUB          ignore.walk.DirEntry.depth          degree 6
+  HUB          ignore.walk.Work.read_dir           degree 6
+  HUB          ignore.walk.Worker.get_work         degree 6
+  HUB          ignore.walk.check_symlink_loop      degree 6
+  HUB          ignore.walk.path_equals             degree 6
+  HUB          rg.flags.defs.convert.usize         degree 6
+  HUB          rg.flags.hiargs.HiArgs.haystack_builder degree 6
+  HUB          rg.flags.hiargs.HiArgs.printer_json degree 6
+  HUB          rg.flags.hiargs.globs               degree 6
+  HUB          rg.flags.parse.Parser.parse         degree 6
+  HUB          rg.flags.parse.find_similar_names   degree 6
+  HUB          rg.flags.parse.parse_low            degree 6
+  HUB          rg.generate                         degree 6
+  HUB          rg.special                          degree 6
+  HUB          rg.types                            degree 6
+  BRIDGE       globset.GlobSet.matches_candidate_into betweenness 0.000
+  BRIDGE       globset.glob.Glob.new               betweenness 0.000
+  BRIDGE       globset.glob.GlobBuilder.build      betweenness 0.000
+  BRIDGE       globset.glob.Parser.parse_star      betweenness 0.000
+  BRIDGE       grep_cli.decompress.DecompressionReaderBuilder.build betweenness 0.000
+  BRIDGE       grep_cli.process.CommandReaderBuilder.build betweenness 0.000
+  BRIDGE       grep_matcher.Matcher.shortest_match betweenness 0.000
+  BRIDGE       grep_printer.path.PathPrinter.start_hyperlink betweenness 0.000
+  BRIDGE       grep_printer.standard.PreludeWriter.write_path betweenness 0.000
+  BRIDGE       grep_printer.standard.StandardImpl.write_path_hyperlink betweenness 0.000
+  BRIDGE       grep_printer.summary.SummarySink.start_hyperlink betweenness 0.000
+  BRIDGE       grep_printer.util.PrinterPath.as_hyperlink betweenness 0.000
+  BRIDGE       grep_regex.literal.Extractor.enforce_literal_len betweenness 0.000
+  BRIDGE       grep_regex.literal.Extractor.extract_alternation betweenness 0.000
+  BRIDGE       grep_searcher.searcher.core.Core.match_by_line betweenness 0.000
+  BRIDGE       grep_searcher.searcher.core.Core.new betweenness 0.000
+  BRIDGE       grep_searcher.searcher.glue.MultiLine.sink_matched betweenness 0.000
+  BRIDGE       ignore.dir.Ignore.add_parents       betweenness 0.000
+  BRIDGE       ignore.gitignore.Gitignore.matched  betweenness 0.000
+  BRIDGE       ignore.gitignore.gitconfig_excludes_path betweenness 0.000
+  BRIDGE       ignore.walk.DirEntry.file_type      betweenness 0.000
+  BRIDGE       ignore.walk.WalkBuilder.build       betweenness 0.000
+  BRIDGE       ignore.walk.should_skip_entry       betweenness 0.000
+  BRIDGE       rg.flags.hiargs.HiArgs.printer      betweenness 0.000
+  BRIDGE       rg.haystack.Haystack.is_dir         betweenness 0.000
+  BRIDGE       rg.haystack.Haystack.is_explicit    betweenness 0.000
+  BRIDGE       rg.haystack.Haystack.path           betweenness 0.000
+  BRIDGE       rg.haystack.HaystackBuilder.build   betweenness 0.000
+  BRIDGE       rg.haystack.HaystackBuilder.build_from_result betweenness 0.000
+  BRIDGE       rg.search.Printer.get_mut           betweenness 0.000
+  BRIDGE       rg.search.SearchWorkerBuilder.new   betweenness 0.000
+  BRIDGE       globset.glob.GlobBuilder.new        betweenness 0.000
+  BRIDGE       grep_cli.decompress.resolve_binary  betweenness 0.000
+  BRIDGE       grep_cli.process.CommandReader.close betweenness 0.000
+  BRIDGE       grep_cli.process.stderr_to_command_error betweenness 0.000
+  BRIDGE       grep_printer.standard.Standard.needs_match_granularity betweenness 0.000
+  BRIDGE       grep_printer.standard.StandardSink.replace betweenness 0.000
+  BRIDGE       grep_regex.ast.AstAnalysis.from_ast_impl betweenness 0.000
+  BRIDGE       grep_regex.literal.Extractor.extract_untagged betweenness 0.000
+  BRIDGE       grep_regex.literal.TSeq.has_poisonous_literal betweenness 0.000
+  BRIDGE       grep_regex.literal.TSeq.is_good     betweenness 0.000
+  BRIDGE       grep_regex.matcher.RegexMatcher.new_line_matcher betweenness 0.000
+  BRIDGE       grep_regex.strip.strip_from_match   betweenness 0.000
+  BRIDGE       grep_searcher.line_buffer.LineBufferReader.binary_byte_offset betweenness 0.000
+  BRIDGE       grep_searcher.searcher.Searcher.check_config betweenness 0.000
+  BRIDGE       grep_searcher.searcher.Searcher.fill_multi_line_buffer_from_reader betweenness 0.000
+  BRIDGE       grep_searcher.searcher.SearcherBuilder.build betweenness 0.000
+  BRIDGE       grep_searcher.searcher.core.Core.begin betweenness 0.000
+  BRIDGE       grep_searcher.searcher.core.Core.finish betweenness 0.000
+  BRIDGE       grep_searcher.searcher.glue.MultiLine.new betweenness 0.000
+  BRIDGE       ignore.PartialErrorBuilder.maybe_push_ignore_io betweenness 0.000
+  BRIDGE       ignore.gitignore.Gitignore.strip    betweenness 0.000
+  BRIDGE       ignore.overrides.Override.is_empty  betweenness 0.000
+  BRIDGE       ignore.walk.WalkBuilder.build_parallel betweenness 0.000
+  BRIDGE       ignore.walk.WalkBuilder.new         betweenness 0.000
+  BRIDGE       ignore.walk.WalkParallel.run        betweenness 0.000
+  BRIDGE       ignore.walk.Work.add_parents        betweenness 0.000
+  BRIDGE       ignore.walk.Worker.run              betweenness 0.000
+  BRIDGE       rg.flags.doc.help                   betweenness 0.000
+  BRIDGE       rg.flags.doc.man                    betweenness 0.000
+  BRIDGE       rg.flags.hiargs.HiArgs.matcher      betweenness 0.000
+  BRIDGE       rg.flags.hiargs.hostname            betweenness 0.000
+  BRIDGE       rg.flags.parse.lookup               betweenness 0.000
+  BRIDGE       rg.flags.parse.parse                betweenness 0.000
+  BRIDGE       rg.search.SearchWorker.search_decompress betweenness 0.000
+  BRIDGE       rg.search.SearchWorker.search_preprocessor betweenness 0.000
+  BRIDGE       rg.search.SearchWorker.search_reader betweenness 0.000
+  BRIDGE       rg.search.SearchWorker.should_preprocess betweenness 0.000
+  BRIDGE       search_stdin.example                betweenness 0.000
+  BRIDGE       globset.GlobSet.is_match            betweenness 0.000
+  BRIDGE       globset.GlobSet.is_match_candidate  betweenness 0.000
+  BRIDGE       globset.GlobSet.matches             betweenness 0.000
+  BRIDGE       globset.GlobSet.matches_candidate   betweenness 0.000
+  BRIDGE       globset.GlobSet.matches_into        betweenness 0.000
+  BRIDGE       grep_matcher.Matcher.find           betweenness 0.000
+  BRIDGE       grep_matcher.Matcher.is_match       betweenness 0.000
+  BRIDGE       grep_printer.hyperlink.Part.interpolate_to betweenness 0.000
+  BRIDGE       grep_regex.ast.AstAnalysis.from_ast betweenness 0.000
+  BRIDGE       grep_regex.config.Config.is_case_insensitive betweenness 0.000
+  BRIDGE       grep_regex.config.ConfiguredHIR.into_whole_line betweenness 0.000
+  BRIDGE       grep_regex.matcher.RegexMatcher.new betweenness 0.000
+  BRIDGE       grep_regex.matcher.RegexMatcherBuilder.build betweenness 0.000
+  BRIDGE       grep_regex.non_matching.non_matching_bytes betweenness 0.000
+  BRIDGE       grep_regex.non_matching.remove_matching_bytes betweenness 0.000
+  BRIDGE       grep_searcher.line_buffer.LineBufferReader.buffer betweenness 0.000
+  BRIDGE       grep_searcher.lines.preceding       betweenness 0.000
+  BRIDGE       grep_searcher.lines.without_terminator betweenness 0.000
+  BRIDGE       grep_searcher.searcher.Searcher.search_path betweenness 0.000
+  BRIDGE       grep_searcher.searcher.core.Core.binary_data betweenness 0.000
+  BRIDGE       grep_searcher.searcher.core.Core.sink_break_context betweenness 0.000
+  BRIDGE       grep_searcher.sink.SinkError.error_io betweenness 0.000
+  BRIDGE       ignore.PartialErrorBuilder.push_ignore_io betweenness 0.000
+  BRIDGE       ignore.dir.IgnoreBuilder.new        betweenness 0.000
+  BRIDGE       ignore.overrides.OverrideBuilder.add betweenness 0.000
+  BRIDGE       ignore.overrides.OverrideBuilder.build betweenness 0.000
+  BRIDGE       ignore.types.Types.empty            betweenness 0.000
+  BRIDGE       ignore.walk.DirEntry.metadata       betweenness 0.000
+  BRIDGE       ignore.walk.DirEntryInner.file_type betweenness 0.000
+  BRIDGE       rg.flags.complete.fish              betweenness 0.000
+  BRIDGE       rg.haystack.Haystack.is_stdin       betweenness 0.000
+  BRIDGE       rg.search.SearchWorker.should_decompress betweenness 0.000
+  BRIDGE       simplegrep.try_main                 betweenness 0.000
+  BRIDGE       globset.glob.Glob.basename_literal  betweenness 0.000
+  BRIDGE       globset.glob.Tokens.to_regex_with   betweenness 0.000
+  BRIDGE       globset.glob.Tokens.tokens_to_regex betweenness 0.000
+  BRIDGE       globset.glob.char_to_escaped_literal betweenness 0.000
+  BRIDGE       grep_cli.decompress.DecompressionMatcher.command betweenness 0.000
+  BRIDGE       grep_cli.decompress.DecompressionMatcher.has_command betweenness 0.000
+  BRIDGE       grep_cli.process.StderrReader.async betweenness 0.000
+  BRIDGE       grep_regex.config.Config.build_many betweenness 0.000
+  BRIDGE       grep_regex.config.ConfiguredHIR.non_matching_bytes betweenness 0.000
+  BRIDGE       grep_searcher.line_buffer.LineBufferReader.absolute_byte_offset betweenness 0.000
+  BRIDGE       grep_searcher.line_buffer.LineBufferReader.consume betweenness 0.000
+  BRIDGE       grep_searcher.line_buffer.LineBufferReader.fill betweenness 0.000
+  BRIDGE       grep_searcher.line_buffer.LineBufferReader.new betweenness 0.000
+  BRIDGE       grep_searcher.searcher.core.Core.matched betweenness 0.000
+  BRIDGE       ignore.dir.Ignore.add_child         betweenness 0.000
+  BRIDGE       ignore.walk.DirEntry.path_is_symlink betweenness 0.000
+  BRIDGE       ignore.walk.DirEntryInner.path      betweenness 0.000
+  BRIDGE       rg.search.SearchWorker.search_path  betweenness 0.000
+  BRIDGE       rg.search.SearchWorkerBuilder.preprocessor betweenness 0.000
+  ENTRY_POINT  rg.flags.hiargs.HiArgs.printer_standard 26 outbound, 1 inbound
+  ENTRY_POINT  grep_printer.standard.StandardImpl.sink_slow_multi_per_match 24 outbound, 1 inbound
+  ENTRY_POINT  grep_printer.standard.StandardImpl.sink_slow_multi_line_only_matching 23 outbound, 1 inbound
+  ENTRY_POINT  rg.search_parallel                  20 outbound, 1 inbound
+  ENTRY_POINT  grep_printer.standard.StandardImpl.sink_slow_multi_line 19 outbound, 1 inbound
+  ENTRY_POINT  grep_printer.json.JSONSink.matched  16 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.summary.SummarySink.finish 15 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.standard.StandardSink.matched 14 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.json.JSONSink.context  12 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.standard.StandardSink.context 11 outbound, 0 inbound
+  ENTRY_POINT  integration                         10 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.json.JSONSink.finish   9 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.standard.StandardSink.finish 9 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.summary.SummarySink.matched 9 outbound, 0 inbound
+  ENTRY_POINT  rg                                  8 outbound, 0 inbound
+  ENTRY_POINT  ignore.gitignore.Gitignore.new      7 outbound, 0 inbound
+  ENTRY_POINT  ignore.walk.Walk.skip_entry         7 outbound, 0 inbound
+  ENTRY_POINT  ignore.walk.WalkBuilder.standard_filters 6 outbound, 0 inbound
+  ENTRY_POINT  walk.main                           6 outbound, 0 inbound
+  ENTRY_POINT  grep                                5 outbound, 0 inbound
+  ENTRY_POINT  simplegrep                          5 outbound, 0 inbound
+  ENTRY_POINT  bench.new_reglob_many               4 outbound, 0 inbound
+  ENTRY_POINT  gitignore_matched_path_or_any_parents_tests.get_gitignore 3 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.summary.SummarySink.begin 3 outbound, 0 inbound
+  ENTRY_POINT  grep_searcher.sink.sinks.Bytes.matched 3 outbound, 0 inbound
+  ENTRY_POINT  grep_searcher.sink.sinks.Lossy.matched 3 outbound, 0 inbound
+  ENTRY_POINT  grep_searcher.sink.sinks.UTF8.matched 3 outbound, 0 inbound
+  ENTRY_POINT  ignore.gitignore.Gitignore.matched_path_or_any_parents 3 outbound, 0 inbound
+  ENTRY_POINT  integration.misc.sort_setup         3 outbound, 0 inbound
+  ENTRY_POINT  integration.util.setup_pcre2        3 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.AfterContext.update   3 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.BeforeContext.update  3 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Context.update        3 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Generate.update       3 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Unrestricted.update   3 outbound, 0 inbound
+  ENTRY_POINT  search_stdin                        3 outbound, 0 inbound
+  ENTRY_POINT  bench                               2 outbound, 0 inbound
+  ENTRY_POINT  bench.new_reglob                    2 outbound, 0 inbound
+  ENTRY_POINT  build_script_build.main             2 outbound, 0 inbound
+  ENTRY_POINT  globset.glob.GlobMatcher.is_match   2 outbound, 0 inbound
+  ENTRY_POINT  grep_cli.decompress.DecompressionMatcher.new 2 outbound, 0 inbound
+  ENTRY_POINT  grep_cli.decompress.DecompressionReader.new 2 outbound, 0 inbound
+  ENTRY_POINT  grep_pcre2                          2 outbound, 0 inbound
+  ENTRY_POINT  grep_pcre2.matcher.RegexMatcher.new 2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.json.JSON.new          2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.json.JSONSink.begin    2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.json.JSONSink.binary_data 2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.standard.Standard.new  2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.standard.Standard.new_no_color 2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.standard.StandardSink.binary_data 2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.standard.StandardSink.context_break 2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.summary.Summary.new    2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.summary.Summary.new_no_color 2 outbound, 0 inbound
+  ENTRY_POINT  grep_printer.summary.SummarySink.binary_data 2 outbound, 0 inbound
+  ENTRY_POINT  ignore.gitignore.Gitignore.global   2 outbound, 0 inbound
+  ENTRY_POINT  ignore.walk.Walk.new                2 outbound, 0 inbound
+  ENTRY_POINT  integration.util.setup              2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Color.update          2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Colors.update         2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.ContextSeparator.update 2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.DfaSizeLimit.update   2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Encoding.update       2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Engine.update         2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.FieldContextSeparator.update 2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.FieldMatchSeparator.update 2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Glob.update           2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.HyperlinkFormat.update 2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.IGlob.update          2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.JSON.update           2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.MaxColumns.update     2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.MaxCount.update       2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.MaxDepth.update       2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.MaxFilesize.update    2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.PathSeparator.update  2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.PreGlob.update        2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.RegexSizeLimit.update 2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Regexp.update         2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Replace.update        2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Sort.update           2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Sortr.update          2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Threads.update        2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.Type.update           2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.TypeAdd.update        2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.TypeClear.update      2 outbound, 0 inbound
+  ENTRY_POINT  rg.flags.defs.TypeNot.update        2 outbound, 0 inbound
+  ENTRY_POINT  rg.main                             2 outbound, 0 inbound
+  UTILITY      rg.flags.Flag                       104 inbound, 0 outbound
+  UTILITY      rg.flags.FlagValue.unwrap_switch    39 inbound, 0 outbound
+  UTILITY      rg.flags.FlagValue.unwrap_value     32 inbound, 0 outbound
+  UTILITY      grep_matcher.Match.new              30 inbound, 0 outbound
+  UTILITY      grep_matcher.Match.start            28 inbound, 0 outbound
+  UTILITY      grep_matcher.Match.end              26 inbound, 0 outbound
+  UTILITY      grep_matcher.LineTerminator.as_byte 21 inbound, 0 outbound
+  UTILITY      grep_printer.standard.StandardImpl.config 16 inbound, 0 outbound
+  UTILITY      ignore.Error.with_path              12 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.Searcher.line_terminator 11 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.core.Core.pos 11 inbound, 0 outbound
+  UTILITY      rg.flags.defs.convert.str           11 inbound, 0 outbound
+  UTILITY      grep_searcher.lines.LineStep.new    10 inbound, 0 outbound
+  UTILITY      rg.flags.defs.convert.string        10 inbound, 0 outbound
+  UTILITY      grep_printer.standard.StandardImpl.wtr 9 inbound, 0 outbound
+  UTILITY      rg.flags.lowargs.Mode.update        8 inbound, 0 outbound
+  UTILITY      grep_printer.color                  7 inbound, 0 outbound
+  UTILITY      grep_printer.stats.Stats.new        7 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.BinaryDetection.quit_byte 7 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.Searcher.binary_detection 7 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.core.Core.set_pos 7 inbound, 0 outbound
+  UTILITY      ignore.PartialErrorBuilder.into_error_option 7 inbound, 0 outbound
+  UTILITY      ignore.PartialErrorBuilder.push     7 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.name_long             7 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.name_negated          7 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.name_short            7 inbound, 0 outbound
+  UTILITY      globset.GlobSetBuilder.new          6 inbound, 0 outbound
+  UTILITY      globset.glob.Parser.error           6 inbound, 0 outbound
+  UTILITY      grep_matcher.Match.with_end         6 inbound, 0 outbound
+  UTILITY      grep_printer.hyperlink.InterpolatorStatus.inactive 6 inbound, 0 outbound
+  UTILITY      grep_printer.util.Sunk.absolute_byte_offset 6 inbound, 0 outbound
+  UTILITY      grep_printer.util.Sunk.bytes        6 inbound, 0 outbound
+  UTILITY      grep_printer.util.Sunk.line_number  6 inbound, 0 outbound
+  UTILITY      grep_printer.util.Sunk.matches      6 inbound, 0 outbound
+  UTILITY      grep_regex.error                    6 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.Sink             6 inbound, 0 outbound
+  UTILITY      integration.util.nice_err           6 inbound, 0 outbound
+  UTILITY      globset.GlobSet.is_empty            5 inbound, 0 outbound
+  UTILITY      grep_printer.color.ColorSpecs.matched 5 inbound, 0 outbound
+  UTILITY      grep_printer.hyperlink.Interpolator.new 5 inbound, 0 outbound
+  UTILITY      grep_printer.summary.SummarySink.write 5 inbound, 0 outbound
+  UTILITY      grep_printer.util.PrinterPath.as_bytes 5 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.Sink.context     5 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkError.error_message 5 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkMatch.bytes  5 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkMatch.line_number 5 inbound, 0 outbound
+  UTILITY      ignore.Match.is_none                5 inbound, 0 outbound
+  UTILITY      globset.GlobSetBuilder.add          4 inbound, 0 outbound
+  UTILITY      grep_matcher.Captures               4 inbound, 0 outbound
+  UTILITY      grep_matcher.Captures.get           4 inbound, 0 outbound
+  UTILITY      grep_matcher.LineTerminator.as_bytes 4 inbound, 0 outbound
+  UTILITY      grep_matcher.Match.with_start       4 inbound, 0 outbound
+  UTILITY      grep_matcher.Matcher                4 inbound, 0 outbound
+  UTILITY      grep_matcher.Matcher.find_at        4 inbound, 0 outbound
+  UTILITY      grep_matcher.Matcher.line_terminator 4 inbound, 0 outbound
+  UTILITY      grep_printer.counter                4 inbound, 0 outbound
+  UTILITY      grep_printer.counter.CounterWriter.count 4 inbound, 0 outbound
+  UTILITY      grep_printer.counter.CounterWriter.reset 4 inbound, 0 outbound
+  UTILITY      grep_printer.counter.CounterWriter.set_color 4 inbound, 0 outbound
+  UTILITY      grep_printer.counter.CounterWriter.total_count 4 inbound, 0 outbound
+  UTILITY      grep_printer.json.JSON.write_message 4 inbound, 0 outbound
+  UTILITY      grep_printer.standard.StandardBuilder.new 4 inbound, 0 outbound
+  UTILITY      grep_printer.standard.StandardImpl.path 4 inbound, 0 outbound
+  UTILITY      grep_printer.util.DecimalFormatter.as_bytes 4 inbound, 0 outbound
+  UTILITY      grep_printer.util.DecimalFormatter.new 4 inbound, 0 outbound
+  UTILITY      grep_searcher.line_buffer           4 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.core.Core.binary_byte_offset 4 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.Error.error_message 4 inbound, 0 outbound
+  UTILITY      ignore.gitignore.home_dir           4 inbound, 0 outbound
+  UTILITY      ignore.pathutil.strip_prefix        4 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.is_switch             4 inbound, 0 outbound
+  UTILITY      rg.flags.doc.version                4 inbound, 0 outbound
+  UTILITY      rg.flags.doc.version.generate_digits 4 inbound, 0 outbound
+  UTILITY      rg.flags.hiargs.HiArgs.quit_after_match 4 inbound, 0 outbound
+  UTILITY      globset.glob.Parser.bump            3 inbound, 0 outbound
+  UTILITY      grep_cli.process.CommandError.io    3 inbound, 0 outbound
+  UTILITY      grep_matcher.LineTerminator.is_crlf 3 inbound, 0 outbound
+  UTILITY      grep_matcher.Matcher.captures_at    3 inbound, 0 outbound
+  UTILITY      grep_matcher.Matcher.non_matching_bytes 3 inbound, 0 outbound
+  UTILITY      grep_printer.color.ColorSpecs.path  3 inbound, 0 outbound
+  UTILITY      grep_printer.counter.CounterWriter.get_mut 3 inbound, 0 outbound
+  UTILITY      grep_printer.counter.CounterWriter.into_inner 3 inbound, 0 outbound
+  UTILITY      grep_printer.counter.CounterWriter.new 3 inbound, 0 outbound
+  UTILITY      grep_printer.counter.CounterWriter.reset_count 3 inbound, 0 outbound
+  UTILITY      grep_printer.hyperlink.Interpolator.finish 3 inbound, 0 outbound
+  UTILITY      grep_printer.hyperlink.Values.new   3 inbound, 0 outbound
+  UTILITY      grep_printer.jsont.Data.from_bytes  3 inbound, 0 outbound
+  UTILITY      grep_printer.stats.Stats.add_bytes_printed 3 inbound, 0 outbound
+  UTILITY      grep_printer.stats.Stats.add_bytes_searched 3 inbound, 0 outbound
+  UTILITY      grep_printer.stats.Stats.add_elapsed 3 inbound, 0 outbound
+  UTILITY      grep_printer.stats.Stats.add_matched_lines 3 inbound, 0 outbound
+  UTILITY      grep_printer.stats.Stats.add_matches 3 inbound, 0 outbound
+  UTILITY      grep_printer.stats.Stats.add_searches 3 inbound, 0 outbound
+  UTILITY      grep_printer.stats.Stats.add_searches_with_match 3 inbound, 0 outbound
+  UTILITY      grep_printer.summary.SummaryBuilder.new 3 inbound, 0 outbound
+  UTILITY      grep_printer.util.PrinterPath.new   3 inbound, 0 outbound
+  UTILITY      grep_regex.ast.AstAnalysis.done     3 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.empty       3 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.len         3 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.make_infinite 3 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.min_literal_len 3 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.singleton   3 inbound, 0 outbound
+  UTILITY      grep_regex.matcher.RegexMatcherBuilder.new 3 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.BinaryDetection.convert_byte 3 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.SearcherBuilder.new 3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.Sink.begin       3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.Sink.binary_data 3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.Sink.context_break 3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.Sink.finish      3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.Sink.matched     3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkContext.bytes 3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkContext.kind 3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkFinish.byte_count 3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkMatch.buffer 3 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkMatch.bytes_range_in_buffer 3 inbound, 0 outbound
+  UTILITY      ignore.Error.with_depth             3 inbound, 0 outbound
+  UTILITY      ignore.Match.is_ignore              3 inbound, 0 outbound
+  UTILITY      ignore.Match.map                    3 inbound, 0 outbound
+  UTILITY      ignore.gitignore.GitignoreBuilder.case_insensitive 3 inbound, 0 outbound
+  UTILITY      ignore.walk.ParallelVisitor.visit   3 inbound, 0 outbound
+  UTILITY      ignore.walk.Stack.push              3 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.doc_category          3 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.doc_variable          3 inbound, 0 outbound
+  UTILITY      globset.Candidate.path_prefix       2 inbound, 0 outbound
+  UTILITY      globset.Candidate.path_suffix       2 inbound, 0 outbound
+  UTILITY      globset.Error.kind                  2 inbound, 0 outbound
+  UTILITY      globset.glob.GlobBuilder.literal_separator 2 inbound, 0 outbound
+  UTILITY      globset.new_regex                   2 inbound, 0 outbound
+  UTILITY      grep_cli.decompress.DecompressionReaderBuilder.new 2 inbound, 0 outbound
+  UTILITY      grep_cli.escape                     2 inbound, 0 outbound
+  UTILITY      grep_cli.escape.escape              2 inbound, 0 outbound
+  UTILITY      grep_cli.process                    2 inbound, 0 outbound
+  UTILITY      grep_cli.process.CommandReaderBuilder.async_stderr 2 inbound, 0 outbound
+  UTILITY      grep_cli.process.CommandReaderBuilder.new 2 inbound, 0 outbound
+  UTILITY      grep_cli.wtr.stdout_buffered_block  2 inbound, 0 outbound
+  UTILITY      grep_cli.wtr.stdout_buffered_line   2 inbound, 0 outbound
+  UTILITY      grep_matcher.ByteSet.contains       2 inbound, 0 outbound
+  UTILITY      grep_matcher.ByteSet.remove         2 inbound, 0 outbound
+  UTILITY      grep_matcher.LineTerminator.crlf    2 inbound, 0 outbound
+  UTILITY      grep_matcher.Match.offset           2 inbound, 0 outbound
+  UTILITY      grep_matcher.Matcher.capture_index  2 inbound, 0 outbound
+  UTILITY      grep_matcher.Matcher.new_captures   2 inbound, 0 outbound
+  UTILITY      grep_pcre2.error                    2 inbound, 0 outbound
+  UTILITY      grep_printer.color.ColorSpecs.column 2 inbound, 0 outbound
+  UTILITY      grep_printer.color.SpecValue.merge_into 2 inbound, 0 outbound
+  UTILITY      grep_printer.color.default_color_specs 2 inbound, 0 outbound
+  UTILITY      grep_printer.counter.CounterWriter.supports_color 2 inbound, 0 outbound
+  UTILITY      grep_printer.hyperlink.HyperlinkConfig.format 2 inbound, 0 outbound
+  UTILITY      grep_printer.hyperlink.HyperlinkConfig.new 2 inbound, 0 outbound
+  UTILITY      grep_printer.hyperlink_aliases      2 inbound, 0 outbound
+  UTILITY      grep_printer.json.JSONBuilder.new   2 inbound, 0 outbound
+  UTILITY      grep_printer.json.JSONSink.has_match 2 inbound, 0 outbound
+  UTILITY      grep_printer.json.JSONSink.should_quit 2 inbound, 0 outbound
+  UTILITY      grep_printer.json.JSONSink.stats    2 inbound, 0 outbound
+  UTILITY      grep_printer.json.SubMatches.as_slice 2 inbound, 0 outbound
+  UTILITY      grep_printer.jsont                  2 inbound, 0 outbound
+  UTILITY      grep_printer.standard.StandardBuilder.color_specs 2 inbound, 0 outbound
+  UTILITY      grep_printer.standard.StandardSink.has_match 2 inbound, 0 outbound
+  UTILITY      grep_printer.standard.StandardSink.should_quit 2 inbound, 0 outbound
+  UTILITY      grep_printer.standard.StandardSink.stats 2 inbound, 0 outbound
+  UTILITY      grep_printer.summary.SummaryKind.requires_path 2 inbound, 0 outbound
+  UTILITY      grep_printer.summary.SummaryKind.requires_stats 2 inbound, 0 outbound
+  UTILITY      grep_printer.summary.SummarySink.has_match 2 inbound, 0 outbound
+  UTILITY      grep_printer.summary.SummarySink.stats 2 inbound, 0 outbound
+  UTILITY      grep_printer.util.Replacer.clear    2 inbound, 0 outbound
+  UTILITY      grep_printer.util.Replacer.new      2 inbound, 0 outbound
+  UTILITY      grep_printer.util.Replacer.replacement 2 inbound, 0 outbound
+  UTILITY      grep_regex.ast                      2 inbound, 0 outbound
+  UTILITY      grep_regex.ast.AstAnalysis.from_ast_literal 2 inbound, 0 outbound
+  UTILITY      grep_regex.config.ConfiguredHIR.config 2 inbound, 0 outbound
+  UTILITY      grep_regex.error.Error.new          2 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.infinite    2 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.is_finite   2 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.is_inexact  2 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.keep_first_bytes 2 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.make_inexact 2 inbound, 0 outbound
+  UTILITY      grep_regex.literal.TSeq.push        2 inbound, 0 outbound
+  UTILITY      grep_regex.matcher.RegexMatcherBuilder.line_terminator 2 inbound, 0 outbound
+  UTILITY      grep_searcher.line_buffer.LineBuffer.buffer 2 inbound, 0 outbound
+  UTILITY      grep_searcher.line_buffer.LineBuffer.free_buffer 2 inbound, 0 outbound
+  UTILITY      grep_searcher.line_buffer.alloc_error 2 inbound, 0 outbound
+  UTILITY      grep_searcher.lines.LineStep.next_impl 2 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.BinaryDetection.none 2 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.BinaryDetection.quit 2 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.Config.max_context 2 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.Searcher.after_context 2 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.Searcher.invert_match 2 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.SearcherBuilder.line_number 2 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.mmap         2 inbound, 0 outbound
+  UTILITY      grep_searcher.searcher.mmap.MmapChoice.is_enabled 2 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkContext.absolute_byte_offset 2 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkContext.line_number 2 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkFinish.binary_byte_offset 2 inbound, 0 outbound
+  UTILITY      grep_searcher.sink.SinkMatch.absolute_byte_offset 2 inbound, 0 outbound
+  UTILITY      ignore.Match.is_whitelist           2 inbound, 0 outbound
+  UTILITY      ignore.dir.Ignore.parents           2 inbound, 0 outbound
+  UTILITY      ignore.gitignore.Glob.is_whitelist  2 inbound, 0 outbound
+  UTILITY      ignore.pathutil.file_name           2 inbound, 0 outbound
+  UTILITY      ignore.types.FileTypeDef.name       2 inbound, 0 outbound
+  UTILITY      ignore.types.Selection.is_negated   2 inbound, 0 outbound
+  UTILITY      ignore.types.TypesBuilder.add       2 inbound, 0 outbound
+  UTILITY      ignore.walk.DirEntry.new_raw        2 inbound, 0 outbound
+  UTILITY      ignore.walk.ParallelVisitorBuilder.build 2 inbound, 0 outbound
+  UTILITY      ignore.walk.WalkBuilder.threads     2 inbound, 0 outbound
+  UTILITY      ignore.walk.WalkState.is_quit       2 inbound, 0 outbound
+  UTILITY      ignore.walk.device_num              2 inbound, 0 outbound
+  UTILITY      ignore.walk.skip_filesize           2 inbound, 0 outbound
+  UTILITY      integration.util.Dir.try_create_bytes 2 inbound, 0 outbound
+  UTILITY      integration.util.TestCommand.expect_success 2 inbound, 0 outbound
+  UTILITY      integration.util.repeat             2 inbound, 0 outbound
+  UTILITY      rg.eprint_nothing_searched          2 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.aliases               2 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.doc_choices           2 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.doc_long              2 inbound, 0 outbound
+  UTILITY      rg.flags.Flag.doc_short             2 inbound, 0 outbound
+  UTILITY      rg.flags.complete.bash              2 inbound, 0 outbound
+  UTILITY      rg.flags.complete.powershell        2 inbound, 0 outbound
+  UTILITY      rg.flags.complete.zsh               2 inbound, 0 outbound
+  UTILITY      rg.flags.doc.render_custom_markup   2 inbound, 0 outbound
+  UTILITY      rg.flags.doc.version.generate_pcre2 2 inbound, 0 outbound
+  UTILITY      rg.flags.hiargs.HiArgs.has_implicit_path 2 inbound, 0 outbound
+  UTILITY      rg.flags.hiargs.HiArgs.stats        2 inbound, 0 outbound
+  UTILITY      rg.flags.lowargs.ColorChoice.to_termcolor 2 inbound, 0 outbound
+  UTILITY      rg.flags.lowargs.ContextModeLimited.get 2 inbound, 0 outbound
+  UTILITY      rg.flags.lowargs.ContextSeparator.into_bytes 2 inbound, 0 outbound
+  UTILITY      rg.flags.parse.FlagMap.find         2 inbound, 0 outbound
+  UTILITY      rg.haystack                         2 inbound, 0 outbound
+  UTILITY      rg.print_stats                      2 inbound, 0 outbound
+  UTILITY      rg.search.SearchResult.has_match    2 inbound, 0 outbound
+  UTILITY      rg.search.SearchResult.stats        2 inbound, 0 outbound
+  UTILITY      rg.search.SearchWorker.printer      2 inbound, 0 outbound
+
+── Health ──────────────────────────────────────────────
+
+  Modularity Q: 0.836
