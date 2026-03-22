@@ -101,6 +101,21 @@ pub fn decompose(graph: &Graph, k: usize) -> SpectralResult {
     }
 }
 
+/// Compute the Fiedler value (λ₂) and Fiedler vector for a subgraph induced
+/// by the given node indices. Returns None if the subgraph is too small or
+/// disconnected (λ₂ ≈ 0 means disconnected, but we still return it).
+pub fn subgraph_fiedler(graph: &Graph, node_indices: &[usize]) -> Option<(f64, Vec<f64>)> {
+    let n = node_indices.len();
+    if n < 5 {
+        return None;
+    }
+    let adjacency = extract_subgraph(graph, node_indices);
+    let result = decompose_core(&adjacency, n, 1)?; // k=1 → we get λ₂ and v₂
+    let fiedler_value = result.eigenvalues.first().copied().unwrap_or(0.0);
+    let fiedler_vector = result.eigenvectors.iter().map(|row| row[0]).collect();
+    Some((fiedler_value, fiedler_vector))
+}
+
 /// Estimate k from the eigengap heuristic (von Luxburg 2007).
 ///
 /// Finds the largest jump between consecutive eigenvalues: k = argmax(λ_{i+1} - λ_i) + 1.

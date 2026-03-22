@@ -223,6 +223,20 @@ The `reconstruction_error` scalar is the key anomaly signal. After training, it 
 
 The graph-level embedding enables cross-repo structural comparison — two codebases with similar g_embedding have similar global topology. The archetype classifier is a simple post-hoc k-NN on the training corpus, not a learned head.
 
+### Model Artifacts (Shipped with Model Bundle)
+
+These trained artifacts are exposed alongside the per-node/per-graph outputs for downstream consumption by the health score and diagnostics:
+
+| Artifact | Shape | Source | Consumed by |
+|----------|-------|--------|-------------|
+| `R` | 32×32 | Bilinear relation matrix from Loss 2 | Health: `direction_surprise` for layer_conformance |
+| `depth_probe_w` | 768 | Linear probe weight vector | Health: semantic layer assignment |
+| `depth_probe_b` | 1 | Linear probe bias | Health: semantic layer assignment |
+
+**R (bilinear relation matrix).** The 32×32 matrix from the cross-layer edge prediction head (Loss 2). At training time it learns which import-position pairs predict call edges. At inference time the health score uses its asymmetry to compute `direction_surprise` per edge — measuring how much the model thinks each call edge goes against the expected direction. R is a model weight, not a per-node output. It is extracted from the trained model and shipped as a constant in the model bundle.
+
+**Semantic depth probe.** A linear regression from 768d CodeLM module centroids to scalar layer position. Trained on the R-GIN corpus (see Training Procedure). Used by the health score to anchor layer assignment in semantic meaning rather than self-referential edge counts. The probe weights are small (769 floats) and ship with the model bundle.
+
 ### What Is NOT in the Output
 
 - Raw CodeLM embeddings (too large, model-specific — consumers use Phase 2's embeddings directly if needed).
@@ -434,6 +448,27 @@ PyTorch + PyTorch Geometric. The R-GIN is implemented in Python for training (le
 
 This avoids the hard phase transition problem where the model overfits to reconstruction in Phase A and then struggles to adapt when auxiliary losses activate abruptly.
 
+### Post-Training: Semantic Depth Probe
+
+After R-GIN training completes, fit a linear probe that maps module semantic content to layer position. This is a lightweight post-hoc step, not part of the R-GIN training loop.
+
+**Input:** For each training repo that passed quality filters (cycle_freedom > 0.95 to ensure clean DAG structure), compute per-module CodeLM centroid (768d average of member node embeddings).
+
+**Target:** The module's normalized layer position from edge-majority inference: `y_M = layer(M) / max_layer`, giving a value in [0, 1] where 0 = bottom of the stack and 1 = top.
+
+**Method:** Ordinary least squares across all modules in the filtered training corpus:
+
+```
+depth_sem(M) = w^T · centroid_sem(M) + b
+minimize Σ (depth_sem(M) - y_M)²
+```
+
+This is a single matrix solve (~50 lines of Python). The result is a 768d weight vector `w` and scalar bias `b` that map any module's semantic centroid to a predicted layer position. The probe learns patterns like "database/SQL vocabulary → low layer" and "HTTP/handler vocabulary → high layer" from hundreds of repos.
+
+**Why post-training, not joint:** The probe uses frozen CodeLM embeddings, not R-GIN outputs. It doesn't need gradients from the R-GIN. Fitting it after training avoids adding another objective to the already-tight loss budget and keeps the R-GIN's training stable.
+
+**Output:** `depth_probe_w` (768 floats) and `depth_probe_b` (1 float), shipped with the model bundle.
+
 ### Hardware
 
 - **Training:** Single GPU (A100 or equivalent). ~4-8 hours for 1000 graphs × 300 epochs. The bottleneck is not compute but data preprocessing (parsing 1000 repos, computing CodeLM embeddings — see Dataset section).
@@ -465,6 +500,9 @@ This is still a small model. At 1.8M parameters with 500K-1M training nodes, the
 | Masked reconstruction cosine similarity | >0.6 | How well structure predicts semantics |
 | Cross-layer AUC (imports → calls) | >0.75 | How well import structure predicts call structure |
 | Graph-level contrastive accuracy | >0.8 | Whether same-repo subgraphs are more similar than cross-repo |
+| R asymmetry ratio `‖R - R^T‖_F / ‖R‖_F` | >0.1 | Whether R has learned meaningful directionality |
+
+**R asymmetry check.** The bilinear matrix R from Loss 2 is used by the health score to compute `direction_surprise` per edge — measuring whether each call edge goes against the expected direction. This signal exists only if R is asymmetric (if R ≈ R^T, then `σ(z^T R z')` ≈ `σ(z'^T R z)` and direction_surprise ≈ 0 for all edges). After training, compute `‖R - R^T‖_F / ‖R‖_F`. If < 0.1, the bilinear form learned proximity but not directionality — the health score falls back to binary violation counting. If ≥ 0.1, the direction_surprise signal is usable. This check is reported in the training log and stored with the model bundle metadata.
 
 ### Extrinsic Evaluation (Against Phase 2 Baseline)
 
@@ -630,11 +668,14 @@ This is the most underestimated step. Real-world repos will have parser failures
 - Graph-level contrastive (subgraph BFS sampling + InfoNCE).
 - Training loop with linear ramp-up schedule, gradient clipping, early stopping.
 
-### Step 4: Training + Evaluation (~2 weeks)
+### Step 4: Training + Evaluation + Health Artifacts (~2 weeks)
 - Train on curated dataset (up to 300 epochs with early stopping, ~4-8 hours on single GPU).
 - Evaluate against Phase 2 baseline on 15-20 held-out codebases with 100+ labeled anomalies.
 - Ablation: remove each loss component, measure degradation.
 - Hyperparameter sweep on masking ratio (0.60-0.75), loss weights, hidden dimensions.
+- **R asymmetry check:** Compute `‖R - R^T‖_F / ‖R‖_F`. Log result. If < 0.1, flag that `direction_surprise` will not be available for the health score.
+- **Fit semantic depth probe:** OLS regression from module centroids to layer positions across training repos with cycle_freedom > 0.95. Output: `depth_probe_w` (768d), `depth_probe_b` (scalar).
+- **Bundle model artifacts:** R-GIN weights + R matrix (32×32) + depth probe weights (769 floats) + R asymmetry ratio + training metadata.
 - If Phase 3 does not improve anomaly precision by ≥10 percentage points over Phase 2: stop. Investigate why.
 
 ### Step 5: Inference Integration (~3 weeks)
@@ -653,12 +694,18 @@ Decision: choose (a) unless the model architecture grows substantially beyond ~2
 - Implement feature computation in Rust: RWPE (sparse matrix powers), defines-tree encoding, SignNet forward pass, R-GIN forward pass, decode head.
 - Benchmark inference latency. Target: <100ms per graph (excluding CodeLM embedding time).
 
-### Step 6: Downstream Integration (~1 week)
+### Step 6: Downstream Integration (~2 weeks)
 - Replace Phase 2's centroid-distance heuristic with reconstruction_error anomaly scoring.
 - Add per-layer analysis (z_calls/z_imports/z_inherits clustering + comparison).
 - Compute g_embedding for cross-repo comparison.
 - Update --format=context with per-layer role descriptions.
 - Update --format=domain with improved clustering.
+- **Health score (THS).** Implement the Topo Health Score using R-GIN outputs:
+  - Coherence: `1 - median(reconstruction_error)` from R-GIN per-node output.
+  - Flow/cycle_freedom: Tarjan's SCCs (already implemented).
+  - Flow/layer_conformance: semantic depth probe for layer assignment + `direction_surprise` from R matrix for violation weighting.
+  - THS = coherence^α × flow^(1-α). See [HEALTH.md](capabilities/HEALTH.md) for the full specification.
+  - ~400 lines of Rust.
 
 ### Total Timeline: ~13 weeks
 

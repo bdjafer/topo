@@ -1,5 +1,0 @@
-{
-  "split": "public",
-  "description": "Clean layered app with api/core/data packages",
-  "label_provenance": "Package structure matches documented architecture"
-}

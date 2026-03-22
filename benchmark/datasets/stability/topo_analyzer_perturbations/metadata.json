@@ -1,6 +1,0 @@
-{
-  "split": "public",
-  "level": "symbol",
-  "description": "Structure-preserving perturbations of topo-analyzer graph (110 nodes)",
-  "perturbation_families": ["rename", "add_dead_leaf"]
-}

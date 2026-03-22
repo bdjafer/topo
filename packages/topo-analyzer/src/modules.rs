@@ -214,6 +214,10 @@ pub fn build_module_dependencies(
     let mut dep_map: HashMap<(usize, usize), HashMap<String, usize>> = HashMap::new();
 
     for (kind, edges) in &graph.typed_edges {
+        // Skip defines edges — containment hierarchy, not coupling.
+        if kind == "defines" {
+            continue;
+        }
         for &(src, tgt) in edges {
             let src_id = &graph.node_ids[src];
             let tgt_id = &graph.node_ids[tgt];
@@ -326,7 +330,12 @@ pub fn modularity_q(
     let mut internal: HashMap<usize, usize> = HashMap::new();
     let mut degree: HashMap<usize, usize> = HashMap::new();
 
-    for edges in graph.typed_edges.values() {
+    for (kind, edges) in &graph.typed_edges {
+        // Skip defines edges — they encode containment hierarchy, not coupling,
+        // and are excluded from the adjacency matrix / edge_count denominator.
+        if kind == "defines" {
+            continue;
+        }
         for &(src, tgt) in edges {
             let src_mod = node_to_module.get(&graph.node_ids[src]);
             let tgt_mod = node_to_module.get(&graph.node_ids[tgt]);
@@ -357,7 +366,15 @@ pub fn modularity_q(
         q += ec - ac * ac;
     }
 
-    Some(round4(q))
+    Some(q)
+}
+
+/// Newman's modularity Q, rounded to 4 decimal places for output.
+pub fn modularity_q_rounded(
+    graph: &Graph,
+    node_to_module: &HashMap<String, usize>,
+) -> Option<f64> {
+    modularity_q(graph, node_to_module).map(round4)
 }
 
 /// Ensure all module labels are unique. When two modules share a label,

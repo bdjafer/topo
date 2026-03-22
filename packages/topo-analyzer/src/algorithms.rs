@@ -1,6 +1,33 @@
-//! Graph algorithms: SCC (Tarjan), betweenness (Brandes), connected components.
+//! Graph algorithms: SCC (Tarjan), betweenness (Brandes), connected components, BFS distance.
 
 use std::collections::VecDeque;
+
+/// BFS shortest path distance between two nodes, capped at `max_hops`.
+/// Returns `None` if no path exists within the hop limit.
+pub fn bfs_distance(successors: &[Vec<usize>], src: usize, tgt: usize, max_hops: usize) -> Option<usize> {
+    if src == tgt {
+        return Some(0);
+    }
+    let mut visited = vec![false; successors.len()];
+    visited[src] = true;
+    let mut queue = VecDeque::new();
+    queue.push_back((src, 0usize));
+    while let Some((node, depth)) = queue.pop_front() {
+        if depth >= max_hops {
+            continue;
+        }
+        for &next in &successors[node] {
+            if next == tgt {
+                return Some(depth + 1);
+            }
+            if !visited[next] {
+                visited[next] = true;
+                queue.push_back((next, depth + 1));
+            }
+        }
+    }
+    None
+}
 
 /// Tarjan's iterative SCC algorithm.
 ///
@@ -180,5 +207,33 @@ mod tests {
         // there are no shortest paths *through* a node in a star).
         // Actually in a directed star with only outgoing edges, no paths go through 0.
         assert!(btw[1] == 0.0);
+    }
+
+    #[test]
+    fn test_bfs_distance_adjacent() {
+        let successors = vec![vec![1], vec![2], vec![], vec![]];
+        assert_eq!(bfs_distance(&successors, 0, 1, 4), Some(1));
+        assert_eq!(bfs_distance(&successors, 0, 2, 4), Some(2));
+    }
+
+    #[test]
+    fn test_bfs_distance_self() {
+        let successors = vec![vec![1], vec![]];
+        assert_eq!(bfs_distance(&successors, 0, 0, 4), Some(0));
+    }
+
+    #[test]
+    fn test_bfs_distance_no_path() {
+        let successors = vec![vec![1], vec![], vec![3], vec![]];
+        assert_eq!(bfs_distance(&successors, 0, 3, 4), None); // 0 and 3 disconnected
+    }
+
+    #[test]
+    fn test_bfs_distance_exceeds_max_hops() {
+        // Chain: 0->1->2->3->4->5
+        let successors = vec![vec![1], vec![2], vec![3], vec![4], vec![5], vec![]];
+        assert_eq!(bfs_distance(&successors, 0, 5, 4), None); // 5 hops > max 4
+        assert_eq!(bfs_distance(&successors, 0, 4, 4), Some(4)); // exactly max_hops
+        assert_eq!(bfs_distance(&successors, 0, 3, 4), Some(3)); // within limit
     }
 }

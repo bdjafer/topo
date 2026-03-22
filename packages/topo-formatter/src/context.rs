@@ -332,7 +332,7 @@ mod tests {
             },
             "roles": [],
             "issues": [
-                {"id": "test:1", "kind": "cross_module", "title": "Cross module", "description": "Test issue", "severity": 0.7, "severity_label": "high", "confidence": 0.8, "confidence_label": "high", "anchors": [{"node_id": "payment.charge"}]}
+                {"id": "test:1", "kind": "circular_dependency", "title": "Dependency cycle", "description": "Test issue", "severity": 0.7, "severity_label": "high", "confidence": 0.8, "confidence_label": "high", "anchors": [{"node_id": "payment.charge"}]}
             ],
             "health": {"modularity_q": 0.6}
         });

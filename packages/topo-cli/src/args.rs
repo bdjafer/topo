@@ -157,14 +157,18 @@ pub struct AnalysisArgs {
     #[arg(long, value_parser = ["text", "json", "context", "domain"])]
     pub format: Option<String>,
 
-    /// Enable semantic analysis (requires jina-embeddings model, ~300MB download).
-    #[arg(long)]
-    pub semantic: bool,
+    /// Disable semantic analysis (semantic analysis is enabled by default).
+    #[arg(long = "no-semantic")]
+    pub no_semantic: bool,
 
     /// Path to pre-computed embeddings JSON file (node_id -> 768-dim vector).
-    /// Alternative to --semantic for CI or environments without model access.
+    /// Alternative to runtime embedding generation for CI or environments without model access.
     #[arg(long)]
     pub embeddings: Option<std::path::PathBuf>,
+
+    /// Enable experimental diagnostics (shadow-dependency). These are O(n²) and may be slow.
+    #[arg(long)]
+    pub experimental: bool,
 }
 
 #[derive(Parser)]

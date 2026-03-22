@@ -101,6 +101,9 @@ pub struct AnalyzerInput {
     /// Optional — when present, enables semantic analysis tools.
     #[serde(default)]
     pub semantic_embeddings: Option<HashMap<String, Vec<f32>>>,
+    /// Enable experimental diagnostics (shadow-dependency). O(n²) cost.
+    #[serde(default)]
+    pub experimental: Option<bool>,
 }
 
 // ---------------------------------------------------------------------------
@@ -284,6 +287,12 @@ pub struct IssueOutput {
     /// For misplaced_concern: cosine similarity to best other module centroid.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub similarity_best: Option<f64>,
+    /// For cross_package_coupling: classified root cause.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub root_cause: Option<String>,
+    /// For cross_package_coupling: semantic coherence of the module.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub semantic_coherence: Option<f64>,
 }
 
 /// Semantic energy profile: how disagreement distributes across structural scales.
@@ -297,6 +306,12 @@ pub struct SemanticEnergyProfile {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HealthOutput {
     pub modularity_q: Option<f64>,
+    /// Fraction of nodes that received spectral fingerprints.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub spectral_coverage_ratio: Option<f64>,
+    /// Fraction of scoped edges that collapsed into self-edges at the current level.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub self_edge_drop_ratio: Option<f64>,
     /// Rayleigh quotient: how smoothly semantics vary over the graph. Lower = better organized.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub semantic_smoothness: Option<f64>,

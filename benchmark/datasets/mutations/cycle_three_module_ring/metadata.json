@@ -1,5 +1,0 @@
-{
-  "split": "public",
-  "level": "module",
-  "description": "data\u2192api edge closing a 3-module ring (api\u2192core\u2192data\u2192api)"
-}

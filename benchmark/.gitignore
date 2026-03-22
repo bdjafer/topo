@@ -1,0 +1,5 @@
+# Cached parsed graphs (large, reproducible from manifest)
+corpus/
+
+# Evaluation results (reproducible from scripts)
+results/

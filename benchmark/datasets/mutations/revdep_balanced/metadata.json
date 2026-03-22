@@ -1,5 +1,0 @@
-{
-  "split": "public",
-  "level": "module",
-  "description": "Multiple reverse edges making boundary nearly bidirectional"
-}

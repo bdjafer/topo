@@ -1,5 +1,0 @@
-{
-  "split": "public",
-  "level": "module",
-  "description": "Cycle visible only when calls+imports are combined"
-}

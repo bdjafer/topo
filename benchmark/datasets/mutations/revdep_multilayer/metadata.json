@@ -1,5 +1,0 @@
-{
-  "split": "public",
-  "level": "module",
-  "description": "Reverse calls + imports edges across same boundary"
-}

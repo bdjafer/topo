@@ -17,7 +17,7 @@ dev = [
 
 [tool.uv.workspace]
 members = ["packages/*"]
-exclude = ["packages/topo-web", "packages/topo-cli", "packages/topo-parser", "packages/topo-parser-rust", "packages/topo-benchmark", "packages/topo-cache", "packages/topo-formatter"]
+exclude = ["packages/topo-web", "packages/topo-cli", "packages/topo-parser", "packages/topo-parser-rust", "packages/topo-cache", "packages/topo-formatter"]
 
 [tool.uv.sources]
 pycg = { workspace = true }
@@ -26,7 +26,7 @@ topo-analyzer = { workspace = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--ignore=tests/test_benchmark"
+addopts = ""
 
 [tool.mypy]
 python_version = "3.11"

@@ -5,7 +5,7 @@
 //! - Semantic coherence, signal quality gate, Rayleigh quotient, GFT energy,
 //!   local variation, AMI, and issue detection (added incrementally).
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 // ---------------------------------------------------------------------------
 // top_terms: TF-IDF on node IDs
@@ -196,8 +196,16 @@ pub struct SemanticAnalysis {
     pub misplaced_concerns: Vec<MisplacedConcern>,
     /// Incoherent module detections.
     pub incoherent_modules: Vec<IncoherentModule>,
+    /// Shadow dependency detections (experimental, O(n²)).
+    pub shadow_dependencies: Vec<ShadowDependency>,
+    /// Redundant API detections.
+    pub redundant_apis: Vec<RedundantApi>,
     /// Whether the quality gate passed.
     pub gate_passed: bool,
+    /// Null coherence mean from permutation test (for cross-package-coupling).
+    pub null_coherence_mean: f64,
+    /// Null coherence std from permutation test (for cross-package-coupling).
+    pub null_coherence_std: f64,
 }
 
 /// A node whose semantics better match a different module.
@@ -216,6 +224,26 @@ pub struct IncoherentModule {
     pub null_threshold: f64,
     /// Semantic sub-clusters found within the module (top terms per sub-cluster).
     pub sub_clusters: Vec<Vec<String>>,
+    /// Number of members in the module.
+    pub module_size: usize,
+    /// Best k from sub-cluster sweep (2..min(|M|/3, 6)).
+    pub best_k: usize,
+}
+
+/// Two semantically similar nodes in different modules with no structural link.
+pub struct ShadowDependency {
+    pub node_a: String,
+    pub node_b: String,
+    pub similarity: f64,
+    pub structural_distance: Option<usize>,
+}
+
+/// A module whose public API has redundant entry points.
+pub struct RedundantApi {
+    pub module_id: usize,
+    pub entry_points: Vec<String>,
+    pub mean_similarity: f64,
+    pub mean_callee_overlap: f64,
 }
 
 /// Run the full semantic analysis pipeline.
@@ -229,6 +257,7 @@ pub fn analyze_semantic(
     eigenvectors: &[Vec<f64>],
     roles: &HashMap<String, String>,
     component_node_ids: &[String],
+    experimental: bool,
 ) -> SemanticAnalysis {
     // Convert f32 embeddings to f64 for numerical stability.
     let emb64: HashMap<&str, Vec<f64>> = embeddings
@@ -248,7 +277,11 @@ pub fn analyze_semantic(
             ami: 0.0,
             misplaced_concerns: Vec::new(),
             incoherent_modules: Vec::new(),
+            shadow_dependencies: Vec::new(),
+            redundant_apis: Vec::new(),
             gate_passed: false,
+            null_coherence_mean: 0.0,
+            null_coherence_std: 0.0,
         };
     }
 
@@ -271,8 +304,8 @@ pub fn analyze_semantic(
     // 6. AMI between structural and semantic partitions.
     let ami = compute_ami(&emb64, clusters);
 
-    // Compute null coherence threshold once (used by both detectors).
-    let null_threshold = compute_null_coherence_threshold(&emb64, clusters);
+    // Compute null coherence threshold once (used by both detectors and cross-package-coupling).
+    let (null_threshold, null_std) = compute_null_coherence_threshold(&emb64, clusters);
 
     // 7. Misplaced concern detection.
     let misplaced_concerns =
@@ -280,6 +313,16 @@ pub fn analyze_semantic(
 
     // 8. Incoherent module detection.
     let incoherent_modules = detect_incoherent_modules(&emb64, clusters, &module_coherence, null_threshold);
+
+    // 9. Shadow dependency detection (experimental, O(n²)).
+    let shadow_dependencies = if experimental {
+        detect_shadow_dependencies(&emb64, graph, clusters)
+    } else {
+        Vec::new()
+    };
+
+    // 10. Redundant API detection.
+    let redundant_apis = detect_redundant_api(&emb64, graph, clusters, roles);
 
     SemanticAnalysis {
         module_coherence,
@@ -290,7 +333,11 @@ pub fn analyze_semantic(
         ami,
         misplaced_concerns,
         incoherent_modules,
+        shadow_dependencies,
+        redundant_apis,
         gate_passed: true,
+        null_coherence_mean: null_threshold,
+        null_coherence_std: null_std,
     }
 }
 
@@ -499,7 +546,7 @@ fn compute_module_coherence(
 /// Lower = semantics match structure well. Higher = tangled.
 ///
 /// NOTE: graph.adj is directed. We symmetrize by processing both directions
-/// and using max(w_ij, w_ji) for the symmetric weight, matching Phase 1's
+/// and summing w_ij + w_ji for the symmetric weight, matching Phase 1's
 /// spectral decomposition which symmetrizes in extract_subgraph.
 fn rayleigh_quotient(emb: &HashMap<&str, Vec<f64>>, graph: &Graph) -> f64 {
     if emb.is_empty() || graph.n == 0 {
@@ -922,7 +969,11 @@ fn detect_misplaced_concerns(
     sym_nbrs: &[Vec<(usize, f64)>],
     null_threshold: f64,
 ) -> Vec<MisplacedConcern> {
-    let significance_threshold = 0.15;
+    // Significance threshold: 30% of null coherence baseline.
+    // Scales with the codebase's background similarity level.
+    // Replaces hardcoded 0.15. On a codebase with null ~0.43, this gives ~0.13.
+    // On a codebase with null ~0.20, this gives ~0.06 (more sensitive).
+    let significance_threshold = (0.3 * null_threshold).max(0.05);
 
     // Compute module centroids.
     let centroids = compute_module_centroids(emb, clusters);
@@ -981,6 +1032,10 @@ fn detect_misplaced_concerns(
         if best_module == own_module { continue; }
         if sim_best <= sim_own { continue; }
         if (sim_best - sim_own) < significance_threshold { continue; }
+        // Gate: only flag nodes poorly placed in own module.
+        // Replaces hardcoded 0.4 with null coherence threshold.
+        // Floor at 0.1 so the gate remains meaningful when null is degenerate (0.0).
+        if sim_own >= null_threshold.max(0.1) { continue; }
 
         // Edge evidence: must have at least one edge (in or out) to the target module.
         let has_edge_to_target = if let Some(&idx) = graph.node_index.get(node_id.as_str()) {
@@ -1026,11 +1081,18 @@ fn detect_misplaced_concerns(
         });
     }
 
-    // Per-module cap: if >40% flagged, suppress (it's the boundary that's wrong).
+    // Per-module cap: if the flagged fraction exceeds a scale-adaptive threshold,
+    // suppress — the module boundary itself is wrong, not individual nodes.
+    // Uses expected_rate + 3*SE where expected_rate = 0.15 (typical detection rate
+    // for well-calibrated thresholds). For a 20-member module: ~34%. For 100: ~26%.
+    // This replaces the hardcoded 40% and adapts to module size.
+    let expected_rate = 0.15;
     results.retain(|mc| {
         let flagged = flagged_per_module.get(&mc.own_module).copied().unwrap_or(0);
         let size = module_sizes.get(&mc.own_module).copied().unwrap_or(1);
-        (flagged as f64 / size as f64) <= 0.4
+        let flagged_frac = flagged as f64 / size.max(1) as f64;
+        let se = (expected_rate * (1.0 - expected_rate) / size.max(1) as f64).sqrt();
+        flagged_frac <= expected_rate + 3.0 * se
     });
 
     results
@@ -1092,18 +1154,89 @@ fn detect_incoherent_modules(
     let mut results = Vec::new();
     for (&mod_id, &coherence) in module_coherence {
         if coherence < null_threshold {
+            let module_size = module_members.get(&mod_id).map(|m| m.len()).unwrap_or(0);
+
             // Find semantic sub-clusters within this module.
-            let sub_clusters = if let Some(members) = module_members.get(&mod_id) {
+            let (sub_clusters, sub_sil, best_k, inter_sim) = if let Some(members) = module_members.get(&mod_id) {
                 find_sub_clusters(emb, members)
             } else {
-                Vec::new()
+                (Vec::new(), 0.0, 1, 1.0)
             };
+
+            // Permutation null: shuffle embeddings among members, re-run k-means,
+            // compare observed silhouette against null distribution.
+            // Replaces hardcoded sub_sil > 0.3 and inter_sim < 0.3.
+            if best_k < 2 {
+                continue;
+            }
+            let sil_is_significant = if let Some(members) = module_members.get(&mod_id) {
+                let n_perms = 50;
+                let mut rng = Rng::new(555 + mod_id as u64);
+                let mut null_sils = Vec::with_capacity(n_perms);
+                let data: Vec<Vec<f64>> = members.iter()
+                    .filter_map(|nid| emb.get(*nid).cloned())
+                    .collect();
+                if data.len() >= 6 {
+                    for _ in 0..n_perms {
+                        // Null: random label assignment on the same data points.
+                        // Shuffling rows is invariant to k-means; instead, generate
+                        // random labels and compute silhouette of that random partition.
+                        let mut random_labels: Vec<usize> = (0..data.len())
+                            .map(|_| rng.next_usize(best_k))
+                            .collect();
+                        // Ensure all k labels appear (otherwise silhouette is undefined).
+                        for label in 0..best_k {
+                            if !random_labels.contains(&label) {
+                                let idx = rng.next_usize(data.len());
+                                random_labels[idx] = label;
+                            }
+                        }
+                        // Compute centroids for random labels.
+                        let dim = data[0].len();
+                        let mut centroids = vec![vec![0.0; dim]; best_k];
+                        let mut counts = vec![0usize; best_k];
+                        for (i, label) in random_labels.iter().enumerate() {
+                            for (d, &v) in data[i].iter().enumerate() {
+                                centroids[*label][d] += v;
+                            }
+                            counts[*label] += 1;
+                        }
+                        for c in 0..best_k {
+                            if counts[c] > 0 {
+                                for d in 0..dim {
+                                    centroids[c][d] /= counts[c] as f64;
+                                }
+                            }
+                        }
+                        let sil = crate::clustering::silhouette_score(&data, &random_labels, &centroids);
+                        null_sils.push(sil);
+                    }
+                    null_sils.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+                    let p95_idx = (null_sils.len() as f64 * 0.95) as usize;
+                    let null_p95 = null_sils.get(p95_idx.min(null_sils.len().saturating_sub(1))).copied().unwrap_or(0.3);
+                    sub_sil > null_p95
+                } else {
+                    false
+                }
+            } else {
+                false
+            };
+            if !sil_is_significant {
+                continue;
+            }
+            // Inter-cluster sim: suppress if sub-clusters are not well-separated
+            // (observed inter_sim must be below the population mean pairwise sim).
+            if inter_sim >= null_threshold {
+                continue;
+            }
 
             results.push(IncoherentModule {
                 module_id: mod_id,
                 coherence,
                 null_threshold,
                 sub_clusters,
+                module_size,
+                best_k,
             });
         }
     }
@@ -1111,13 +1244,14 @@ fn detect_incoherent_modules(
     results
 }
 
-/// Find semantic sub-clusters within a module using k-means (k=2,3) and top_terms.
+/// Find semantic sub-clusters within a module using k-means.
+/// Returns (sub_cluster_terms, best_silhouette, best_k, inter_cluster_sim).
 fn find_sub_clusters(
     emb: &HashMap<&str, Vec<f64>>,
     members: &[&str],
-) -> Vec<Vec<String>> {
+) -> (Vec<Vec<String>>, f64, usize, f64) {
     if members.len() < 6 {
-        return Vec::new();
+        return (Vec::new(), 0.0, 1, 1.0);
     }
 
     // Build data matrix for k-means.
@@ -1125,17 +1259,28 @@ fn find_sub_clusters(
         .filter_map(|nid| emb.get(*nid).cloned())
         .collect();
     if data.len() < 6 {
-        return Vec::new();
+        return (Vec::new(), 0.0, 1, 1.0);
     }
 
-    // Try k=2 and k=3, pick best silhouette.
-    let km2 = crate::clustering::kmeans(&data, 2, 50, 42);
-    let sil2 = crate::clustering::silhouette_score(&data, &km2.labels, &km2.centroids);
-    let km3 = crate::clustering::kmeans(&data, 3, 50, 42);
-    let sil3 = crate::clustering::silhouette_score(&data, &km3.labels, &km3.centroids);
+    // Sweep k = 2..min(|M|/3, 6), pick best silhouette (spec requirement).
+    let max_k = (data.len() / 3).min(6).max(2);
+    let mut best_sil = f64::NEG_INFINITY;
+    let mut best_labels_owned: Vec<usize> = Vec::new();
+    let mut best_k = 2;
 
-    let best_labels = if sil3 > sil2 + 0.05 { &km3.labels } else { &km2.labels };
-    let k = if sil3 > sil2 + 0.05 { 3 } else { 2 };
+    for k in 2..=max_k {
+        let km = crate::clustering::kmeans(&data, k, 50, 42);
+        let sil = crate::clustering::silhouette_score(&data, &km.labels, &km.centroids);
+        if sil > best_sil + 0.05 || best_labels_owned.is_empty() {
+            if sil > best_sil {
+                best_sil = sil;
+                best_labels_owned = km.labels;
+                best_k = k;
+            }
+        }
+    }
+
+    let best_labels = &best_labels_owned;
 
     // Build clusters and compute top_terms per sub-cluster.
     let mut sub_clusters_map: HashMap<usize, Vec<String>> = HashMap::new();
@@ -1157,32 +1302,55 @@ fn find_sub_clusters(
     let terms = top_terms(&all_members_with_labels, 3);
 
     let mut sub_cluster_terms: Vec<Vec<String>> = Vec::new();
-    for cluster_id in 0..k {
+    for cluster_id in 0..best_k {
         let term_list = terms.get(&cluster_id).cloned().unwrap_or_default();
         sub_cluster_terms.push(term_list);
     }
 
-    sub_cluster_terms
+    // Compute inter-cluster similarity: mean cosine sim between sub-cluster centroids.
+    let centroids: Vec<Vec<f64>> = {
+        let km = crate::clustering::kmeans(&data, best_k, 50, 42);
+        km.centroids
+    };
+    let inter_sim = if centroids.len() >= 2 {
+        let mut sim_sum = 0.0;
+        let mut pair_count = 0;
+        for i in 0..centroids.len() {
+            for j in (i + 1)..centroids.len() {
+                sim_sum += cosine_similarity(&centroids[i], &centroids[j]);
+                pair_count += 1;
+            }
+        }
+        if pair_count > 0 { sim_sum / pair_count as f64 } else { 1.0 }
+    } else {
+        1.0
+    };
+
+    (sub_cluster_terms, best_sil, best_k, inter_sim)
 }
 
 /// Compute expected coherence for random groups (null threshold).
-fn compute_null_coherence_threshold(
+///
+/// Returns (mean, std) of the null coherence distribution.
+/// The mean is used as the threshold; std is used for Cohen's d in
+/// downstream diagnostics (cross-package-coupling root cause classification).
+pub fn compute_null_coherence_threshold(
     emb: &HashMap<&str, Vec<f64>>,
     clusters: &HashMap<String, usize>,
-) -> f64 {
+) -> (f64, f64) {
     let vecs: Vec<&Vec<f64>> = clusters.keys()
         .filter_map(|k| emb.get(k.as_str()))
         .collect();
     let n = vecs.len();
     if n < 12 {
-        return 0.0;
+        return (0.0, 0.0);
     }
 
     // Sample random groups of size 6-10 and compute their coherence.
     let mut rng = Rng::new(789);
     let n_samples = 100;
     let group_size = 8.min(n);
-    let mut total = 0.0;
+    let mut samples = Vec::with_capacity(n_samples);
 
     for _ in 0..n_samples {
         let mut indices: Vec<usize> = (0..n).collect();
@@ -1202,11 +1370,16 @@ fn compute_null_coherence_threshold(
         }
 
         if count > 0 {
-            total += group_sim / count as f64;
+            samples.push(group_sim / count as f64);
         }
     }
 
-    total / n_samples as f64
+    if samples.is_empty() {
+        return (0.0, 0.0);
+    }
+    let mean = samples.iter().sum::<f64>() / samples.len() as f64;
+    let variance = samples.iter().map(|&s| (s - mean) * (s - mean)).sum::<f64>() / samples.len() as f64;
+    (mean, variance.sqrt())
 }
 
 // ---------------------------------------------------------------------------
@@ -1229,6 +1402,289 @@ fn cosine_similarity(a: &[f64], b: &[f64]) -> f64 {
     } else {
         dot / denom
     }
+}
+
+// ---------------------------------------------------------------------------
+// Shadow dependency detection (Step 9, Diagnostic 10)
+// ---------------------------------------------------------------------------
+
+fn detect_shadow_dependencies(
+    emb: &HashMap<&str, Vec<f64>>,
+    graph: &Graph,
+    clusters: &HashMap<String, usize>,
+) -> Vec<ShadowDependency> {
+    let mut nodes: Vec<&str> = emb.keys().copied().collect();
+    nodes.sort(); // Deterministic ordering for stable issue IDs.
+    let n = nodes.len();
+    if n < 4 {
+        return Vec::new();
+    }
+
+    // Build undirected successors for BFS (both directions).
+    let mut successors: Vec<Vec<usize>> = vec![Vec::new(); graph.n];
+    for (i, adj) in graph.adj.iter().enumerate() {
+        for &(j, _) in adj {
+            successors[i].push(j);
+            successors[j].push(i);
+        }
+    }
+    // Deduplicate.
+    for succ in &mut successors {
+        succ.sort_unstable();
+        succ.dedup();
+    }
+
+    let mut results = Vec::new();
+    for i in 0..n {
+        let node_a = nodes[i];
+        let mod_a = clusters.get(node_a);
+        let vec_a = &emb[node_a];
+
+        for j in (i + 1)..n {
+            let node_b = nodes[j];
+            let mod_b = clusters.get(node_b);
+
+            // Must be in different modules.
+            if mod_a == mod_b {
+                continue;
+            }
+
+            let sim = cosine_similarity(vec_a, &emb[node_b]);
+            if sim <= 0.85 {
+                continue;
+            }
+
+            // Structural distance: BFS capped at 4.
+            let idx_a = graph.node_index.get(node_a);
+            let idx_b = graph.node_index.get(node_b);
+            let distance = match (idx_a, idx_b) {
+                (Some(&a), Some(&b)) => crate::algorithms::bfs_distance(&successors, a, b, 4),
+                _ => None,
+            };
+
+            // Only flag if structurally distant (>3 hops or no path).
+            if let Some(d) = distance {
+                if d <= 3 {
+                    continue;
+                }
+            }
+
+            // FP suppression: test paths (check path components, not substrings).
+            let is_test_path = |path: &str| -> bool {
+                path.contains("/test/") || path.contains("/tests/")
+                    || path.contains("_test.") || path.contains("test_")
+                    || path.ends_with("_test") || path.contains("/spec/")
+            };
+            let file_a = graph.node_index.get(node_a)
+                .map(|&i| graph.node_files[i].as_deref().unwrap_or(""))
+                .unwrap_or("");
+            let file_b = graph.node_index.get(node_b)
+                .map(|&i| graph.node_files[i].as_deref().unwrap_or(""))
+                .unwrap_or("");
+            if is_test_path(file_a) || is_test_path(file_b) {
+                continue;
+            }
+
+            // FP suppression: trait implementations (both inherit from same target).
+            let inherits = graph.edges_of_kind("inherits");
+            let targets_a: HashSet<usize> = inherits.iter()
+                .filter(|&&(src, _)| graph.node_ids.get(src).map(|s| s.as_str()) == Some(node_a))
+                .map(|&(_, tgt)| tgt)
+                .collect();
+            let targets_b: HashSet<usize> = inherits.iter()
+                .filter(|&&(src, _)| graph.node_ids.get(src).map(|s| s.as_str()) == Some(node_b))
+                .map(|&(_, tgt)| tgt)
+                .collect();
+            if !targets_a.is_empty() && !targets_a.is_disjoint(&targets_b) {
+                continue; // Both implement the same trait.
+            }
+
+            results.push(ShadowDependency {
+                node_a: node_a.to_string(),
+                node_b: node_b.to_string(),
+                similarity: sim,
+                structural_distance: distance,
+            });
+        }
+    }
+    results
+}
+
+// ---------------------------------------------------------------------------
+// Redundant API detection (Step 10, Diagnostic 11)
+// ---------------------------------------------------------------------------
+
+fn detect_redundant_api(
+    emb: &HashMap<&str, Vec<f64>>,
+    graph: &Graph,
+    clusters: &HashMap<String, usize>,
+    roles: &HashMap<String, String>,
+) -> Vec<RedundantApi> {
+    // Group entry points by module.
+    // Spec: role == "entry_point" OR in_degree_from_outside > 0.
+    let mut module_entries: HashMap<usize, Vec<&str>> = HashMap::new();
+    let mut added: HashSet<&str> = HashSet::new();
+
+    // First pass: role-based entry points.
+    for (node_id, role) in roles {
+        if role != "entry_point" {
+            continue;
+        }
+        if let Some(&mod_id) = clusters.get(node_id) {
+            if emb.contains_key(node_id.as_str()) {
+                module_entries.entry(mod_id).or_default().push(node_id.as_str());
+                added.insert(node_id.as_str());
+            }
+        }
+    }
+
+    // Second pass: nodes with cross-module callers (in_degree_from_outside > 0).
+    for (node_id, &mod_id) in clusters {
+        if added.contains(node_id.as_str()) || !emb.contains_key(node_id.as_str()) {
+            continue;
+        }
+        if let Some(&idx) = graph.node_index.get(node_id.as_str()) {
+            // Check if any predecessor is in a different module.
+            let has_external_caller = graph.adj.iter().enumerate().any(|(src_idx, adj)| {
+                adj.iter().any(|&(tgt, _)| tgt == idx && clusters.get(&graph.node_ids[src_idx]) != Some(&mod_id))
+            });
+            if has_external_caller {
+                module_entries.entry(mod_id).or_default().push(node_id.as_str());
+            }
+        }
+    }
+
+    let mut results = Vec::new();
+
+    for (&mod_id, entries) in &module_entries {
+        if entries.len() < 3 {
+            continue;
+        }
+
+        // Pairwise semantic similarity among entry points.
+        let mut redundant_pairs: Vec<(usize, usize, f64)> = Vec::new();
+        for i in 0..entries.len() {
+            for j in (i + 1)..entries.len() {
+                let sim = cosine_similarity(&emb[entries[i]], &emb[entries[j]]);
+                if sim > 0.7 {
+                    redundant_pairs.push((i, j, sim));
+                }
+            }
+        }
+
+        if redundant_pairs.is_empty() {
+            continue;
+        }
+
+        // Compute callee overlap (Jaccard) for each redundant pair.
+        let mod_members: HashSet<&str> = clusters.iter()
+            .filter(|(_, m)| **m == mod_id)
+            .map(|(nid, _)| nid.as_str())
+            .collect();
+
+        // Use calls-only edges for callee overlap (not imports/inherits).
+        let call_edges = graph.edges_of_kind("calls");
+        let callees_per_entry: Vec<HashSet<usize>> = entries.iter()
+            .map(|&nid| {
+                graph.node_index.get(nid)
+                    .map(|&idx| {
+                        call_edges.iter()
+                            .filter(|&&(src, _)| src == idx)
+                            .filter(|&&(_, tgt)| mod_members.contains(graph.node_ids[tgt].as_str()))
+                            .map(|&(_, tgt)| tgt)
+                            .collect::<HashSet<usize>>()
+                    })
+                    .unwrap_or_default()
+            })
+            .collect();
+
+        // Filter pairs by callee overlap > 0.5.
+        let confirmed_pairs: Vec<(usize, usize, f64, f64)> = redundant_pairs.iter()
+            .filter_map(|&(i, j, sim)| {
+                let ci = &callees_per_entry[i];
+                let cj = &callees_per_entry[j];
+                let union_size = ci.union(cj).count();
+                if union_size == 0 {
+                    return None;
+                }
+                let jaccard = ci.intersection(cj).count() as f64 / union_size as f64;
+                if jaccard > 0.5 {
+                    Some((i, j, sim, jaccard))
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        if confirmed_pairs.is_empty() {
+            continue;
+        }
+
+        // Union-find for connected components.
+        let n = entries.len();
+        let mut parent: Vec<usize> = (0..n).collect();
+        fn find(parent: &mut [usize], x: usize) -> usize {
+            if parent[x] != x {
+                parent[x] = find(parent, parent[x]);
+            }
+            parent[x]
+        }
+        for &(i, j, _, _) in &confirmed_pairs {
+            let ri = find(&mut parent, i);
+            let rj = find(&mut parent, j);
+            if ri != rj {
+                parent[ri] = rj;
+            }
+        }
+
+        // Collect components.
+        let mut components: HashMap<usize, Vec<usize>> = HashMap::new();
+        for i in 0..n {
+            let root = find(&mut parent, i);
+            components.entry(root).or_default().push(i);
+        }
+
+        // Emit clusters of >= 3 redundant entry points.
+        for members in components.values() {
+            if members.len() < 3 {
+                continue;
+            }
+
+            // FP suppression: intentional overloads (shared stem with type suffix).
+            let names: Vec<&str> = members.iter()
+                .map(|&i| entries[i].rsplit('.').next().unwrap_or(entries[i]))
+                .collect();
+            let type_suffixes = ["_str", "_bytes", "_file", "_async", "_sync", "_mut"];
+            let has_overload_pattern = names.iter().all(|name| {
+                type_suffixes.iter().any(|suf| name.ends_with(suf))
+            });
+            if has_overload_pattern {
+                continue;
+            }
+
+            // Compute mean similarity and callee overlap for the cluster.
+            let mut sim_sum = 0.0;
+            let mut overlap_sum = 0.0;
+            let mut pair_count = 0;
+            for &(i, j, sim, jaccard) in &confirmed_pairs {
+                if members.contains(&i) && members.contains(&j) {
+                    sim_sum += sim;
+                    overlap_sum += jaccard;
+                    pair_count += 1;
+                }
+            }
+            let mean_sim = if pair_count > 0 { sim_sum / pair_count as f64 } else { 0.0 };
+            let mean_overlap = if pair_count > 0 { overlap_sum / pair_count as f64 } else { 0.0 };
+
+            results.push(RedundantApi {
+                module_id: mod_id,
+                entry_points: members.iter().map(|&i| entries[i].to_string()).collect(),
+                mean_similarity: mean_sim,
+                mean_callee_overlap: mean_overlap,
+            });
+        }
+    }
+    results
 }
 
 // ---------------------------------------------------------------------------
@@ -1436,6 +1892,7 @@ mod tests {
                 scope: None, parsed_nodes: None, parsed_edges: None,
                 self_edge_ratio: None, projection: None, packages: None,
                 semantic_embeddings: None,
+                experimental: None,
             });
         let roles: HashMap<String, String> = HashMap::new();
 
@@ -1460,7 +1917,7 @@ mod tests {
             make_semantic_test_data();
 
         let result = analyze_semantic(
-            &emb, &graph, &clusters, &eigenvalues, &eigenvectors, &roles, &comp_ids,
+            &emb, &graph, &clusters, &eigenvalues, &eigenvectors, &roles, &comp_ids, false,
         );
 
         // Quality gate should pass — two clear clusters.
@@ -1515,6 +1972,7 @@ mod tests {
                 scope: None, parsed_nodes: None, parsed_edges: None,
                 self_edge_ratio: None, projection: None, packages: None,
                 semantic_embeddings: None,
+                experimental: None,
             });
 
         // Constant signal: all same embedding.
@@ -1555,6 +2013,7 @@ mod tests {
                 scope: None, parsed_nodes: None, parsed_edges: None,
                 self_edge_ratio: None, projection: None, packages: None,
                 semantic_embeddings: None,
+                experimental: None,
             });
 
         emb.insert(Box::leak("n0".to_string().into_boxed_str()), vec![1.0, 0.0]);
@@ -1584,6 +2043,7 @@ mod tests {
                 scope: None, parsed_nodes: None, parsed_edges: None,
                 self_edge_ratio: None, projection: None, packages: None,
                 semantic_embeddings: None,
+                experimental: None,
             });
 
         for i in 0..4 {
@@ -1615,6 +2075,7 @@ mod tests {
                 scope: None, parsed_nodes: None, parsed_edges: None,
                 self_edge_ratio: None, projection: None, packages: None,
                 semantic_embeddings: None,
+                experimental: None,
             });
 
         emb.insert(Box::leak("n0".to_string().into_boxed_str()), vec![1.0, 0.0]);
@@ -1720,10 +2181,11 @@ mod tests {
                 scope: None, parsed_nodes: None, parsed_edges: None,
                 self_edge_ratio: None, projection: None, packages: None,
                 semantic_embeddings: None,
+                experimental: None,
             });
 
         let sym_nbrs = symmetric_neighbors(&graph);
-        let null_threshold = compute_null_coherence_threshold(&emb, &clusters);
+        let (null_threshold, _null_std) = compute_null_coherence_threshold(&emb, &clusters);
         let concerns = detect_misplaced_concerns(&emb, &clusters, &module_coherence, &roles, &graph, &sym_nbrs, null_threshold);
 
         // Should detect pay.auth_check as misplaced.

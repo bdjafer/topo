@@ -159,7 +159,9 @@
           "anchors":          { "type": "array", "items": { "$ref": "#/$defs/anchor" } },
           "suggested_module": { "type": "string", "description": "For misplaced_concern: the module the node should move to." },
           "similarity_own":   { "type": "number", "description": "For misplaced_concern: cosine similarity to own module centroid." },
-          "similarity_best":  { "type": "number", "description": "For misplaced_concern: cosine similarity to best other module centroid." }
+          "similarity_best":  { "type": "number", "description": "For misplaced_concern: cosine similarity to best other module centroid." },
+          "root_cause":       { "type": "string", "description": "For cross_package_coupling: classified root cause (shared_domain_concept, incomplete_split, accidental_coupling)." },
+          "semantic_coherence": { "type": "number", "description": "For cross_package_coupling: mean pairwise cosine similarity of module members' semantic embeddings." }
         }
       }
     },
@@ -170,6 +172,8 @@
       "required": ["modularity_q"],
       "properties": {
         "modularity_q": { "type": "number", "description": "Newman's modularity Q. Higher = module boundaries explain more of the edge structure. >0.3 significant, >0.5 strong, 0 = no better than random." },
+        "spectral_coverage_ratio": { "type": "number", "description": "Fraction of nodes that received spectral fingerprints. Low values indicate disconnected components limiting analysis quality." },
+        "self_edge_drop_ratio": { "type": "number", "description": "Fraction of scoped edges that collapsed into self-edges at the current analysis level." },
         "semantic_smoothness": { "type": "number", "description": "Rayleigh quotient measuring how smoothly semantics vary over the graph. Lower = better organized. Null if semantic analysis not enabled." },
         "semantic_structural_ami": { "type": "number", "description": "Adjusted Mutual Information between structural and semantic partitions. Higher = better alignment." },
         "semantic_energy_profile": {

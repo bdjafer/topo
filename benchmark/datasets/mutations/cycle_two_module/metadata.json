@@ -1,5 +1,0 @@
-{
-  "split": "public",
-  "level": "module",
-  "description": "Back edge closing a 2-module SCC"
-}

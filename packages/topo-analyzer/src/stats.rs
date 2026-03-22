@@ -154,7 +154,8 @@ pub struct Rng {
 
 impl Rng {
     pub fn new(seed: u64) -> Self {
-        Self { state: seed }
+        // Xorshift64 produces all zeros if state=0. Ensure non-zero.
+        Self { state: if seed == 0 { 1 } else { seed } }
     }
 
     pub fn next_u64(&mut self) -> u64 {
@@ -253,6 +254,140 @@ pub fn compute_nmi(
         return 1.0;
     }
     (2.0 * mi / (h_l + h_r)).clamp(0.0, 1.0)
+}
+
+// ── Binomial test ────────────────────────────────────────────────────
+
+/// One-sided binomial CDF: P(X <= k) where X ~ Binomial(n, p).
+///
+/// Used for testing directional asymmetry (layer violations, direction scores).
+/// Uses log-sum-exp for numerical stability with large n.
+pub fn binomial_cdf(k: usize, n: usize, p: f64) -> f64 {
+    if k >= n {
+        return 1.0;
+    }
+    if n == 0 {
+        return 1.0;
+    }
+    // Guard against p=0 or p=1 producing -inf in ln().
+    let p = p.clamp(f64::EPSILON, 1.0 - f64::EPSILON);
+    let ln_p = p.ln();
+    let ln_q = (1.0 - p).ln();
+
+    // Collect log-PMF values, then use log-sum-exp for stability.
+    let mut log_pmfs = Vec::with_capacity(k + 1);
+    let mut log_binom = 0.0f64; // ln(C(n, 0)) = 0
+    for i in 0..=k {
+        if i > 0 {
+            log_binom += ((n - i + 1) as f64).ln() - (i as f64).ln();
+        }
+        log_pmfs.push(log_binom + (i as f64) * ln_p + ((n - i) as f64) * ln_q);
+    }
+
+    // Log-sum-exp: find max, subtract, sum exp, add max back.
+    let log_max = log_pmfs.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+    if log_max == f64::NEG_INFINITY {
+        return 0.0;
+    }
+    let sum: f64 = log_pmfs.iter().map(|&lp| (lp - log_max).exp()).sum();
+    (log_max + sum.ln()).exp().clamp(0.0, 1.0)
+}
+
+/// Test whether directional asymmetry is significant.
+///
+/// Given `minority` edges in the minority direction and `total` edges between
+/// two modules, returns true if the asymmetry is statistically significant
+/// under H₀: each edge is equally likely to go either direction.
+///
+/// Requires total >= 6 for the test to have reasonable power.
+pub fn direction_is_significant(minority: usize, total: usize, alpha: f64) -> bool {
+    if total < 6 {
+        return false;
+    }
+    binomial_cdf(minority, total, 0.5) < alpha
+}
+
+// ── Configuration-model expected diversity ───────────────────────────
+
+/// Expected number of distinct modules calling a node with in-degree `d`,
+/// under the configuration model (random edge wiring preserving degree sequence).
+///
+/// E[diversity] = K - Σᵢ (1 - d_out(Mᵢ) / E_total)^d
+///
+/// where K = number of modules, d_out(Mᵢ) = total out-degree of module i,
+/// and E_total = total directed edges in the graph.
+pub fn expected_caller_diversity(
+    in_degree: usize,
+    module_out_degrees: &[f64],
+    total_edges: f64,
+) -> f64 {
+    if total_edges <= 0.0 || in_degree == 0 || module_out_degrees.is_empty() {
+        return 0.0;
+    }
+    let k = module_out_degrees.len() as f64;
+    let d = in_degree as f64;
+    let mut expected = k;
+    for &d_out_m in module_out_degrees {
+        let p_miss = (1.0 - d_out_m / total_edges).max(0.0);
+        expected -= p_miss.powf(d);
+    }
+    expected.max(0.0)
+}
+
+// ── Benjamini-Hochberg FDR correction ────────────────────────────────
+
+/// Apply Benjamini-Hochberg correction to a set of p-values.
+///
+/// Returns a boolean mask: true = reject (significant after correction).
+/// Only meaningful with >= 2 p-values.
+pub fn benjamini_hochberg(p_values: &[f64], alpha: f64) -> Vec<bool> {
+    let m = p_values.len();
+    if m == 0 {
+        return Vec::new();
+    }
+    if m == 1 {
+        return vec![p_values[0] < alpha];
+    }
+
+    // Sort p-values while tracking original indices.
+    let mut indexed: Vec<(usize, f64)> = p_values.iter().copied().enumerate().collect();
+    indexed.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal));
+
+    let mut reject = vec![false; m];
+    // Find the largest k where p_(k) <= k/m * alpha.
+    let mut max_k = 0;
+    for (rank_minus_1, &(_, p)) in indexed.iter().enumerate() {
+        let rank = rank_minus_1 + 1;
+        let threshold = (rank as f64 / m as f64) * alpha;
+        if p <= threshold {
+            max_k = rank;
+        }
+    }
+
+    // Reject all hypotheses with rank <= max_k.
+    for (rank_minus_1, &(orig_idx, _)) in indexed.iter().enumerate() {
+        if rank_minus_1 + 1 <= max_k {
+            reject[orig_idx] = true;
+        }
+    }
+    reject
+}
+
+// ── Cohen's d (effect size) ─────────────────────────────────────────
+
+/// Cohen's d: standardized distance of an observed value from a null distribution.
+///
+/// d = (observed - null_mean) / null_std
+///
+/// Interpretation (Cohen 1988): 0.2 = small, 0.5 = medium, 0.8 = large.
+pub fn cohens_d(observed: f64, null_mean: f64, null_std: f64) -> f64 {
+    if null_std <= f64::EPSILON {
+        if observed > null_mean + f64::EPSILON {
+            return 3.0; // Cap: clearly above null with zero-variance null.
+        }
+        return 0.0;
+    }
+    (observed - null_mean) / null_std
 }
 
 // ── Internal helpers ───────────────────────────────────────────────────
@@ -390,5 +525,63 @@ mod tests {
                 .collect();
         let nmi = compute_nmi(&left, &right);
         assert!(nmi > 0.4 && nmi < 1.0, "refinement => 0 < NMI < 1, got {nmi}");
+    }
+
+    #[test]
+    fn test_binomial_cdf_fair_coin() {
+        // P(X <= 5 | n=10, p=0.5) ≈ 0.623
+        let cdf = binomial_cdf(5, 10, 0.5);
+        assert!((cdf - 0.623).abs() < 0.01, "got {cdf}");
+    }
+
+    #[test]
+    fn test_binomial_cdf_extreme() {
+        // P(X <= 0 | n=6, p=0.5) = 1/64 ≈ 0.0156
+        let cdf = binomial_cdf(0, 6, 0.5);
+        assert!((cdf - 0.015625).abs() < 0.001, "got {cdf}");
+    }
+
+    #[test]
+    fn test_direction_significance() {
+        // 0 out of 6: significant (p ≈ 0.016)
+        assert!(direction_is_significant(0, 6, 0.05));
+        // 2 out of 6: not significant (p ≈ 0.34)
+        assert!(!direction_is_significant(2, 6, 0.05));
+        // Too few edges: never significant
+        assert!(!direction_is_significant(0, 3, 0.05));
+    }
+
+    #[test]
+    fn test_expected_caller_diversity() {
+        // 2 modules with equal out-degrees, node in-degree 10
+        let diversity = expected_caller_diversity(10, &[50.0, 50.0], 100.0);
+        // Each module has P(miss) = (1 - 50/100)^10 = 0.5^10 ≈ 0.001
+        // Expected = 2 - 2 * 0.001 ≈ 1.998
+        assert!((diversity - 2.0).abs() < 0.01, "got {diversity}");
+    }
+
+    #[test]
+    fn test_benjamini_hochberg() {
+        let p_values = vec![0.01, 0.04, 0.03, 0.20, 0.50];
+        let reject = benjamini_hochberg(&p_values, 0.05);
+        // Sorted: 0.01, 0.03, 0.04, 0.20, 0.50
+        // Thresholds: 0.01, 0.02, 0.03, 0.04, 0.05
+        // 0.01 <= 0.01 ✓, 0.03 <= 0.02 ✗ → max_k = 1
+        assert!(reject[0]); // p=0.01
+        assert!(!reject[3]); // p=0.20
+    }
+
+    #[test]
+    fn test_cohens_d() {
+        assert!((cohens_d(0.6, 0.4, 0.1) - 2.0).abs() < 0.01);
+        assert!((cohens_d(0.4, 0.4, 0.1) - 0.0).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_rng_seed_zero_guard() {
+        let mut rng = Rng::new(0);
+        // Should NOT produce all zeros.
+        let v = rng.next_u64();
+        assert_ne!(v, 0, "seed=0 should be guarded to non-zero");
     }
 }

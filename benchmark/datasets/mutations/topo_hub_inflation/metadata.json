@@ -1,5 +1,0 @@
-{
-  "split": "public",
-  "level": "symbol",
-  "description": "Inflate graph.rs into a massive hub connecting all modules, testing hub and module ratio detection"
-}

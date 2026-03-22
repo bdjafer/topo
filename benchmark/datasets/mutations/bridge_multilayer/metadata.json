@@ -1,5 +1,0 @@
-{
-  "split": "public",
-  "level": "module",
-  "description": "Bridge via mixed calls/imports edges"
-}

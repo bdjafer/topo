@@ -3,12 +3,14 @@
 This is the authoritative reference for every diagnostic topo produces. There are exactly 13 diagnostics across three phases. No other diagnostics will be added without updating this document.
 
 **Phases:**
-- **Phase 1** (3 diagnostics): Mathematical graph facts. Computed from the dependency graph alone. No inference, no semantics.
+- **Phase 1** (2 diagnostics): Mathematical graph facts. Computed from the dependency graph alone. No inference, no semantics.
 - **Phase 1+** (4 diagnostics): Structural inference. Still graph-only, but requires derived quantities (Fiedler vectors, inferred layering, git history).
-- **Phase 2** (4 diagnostics): Structural-semantic disagreement. Requires code embeddings from jina-embeddings-v2-base-code via fastembed-rs. Behind the `semantic` Cargo feature flag.
+- **Phase 2** (5 diagnostics): Structural-semantic analysis. Requires code embeddings from jina-embeddings-v2-base-code via fastembed-rs. Behind the `semantic` Cargo feature flag.
 - **Phase 3** (2 diagnostics): Learned structural intelligence. Requires trained R-GIN model. Replaces or upgrades Phase 2 diagnostics where uplift is confirmed.
 
 **Output shape:** Every diagnostic produces an `IssueOutput` with id, kind, title, description, severity (0.0-1.0), severity_label, confidence (0.0-1.0), confidence_label, and anchors (node locations).
+
+**Naming convention:** This document uses kebab-case for diagnostic names (e.g., `circular-dependency`). The JSON `kind` field in output uses snake_case (e.g., `circular_dependency`). The issue `id` field uses kebab-case prefixes (e.g., `circular-dependency:node1,node2`). These are the wire-format conventions; this document's kebab-case names are the canonical identifiers.
 
 ---
 
@@ -16,23 +18,23 @@ This is the authoritative reference for every diagnostic topo produces. There ar
 
 | # | ID | Phase | Absorbs |
 |---|---|---|---|
-| 1 | `cycle-member` | 1 | — |
+| 1 | `circular-dependency` | 1 | — |
 | 2 | `wide-interface` | 1 | — |
-| 3 | `cross-package-coupling` | 1 | — |
+| 3 | `cross-package-coupling` | 2 | — |
 | 4 | `near-disconnect` | 1+ | — |
 | 5 | `overloaded-utility` | 1+ | `fragile-hub` |
 | 6 | `layer-violation` | 1+ | `reverse-dependency`, `bidirectional-dependency` |
-| 7 | `patch-magnet` | 1+ | — |
+| 7 | `unstable-peripheral` | 1+ | — |
 | 8 | `misplaced-concern` | 2 | — |
 | 9 | `incoherent-module` | 2 | `god-module`, `low-cohesion` |
 | 10 | `shadow-dependency` | 2 | — |
-| 11 | `scattered-api` | 2 | — |
+| 11 | `redundant-api` | 2 | — |
 | 12 | `misplaced-concern` (upgraded) | 3 | Phase 2 `misplaced-concern` |
 | 13 | `coupling-mismatch` | 3 | `layer-discrepancy` (never implemented) |
 
 ---
 
-## Diagnostic 1: `cycle-member`
+## Diagnostic 1: `circular-dependency`
 
 **Phase:** 1 | **Absorbs:** — | **Replaced by:** —
 
@@ -67,7 +69,7 @@ For each SCC with |nodes| >= 2:
   For each module pair (A, B) where both have members in this SCC:
     edges_A_to_B = count of directed edges from A-members to B-members
     edges_B_to_A = count of directed edges from B-members to A-members
-    Emit cycle-member(scc_nodes, module_pair, edges_A_to_B, edges_B_to_A)
+    Emit circular-dependency(scc_nodes, module_pair, edges_A_to_B, edges_B_to_A)
 ```
 
 ### Severity Model
@@ -88,7 +90,7 @@ Multipliers:
 ### Example Output
 
 ```
-cycle-member
+circular-dependency
   Symptom: 8 nodes form a dependency cycle spanning auth and session modules.
   Impact: Neither module can be compiled, tested, or refactored independently.
     Changes to either module risk cascading through the cycle.
@@ -201,58 +203,106 @@ wide-interface
 
 ## Diagnostic 3: `cross-package-coupling`
 
-**Phase:** 1 | **Absorbs:** — | **Replaced by:** —
+**Phase:** 2 | **Absorbs:** — | **Replaced by:** —
 
 ### First-Principles Justification
 
 Spectral clustering discovers the actual structural modules of a codebase from the topology of its dependency graph. Declared packages represent the developer's intended module boundaries. When a single spectral module spans multiple declared packages, the code is more tightly coupled across package boundaries than within them. The engineering force is **organizational inertia**: the package structure reflects a past design decision, but the code has evolved to couple across that boundary.
 
+The Phase 1 structural signal alone has a high false positive rate: spectral clustering noise, weak modularity, and single-node spillover all produce spurious cross-package modules. Semantic embeddings provide the confidence calibration that makes this diagnostic actionable: if the cross-package nodes are also *semantically coherent* (they do related things), the coupling is real. If they're semantically scattered, it's likely a spectral artifact.
+
 ### Root Causes
 
-**1. Package split that doesn't match actual coupling.**
-A refactoring split one package into two, but the code in both packages still forms a single tightly-coupled cluster.
-- *Confirm:* The spectral module's internal edge density is much higher than expected for two independent packages. Git history shows the packages were recently split.
-- *Action:* Either complete the decoupling (reduce cross-package edges) or undo the split.
-
-**2. Shared domain concept split across packages.**
+**1. Shared domain concept split across packages.** *(semantic coherence: high)*
 Authentication logic lives in both `auth` and `user` packages because the domain concept spans both.
-- *Confirm:* Nodes in both packages share domain vocabulary (same naming patterns, same types referenced).
+- *Confirm:* Cross-package nodes have high pairwise semantic similarity (>0.5). They share domain vocabulary (same naming patterns, same types referenced).
 - *Action:* Extract the shared concern into its own package, or consolidate into one package.
 
-**3. Spectral clustering artifact.**
+**2. Accidental coupling through shared dependency.** *(semantic coherence: low)*
+Unrelated functions from different packages are forced into the same spectral cluster because they share a common dependency (a database client, a config struct, a logging framework).
+- *Confirm:* Cross-package nodes have low pairwise semantic similarity (<0.3) despite being structurally coupled. A shared dependency node has high betweenness within the module.
+- *Action:* Decouple from the shared dependency. Introduce interfaces or extract the shared dependency into its own module.
+
+**3. Package split that doesn't match actual coupling.** *(semantic coherence: medium)*
+A refactoring split one package into two, but the code in both packages still forms a single tightly-coupled cluster.
+- *Confirm:* The spectral module's internal edge density is much higher than expected for two independent packages. Semantic similarity between the two package groups is moderate (0.3-0.5) — they're related but drifting apart.
+- *Action:* Either complete the decoupling (reduce cross-package edges) or undo the split.
+
+**4. Spectral clustering artifact.** *(semantic coherence: very low, suppressed)*
 The codebase has weak overall modularity and the spectral clustering is noisy.
-- *Confirm:* Silhouette score is low (<0.3). Multiple spectral modules span multiple packages.
-- *Action:* Not actionable per se. Consider that the codebase may not have strong module boundaries at all.
+- *Confirm:* Semantic coherence < 0.2 AND silhouette score < 0.3. Multiple spectral modules span multiple packages.
+- *Action:* Suppressed — not emitted as a diagnostic.
 
 ### Detection
 
 ```
-Input: spectral module assignments, declared package assignments
+Input: spectral module assignments, declared package assignments,
+       semantic embeddings S (768d)
+
 For each spectral module M:
   packages_in_M = distinct declared packages of M's members
-  If |packages_in_M| >= 2:
-    For each package P in packages_in_M:
-      fraction_of_P_in_M = |nodes in M ∩ P| / |nodes in P|
-    dominant_package = argmax fraction_of_P_in_M
-    cross_package_nodes = nodes in M not in dominant_package
-    Emit cross-package-coupling(M, packages_in_M, cross_package_nodes, fractions)
+  If |packages_in_M| < 2: skip
+
+  // Structural signal (same as Phase 1)
+  For each package P in packages_in_M:
+    fraction_of_P_in_M = |nodes in M ∩ P| / |nodes in P|
+  dominant_package = argmax fraction_of_P_in_M
+  cross_package_nodes = nodes in M not in dominant_package
+
+  // Semantic confidence gate (Phase 2)
+  S_M = semantic embeddings of M's members
+  If |S_M| < 2: skip  // insufficient embeddings
+  semantic_coherence = mean pairwise cosine similarity of S_M (upper triangle)
+
+  // Cross-package semantic similarity: how similar are the cross-package
+  // nodes to the dominant package's nodes?
+  S_cross = embeddings of cross_package_nodes
+  S_dominant = embeddings of dominant_package nodes in M
+  cross_dominant_sim = mean cosine similarity between S_cross and S_dominant
+
+  // Root cause classification
+  If semantic_coherence > 0.5:
+    root_cause = "shared_domain_concept"
+  Else if semantic_coherence > 0.25:
+    root_cause = "incomplete_split"
+  Else:
+    root_cause = "accidental_coupling"
+
+  // Suppress spectral artifacts
+  If semantic_coherence < 0.2 AND module_silhouette < 0.3:
+    skip  // likely noise
+
+  Emit cross-package-coupling(M, packages_in_M, cross_package_nodes,
+    fractions, semantic_coherence, cross_dominant_sim, root_cause)
 ```
 
 ### Severity Model
 
 ```
-severity = 0.4 * span_factor + 0.3 * balance_factor + 0.3 * density_factor
+severity = 0.3 * span_factor + 0.3 * balance_factor + 0.2 * density_factor + 0.2 * semantic_factor
 
-span_factor    = clamp((|packages_in_M| - 1) / 4, 0, 1)
-balance_factor = 1.0 - (|dominant_package_nodes| / |M|)
-                 (0 if one package dominates, 1 if evenly split)
-density_factor = cross_package_edge_density / total_module_edge_density
-                 (how much of the module's coupling is cross-package)
+span_factor     = clamp((|packages_in_M| - 1) / 4, 0, 1)
+balance_factor  = 1.0 - (|dominant_package_nodes| / |M|)
+                  (0 if one package dominates, 1 if evenly split)
+density_factor  = cross_package_edge_density / total_module_edge_density
+                  (how much of the module's coupling is cross-package)
+semantic_factor = clamp(semantic_coherence / 0.6, 0, 1)
+                  (semantically coherent coupling is more real, thus more severe)
 
 Multipliers:
-  Silhouette score > 0.5 for this module: x1.3 (clustering is confident)
+  root_cause == "shared_domain_concept": x1.3 (high-confidence real coupling)
+  root_cause == "accidental_coupling": x0.7 (lower severity — may resolve naturally)
+  Silhouette score > 0.5 for this module: x1.2 (clustering is confident)
   Module contains entry points from multiple packages: x1.2
-  Package fallback was NOT used (spectral clustering succeeded): x1.2
+  Cross-package nodes also trigger misplaced-concern: x1.3 (structural + semantic agree)
+
+Confidence:
+  base_confidence = 0.5
+  If semantic_coherence > 0.5: confidence += 0.3
+  If semantic_coherence > 0.3: confidence += 0.15
+  If module_silhouette > 0.4: confidence += 0.1
+  If |cross_package_nodes| >= 3: confidence += 0.1
+  confidence = clamp(confidence, 0.3, 1.0)
 ```
 
 ### Example Output
@@ -261,29 +311,36 @@ Multipliers:
 cross-package-coupling
   Symptom: Spectral module 3 spans packages auth and user.
     8 of 12 nodes are in auth, 4 are in user.
+  Root cause: shared domain concept — cross-package nodes are semantically
+    coherent (similarity: 0.62). The auth and user packages share a domain
+    concept that the package boundary artificially splits.
   Impact: The declared package boundary between auth and user does not match
     the actual structural coupling. Code in these packages evolves as a unit
     despite being organizationally separate.
-  Investigate: Are the 4 user nodes (user::validate_credentials,
+  Investigate: The 4 user nodes (user::validate_credentials,
     user::session_from_token, user::permission_check, user::role_lookup)
-    conceptually part of auth? If so, move them. If not, decouple them
-    from the auth cluster.
+    are semantically similar to auth's members. Consider moving them to auth
+    or extracting a shared "authentication" package.
   Evidence:
     Spectral module 3: 12 nodes, silhouette: 0.61
     Packages: auth (8 nodes, 67%), user (4 nodes, 33%)
     Cross-package edges: 9 of 14 module-internal edges (64%)
+    Semantic coherence: 0.62 (cross-dominant similarity: 0.58)
+    Root cause: shared_domain_concept (confidence: 0.90)
 ```
 
 ### False Positive Suppression
 
 - **Package fallback active:** If spectral clustering was not used (silhouette too low, fell back to packages), suppress all cross-package-coupling diagnostics. The modules ARE the packages; the diagnostic is tautologically impossible.
-- **Single-node spillover:** If only 1 node from a secondary package is in the module, suppress (likely a bridge node, not a coupling problem).
-- **Low silhouette module:** If the module's silhouette score < 0.2, suppress (clustering is uncertain for this module).
+- **Semantic artifact:** If semantic_coherence < 0.2 AND module silhouette < 0.3, suppress. The structural clustering is uncertain AND the nodes have nothing in common semantically — almost certainly noise.
+- **Single-node spillover:** If only 1 node from a secondary package is in the module AND that node's semantic similarity to the module centroid is < 0.3, suppress (bridge node, not a coupling problem).
+- **Low embedding coverage:** If >40% of the module's members lack semantic embeddings, fall back to Phase 1 structural-only detection with confidence capped at 0.5.
 
 ### Interactions
 
-- **`cycle-member`:** Cross-package coupling often co-occurs with cycles between the same packages. Both fire independently; the cycle is the more urgent problem.
-- **`misplaced-concern` (Phase 2):** The cross-package nodes are candidates for misplaced-concern once semantic analysis is available. Cross-package-coupling identifies the structural signal; misplaced-concern adds semantic confirmation.
+- **`circular-dependency`:** Cross-package coupling often co-occurs with cycles between the same packages. Both fire independently; the cycle is the more urgent problem.
+- **`misplaced-concern`:** The cross-package nodes are candidates for misplaced-concern. When both fire on the same nodes, the evidence compounds: structural coupling (cross-package-coupling) and semantic displacement (misplaced-concern) agree. The severity multiplier (x1.3) applies to cross-package-coupling when this overlap exists.
+- **`incoherent-module`:** An incoherent module that spans packages is a compound problem. The structural coupling crosses both semantic and organizational boundaries.
 
 ---
 
@@ -468,7 +525,7 @@ overloaded-utility
 
 - **`near-disconnect`:** If the overloaded-utility is also a bridge node in a near-disconnect, the combination is critical. Both fire; the developer should address the bridge-bottleneck first.
 - **`wide-interface`:** The overloaded-utility may be the dominant target in a wide interface. If so, narrowing the utility's responsibilities will also narrow the interface.
-- **`patch-magnet`:** Overloaded utilities that are also patch magnets have the worst risk profile: high blast radius AND high change frequency.
+- **`unstable-peripheral`:** Overloaded utilities that are also unstable peripherals have the worst risk profile: high blast radius AND high change frequency.
 
 ---
 
@@ -489,7 +546,7 @@ A low-level module needs to notify a high-level one. Instead of accepting a call
 
 **2. Circular feature dependency.**
 Two features at different layers depend on each other's data. Neither team wants to own the shared abstraction.
-- *Confirm:* Multiple upward edges between the same pair. Both directions carry significant traffic. Often accompanied by `cycle-member` on the same pair.
+- *Confirm:* Multiple upward edges between the same pair. Both directions carry significant traffic. Often accompanied by `circular-dependency` on the same pair.
 - *Action:* Extract the shared data into a lower layer that both depend on.
 
 **3. Misclassified module layer.**
@@ -535,7 +592,7 @@ layer_gap_factor  = clamp((layer_high - layer_low) / max_layer_depth, 0, 1)
 edge_count_factor = clamp(|violating_edges_this_pair| / 5, 0, 1)
 
 Multipliers:
-  Both modules in same SCC: suppress entirely (cycle-member covers it)
+  Both modules in same SCC: suppress entirely (circular-dependency covers it)
   Violating edge is the only edge between the modules: x1.3 (fragile + wrong direction)
   Role-based impossibility: override severity to 0.8 minimum
 ```
@@ -561,25 +618,25 @@ layer-violation
 ### False Positive Suppression
 
 - **Balanced pairs:** If minority_ratio >= 0.4, suppress (the pair is roughly symmetric; there is no clear layering).
-- **Same SCC:** If both modules are in the same strongly connected component, suppress layer-violation. The cycle-member diagnostic covers this.
+- **Same SCC:** If both modules are in the same strongly connected component, suppress layer-violation. The circular-dependency diagnostic covers this.
 - **Event/callback edges:** If the violating edge target matches `on_*`/`handle_*`/`callback`/`listener`/`observer` naming patterns, suppress (the "upward" call is an intentional inversion-of-control pattern).
 - **Type-only edges:** If the violating edge is an import of a type (struct/enum/trait) with no function call, demote severity by 0.5x (type imports across layers are common and low-risk).
 
 ### Interactions
 
-- **`cycle-member`:** If both modules in the violation are in the same SCC, suppress this diagnostic. The cycle is the bigger problem.
+- **`circular-dependency`:** If both modules in the violation are in the same SCC, suppress this diagnostic. The cycle is the bigger problem.
 - **`wide-interface`:** Layer violations through a wide interface compound the problem: not only is the direction wrong, but the coupling surface is large. Both fire independently.
 - **`cross-package-coupling`:** Layer violations across package boundaries are more severe than within a package.
 
 ---
 
-## Diagnostic 7: `patch-magnet`
+## Diagnostic 7: `unstable-peripheral`
 
 **Phase:** 1+ | **Absorbs:** — | **Replaced by:** — | **Flag:** `--git`
 
 ### First-Principles Justification
 
-Some nodes are structurally peripheral (low centrality, few dependents) yet accumulate a disproportionate share of git commits. This mismatch indicates code that is unstable despite not being structurally important -- it changes often because it is poorly designed, under-specified, or absorbing requirements churn. The engineering force is **requirement instability concentrated in implementation details**: the node keeps changing because it encodes a volatile business rule or an unstable external interface.
+Some nodes are structurally peripheral (low centrality, few dependents) yet accumulate a disproportionate share of git commits. This mismatch indicates code that is unstable despite not being structurally important -- it changes often because it is poorly designed, under-specified, or absorbing requirements churn. The name captures both signals: *unstable* (high change frequency) and *peripheral* (low structural importance). The engineering force is **requirement instability concentrated in implementation details**: the node keeps changing because it encodes a volatile business rule or an unstable external interface.
 
 ### Root Causes
 
@@ -613,7 +670,7 @@ For each node v:
 
 If churn_ratio > 3.0 AND centrality_ratio < 0.3:
   // High churn, low structural importance
-  Emit patch-magnet(v, commit_count, change_velocity, structural_centrality)
+  Emit unstable-peripheral(v, commit_count, change_velocity, structural_centrality)
 ```
 
 ### Severity Model
@@ -629,13 +686,13 @@ recency_factor      = fraction of commits in last 3 months vs total commits
 Multipliers:
   Node is in a utility/shared module: x0.7 (utilities are expected to change)
   Node has >3 distinct authors: x1.2 (multiple people struggling with it)
-  Node is in a cycle (cycle-member): x1.3 (churn + cycle = compounding instability)
+  Node is in a cycle (circular-dependency): x1.3 (churn + cycle = compounding instability)
 ```
 
 ### Example Output
 
 ```
-patch-magnet
+unstable-peripheral
   Symptom: billing::calculate_tax has been modified in 47 commits (5.2x median)
     but is structurally peripheral (betweenness: p12).
   Impact: Disproportionate engineering time is spent on a low-centrality node.
@@ -660,8 +717,8 @@ patch-magnet
 
 ### Interactions
 
-- **`overloaded-utility`:** A patch-magnet that is also an overloaded-utility is the highest-risk combination: high blast radius AND high change frequency. Both fire independently; the developer should stabilize the utility first.
-- **`misplaced-concern` (Phase 2):** A patch-magnet that is semantically misplaced may be churning because it is in the wrong module and keeps getting patched to bridge the gap.
+- **`overloaded-utility`:** An unstable-peripheral that is also an overloaded-utility is the highest-risk combination: high blast radius AND high change frequency. Both fire independently; the developer should stabilize the utility first.
+- **`misplaced-concern` (Phase 2):** An unstable-peripheral that is semantically misplaced may be churning because it is in the wrong module and keeps getting patched to bridge the gap.
 
 ---
 
@@ -948,7 +1005,7 @@ shadow-dependency [experimental]
 
 ---
 
-## Diagnostic 11: `scattered-api`
+## Diagnostic 11: `redundant-api`
 
 **Phase:** 2 | **Absorbs:** — | **Replaced by:** —
 
@@ -995,7 +1052,7 @@ For each module M:
 
   redundant_cluster = connected components of redundant_pairs where callee_overlap > 0.5
   For each cluster with |cluster| >= 3:
-    Emit scattered-api(M, cluster, mean_pairwise_sim, mean_callee_overlap)
+    Emit redundant-api(M, cluster, mean_pairwise_sim, mean_callee_overlap)
 ```
 
 ### Severity Model
@@ -1016,7 +1073,7 @@ Multipliers:
 ### Example Output
 
 ```
-scattered-api
+redundant-api
   Symptom: Module http has 5 semantically redundant entry points that
     converge on the same internal callees.
   Impact: Callers see 5 ways to do roughly the same thing. Behavior may
@@ -1041,7 +1098,7 @@ scattered-api
 
 ### Interactions
 
-- **`wide-interface`:** A scattered API often manifests as a wide interface from the caller's perspective. If the calling module triggers wide-interface on this module, and the coupling points overlap with the scattered-api cluster, consolidating the API will also narrow the interface.
+- **`wide-interface`:** A redundant API often manifests as a wide interface from the caller's perspective. If the calling module triggers wide-interface on this module, and the coupling points overlap with the redundant-api cluster, consolidating the API will also narrow the interface.
 - **`overloaded-utility`:** If one entry point in the cluster is also an overloaded-utility, it is likely the "real" function and the others are wrappers. Consolidating onto that function is the natural action.
 
 ---
@@ -1281,7 +1338,7 @@ These rules prevent redundant or misleading diagnostic combinations:
 
 1. **Phase 3 `misplaced-concern` active --> suppress Phase 2 `misplaced-concern`.** The Phase 3 version uses R-GIN reconstruction error, which is strictly more informative than centroid distance. Both firing on the same node would be redundant.
 
-2. **`cycle-member` and `layer-violation` on the same module pair --> suppress `layer-violation`.** If two modules are in the same SCC, the cycle is the fundamental problem. Layer violations within a cycle are symptoms, not root causes.
+2. **`circular-dependency` and `layer-violation` on the same module pair --> suppress `layer-violation`.** If two modules are in the same SCC, the cycle is the fundamental problem. Layer violations within a cycle are symptoms, not root causes.
 
 3. **>40% of a module's members trigger `misplaced-concern` --> suppress individual `misplaced-concern`, fire `incoherent-module`.** When most of a module is misplaced, the module boundary itself is wrong. Individual "move this node" advice is less useful than "split this module."
 

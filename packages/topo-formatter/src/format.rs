@@ -584,8 +584,8 @@ mod tests {
                  "in_degree": 0, "out_degree": 1},
             ],
             "issues": [
-                {"id": "test-issue:core", "kind": "god_module", "title": "God module",
-                 "description": "Module core is too large.", "severity": 0.8,
+                {"id": "test-issue:core", "kind": "wide_interface", "title": "Wide interface",
+                 "description": "23 coupling points between core and auth.", "severity": 0.8,
                  "severity_label": "high", "confidence": 0.9, "confidence_label": "high",
                  "anchors": []},
             ],
@@ -611,7 +611,7 @@ mod tests {
         let output = format_text(&data, false, false, &HashMap::new(), None, false);
 
         assert!(output.contains("test-issue:core"));
-        assert!(output.contains("Module core is too large."));
+        assert!(output.contains("23 coupling points between core and auth."));
         assert!(output.contains("[high]"));
     }
 

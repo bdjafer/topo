@@ -8,7 +8,19 @@
       "Bash(ls target/release/topo*)",
       "Bash(./target/release/topo analyze:*)",
       "Bash(./target/release/topo parse:*)",
-      "Bash(make analyze:*)"
+      "Bash(make analyze:*)",
+      "Bash(wait)",
+      "Bash(grep -n \"god_module\\\\|coverage\\\\|self_edge_drop\\\\|module_separation\" packages/topo-formatter/src/*.rs)",
+      "Bash(git -C /Users/bryandjafer/Documents/personal/topo diff HEAD packages/topo-parser-rust/src/hir_walk.rs)",
+      "Bash(git -C /Users/bryandjafer/Documents/personal/topo diff HEAD packages/topo-parser-rust/src/graph.rs)",
+      "Read(//Users/bryandjafer/Documents/personal/topo/**)",
+      "Bash(cargo clean:*)",
+      "Bash(/Users/bryandjafer/Documents/personal/topo/.venv/bin/pytest tests/test_validation/test_real_codebase_benchmarks.py::test_reverse_flow_fixture_reports_layer_violation -v)",
+      "Bash(ls -la /Users/bryandjafer/Documents/personal/topo/packages/topo-parser*/src/)",
+      "Bash(git -C /Users/bryandjafer/Documents/personal/topo log --oneline --all)"
+    ],
+    "additionalDirectories": [
+      "/Users/bryandjafer/Documents/personal/topo/target/release/build"
     ]
   }
 }

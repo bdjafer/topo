@@ -1,5 +1,0 @@
-{
-  "split": "public",
-  "level": "symbol",
-  "description": "Back-edge from structural model (roles) to spectral engine, creating a dependency cycle"
-}

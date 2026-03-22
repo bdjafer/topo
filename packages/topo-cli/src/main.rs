@@ -275,7 +275,7 @@ fn run_analysis(
         let emb_data: serde_json::Value = serde_json::from_str(&emb_json)
             .map_err(|e| anyhow::anyhow!("Invalid embeddings JSON: {e}"))?;
         analyzer_input["semantic_embeddings"] = emb_data;
-    } else if args.semantic {
+    } else if !args.no_semantic {
         #[cfg(feature = "semantic")]
         {
             if let Some(root) = project_root {
@@ -285,13 +285,18 @@ fn run_analysis(
                 let emb_value = serde_json::to_value(&embeddings)?;
                 analyzer_input["semantic_embeddings"] = emb_value;
             } else {
-                bail!("--semantic requires a project path for source text extraction. Use --embeddings <file> for pre-parsed graphs.");
+                eprintln!("Warning: semantic analysis requires a project path. Use --embeddings <file> for pre-parsed graphs. Continuing without semantics.");
             }
         }
         #[cfg(not(feature = "semantic"))]
         {
-            bail!("--semantic requires the `semantic` feature. Build with: cargo build -p topo-cli --features semantic\nOr use --embeddings <file> for pre-computed embeddings.");
+            eprintln!("Note: semantic analysis requires the `semantic` feature. Build with: cargo build -p topo-cli --features semantic");
+            eprintln!("Or use --embeddings <file> for pre-computed embeddings. Continuing without semantics.");
         }
+    }
+
+    if args.experimental {
+        analyzer_input["experimental"] = serde_json::Value::Bool(true);
     }
 
     let input_str = serde_json::to_string(&analyzer_input)?;
