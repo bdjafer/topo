@@ -1,0 +1,29 @@
+[project]
+name = "topo-dataset"
+version = "0.1.0"
+description = "Dataset pipeline for R-GIN training: NPZ loading, PyG conversion, splits, preprocessing."
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.0",
+    "torch-geometric>=2.4",
+    "numpy>=1.24",
+    "scikit-learn>=1.3",
+]
+
+[project.optional-dependencies]
+embed = ["fastembed>=0.2"]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/topo_dataset"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

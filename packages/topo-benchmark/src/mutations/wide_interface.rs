@@ -4,11 +4,13 @@
 //! directional width past the Tukey upper fence (Q3 + 1.5 × IQR).
 //! Needs ≥ 6 nonzero module pairs for the detector to activate.
 
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use topo_analyzer::types::{AnalysisOutput, AnalyzerInput, EdgeEntry};
 
-use super::helpers::{add_edges, clone_input, eligible_modules, flagged_nodes, non_test_nodes, Rng};
+use super::helpers::{
+    add_edges, clone_input, eligible_modules, flagged_nodes, node_to_module, non_test_nodes, Rng,
+};
 use super::types::{MutationResult, MutationType};
 
 pub fn mutate(
@@ -26,19 +28,37 @@ pub fn mutate(
         return None;
     }
 
-    // Compute current directional widths between module pairs.
-    let deps = &analysis.architecture.dependencies;
-    let mut widths: Vec<usize> = deps.iter().map(|d| d.weight).filter(|&w| w > 0).collect();
+    // Compute current directional widths as DISTINCT (src, tgt) symbol pairs
+    // per directed module pair — matching how the detector computes width.
+    let n2m = node_to_module(analysis);
+    let mut pair_symbols: HashMap<(usize, usize), HashSet<(String, String)>> = HashMap::new();
+    for edge in &input.edges {
+        if edge.kind == "defines" {
+            continue;
+        }
+        let src_mod = n2m.get(&edge.source).copied();
+        let tgt_mod = n2m.get(&edge.target).copied();
+        if let (Some(sm), Some(tm)) = (src_mod, tgt_mod) {
+            if sm != tm {
+                pair_symbols
+                    .entry((sm, tm))
+                    .or_default()
+                    .insert((edge.source.clone(), edge.target.clone()));
+            }
+        }
+    }
+    let mut widths: Vec<usize> = pair_symbols
+        .values()
+        .map(|s| s.len())
+        .filter(|&w| w > 0)
+        .collect();
     widths.sort();
 
-    // Compute Tukey fence.
+    // Compute Tukey fence using the same function as the detector
+    // (linear interpolation for quartiles, not nearest-rank).
     let threshold = if widths.len() >= 6 {
-        let q1_idx = widths.len() / 4;
-        let q3_idx = (widths.len() * 3) / 4;
-        let q1 = widths[q1_idx] as f64;
-        let q3 = widths[q3_idx] as f64;
-        let iqr = q3 - q1;
-        (q3 + 1.5 * iqr).ceil() as usize
+        let widths_f64: Vec<f64> = widths.iter().map(|&w| w as f64).collect();
+        topo_analyzer::stats::tukey_upper_fence(&widths_f64).ceil() as usize
     } else {
         // Not enough pairs — pick a reasonable default.
         5
@@ -66,11 +86,10 @@ pub fn mutate(
                 continue;
             }
 
-            // Current width (A→B direction).
-            let current = deps
-                .iter()
-                .find(|d| d.source == m_a.id && d.target == m_b.id)
-                .map(|d| d.weight)
+            // Current width (A→B direction) as distinct symbol pairs.
+            let current = pair_symbols
+                .get(&(m_a.id, m_b.id))
+                .map(|s| s.len())
                 .unwrap_or(0);
 
             if current >= threshold {
@@ -160,9 +179,11 @@ mod tests {
         let mut nodes = Vec::new();
         let mut edges = Vec::new();
 
-        // 5 modules × 6 nodes = 30 nodes.
-        for m in 0..5 {
-            for i in 0..6 {
+        // 6 modules × 10 nodes = 60 nodes.
+        // Need ≥ 6 nonzero directed module pairs for the Tukey gate.
+        // Dense intra-module connectivity to prevent module reassignment.
+        for m in 0..6 {
+            for i in 0..10 {
                 nodes.push(NodeEntry {
                     id: format!("mod{}.fn{}", m, i),
                     kind: "function".to_string(),
@@ -171,29 +192,43 @@ mod tests {
                     line_end: None,
                 });
             }
-            // Intra-module edges.
-            for i in 0..5 {
+            // Dense intra-module edges: chain + skip edges for strong cohesion.
+            for i in 0..9 {
                 edges.push(EdgeEntry {
                     source: format!("mod{}.fn{}", m, i),
                     target: format!("mod{}.fn{}", m, i + 1),
                     kind: "calls".to_string(),
                 });
             }
+            for i in 0..8 {
+                edges.push(EdgeEntry {
+                    source: format!("mod{}.fn{}", m, i),
+                    target: format!("mod{}.fn{}", m, i + 2),
+                    kind: "calls".to_string(),
+                });
+            }
         }
 
-        // Sparse inter-module edges (1-2 per pair).
-        for m in 0..4 {
-            edges.push(EdgeEntry {
-                source: format!("mod{}.fn0", m),
-                target: format!("mod{}.fn0", m + 1),
-                kind: "calls".to_string(),
-            });
+        // Sparse inter-module edges: 2 distinct pairs per directed pair.
+        // Creates 8 directed pairs with width 2 each (well below any outlier fence).
+        let cross_pairs = [
+            (0, 1), (1, 2), (2, 3), (3, 4), (4, 5),
+            (0, 3), (1, 4), (2, 5),
+        ];
+        for &(a, b) in &cross_pairs {
+            for i in 0..2 {
+                edges.push(EdgeEntry {
+                    source: format!("mod{}.fn{}", a, i),
+                    target: format!("mod{}.fn{}", b, i),
+                    kind: "calls".to_string(),
+                });
+            }
         }
 
         AnalyzerInput {
             nodes,
             edges,
-            k: Some(5),
+            k: Some(6),
             edge_kinds: None,
             layer_weights: None,
             scope: None,
@@ -212,11 +247,12 @@ mod tests {
         let input = make_multi_module_graph();
         let analysis = topo_analyzer::analyze_full(&input);
 
-        let result = mutate(&input, &analysis, 2, 42);
-        // May return None if the graph doesn't have enough module pairs.
-        if let Some(r) = result {
-            assert_eq!(r.mutation_type, MutationType::WideInterface);
-            assert!(!r.added_edges.is_empty());
-        }
+        let result = mutate(&input, &analysis, 2, 42)
+            .expect("mutation should succeed on multi-module graph");
+        assert_eq!(result.mutation_type, MutationType::WideInterface);
+        assert!(!result.added_edges.is_empty());
     }
+
+    // Trigger test moved to tests/mutation_triggers.rs (uses real ripgrep graph
+    // because synthetic graphs are too small for stable spectral clustering).
 }

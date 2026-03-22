@@ -1,6 +1,36 @@
 # topo — build & analysis targets
 
-# ── WASM ───────────────────────────────────────────────────────────
+CACHE := .topo/make
+GRAPH := $(CACHE)/graph.json
+EMBEDDINGS := $(CACHE)/embeddings.json
+TOPO := ./target/release/topo
+
+# ── Analysis ──────────────────────────────────────────────────────
+
+.PHONY: analyze domain
+
+## Ensure the binary is built (only rebuilds if sources changed)
+$(TOPO): $(shell find packages -name '*.rs' -not -path '*/target/*' 2>/dev/null)
+	cargo build -p topo-cli --release
+
+## Parse (only re-parses if binary is newer — i.e. code changed)
+$(GRAPH): $(TOPO)
+	@mkdir -p $(CACHE)
+	$(TOPO) parse . -o $(GRAPH)
+
+## Embed (only re-embeds if graph changed)
+$(EMBEDDINGS): $(GRAPH)
+	python3 scripts/generate_embeddings.py $(GRAPH) --timeout 180 -o $(EMBEDDINGS)
+
+## Run structural analysis (issues + health)
+analyze: $(EMBEDDINGS)
+	$(TOPO) analyze . --embeddings $(EMBEDDINGS)
+
+## Show domain / architecture for this repo
+domain: $(EMBEDDINGS)
+	$(TOPO) domain . --embeddings $(EMBEDDINGS)
+
+# ── WASM ──────────────────────────────────────────────────────────
 
 .PHONY: wasm-build wasm-analyze wasm-test wasm-dev
 
@@ -22,7 +52,47 @@ wasm-test:
 wasm-dev:
 	cd packages/topo-web && pnpm dev
 
-# ── Python ─────────────────────────────────────────────────────────
+# ── Examples & Benchmark ──────────────────────────────────────────
+
+.PHONY: harvest harvest-all benchmark examples-list
+
+## List all registered example repos
+examples-list:
+	@./examples/scripts/fetch_and_analyze.sh --list
+
+## Harvest (parse) specific repos: make harvest REPOS="flask click requests"
+harvest: $(TOPO)
+	python3 benchmark/scripts/harvest_corpus.py $(REPOS)
+
+## Harvest all 50 repos from registry
+harvest-all: $(TOPO)
+	python3 benchmark/scripts/harvest_corpus.py
+
+## Run mutation benchmark on all available repos
+benchmark: $(TOPO)
+	python3 benchmark/scripts/evaluate_mutations.py
+
+# ── Dataset Pipeline ─────────────────────────────────────────────
+
+.PHONY: preprocess preprocess-all validate-dataset split-dataset
+
+## Preprocess specific repos: make preprocess REPOS="flask,click"
+preprocess: $(TOPO)
+	python3 packages/topo-dataset/scripts/preprocess.py --repos $(REPOS)
+
+## Preprocess all parsed repos
+preprocess-all: $(TOPO)
+	python3 packages/topo-dataset/scripts/preprocess.py
+
+## Validate preprocessed feature files
+validate-dataset:
+	python3 packages/topo-dataset/scripts/validate.py
+
+## Generate train/val/test splits
+split-dataset:
+	python3 packages/topo-dataset/scripts/split.py
+
+# ── Python ────────────────────────────────────────────────────────
 
 .PHONY: test
 
@@ -30,9 +100,9 @@ wasm-dev:
 test:
 	uv run pytest -x -q
 
-# ── Rust ───────────────────────────────────────────────────────────
+# ── Rust ──────────────────────────────────────────────────────────
 
-.PHONY: rust-test rust-build rust-analyze analyze
+.PHONY: rust-test rust-build
 
 ## Run Rust unit tests (all workspace crates)
 rust-test:
@@ -41,17 +111,3 @@ rust-test:
 ## Build the Rust crates (native, not WASM)
 rust-build:
 	cargo build --workspace --release
-
-## Run the full analysis on this repo (with semantic embeddings)
-analyze:
-	cargo build -p topo-cli --release
-	./target/release/topo parse . -o /tmp/topo-graph.json
-	python3 scripts/generate_embeddings.py /tmp/topo-graph.json --timeout 180 -o /tmp/topo-embeddings.json
-	./target/release/topo analyze --input /tmp/topo-graph.json --embeddings /tmp/topo-embeddings.json
-
-## Run analysis on a specific project (usage: make analyze-project PATH=<path>)
-analyze-project:
-	cargo build -p topo-cli --release
-	./target/release/topo parse $(PATH) -o /tmp/topo-graph.json
-	python3 scripts/generate_embeddings.py /tmp/topo-graph.json --timeout 300 -o /tmp/topo-embeddings.json
-	./target/release/topo analyze --input /tmp/topo-graph.json --embeddings /tmp/topo-embeddings.json

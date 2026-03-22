@@ -1,0 +1,5197 @@
+{
+  "nodes": [
+    {
+      "id": "typer",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/__init__.py",
+      "line": 1,
+      "name": "typer",
+      "line_end": 39
+    },
+    {
+      "id": "typer.__main__",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/__main__.py",
+      "line": 1,
+      "name": "__main__",
+      "line_end": 3
+    },
+    {
+      "id": "typer._completion_classes",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 1,
+      "name": "_completion_classes",
+      "line_end": 199
+    },
+    {
+      "id": "typer._completion_classes.BashComplete",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 30,
+      "name": "BashComplete",
+      "line_end": 63
+    },
+    {
+      "id": "typer._completion_classes.BashComplete.complete",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 59,
+      "name": "complete",
+      "line_end": 63
+    },
+    {
+      "id": "typer._completion_classes.BashComplete.format_completion",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 53,
+      "name": "format_completion",
+      "line_end": 57
+    },
+    {
+      "id": "typer._completion_classes.BashComplete.get_completion_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 41,
+      "name": "get_completion_args",
+      "line_end": 51
+    },
+    {
+      "id": "typer._completion_classes.BashComplete.source_vars",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 34,
+      "name": "source_vars",
+      "line_end": 39
+    },
+    {
+      "id": "typer._completion_classes.FishComplete",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 117,
+      "name": "FishComplete",
+      "line_end": 167
+    },
+    {
+      "id": "typer._completion_classes.FishComplete.complete",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 152,
+      "name": "complete",
+      "line_end": 167
+    },
+    {
+      "id": "typer._completion_classes.FishComplete.format_completion",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 139,
+      "name": "format_completion",
+      "line_end": 150
+    },
+    {
+      "id": "typer._completion_classes.FishComplete.get_completion_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 128,
+      "name": "get_completion_args",
+      "line_end": 137
+    },
+    {
+      "id": "typer._completion_classes.FishComplete.source_vars",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 121,
+      "name": "source_vars",
+      "line_end": 126
+    },
+    {
+      "id": "typer._completion_classes.PowerShellComplete",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 170,
+      "name": "PowerShellComplete",
+      "line_end": 189
+    },
+    {
+      "id": "typer._completion_classes.PowerShellComplete.format_completion",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 188,
+      "name": "format_completion",
+      "line_end": 189
+    },
+    {
+      "id": "typer._completion_classes.PowerShellComplete.get_completion_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 181,
+      "name": "get_completion_args",
+      "line_end": 186
+    },
+    {
+      "id": "typer._completion_classes.PowerShellComplete.source_vars",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 174,
+      "name": "source_vars",
+      "line_end": 179
+    },
+    {
+      "id": "typer._completion_classes.ZshComplete",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 66,
+      "name": "ZshComplete",
+      "line_end": 114
+    },
+    {
+      "id": "typer._completion_classes.ZshComplete.complete",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 106,
+      "name": "complete",
+      "line_end": 114
+    },
+    {
+      "id": "typer._completion_classes.ZshComplete.format_completion",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 88,
+      "name": "format_completion",
+      "line_end": 104
+    },
+    {
+      "id": "typer._completion_classes.ZshComplete.get_completion_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 77,
+      "name": "get_completion_args",
+      "line_end": 86
+    },
+    {
+      "id": "typer._completion_classes.ZshComplete.source_vars",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 70,
+      "name": "source_vars",
+      "line_end": 75
+    },
+    {
+      "id": "typer._completion_classes._sanitize_help_text",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 21,
+      "name": "_sanitize_help_text",
+      "line_end": 27
+    },
+    {
+      "id": "typer._completion_classes.completion_init",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_classes.py",
+      "line": 192,
+      "name": "completion_init",
+      "line_end": 199
+    },
+    {
+      "id": "typer._completion_shared",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_shared.py",
+      "line": 1,
+      "name": "_completion_shared",
+      "line_end": 252
+    },
+    {
+      "id": "typer._completion_shared.Shells",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_shared.py",
+      "line": 11,
+      "name": "Shells",
+      "line_end": 16
+    },
+    {
+      "id": "typer._completion_shared._get_shell_name",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_shared.py",
+      "line": 238,
+      "name": "_get_shell_name",
+      "line_end": 252
+    },
+    {
+      "id": "typer._completion_shared.get_completion_script",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_shared.py",
+      "line": 77,
+      "name": "get_completion_script",
+      "line_end": 90
+    },
+    {
+      "id": "typer._completion_shared.install",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_shared.py",
+      "line": 201,
+      "name": "install",
+      "line_end": 235
+    },
+    {
+      "id": "typer._completion_shared.install_bash",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_shared.py",
+      "line": 93,
+      "name": "install_bash",
+      "line_end": 116
+    },
+    {
+      "id": "typer._completion_shared.install_fish",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_shared.py",
+      "line": 147,
+      "name": "install_fish",
+      "line_end": 155
+    },
+    {
+      "id": "typer._completion_shared.install_powershell",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_shared.py",
+      "line": 158,
+      "name": "install_powershell",
+      "line_end": 198
+    },
+    {
+      "id": "typer._completion_shared.install_zsh",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_completion_shared.py",
+      "line": 119,
+      "name": "install_zsh",
+      "line_end": 144
+    },
+    {
+      "id": "typer._types",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/_types.py",
+      "line": 1,
+      "name": "_types",
+      "line_end": 27
+    },
+    {
+      "id": "typer._types.TyperChoice",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/_types.py",
+      "line": 9,
+      "name": "TyperChoice",
+      "line_end": 27
+    },
+    {
+      "id": "typer._types.TyperChoice.normalize_choice",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_types.py",
+      "line": 10,
+      "name": "normalize_choice",
+      "line_end": 27
+    },
+    {
+      "id": "typer._typing",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/_typing.py",
+      "line": 1,
+      "name": "_typing",
+      "line_end": 73
+    },
+    {
+      "id": "typer._typing.all_literal_values",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_typing.py",
+      "line": 63,
+      "name": "all_literal_values",
+      "line_end": 73
+    },
+    {
+      "id": "typer._typing.is_callable_type",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_typing.py",
+      "line": 51,
+      "name": "is_callable_type",
+      "line_end": 52
+    },
+    {
+      "id": "typer._typing.is_literal_type",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_typing.py",
+      "line": 55,
+      "name": "is_literal_type",
+      "line_end": 56
+    },
+    {
+      "id": "typer._typing.is_none_type",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_typing.py",
+      "line": 44,
+      "name": "is_none_type",
+      "line_end": 48
+    },
+    {
+      "id": "typer._typing.is_union",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_typing.py",
+      "line": 19,
+      "name": "is_union",
+      "line_end": 20
+    },
+    {
+      "id": "typer._typing.literal_values",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/_typing.py",
+      "line": 59,
+      "name": "literal_values",
+      "line_end": 60
+    },
+    {
+      "id": "typer.cli",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 1,
+      "name": "cli",
+      "line_end": 318
+    },
+    {
+      "id": "typer.cli.State",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 23,
+      "name": "State",
+      "line_end": 28
+    },
+    {
+      "id": "typer.cli.State.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 24,
+      "name": "__init__",
+      "line_end": 28
+    },
+    {
+      "id": "typer.cli.TyperCLIGroup",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 55,
+      "name": "TyperCLIGroup",
+      "line_end": 70
+    },
+    {
+      "id": "typer.cli.TyperCLIGroup.get_command",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 60,
+      "name": "get_command",
+      "line_end": 62
+    },
+    {
+      "id": "typer.cli.TyperCLIGroup.invoke",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 64,
+      "name": "invoke",
+      "line_end": 66
+    },
+    {
+      "id": "typer.cli.TyperCLIGroup.list_commands",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 56,
+      "name": "list_commands",
+      "line_end": 58
+    },
+    {
+      "id": "typer.cli.TyperCLIGroup.maybe_add_run",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 68,
+      "name": "maybe_add_run",
+      "line_end": 70
+    },
+    {
+      "id": "typer.cli._parse_html",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 271,
+      "name": "_parse_html",
+      "line_end": 276
+    },
+    {
+      "id": "typer.cli.callback",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 162,
+      "name": "callback",
+      "line_end": 184
+    },
+    {
+      "id": "typer.cli.docs",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 280,
+      "name": "docs",
+      "line_end": 314
+    },
+    {
+      "id": "typer.cli.get_docs_for_click",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 187,
+      "name": "get_docs_for_click",
+      "line_end": 268
+    },
+    {
+      "id": "typer.cli.get_typer_from_module",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 73,
+      "name": "get_typer_from_module",
+      "line_end": 118
+    },
+    {
+      "id": "typer.cli.get_typer_from_state",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 121,
+      "name": "get_typer_from_state",
+      "line_end": 138
+    },
+    {
+      "id": "typer.cli.main",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 317,
+      "name": "main",
+      "line_end": 318
+    },
+    {
+      "id": "typer.cli.maybe_add_run_to_cli",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 141,
+      "name": "maybe_add_run_to_cli",
+      "line_end": 151
+    },
+    {
+      "id": "typer.cli.maybe_update_state",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 34,
+      "name": "maybe_update_state",
+      "line_end": 52
+    },
+    {
+      "id": "typer.cli.print_version",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/cli.py",
+      "line": 154,
+      "name": "print_version",
+      "line_end": 158
+    },
+    {
+      "id": "typer.completion",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/completion.py",
+      "line": 1,
+      "name": "completion",
+      "line_end": 146
+    },
+    {
+      "id": "typer.completion._install_completion_no_auto_placeholder_function",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/completion.py",
+      "line": 83,
+      "name": "_install_completion_no_auto_placeholder_function",
+      "line_end": 97
+    },
+    {
+      "id": "typer.completion._install_completion_placeholder_function",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/completion.py",
+      "line": 64,
+      "name": "_install_completion_placeholder_function",
+      "line_end": 80
+    },
+    {
+      "id": "typer.completion.get_completion_inspect_parameters",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/completion.py",
+      "line": 17,
+      "name": "get_completion_inspect_parameters",
+      "line_end": 27
+    },
+    {
+      "id": "typer.completion.install_callback",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/completion.py",
+      "line": 30,
+      "name": "install_callback",
+      "line_end": 39
+    },
+    {
+      "id": "typer.completion.shell_complete",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/completion.py",
+      "line": 105,
+      "name": "shell_complete",
+      "line_end": 146
+    },
+    {
+      "id": "typer.completion.show_callback",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/completion.py",
+      "line": 42,
+      "name": "show_callback",
+      "line_end": 60
+    },
+    {
+      "id": "typer.core",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 1,
+      "name": "core",
+      "line_end": 821
+    },
+    {
+      "id": "typer.core.TyperArgument",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 250,
+      "name": "TyperArgument",
+      "line_end": 399
+    },
+    {
+      "id": "typer.core.TyperArgument.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 251,
+      "name": "__init__",
+      "line_end": 302
+    },
+    {
+      "id": "typer.core.TyperArgument._extract_default_help_str",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 318,
+      "name": "_extract_default_help_str",
+      "line_end": 321
+    },
+    {
+      "id": "typer.core.TyperArgument._get_default_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 304,
+      "name": "_get_default_string",
+      "line_end": 316
+    },
+    {
+      "id": "typer.core.TyperArgument.get_help_record",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 323,
+      "name": "get_help_record",
+      "line_end": 377
+    },
+    {
+      "id": "typer.core.TyperArgument.make_metavar",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 379,
+      "name": "make_metavar",
+      "line_end": 396
+    },
+    {
+      "id": "typer.core.TyperArgument.value_is_missing",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 398,
+      "name": "value_is_missing",
+      "line_end": 399
+    },
+    {
+      "id": "typer.core.TyperCommand",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 648,
+      "name": "TyperCommand",
+      "line_end": 733
+    },
+    {
+      "id": "typer.core.TyperCommand.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 649,
+      "name": "__init__",
+      "line_end": 683
+    },
+    {
+      "id": "typer.core.TyperCommand._main_shell_completion",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 690,
+      "name": "_main_shell_completion",
+      "line_end": 698
+    },
+    {
+      "id": "typer.core.TyperCommand.format_help",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 720,
+      "name": "format_help",
+      "line_end": 733
+    },
+    {
+      "id": "typer.core.TyperCommand.format_options",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 685,
+      "name": "format_options",
+      "line_end": 688
+    },
+    {
+      "id": "typer.core.TyperCommand.main",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 700,
+      "name": "main",
+      "line_end": 718
+    },
+    {
+      "id": "typer.core.TyperGroup",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 736,
+      "name": "TyperGroup",
+      "line_end": 821
+    },
+    {
+      "id": "typer.core.TyperGroup.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 737,
+      "name": "__init__",
+      "line_end": 751
+    },
+    {
+      "id": "typer.core.TyperGroup._main_shell_completion",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 759,
+      "name": "_main_shell_completion",
+      "line_end": 767
+    },
+    {
+      "id": "typer.core.TyperGroup.format_help",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 806,
+      "name": "format_help",
+      "line_end": 815
+    },
+    {
+      "id": "typer.core.TyperGroup.format_options",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 753,
+      "name": "format_options",
+      "line_end": 757
+    },
+    {
+      "id": "typer.core.TyperGroup.list_commands",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 817,
+      "name": "list_commands",
+      "line_end": 821
+    },
+    {
+      "id": "typer.core.TyperGroup.main",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 786,
+      "name": "main",
+      "line_end": 804
+    },
+    {
+      "id": "typer.core.TyperGroup.resolve_command",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 769,
+      "name": "resolve_command",
+      "line_end": 784
+    },
+    {
+      "id": "typer.core.TyperOption",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 402,
+      "name": "TyperOption",
+      "line_end": 589
+    },
+    {
+      "id": "typer.core.TyperOption.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 403,
+      "name": "__init__",
+      "line_end": 469
+    },
+    {
+      "id": "typer.core.TyperOption._extract_default_help_str",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 485,
+      "name": "_extract_default_help_str",
+      "line_end": 488
+    },
+    {
+      "id": "typer.core.TyperOption._get_default_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 471,
+      "name": "_get_default_string",
+      "line_end": 483
+    },
+    {
+      "id": "typer.core.TyperOption.get_help_record",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 493,
+      "name": "get_help_record",
+      "line_end": 586
+    },
+    {
+      "id": "typer.core.TyperOption.make_metavar",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 490,
+      "name": "make_metavar",
+      "line_end": 491
+    },
+    {
+      "id": "typer.core.TyperOption.value_is_missing",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 588,
+      "name": "value_is_missing",
+      "line_end": 589
+    },
+    {
+      "id": "typer.core._extract_default_help_str",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 138,
+      "name": "_extract_default_help_str",
+      "line_end": 153
+    },
+    {
+      "id": "typer.core._get_default_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 89,
+      "name": "_get_default_string",
+      "line_end": 135
+    },
+    {
+      "id": "typer.core._main",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 156,
+      "name": "_main",
+      "line_end": 247
+    },
+    {
+      "id": "typer.core._split_opt",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 38,
+      "name": "_split_opt",
+      "line_end": 44
+    },
+    {
+      "id": "typer.core._typer_format_options",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 606,
+      "name": "_typer_format_options",
+      "line_end": 624
+    },
+    {
+      "id": "typer.core._typer_main_shell_completion",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 627,
+      "name": "_typer_main_shell_completion",
+      "line_end": 645
+    },
+    {
+      "id": "typer.core._typer_param_setup_autocompletion_compat",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 47,
+      "name": "_typer_param_setup_autocompletion_compat",
+      "line_end": 86
+    },
+    {
+      "id": "typer.core._value_is_missing",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/core.py",
+      "line": 592,
+      "name": "_value_is_missing",
+      "line_end": 603
+    },
+    {
+      "id": "typer.main",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1,
+      "name": "main",
+      "line_end": 2013
+    },
+    {
+      "id": "typer.main.Typer",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 117,
+      "name": "Typer",
+      "line_end": 1158
+    },
+    {
+      "id": "typer.main.Typer.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1131,
+      "name": "__call__",
+      "line_end": 1152
+    },
+    {
+      "id": "typer.main.Typer.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 133,
+      "name": "__init__",
+      "line_end": 545
+    },
+    {
+      "id": "typer.main.Typer._info_val_str",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1154,
+      "name": "_info_val_str",
+      "line_end": 1158
+    },
+    {
+      "id": "typer.main.Typer.add_typer",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 913,
+      "name": "add_typer",
+      "line_end": 1129
+    },
+    {
+      "id": "typer.main.Typer.callback",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 547,
+      "name": "callback",
+      "line_end": 749
+    },
+    {
+      "id": "typer.main.Typer.command",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 751,
+      "name": "command",
+      "line_end": 911
+    },
+    {
+      "id": "typer.main._is_linux_or_bsd",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1929,
+      "name": "_is_linux_or_bsd",
+      "line_end": 1933
+    },
+    {
+      "id": "typer.main._is_macos",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1925,
+      "name": "_is_macos",
+      "line_end": 1926
+    },
+    {
+      "id": "typer.main.determine_type_convertor",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1427,
+      "name": "determine_type_convertor",
+      "line_end": 1433
+    },
+    {
+      "id": "typer.main.except_hook",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 59,
+      "name": "except_hook",
+      "line_end": 107
+    },
+    {
+      "id": "typer.main.generate_enum_convertor",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1444,
+      "name": "generate_enum_convertor",
+      "line_end": 1454
+    },
+    {
+      "id": "typer.main.generate_list_convertor",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1457,
+      "name": "generate_list_convertor",
+      "line_end": 1465
+    },
+    {
+      "id": "typer.main.generate_tuple_convertor",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1468,
+      "name": "generate_tuple_convertor",
+      "line_end": 1483
+    },
+    {
+      "id": "typer.main.get_callback",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1486,
+      "name": "get_callback",
+      "line_end": 1517
+    },
+    {
+      "id": "typer.main.get_click_param",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1627,
+      "name": "get_click_param",
+      "line_end": 1787
+    },
+    {
+      "id": "typer.main.get_click_type",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1520,
+      "name": "get_click_type",
+      "line_end": 1620
+    },
+    {
+      "id": "typer.main.get_command",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1171,
+      "name": "get_command",
+      "line_end": 1206
+    },
+    {
+      "id": "typer.main.get_command_from_info",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1382,
+      "name": "get_command_from_info",
+      "line_end": 1424
+    },
+    {
+      "id": "typer.main.get_command_name",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1359,
+      "name": "get_command_name",
+      "line_end": 1360
+    },
+    {
+      "id": "typer.main.get_group",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1161,
+      "name": "get_group",
+      "line_end": 1168
+    },
+    {
+      "id": "typer.main.get_group_from_info",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1281,
+      "name": "get_group_from_info",
+      "line_end": 1356
+    },
+    {
+      "id": "typer.main.get_install_completion_arguments",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 110,
+      "name": "get_install_completion_arguments",
+      "line_end": 114
+    },
+    {
+      "id": "typer.main.get_param_callback",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1790,
+      "name": "get_param_callback",
+      "line_end": 1839
+    },
+    {
+      "id": "typer.main.get_param_completion",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1842,
+      "name": "get_param_completion",
+      "line_end": 1892
+    },
+    {
+      "id": "typer.main.get_params_convertors_ctx_param_name_from_function",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1363,
+      "name": "get_params_convertors_ctx_param_name_from_function",
+      "line_end": 1379
+    },
+    {
+      "id": "typer.main.launch",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1936,
+      "name": "launch",
+      "line_end": 2013
+    },
+    {
+      "id": "typer.main.lenient_issubclass",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1623,
+      "name": "lenient_issubclass",
+      "line_end": 1624
+    },
+    {
+      "id": "typer.main.param_path_convertor",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1436,
+      "name": "param_path_convertor",
+      "line_end": 1441
+    },
+    {
+      "id": "typer.main.run",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1895,
+      "name": "run",
+      "line_end": 1922
+    },
+    {
+      "id": "typer.main.solve_typer_info_defaults",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1246,
+      "name": "solve_typer_info_defaults",
+      "line_end": 1278
+    },
+    {
+      "id": "typer.main.solve_typer_info_help",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/main.py",
+      "line": 1209,
+      "name": "solve_typer_info_help",
+      "line_end": 1243
+    },
+    {
+      "id": "typer.models",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 1,
+      "name": "models",
+      "line_end": 651
+    },
+    {
+      "id": "typer.models.ArgumentInfo",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 511,
+      "name": "ArgumentInfo",
+      "line_end": 612
+    },
+    {
+      "id": "typer.models.ArgumentInfo.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 512,
+      "name": "__init__",
+      "line_end": 612
+    },
+    {
+      "id": "typer.models.CallbackParam",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 156,
+      "name": "CallbackParam",
+      "line_end": 162
+    },
+    {
+      "id": "typer.models.CommandInfo",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 195,
+      "name": "CommandInfo",
+      "line_end": 227
+    },
+    {
+      "id": "typer.models.CommandInfo.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 196,
+      "name": "__init__",
+      "line_end": 227
+    },
+    {
+      "id": "typer.models.Context",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 26,
+      "name": "Context",
+      "line_end": 33
+    },
+    {
+      "id": "typer.models.Default",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 185,
+      "name": "Default",
+      "line_end": 192
+    },
+    {
+      "id": "typer.models.DefaultPlaceholder",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 165,
+      "name": "DefaultPlaceholder",
+      "line_end": 177
+    },
+    {
+      "id": "typer.models.DefaultPlaceholder.__bool__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 176,
+      "name": "__bool__",
+      "line_end": 177
+    },
+    {
+      "id": "typer.models.DefaultPlaceholder.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 173,
+      "name": "__init__",
+      "line_end": 174
+    },
+    {
+      "id": "typer.models.DeveloperExceptionConfig",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 630,
+      "name": "DeveloperExceptionConfig",
+      "line_end": 640
+    },
+    {
+      "id": "typer.models.DeveloperExceptionConfig.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 631,
+      "name": "__init__",
+      "line_end": 640
+    },
+    {
+      "id": "typer.models.FileBinaryRead",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 90,
+      "name": "FileBinaryRead",
+      "line_end": 118
+    },
+    {
+      "id": "typer.models.FileBinaryWrite",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 121,
+      "name": "FileBinaryWrite",
+      "line_end": 153
+    },
+    {
+      "id": "typer.models.FileText",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 36,
+      "name": "FileText",
+      "line_end": 60
+    },
+    {
+      "id": "typer.models.FileTextWrite",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 63,
+      "name": "FileTextWrite",
+      "line_end": 87
+    },
+    {
+      "id": "typer.models.OptionInfo",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 383,
+      "name": "OptionInfo",
+      "line_end": 508
+    },
+    {
+      "id": "typer.models.OptionInfo.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 384,
+      "name": "__init__",
+      "line_end": 508
+    },
+    {
+      "id": "typer.models.ParamMeta",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 615,
+      "name": "ParamMeta",
+      "line_end": 627
+    },
+    {
+      "id": "typer.models.ParamMeta.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 618,
+      "name": "__init__",
+      "line_end": 627
+    },
+    {
+      "id": "typer.models.ParameterInfo",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 275,
+      "name": "ParameterInfo",
+      "line_end": 380
+    },
+    {
+      "id": "typer.models.ParameterInfo.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 276,
+      "name": "__init__",
+      "line_end": 380
+    },
+    {
+      "id": "typer.models.TyperInfo",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 230,
+      "name": "TyperInfo",
+      "line_end": 272
+    },
+    {
+      "id": "typer.models.TyperInfo.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 231,
+      "name": "__init__",
+      "line_end": 272
+    },
+    {
+      "id": "typer.models.TyperPath",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 643,
+      "name": "TyperPath",
+      "line_end": 651
+    },
+    {
+      "id": "typer.models.TyperPath.shell_complete",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/models.py",
+      "line": 645,
+      "name": "shell_complete",
+      "line_end": 651
+    },
+    {
+      "id": "typer.params",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/params.py",
+      "line": 1,
+      "name": "params",
+      "line_end": 1831
+    },
+    {
+      "id": "typer.params.Argument",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/params.py",
+      "line": 1115,
+      "name": "Argument",
+      "line_end": 1831
+    },
+    {
+      "id": "typer.params.Option",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/params.py",
+      "line": 143,
+      "name": "Option",
+      "line_end": 1000
+    },
+    {
+      "id": "typer.rich_utils",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 1,
+      "name": "rich_utils",
+      "line_end": 753
+    },
+    {
+      "id": "typer.rich_utils.MetavarHighlighter",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 125,
+      "name": "MetavarHighlighter",
+      "line_end": 130
+    },
+    {
+      "id": "typer.rich_utils.NegativeOptionHighlighter",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 117,
+      "name": "NegativeOptionHighlighter",
+      "line_end": 121
+    },
+    {
+      "id": "typer.rich_utils.OptionHighlighter",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 106,
+      "name": "OptionHighlighter",
+      "line_end": 114
+    },
+    {
+      "id": "typer.rich_utils._get_help_text",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 185,
+      "name": "_get_help_text",
+      "line_end": 229
+    },
+    {
+      "id": "typer.rich_utils._get_parameter_help",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 232,
+      "name": "_get_parameter_help",
+      "line_end": 318
+    },
+    {
+      "id": "typer.rich_utils._get_rich_console",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 142,
+      "name": "_get_rich_console",
+      "line_end": 160
+    },
+    {
+      "id": "typer.rich_utils._has_ansi_character",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 138,
+      "name": "_has_ansi_character",
+      "line_end": 139
+    },
+    {
+      "id": "typer.rich_utils._make_command_help",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 321,
+      "name": "_make_command_help",
+      "line_end": 345
+    },
+    {
+      "id": "typer.rich_utils._make_rich_text",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 163,
+      "name": "_make_rich_text",
+      "line_end": 181
+    },
+    {
+      "id": "typer.rich_utils._print_commands_panel",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 459,
+      "name": "_print_commands_panel",
+      "line_end": 532
+    },
+    {
+      "id": "typer.rich_utils._print_options_panel",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 348,
+      "name": "_print_options_panel",
+      "line_end": 456
+    },
+    {
+      "id": "typer.rich_utils.escape_before_html_export",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 716,
+      "name": "escape_before_html_export",
+      "line_end": 718
+    },
+    {
+      "id": "typer.rich_utils.get_traceback",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 740,
+      "name": "get_traceback",
+      "line_end": 753
+    },
+    {
+      "id": "typer.rich_utils.rich_abort_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 710,
+      "name": "rich_abort_error",
+      "line_end": 713
+    },
+    {
+      "id": "typer.rich_utils.rich_format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 677,
+      "name": "rich_format_error",
+      "line_end": 707
+    },
+    {
+      "id": "typer.rich_utils.rich_format_help",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 535,
+      "name": "rich_format_help",
+      "line_end": 674
+    },
+    {
+      "id": "typer.rich_utils.rich_render_text",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 734,
+      "name": "rich_render_text",
+      "line_end": 737
+    },
+    {
+      "id": "typer.rich_utils.rich_to_html",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/rich_utils.py",
+      "line": 721,
+      "name": "rich_to_html",
+      "line_end": 731
+    },
+    {
+      "id": "typer.testing",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/testing.py",
+      "line": 1,
+      "name": "testing",
+      "line_end": 30
+    },
+    {
+      "id": "typer.testing.CliRunner",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/testing.py",
+      "line": 10,
+      "name": "CliRunner",
+      "line_end": 30
+    },
+    {
+      "id": "typer.testing.CliRunner.invoke",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/testing.py",
+      "line": 11,
+      "name": "invoke",
+      "line_end": 30
+    },
+    {
+      "id": "typer.utils",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 1,
+      "name": "utils",
+      "line_end": 197
+    },
+    {
+      "id": "typer.utils.AnnotatedParamWithDefaultValueError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 22,
+      "name": "AnnotatedParamWithDefaultValueError",
+      "line_end": 35
+    },
+    {
+      "id": "typer.utils.AnnotatedParamWithDefaultValueError.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 26,
+      "name": "__init__",
+      "line_end": 28
+    },
+    {
+      "id": "typer.utils.AnnotatedParamWithDefaultValueError.__str__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 30,
+      "name": "__str__",
+      "line_end": 35
+    },
+    {
+      "id": "typer.utils.DefaultFactoryAndDefaultValueError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 78,
+      "name": "DefaultFactoryAndDefaultValueError",
+      "line_end": 91
+    },
+    {
+      "id": "typer.utils.DefaultFactoryAndDefaultValueError.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 82,
+      "name": "__init__",
+      "line_end": 84
+    },
+    {
+      "id": "typer.utils.DefaultFactoryAndDefaultValueError.__str__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 86,
+      "name": "__str__",
+      "line_end": 91
+    },
+    {
+      "id": "typer.utils.MixedAnnotatedAndDefaultStyleError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 38,
+      "name": "MixedAnnotatedAndDefaultStyleError",
+      "line_end": 62
+    },
+    {
+      "id": "typer.utils.MixedAnnotatedAndDefaultStyleError.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 43,
+      "name": "__init__",
+      "line_end": 51
+    },
+    {
+      "id": "typer.utils.MixedAnnotatedAndDefaultStyleError.__str__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 53,
+      "name": "__str__",
+      "line_end": 62
+    },
+    {
+      "id": "typer.utils.MultipleTyperAnnotationsError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 65,
+      "name": "MultipleTyperAnnotationsError",
+      "line_end": 75
+    },
+    {
+      "id": "typer.utils.MultipleTyperAnnotationsError.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 68,
+      "name": "__init__",
+      "line_end": 69
+    },
+    {
+      "id": "typer.utils.MultipleTyperAnnotationsError.__str__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 71,
+      "name": "__str__",
+      "line_end": 75
+    },
+    {
+      "id": "typer.utils._param_type_to_user_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 10,
+      "name": "_param_type_to_user_string",
+      "line_end": 19
+    },
+    {
+      "id": "typer.utils._split_annotation_from_typer_annotations",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 94,
+      "name": "_split_annotation_from_typer_annotations",
+      "line_end": 104
+    },
+    {
+      "id": "typer.utils.get_params_from_function",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 107,
+      "name": "get_params_from_function",
+      "line_end": 186
+    },
+    {
+      "id": "typer.utils.parse_boolean_env_var",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/typer/typer/utils.py",
+      "line": 189,
+      "name": "parse_boolean_env_var",
+      "line_end": 197
+    }
+  ],
+  "edges": [
+    {
+      "source": "typer",
+      "target": "shutil",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "shutil.get_terminal_size",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.exceptions.Abort",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.exceptions.BadParameter",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.exceptions.Exit",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.clear",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.confirm",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.echo_via_pager",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.edit",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.getchar",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.pause",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.progressbar",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.prompt",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.secho",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.style",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.termui.unstyle",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils.echo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils.format_filename",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils.get_app_dir",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils.get_binary_stream",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils.get_text_stream",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "click.utils.open_file",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.colors",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.main",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.main.Typer",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.main",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.main.launch",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.main",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.main.run",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models.CallbackParam",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models.Context",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models.FileBinaryRead",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models.FileBinaryWrite",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models.FileText",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.models.FileTextWrite",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.params",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.params.Argument",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.params",
+      "kind": "imports"
+    },
+    {
+      "source": "typer",
+      "target": "typer.params.Option",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.__main__",
+      "target": "typer.cli",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.__main__",
+      "target": "typer.cli.main",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "importlib.util",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "os",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "re",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "click.parser",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "click.shell_completion",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "click.shell_completion",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "click.shell_completion.split_arg_string",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_shared",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_shared.COMPLETION_SCRIPT_BASH",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_shared.COMPLETION_SCRIPT_FISH",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_shared.COMPLETION_SCRIPT_POWER_SHELL",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_shared.COMPLETION_SCRIPT_ZSH",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_shared.Shells",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_classes._sanitize_help_text",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_classes.BashComplete",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.BashComplete",
+      "target": "typer._completion_classes.BashComplete.source_vars",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.BashComplete",
+      "target": "typer._completion_classes.BashComplete.get_completion_args",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.BashComplete",
+      "target": "typer._completion_classes.BashComplete.format_completion",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.BashComplete",
+      "target": "typer._completion_classes.BashComplete.complete",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_classes.ZshComplete",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.ZshComplete",
+      "target": "typer._completion_classes.ZshComplete.source_vars",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.ZshComplete",
+      "target": "typer._completion_classes.ZshComplete.get_completion_args",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.ZshComplete",
+      "target": "typer._completion_classes.ZshComplete.format_completion",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.ZshComplete",
+      "target": "typer._completion_classes.ZshComplete.complete",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_classes.FishComplete",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.FishComplete",
+      "target": "typer._completion_classes.FishComplete.source_vars",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.FishComplete",
+      "target": "typer._completion_classes.FishComplete.get_completion_args",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.FishComplete",
+      "target": "typer._completion_classes.FishComplete.format_completion",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.FishComplete",
+      "target": "typer._completion_classes.FishComplete.complete",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_classes.PowerShellComplete",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.PowerShellComplete",
+      "target": "typer._completion_classes.PowerShellComplete.source_vars",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.PowerShellComplete",
+      "target": "typer._completion_classes.PowerShellComplete.get_completion_args",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes.PowerShellComplete",
+      "target": "typer._completion_classes.PowerShellComplete.format_completion",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_classes",
+      "target": "typer._completion_classes.completion_init",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "os",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "re",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "subprocess",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "enum",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "enum.Enum",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "pathlib",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "pathlib.Path",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "shellingham",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "typer._completion_shared.Shells",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "typer._completion_shared.get_completion_script",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "typer._completion_shared.install_bash",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "typer._completion_shared.install_zsh",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "typer._completion_shared.install_fish",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "typer._completion_shared.install_powershell",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "typer._completion_shared.install",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._completion_shared",
+      "target": "typer._completion_shared._get_shell_name",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._types",
+      "target": "enum",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._types",
+      "target": "enum.Enum",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._types",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._types",
+      "target": "typing.TypeVar",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._types",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._types",
+      "target": "typer._types.TyperChoice",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._types.TyperChoice",
+      "target": "typer._types.TyperChoice.normalize_choice",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._typing",
+      "target": "types",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "collections.abc.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typing.Annotated",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typing.Literal",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typing.Union",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typing.get_args",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typing.get_origin",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typing.get_type_hints",
+      "kind": "imports"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typer._typing.is_union",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typer._typing.is_none_type",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typer._typing.is_callable_type",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typer._typing.is_literal_type",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typer._typing.literal_values",
+      "kind": "defines"
+    },
+    {
+      "source": "typer._typing",
+      "target": "typer._typing.all_literal_values",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "importlib.util",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "re",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "pathlib",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "pathlib.Path",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.core",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "click.Command",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "click.Group",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "click.Option",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.__version__",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.core",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.core.HAS_RICH",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.core.MARKUP_MODE_KEY",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.State",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli.State",
+      "target": "typer.cli.State.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.maybe_update_state",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.TyperCLIGroup",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup",
+      "target": "typer.core.TyperGroup",
+      "kind": "inherits"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup",
+      "target": "typer.cli.TyperCLIGroup.list_commands",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup",
+      "target": "typer.cli.TyperCLIGroup.get_command",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup",
+      "target": "typer.cli.TyperCLIGroup.invoke",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup",
+      "target": "typer.cli.TyperCLIGroup.maybe_add_run",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.get_typer_from_module",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.get_typer_from_state",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.maybe_add_run_to_cli",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.print_version",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.callback",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.get_docs_for_click",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli._parse_html",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.docs",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.main",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.completion",
+      "target": "os",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "collections.abc.MutableMapping",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer._completion_classes",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer._completion_classes.completion_init",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer._completion_shared",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer._completion_shared.Shells",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer._completion_shared._get_shell_name",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer._completion_shared.get_completion_script",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer._completion_shared.install",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.models.ParamMeta",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.params",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.params.Option",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.utils.get_params_from_function",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.completion.get_completion_inspect_parameters",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.completion.install_callback",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.completion.show_callback",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.completion._install_completion_placeholder_function",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.completion._install_completion_no_auto_placeholder_function",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.completion",
+      "target": "typer.completion.shell_complete",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "errno",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "inspect",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "os",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "collections.abc.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "collections.abc.MutableMapping",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "collections.abc.Sequence",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "difflib",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "difflib.get_close_matches",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "enum",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "enum.Enum",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "gettext",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "gettext.gettext",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typing.TextIO",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typing.Union",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typing.cast",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "click.core",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "click.formatting",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "click.shell_completion",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "click.types",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "click.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer._typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer._typing.Literal",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.utils.parse_boolean_env_var",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core._split_opt",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core._typer_param_setup_autocompletion_compat",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core._get_default_string",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core._extract_default_help_str",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core._main",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core.TyperArgument",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperArgument",
+      "target": "typer.core.TyperArgument.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperArgument",
+      "target": "typer.core.TyperArgument._get_default_string",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperArgument",
+      "target": "typer.core.TyperArgument._extract_default_help_str",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperArgument",
+      "target": "typer.core.TyperArgument.get_help_record",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperArgument",
+      "target": "typer.core.TyperArgument.make_metavar",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperArgument",
+      "target": "typer.core.TyperArgument.value_is_missing",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core.TyperOption",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperOption",
+      "target": "typer.core.TyperOption.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperOption",
+      "target": "typer.core.TyperOption._get_default_string",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperOption",
+      "target": "typer.core.TyperOption._extract_default_help_str",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperOption",
+      "target": "typer.core.TyperOption.make_metavar",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperOption",
+      "target": "typer.core.TyperOption.get_help_record",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperOption",
+      "target": "typer.core.TyperOption.value_is_missing",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core._value_is_missing",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core._typer_format_options",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core._typer_main_shell_completion",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core.TyperCommand",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperCommand",
+      "target": "typer.core.TyperCommand.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperCommand",
+      "target": "typer.core.TyperCommand.format_options",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperCommand",
+      "target": "typer.core.TyperCommand._main_shell_completion",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperCommand",
+      "target": "typer.core.TyperCommand.main",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperCommand",
+      "target": "typer.core.TyperCommand.format_help",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.core.TyperGroup",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperGroup",
+      "target": "typer.core.TyperGroup.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperGroup",
+      "target": "typer.core.TyperGroup.format_options",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperGroup",
+      "target": "typer.core.TyperGroup._main_shell_completion",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperGroup",
+      "target": "typer.core.TyperGroup.resolve_command",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperGroup",
+      "target": "typer.core.TyperGroup.main",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperGroup",
+      "target": "typer.core.TyperGroup.format_help",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.core.TyperGroup",
+      "target": "typer.core.TyperGroup.list_commands",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "inspect",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "os",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "platform",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "shutil",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "subprocess",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "traceback",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "collections.abc.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "collections.abc.Sequence",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "datetime",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "datetime.datetime",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "enum",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "enum.Enum",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "functools",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "functools.update_wrapper",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "pathlib",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "pathlib.Path",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "traceback",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "traceback.FrameSummary",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "traceback.StackSummary",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "types",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "types.TracebackType",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typing.Annotated",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "uuid",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "uuid.UUID",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "annotated_doc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "annotated_doc.Doc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer._types",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer._types.TyperChoice",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer._typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer._typing.get_args",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer._typing.get_origin",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer._typing.is_literal_type",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer._typing.is_union",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer._typing.literal_values",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.completion",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.completion.get_completion_inspect_parameters",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.core",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.core.DEFAULT_MARKUP_MODE",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.core.HAS_RICH",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.core.MarkupMode",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.core.TyperArgument",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.core.TyperCommand",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.core.TyperGroup",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.core.TyperOption",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.AnyType",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.ArgumentInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.CommandFunctionType",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.CommandInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.Default",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.DefaultPlaceholder",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.DeveloperExceptionConfig",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.FileBinaryRead",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.FileBinaryWrite",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.FileText",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.FileTextWrite",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.NoneType",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.OptionInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.ParameterInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.ParamMeta",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.Required",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.TyperInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.models.TyperPath",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.utils.get_params_from_function",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.except_hook",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_install_completion_arguments",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.Typer",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main.Typer",
+      "target": "typer.main.Typer.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main.Typer",
+      "target": "typer.main.Typer.callback",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main.Typer",
+      "target": "typer.main.Typer.command",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main.Typer",
+      "target": "typer.main.Typer.add_typer",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main.Typer",
+      "target": "typer.main.Typer.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main.Typer",
+      "target": "typer.main.Typer._info_val_str",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_group",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_command",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.solve_typer_info_help",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.solve_typer_info_defaults",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_group_from_info",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_command_name",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_params_convertors_ctx_param_name_from_function",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_command_from_info",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.determine_type_convertor",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.param_path_convertor",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.generate_enum_convertor",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.generate_list_convertor",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.generate_tuple_convertor",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_callback",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_click_type",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.lenient_issubclass",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_click_param",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_param_callback",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.get_param_completion",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.run",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main._is_macos",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main._is_linux_or_bsd",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main",
+      "target": "typer.main.launch",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "inspect",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "io",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "collections.abc.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "collections.abc.Sequence",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "typing.TYPE_CHECKING",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "typing.Optional",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "typing.TypeVar",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "click.shell_completion",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.Context",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.FileText",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.FileTextWrite",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.FileTextWrite",
+      "target": "typer.models.FileText",
+      "kind": "inherits"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.FileBinaryRead",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.FileBinaryWrite",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.CallbackParam",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.DefaultPlaceholder",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.DefaultPlaceholder",
+      "target": "typer.models.DefaultPlaceholder.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.DefaultPlaceholder",
+      "target": "typer.models.DefaultPlaceholder.__bool__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.Default",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.CommandInfo",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.CommandInfo",
+      "target": "typer.models.CommandInfo.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.TyperInfo",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.TyperInfo",
+      "target": "typer.models.TyperInfo.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.ParameterInfo",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.ParameterInfo",
+      "target": "typer.models.ParameterInfo.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.OptionInfo",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.OptionInfo",
+      "target": "typer.models.ParameterInfo",
+      "kind": "inherits"
+    },
+    {
+      "source": "typer.models.OptionInfo",
+      "target": "typer.models.OptionInfo.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.ArgumentInfo",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.ArgumentInfo",
+      "target": "typer.models.ParameterInfo",
+      "kind": "inherits"
+    },
+    {
+      "source": "typer.models.ArgumentInfo",
+      "target": "typer.models.ArgumentInfo.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.ParamMeta",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.ParamMeta",
+      "target": "typer.models.ParamMeta.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.DeveloperExceptionConfig",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.DeveloperExceptionConfig",
+      "target": "typer.models.DeveloperExceptionConfig.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models",
+      "target": "typer.models.TyperPath",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.models.TyperPath",
+      "target": "typer.models.TyperPath.shell_complete",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.params",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "collections.abc.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "typing.TYPE_CHECKING",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "typing.Annotated",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "typing.overload",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "annotated_doc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "annotated_doc.Doc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "typer.models.ArgumentInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "typer.models.OptionInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.params",
+      "target": "typer.params.Option",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.params",
+      "target": "typer.params.Option",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.params",
+      "target": "typer.params.Option",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.params",
+      "target": "typer.params.Argument",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.params",
+      "target": "typer.params.Argument",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.params",
+      "target": "typer.params.Argument",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "inspect",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "io",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "collections",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "collections.defaultdict",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "collections.abc.Iterable",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "gettext",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "gettext.gettext",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "os",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "os.getenv",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typing.Literal",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "click",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.box",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.align",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.align.Align",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.columns",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.columns.Columns",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.console",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.console.Console",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.console.RenderableType",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.console.group",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.emoji",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.emoji.Emoji",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.highlighter",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.highlighter.RegexHighlighter",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.markdown",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.markdown.Markdown",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.markup",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.markup.escape",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.padding",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.padding.Padding",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.panel",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.panel.Panel",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.table",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.table.Table",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.text",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.text.Text",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.theme",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.theme.Theme",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.traceback",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "rich.traceback.Traceback",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.models.DeveloperExceptionConfig",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.OptionHighlighter",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.NegativeOptionHighlighter",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.MetavarHighlighter",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils._has_ansi_character",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils._get_rich_console",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils._make_rich_text",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils._get_help_text",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils._get_parameter_help",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils._make_command_help",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils._print_options_panel",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils._print_commands_panel",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.rich_format_help",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.rich_format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.rich_abort_error",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.escape_before_html_export",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.rich_to_html",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.rich_render_text",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.rich_utils",
+      "target": "typer.rich_utils.get_traceback",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.testing",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "collections.abc.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "collections.abc.Sequence",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "typing.IO",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "click.testing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "click.testing.CliRunner",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "click.testing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "click.testing.Result",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "typer.main",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "typer.main.Typer",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "typer.main",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "typer.main.get_command",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.testing",
+      "target": "typer.testing.CliRunner",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.testing.CliRunner",
+      "target": "typer.testing.CliRunner.invoke",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils",
+      "target": "inspect",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "collections.abc.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "copy",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "copy.copy",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typing.cast",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer._typing",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer._typing.Annotated",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer._typing.get_args",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer._typing.get_origin",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer._typing.get_type_hints",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.models",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.models.ArgumentInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.models.OptionInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.models.ParameterInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.models.ParamMeta",
+      "kind": "imports"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.utils._param_type_to_user_string",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.utils.AnnotatedParamWithDefaultValueError",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils.AnnotatedParamWithDefaultValueError",
+      "target": "typer.utils.AnnotatedParamWithDefaultValueError.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils.AnnotatedParamWithDefaultValueError",
+      "target": "typer.utils.AnnotatedParamWithDefaultValueError.__str__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.utils.MixedAnnotatedAndDefaultStyleError",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils.MixedAnnotatedAndDefaultStyleError",
+      "target": "typer.utils.MixedAnnotatedAndDefaultStyleError.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils.MixedAnnotatedAndDefaultStyleError",
+      "target": "typer.utils.MixedAnnotatedAndDefaultStyleError.__str__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.utils.MultipleTyperAnnotationsError",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils.MultipleTyperAnnotationsError",
+      "target": "typer.utils.MultipleTyperAnnotationsError.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils.MultipleTyperAnnotationsError",
+      "target": "typer.utils.MultipleTyperAnnotationsError.__str__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.utils.DefaultFactoryAndDefaultValueError",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils.DefaultFactoryAndDefaultValueError",
+      "target": "typer.utils.DefaultFactoryAndDefaultValueError.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils.DefaultFactoryAndDefaultValueError",
+      "target": "typer.utils.DefaultFactoryAndDefaultValueError.__str__",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.utils._split_annotation_from_typer_annotations",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.utils.get_params_from_function",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.utils",
+      "target": "typer.utils.parse_boolean_env_var",
+      "kind": "defines"
+    },
+    {
+      "source": "typer.main.get_install_completion_arguments",
+      "target": "typer.completion.get_completion_inspect_parameters",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_install_completion_arguments",
+      "target": "typer.main.get_click_param",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.completion.get_completion_inspect_parameters",
+      "target": "typer._completion_classes.completion_init",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.completion.get_completion_inspect_parameters",
+      "target": "typer.utils.get_params_from_function",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer._typing.is_union",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.core.TyperArgument.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.core.TyperOption.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.main.determine_type_convertor",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.main.generate_list_convertor",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.main.generate_tuple_convertor",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.main.get_click_type",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.main.get_command_name",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.main.get_param_callback",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.main.get_param_completion",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.main.lenient_issubclass",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.models.ArgumentInfo.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_param",
+      "target": "typer.models.OptionInfo.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.Typer.__init__",
+      "target": "typer.models.TyperInfo.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.Typer.add_typer",
+      "target": "typer.main.Typer._info_val_str",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.Typer.add_typer",
+      "target": "typer.models.TyperInfo.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.Typer.__call__",
+      "target": "typer.main.get_command",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.Typer.__call__",
+      "target": "typer.models.DeveloperExceptionConfig.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_command",
+      "target": "typer.main.get_command_from_info",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_command",
+      "target": "typer.main.get_group",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_command",
+      "target": "typer.main.get_install_completion_arguments",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_group",
+      "target": "typer.main.get_group_from_info",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_group",
+      "target": "typer.models.TyperInfo.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_group_from_info",
+      "target": "typer.main.get_callback",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_group_from_info",
+      "target": "typer.main.get_command_from_info",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_group_from_info",
+      "target": "typer.main.get_group_from_info",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_group_from_info",
+      "target": "typer.main.get_params_convertors_ctx_param_name_from_function",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_group_from_info",
+      "target": "typer.main.solve_typer_info_defaults",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_command_from_info",
+      "target": "typer.main.get_callback",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_command_from_info",
+      "target": "typer.main.get_command_name",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_command_from_info",
+      "target": "typer.main.get_params_convertors_ctx_param_name_from_function",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.solve_typer_info_defaults",
+      "target": "typer.main.solve_typer_info_help",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.solve_typer_info_defaults",
+      "target": "typer.models.TyperInfo.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_params_convertors_ctx_param_name_from_function",
+      "target": "typer.main.get_click_param",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_params_convertors_ctx_param_name_from_function",
+      "target": "typer.main.lenient_issubclass",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_params_convertors_ctx_param_name_from_function",
+      "target": "typer.utils.get_params_from_function",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_callback",
+      "target": "typer.utils.get_params_from_function",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.utils.get_params_from_function",
+      "target": "typer.models.ParamMeta.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.utils.get_params_from_function",
+      "target": "typer.utils.AnnotatedParamWithDefaultValueError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.utils.get_params_from_function",
+      "target": "typer.utils.DefaultFactoryAndDefaultValueError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.utils.get_params_from_function",
+      "target": "typer.utils.MixedAnnotatedAndDefaultStyleError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.utils.get_params_from_function",
+      "target": "typer.utils.MultipleTyperAnnotationsError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.utils.get_params_from_function",
+      "target": "typer.utils._split_annotation_from_typer_annotations",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.determine_type_convertor",
+      "target": "typer.main.generate_enum_convertor",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.determine_type_convertor",
+      "target": "typer.main.lenient_issubclass",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.generate_tuple_convertor",
+      "target": "typer.main.determine_type_convertor",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_type",
+      "target": "typer._typing.is_literal_type",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_type",
+      "target": "typer._typing.literal_values",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_click_type",
+      "target": "typer.main.lenient_issubclass",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_param_callback",
+      "target": "typer.main.lenient_issubclass",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_param_callback",
+      "target": "typer.utils.get_params_from_function",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_param_completion",
+      "target": "typer.main.lenient_issubclass",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.get_param_completion",
+      "target": "typer.utils.get_params_from_function",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperOption.__init__",
+      "target": "typer.core._typer_param_setup_autocompletion_compat",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperArgument.__init__",
+      "target": "typer.core._typer_param_setup_autocompletion_compat",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.run",
+      "target": "typer.main.Typer.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.run",
+      "target": "typer.main.Typer.command",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.launch",
+      "target": "typer.main.launch",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.launch",
+      "target": "typer.main._is_linux_or_bsd",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.main.launch",
+      "target": "typer.main._is_macos",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils._make_rich_text",
+      "target": "typer.rich_utils._has_ansi_character",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils._get_help_text",
+      "target": "typer.rich_utils._make_rich_text",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils._get_parameter_help",
+      "target": "typer.rich_utils._make_rich_text",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils._make_command_help",
+      "target": "typer.rich_utils._make_rich_text",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils._print_options_panel",
+      "target": "typer.rich_utils._get_parameter_help",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils._print_commands_panel",
+      "target": "typer.rich_utils._make_command_help",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils.rich_format_help",
+      "target": "typer.rich_utils._get_help_text",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils.rich_format_help",
+      "target": "typer.rich_utils._get_rich_console",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils.rich_format_help",
+      "target": "typer.rich_utils._make_rich_text",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils.rich_format_help",
+      "target": "typer.rich_utils._print_commands_panel",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils.rich_format_help",
+      "target": "typer.rich_utils._print_options_panel",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils.rich_format_error",
+      "target": "typer.rich_utils._get_rich_console",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils.rich_abort_error",
+      "target": "typer.rich_utils._get_rich_console",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.rich_utils.rich_render_text",
+      "target": "typer.rich_utils._get_rich_console",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.models.Default",
+      "target": "typer.models.DefaultPlaceholder.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core",
+      "target": "typer.utils.parse_boolean_env_var",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core._get_default_string",
+      "target": "typer.core._get_default_string",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core._get_default_string",
+      "target": "typer.core._split_opt",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core._main",
+      "target": "typer.core.TyperCommand._main_shell_completion",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core._main",
+      "target": "typer.core.TyperGroup._main_shell_completion",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperCommand._main_shell_completion",
+      "target": "typer.core._typer_main_shell_completion",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperGroup._main_shell_completion",
+      "target": "typer.core._typer_main_shell_completion",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperArgument._get_default_string",
+      "target": "typer.core.TyperArgument._get_default_string",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperArgument._extract_default_help_str",
+      "target": "typer.core.TyperArgument._extract_default_help_str",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperArgument.get_help_record",
+      "target": "typer.core.TyperArgument._extract_default_help_str",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperArgument.get_help_record",
+      "target": "typer.core.TyperArgument._get_default_string",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperArgument.get_help_record",
+      "target": "typer.core.TyperArgument.make_metavar",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperArgument.value_is_missing",
+      "target": "typer.core._value_is_missing",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperOption._get_default_string",
+      "target": "typer.core.TyperOption._get_default_string",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperOption._extract_default_help_str",
+      "target": "typer.core.TyperOption._extract_default_help_str",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperOption.get_help_record",
+      "target": "typer.core.TyperOption._extract_default_help_str",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperOption.get_help_record",
+      "target": "typer.core.TyperOption._get_default_string",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperOption.value_is_missing",
+      "target": "typer.core._value_is_missing",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperCommand.format_options",
+      "target": "typer.core._typer_format_options",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperCommand.main",
+      "target": "typer.core._main",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperGroup.format_options",
+      "target": "typer.core._typer_format_options",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.core.TyperGroup.main",
+      "target": "typer.core._main",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.utils.AnnotatedParamWithDefaultValueError.__str__",
+      "target": "typer.utils._param_type_to_user_string",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.utils.MixedAnnotatedAndDefaultStyleError.__str__",
+      "target": "typer.utils._param_type_to_user_string",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.utils.DefaultFactoryAndDefaultValueError.__str__",
+      "target": "typer.utils._param_type_to_user_string",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.completion.install_callback",
+      "target": "typer._completion_shared.install",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_shared.install",
+      "target": "typer._completion_shared._get_shell_name",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_shared.install",
+      "target": "typer._completion_shared.install_bash",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_shared.install",
+      "target": "typer._completion_shared.install_fish",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_shared.install",
+      "target": "typer._completion_shared.install_powershell",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_shared.install",
+      "target": "typer._completion_shared.install_zsh",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.completion.show_callback",
+      "target": "typer._completion_shared._get_shell_name",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.completion.show_callback",
+      "target": "typer._completion_shared.get_completion_script",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_classes.BashComplete.complete",
+      "target": "typer._completion_classes.BashComplete.format_completion",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_classes.BashComplete.complete",
+      "target": "typer._completion_classes.BashComplete.get_completion_args",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_classes.ZshComplete.format_completion",
+      "target": "typer._completion_classes._sanitize_help_text",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_classes.ZshComplete.complete",
+      "target": "typer._completion_classes.ZshComplete.format_completion",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_classes.ZshComplete.complete",
+      "target": "typer._completion_classes.ZshComplete.get_completion_args",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_classes.FishComplete.format_completion",
+      "target": "typer._completion_classes._sanitize_help_text",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_classes.FishComplete.complete",
+      "target": "typer._completion_classes.FishComplete.format_completion",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_classes.FishComplete.complete",
+      "target": "typer._completion_classes.FishComplete.get_completion_args",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_classes.PowerShellComplete.format_completion",
+      "target": "typer._completion_classes._sanitize_help_text",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_shared.install_bash",
+      "target": "typer._completion_shared.get_completion_script",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_shared.install_zsh",
+      "target": "typer._completion_shared.get_completion_script",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_shared.install_fish",
+      "target": "typer._completion_shared.get_completion_script",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._completion_shared.install_powershell",
+      "target": "typer._completion_shared.get_completion_script",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.params.Option",
+      "target": "typer.models.OptionInfo.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.params.Argument",
+      "target": "typer.models.ArgumentInfo.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.__main__",
+      "target": "typer.cli.main",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.main",
+      "target": "typer.main.Typer.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.cli.State.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.main.Typer.add_typer",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.main.Typer.callback",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli",
+      "target": "typer.main.Typer.command",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup.list_commands",
+      "target": "typer.cli.TyperCLIGroup.maybe_add_run",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup.maybe_add_run",
+      "target": "typer.cli.maybe_add_run_to_cli",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup.maybe_add_run",
+      "target": "typer.cli.maybe_update_state",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup.get_command",
+      "target": "typer.cli.TyperCLIGroup.maybe_add_run",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup.invoke",
+      "target": "typer.cli.TyperCLIGroup.maybe_add_run",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.maybe_add_run_to_cli",
+      "target": "typer.cli.get_typer_from_state",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.maybe_add_run_to_cli",
+      "target": "typer.main.get_command",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.get_typer_from_module",
+      "target": "typer.main.Typer.command",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.get_typer_from_state",
+      "target": "typer.cli.get_typer_from_module",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.callback",
+      "target": "typer.cli.maybe_update_state",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.get_docs_for_click",
+      "target": "typer.cli._parse_html",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.get_docs_for_click",
+      "target": "typer.cli.get_docs_for_click",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli._parse_html",
+      "target": "typer.rich_utils.rich_to_html",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.docs",
+      "target": "typer.cli.get_docs_for_click",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.docs",
+      "target": "typer.cli.get_typer_from_state",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.docs",
+      "target": "typer.main.get_command",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._typing.all_literal_values",
+      "target": "typer._typing.all_literal_values",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._typing.all_literal_values",
+      "target": "typer._typing.is_literal_type",
+      "kind": "calls"
+    },
+    {
+      "source": "typer._typing.all_literal_values",
+      "target": "typer._typing.literal_values",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.testing.CliRunner.invoke",
+      "target": "typer.main.get_command",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.cli.TyperCLIGroup.list_commands",
+      "target": "typer.core.TyperGroup.list_commands",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.models.OptionInfo.__init__",
+      "target": "typer.models.ParameterInfo.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "typer.models.ArgumentInfo.__init__",
+      "target": "typer.models.ParameterInfo.__init__",
+      "kind": "calls"
+    }
+  ]
+}

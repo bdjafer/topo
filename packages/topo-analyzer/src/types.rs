@@ -4,6 +4,73 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 // ---------------------------------------------------------------------------
+// Node type vocabulary for R-GIN embedding lookup
+// ---------------------------------------------------------------------------
+
+/// Canonical node type vocabulary for R-GIN embedding lookup.
+/// DO NOT reorder — indices are baked into trained model weights.
+pub const NODE_TYPE_VOCAB: &[&str] = &[
+    "function",  // 0 — behavioral unit, coupling endpoint
+    "module",    // 1 — container, import hub
+    "class",     // 2 — concrete type (struct, enum, class, dataclass)
+    "interface", // 3 — abstract contract (trait, interface, protocol)
+];
+
+/// Fallback index for unknown node kinds.
+pub const UNKNOWN_TYPE_INDEX: usize = NODE_TYPE_VOCAB.len();
+
+/// Map a node kind string to the canonical vocabulary index.
+///
+/// Returns the index into `NODE_TYPE_VOCAB`, or `UNKNOWN_TYPE_INDEX` for
+/// unrecognized kinds.
+pub fn node_type_index(kind: &str) -> usize {
+    // Exact match first
+    if let Some(i) = NODE_TYPE_VOCAB.iter().position(|&v| v == kind) {
+        return i;
+    }
+    // Case-insensitive fallback
+    let lower = kind.to_ascii_lowercase();
+    if let Some(i) = NODE_TYPE_VOCAB.iter().position(|&v| v == lower) {
+        return i;
+    }
+    UNKNOWN_TYPE_INDEX
+}
+
+#[cfg(test)]
+mod node_type_tests {
+    use super::*;
+
+    #[test]
+    fn test_exact_matches() {
+        assert_eq!(node_type_index("function"), 0);
+        assert_eq!(node_type_index("module"), 1);
+        assert_eq!(node_type_index("class"), 2);
+        assert_eq!(node_type_index("interface"), 3);
+    }
+
+    #[test]
+    fn test_case_insensitive() {
+        assert_eq!(node_type_index("Function"), 0);
+        assert_eq!(node_type_index("MODULE"), 1);
+        assert_eq!(node_type_index("Class"), 2);
+        assert_eq!(node_type_index("INTERFACE"), 3);
+    }
+
+    #[test]
+    fn test_unknown_fallback() {
+        assert_eq!(node_type_index("widget"), UNKNOWN_TYPE_INDEX);
+        assert_eq!(node_type_index(""), UNKNOWN_TYPE_INDEX);
+        assert_eq!(node_type_index("impl"), UNKNOWN_TYPE_INDEX);
+    }
+
+    #[test]
+    fn test_vocab_size() {
+        assert_eq!(NODE_TYPE_VOCAB.len(), 4);
+        assert_eq!(UNKNOWN_TYPE_INDEX, 4);
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Input types
 // ---------------------------------------------------------------------------
 

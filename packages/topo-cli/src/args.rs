@@ -12,68 +12,85 @@ use clap::{Parser, Subcommand};
 )]
 pub struct Cli {
     #[command(subcommand)]
-    pub command: Option<Command>,
+    pub command: Command,
 
-    /// Path to project root (default mode: parse + analyze).
-    #[arg(global = false)]
-    pub path: Option<PathBuf>,
+    /// Output JSON instead of text.
+    #[arg(long, global = true)]
+    pub json: bool,
 
-    #[command(flatten)]
-    pub analysis: AnalysisArgs,
+    /// Disable colored output.
+    #[arg(long = "no-color", global = true)]
+    pub no_color: bool,
 
-    /// Comma-separated directory names to exclude.
-    #[arg(long)]
-    pub exclude: Option<String>,
-
-    /// Analysis scope preset for monorepos.
-    #[arg(long, value_parser = ["auto", "all", "first-party"])]
-    pub scope: Option<String>,
-
-    /// Source language (auto-detected if omitted).
-    #[arg(long, value_parser = ["rust", "python"])]
-    pub language: Option<String>,
-
-    /// Disable parse cache (force re-parse).
-    #[arg(long)]
+    /// Skip parse cache (force re-parse).
+    #[arg(long = "no-cache", global = true)]
     pub no_cache: bool,
+
+    /// Path to pre-computed embeddings JSON file.
+    #[arg(long, global = true)]
+    pub embeddings: Option<PathBuf>,
 }
 
 #[derive(Subcommand)]
 pub enum Command {
+    /// Structural analysis — issues + health metrics.
+    Analyze(AnalyzeArgs),
+    /// Architecture and domain decomposition (not yet implemented).
+    Domain(DomainArgs),
+    /// Web UI (not yet implemented).
+    Serve(ServeArgs),
     /// Parse a project into CodeGraph JSON.
     Parse(ParseArgs),
-    /// Analyze a codebase (auto-parses if no --input given).
-    Analyze(AnalyzeArgs),
     /// Manage the parse cache.
     Cache(CacheArgs),
-    /// Track structural health metrics over git history.
-    Health(HealthArgs),
+    /// Analyze a pre-parsed graph.json file (benchmark tooling).
+    AnalyzeRaw(AnalyzeRawArgs),
+    /// Apply a mutation to a pre-parsed graph (benchmark tooling).
+    Mutate(MutateArgs),
+    /// Export R-GIN training features (spectral PE, RWPE, tree features, etc.).
+    ExportFeatures(ExportFeaturesArgs),
 }
 
 #[derive(Parser)]
-pub struct HealthArgs {
+pub struct AnalyzeArgs {
     /// Path to project root.
     pub path: PathBuf,
 
-    /// Only consider commits after this date (YYYY-MM-DD).
+    /// Minimum issue severity to report: high, medium, low.
+    #[arg(long, value_parser = ["high", "medium", "low"])]
+    pub severity: Option<String>,
+
+    /// Track health over git history instead of current snapshot.
+    #[arg(long)]
+    pub history: bool,
+
+    /// Only consider commits after this date (YYYY-MM-DD). Implies --history.
     #[arg(long)]
     pub since: Option<String>,
 
-    /// Sampling strategy: weekly, monthly, or every N commits.
+    /// Sampling strategy (with --history): weekly, monthly.
     #[arg(long, default_value = "weekly")]
     pub sample: String,
 
-    /// Maximum number of commits to analyze.
+    /// Maximum number of commits to analyze (with --history).
     #[arg(long, default_value = "20")]
     pub max_commits: usize,
+}
 
-    /// Output as JSON.
-    #[arg(long = "json")]
-    pub as_json: bool,
+#[derive(Parser)]
+pub struct DomainArgs {
+    /// Path to project root.
+    pub path: PathBuf,
+}
 
-    /// Source language (auto-detected if omitted).
-    #[arg(long, value_parser = ["rust", "python"])]
-    pub language: Option<String>,
+#[derive(Parser)]
+pub struct ServeArgs {
+    /// Path to project root.
+    pub path: PathBuf,
+
+    /// Port to listen on.
+    #[arg(long, default_value = "8080")]
+    pub port: u16,
 }
 
 #[derive(Parser)]
@@ -89,92 +106,55 @@ pub struct ParseArgs {
     #[arg(long)]
     pub exclude: Option<String>,
 
-    /// Analysis scope preset for monorepos.
-    #[arg(long, value_parser = ["auto", "all", "first-party"])]
-    pub scope: Option<String>,
-
     /// Source language (auto-detected if omitted).
     #[arg(long, value_parser = ["rust", "python"])]
     pub language: Option<String>,
-}
-
-#[derive(Parser)]
-pub struct AnalyzeArgs {
-    /// Path to project root (will auto-parse).
-    pub path: Option<PathBuf>,
-
-    /// Path to pre-parsed CodeGraph JSON file (skips parsing).
-    #[arg(long)]
-    pub input: Option<PathBuf>,
-
-    /// Comma-separated directory names to exclude (used with path, not --input).
-    #[arg(long)]
-    pub exclude: Option<String>,
-
-    /// Analysis scope preset for monorepos (used with path, not --input).
-    #[arg(long, value_parser = ["auto", "all", "first-party"])]
-    pub scope: Option<String>,
-
-    /// Source language (auto-detected if omitted).
-    #[arg(long, value_parser = ["rust", "python"])]
-    pub language: Option<String>,
-
-    #[command(flatten)]
-    pub analysis: AnalysisArgs,
-}
-
-#[derive(Parser, Clone)]
-pub struct AnalysisArgs {
-    /// Output as JSON.
-    #[arg(long = "json")]
-    pub as_json: bool,
-
-    /// Edge layer to analyze (calls, imports, inherits, defines, combined).
-    #[arg(long = "edge-kind", default_value = "combined")]
-    pub edge_kind: String,
-
-    /// Number of modules (auto if omitted).
-    #[arg(long = "n-modules")]
-    pub n_modules: Option<usize>,
-
-    /// Analysis level (package, module, symbol).
-    #[arg(long, value_parser = ["package", "module", "symbol"])]
-    pub level: Option<String>,
-
-    /// Show full details.
-    #[arg(short, long)]
-    pub verbose: bool,
-
-    /// Show spectral diagnostics.
-    #[arg(long)]
-    pub diagnostics: bool,
-
-    /// Disable colored output.
-    #[arg(long = "no-color")]
-    pub no_color: bool,
-
-    /// Output format: text (default), json, context (LLM narrative), domain (bounded contexts).
-    #[arg(long, value_parser = ["text", "json", "context", "domain"])]
-    pub format: Option<String>,
-
-    /// Disable semantic analysis (semantic analysis is enabled by default).
-    #[arg(long = "no-semantic")]
-    pub no_semantic: bool,
-
-    /// Path to pre-computed embeddings JSON file (node_id -> 768-dim vector).
-    /// Alternative to runtime embedding generation for CI or environments without model access.
-    #[arg(long)]
-    pub embeddings: Option<std::path::PathBuf>,
-
-    /// Enable experimental diagnostics (shadow-dependency). These are O(n²) and may be slow.
-    #[arg(long)]
-    pub experimental: bool,
 }
 
 #[derive(Parser)]
 pub struct CacheArgs {
     #[command(subcommand)]
     pub command: CacheCommand,
+}
+
+#[derive(Parser)]
+pub struct AnalyzeRawArgs {
+    /// Path to pre-parsed graph.json file.
+    #[arg(long)]
+    pub input: PathBuf,
+}
+
+#[derive(Parser)]
+pub struct MutateArgs {
+    /// Path to pre-parsed graph.json file.
+    #[arg(long)]
+    pub input: PathBuf,
+
+    /// Mutation type: inject_cycle, layer_violation, overloaded_utility, wide_interface, near_disconnect.
+    #[arg(long = "type", value_parser = ["inject_cycle", "layer_violation", "overloaded_utility", "wide_interface", "near_disconnect"])]
+    pub mutation_type: String,
+
+    /// Severity level (1 = mild, 2 = medium, 3 = severe).
+    #[arg(long, default_value = "2")]
+    pub severity: u8,
+
+    /// Deterministic seed for random targeting.
+    #[arg(long, default_value = "42")]
+    pub seed: u64,
+}
+
+#[derive(Parser)]
+pub struct ExportFeaturesArgs {
+    /// Path to project root (mutually exclusive with --input).
+    pub path: Option<PathBuf>,
+
+    /// Pre-parsed graph JSON file (skips parsing).
+    #[arg(long)]
+    pub input: Option<PathBuf>,
+
+    /// Output file path (.npz). A .meta.json sidecar is written alongside.
+    #[arg(long, short)]
+    pub output: PathBuf,
 }
 
 #[derive(Subcommand)]

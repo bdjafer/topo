@@ -107,10 +107,11 @@ mod tests {
 
         let modules = graph.nodes.iter().filter(|n| n.kind == "module").count();
         let classes = graph.nodes.iter().filter(|n| n.kind == "class").count();
+        let interfaces = graph.nodes.iter().filter(|n| n.kind == "interface").count();
         let functions = graph.nodes.iter().filter(|n| n.kind == "function").count();
 
         assert!(modules >= 10, "Expected >=10 modules, got {modules}");
-        assert!(classes >= 5, "Expected >=5 classes, got {classes}");
+        assert!(classes + interfaces >= 5, "Expected >=5 classes+interfaces, got {}", classes + interfaces);
         assert!(functions >= 20, "Expected >=20 functions, got {functions}");
 
         let defines = graph.edges.iter().filter(|e| e.kind == "defines").count();
@@ -185,7 +186,7 @@ mod tests {
             assert!(node["id"].is_string(), "Node missing id: {node}");
             let kind = node["kind"].as_str().unwrap();
             assert!(
-                ["module", "class", "function"].contains(&kind),
+                ["module", "class", "function", "interface"].contains(&kind),
                 "Invalid kind: {kind}"
             );
         }

@@ -44,7 +44,10 @@ pub fn mutate(
     // - Has at least some out-degree (not a pure leaf)
     // - Not in a module named utils/helpers/common
     let node_module = helpers::node_to_module(analysis);
-    let mut candidates: Vec<String> = Vec::new();
+    // Collect candidates with their out_degree so we can prefer targets where
+    // the direction significance test (in_degree > out_degree, binomial p < 0.05)
+    // is easiest to satisfy. Low out_degree = fewer edges to overcome.
+    let mut candidates: Vec<(String, usize)> = Vec::new(); // (node_id, out_degree)
     for role in &analysis.roles {
         if role.in_degree >= p85 {
             continue;
@@ -58,7 +61,7 @@ pub fn mutate(
         if role.out_degree == 0 {
             continue;
         }
-        // Skip nodes in utility-named modules.
+        // Skip nodes in utility-named modules (including "lib").
         if let Some(&mid) = node_module.get(&role.node_id) {
             if let Some(m) = analysis.architecture.modules.iter().find(|m| m.id == mid) {
                 let label = m.label.to_lowercase();
@@ -66,22 +69,35 @@ pub fn mutate(
                     || label.contains("helper")
                     || label.contains("common")
                     || label.contains("shared")
+                    || label.contains("lib")
                 {
                     continue;
                 }
             }
         }
-        candidates.push(role.node_id.clone());
+        candidates.push((role.node_id.clone(), role.out_degree));
     }
 
     if candidates.is_empty() {
         return None;
     }
 
-    let target = rng.choice(&candidates).clone();
+    // Sort by out_degree ascending — targets with low out_degree are easiest
+    // to push past the direction significance gate.
+    candidates.sort_by_key(|(_, od)| *od);
+    // Pick from the bottom quartile to keep it tractable.
+    let top_n = (candidates.len() / 4).max(1);
+    let pick_idx = rng.next_usize(top_n);
+    let (target, target_out_degree) = candidates[pick_idx].clone();
     let target_module = node_module.get(&target).copied().unwrap_or(0);
 
     // Determine how many modules to route through the target.
+    // We need enough incoming edges to:
+    //   1. Push in_degree above p85
+    //   2. Pass direction_is_significant: total_degree >= 6, in > out, binomial p < 0.05
+    //   3. Exceed expected caller diversity
+    // For the direction test with out_degree = d, we need in_degree >= d + 6
+    // to ensure the binomial test passes reliably.
     let n_caller_modules = match severity {
         1 => (modules.len() / 2).max(3),
         2 => (modules.len() * 7 / 10).max(4),
@@ -99,11 +115,15 @@ pub fn mutate(
         n_caller_modules,
     );
 
-    // For each source module, pick 1-2 nodes and add calls to the target.
+    // For each source module, add calls to the target.
+    // We need total added edges to exceed: p85 - current_in + target_out_degree + 6
+    // to guarantee both p85 and direction significance.
+    let min_total_edges = (p85 + target_out_degree + 6).max(12);
+    // Use ceiling division to avoid truncation undershoot.
     let edges_per_module = match severity {
-        1 => 2,
-        2 => 3,
-        _ => 4,
+        1 => (min_total_edges.div_ceil(n_caller_modules)).max(2),
+        2 => (min_total_edges.div_ceil(n_caller_modules)).max(3),
+        _ => (min_total_edges.div_ceil(n_caller_modules)).max(4),
     };
 
     let mut new_edges = Vec::new();
@@ -165,9 +185,11 @@ mod tests {
         let mut nodes = Vec::new();
         let mut edges = Vec::new();
 
-        // 4 modules × 8 nodes.
-        for m in 0..4 {
-            for i in 0..8 {
+        // 5 modules × 12 nodes = 60 nodes.
+        // Dense intra-module connectivity so modules stay stable after mutation.
+        // Most nodes have low in-degree (1-2), making p85 easy to exceed.
+        for m in 0..5 {
+            for i in 0..12 {
                 nodes.push(NodeEntry {
                     id: format!("pkg{}.func{}", m, i),
                     kind: "function".to_string(),
@@ -176,31 +198,36 @@ mod tests {
                     line_end: None,
                 });
             }
-            // Intra-module edges for cohesion.
-            for i in 0..7 {
+            // Dense intra-module: chain + skip edges.
+            for i in 0..11 {
                 edges.push(EdgeEntry {
                     source: format!("pkg{}.func{}", m, i),
                     target: format!("pkg{}.func{}", m, i + 1),
                     kind: "calls".to_string(),
                 });
             }
-        }
-
-        // Inter-module edges (forward flow: 0→1→2→3).
-        for i in 0..4 {
-            if i < 3 {
+            for i in 0..10 {
                 edges.push(EdgeEntry {
-                    source: format!("pkg{}.func0", i),
-                    target: format!("pkg{}.func0", i + 1),
+                    source: format!("pkg{}.func{}", m, i),
+                    target: format!("pkg{}.func{}", m, i + 2),
                     kind: "calls".to_string(),
                 });
             }
         }
 
+        // Sparse one-directional inter-module edges (no return paths → no cycles).
+        for m in 0..4 {
+            edges.push(EdgeEntry {
+                source: format!("pkg{}.func0", m),
+                target: format!("pkg{}.func6", m + 1),
+                kind: "calls".to_string(),
+            });
+        }
+
         AnalyzerInput {
             nodes,
             edges,
-            k: Some(4),
+            k: Some(5),
             edge_kinds: None,
             layer_weights: None,
             scope: None,
@@ -227,4 +254,7 @@ mod tests {
         assert!(!r.added_edges.is_empty());
         assert!(!r.modified_region.is_empty());
     }
+
+    // Trigger test moved to tests/mutation_triggers.rs (uses real ripgrep graph
+    // because synthetic graphs are too small for stable spectral clustering).
 }

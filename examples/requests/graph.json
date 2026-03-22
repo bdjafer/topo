@@ -1,0 +1,6929 @@
+{
+  "nodes": [
+    {
+      "id": "requests",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/__init__.py",
+      "line": 1,
+      "name": "requests",
+      "line_end": 183
+    },
+    {
+      "id": "requests._check_cryptography",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/__init__.py",
+      "line": 93,
+      "name": "_check_cryptography",
+      "line_end": 104
+    },
+    {
+      "id": "requests._internal_utils",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/_internal_utils.py",
+      "line": 1,
+      "name": "_internal_utils",
+      "line_end": 51
+    },
+    {
+      "id": "requests._internal_utils.to_native_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/_internal_utils.py",
+      "line": 26,
+      "name": "to_native_string",
+      "line_end": 36
+    },
+    {
+      "id": "requests._internal_utils.unicode_is_ascii",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/_internal_utils.py",
+      "line": 39,
+      "name": "unicode_is_ascii",
+      "line_end": 51
+    },
+    {
+      "id": "requests.adapters",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 1,
+      "name": "adapters",
+      "line_end": 698
+    },
+    {
+      "id": "requests.adapters.BaseAdapter",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 115,
+      "name": "BaseAdapter",
+      "line_end": 142
+    },
+    {
+      "id": "requests.adapters.BaseAdapter.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 118,
+      "name": "__init__",
+      "line_end": 119
+    },
+    {
+      "id": "requests.adapters.BaseAdapter.close",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 140,
+      "name": "close",
+      "line_end": 142
+    },
+    {
+      "id": "requests.adapters.BaseAdapter.send",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 121,
+      "name": "send",
+      "line_end": 138
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 145,
+      "name": "HTTPAdapter",
+      "line_end": 698
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.__getstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 202,
+      "name": "__getstate__",
+      "line_end": 203
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 180,
+      "name": "__init__",
+      "line_end": 200
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.__setstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 205,
+      "name": "__setstate__",
+      "line_end": 216
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.add_headers",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 557,
+      "name": "add_headers",
+      "line_end": 569
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.build_connection_pool_key_attributes",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 375,
+      "name": "build_connection_pool_key_attributes",
+      "line_end": 423
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.build_response",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 338,
+      "name": "build_response",
+      "line_end": 373
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.cert_verify",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 282,
+      "name": "cert_verify",
+      "line_end": 336
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.close",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 515,
+      "name": "close",
+      "line_end": 523
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.get_connection",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 474,
+      "name": "get_connection",
+      "line_end": 513
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.get_connection_with_tls_context",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 425,
+      "name": "get_connection_with_tls_context",
+      "line_end": 472
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.init_poolmanager",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 218,
+      "name": "init_poolmanager",
+      "line_end": 242
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.proxy_headers",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 571,
+      "name": "proxy_headers",
+      "line_end": 590
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.proxy_manager_for",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 244,
+      "name": "proxy_manager_for",
+      "line_end": 280
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.request_url",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 525,
+      "name": "request_url",
+      "line_end": 555
+    },
+    {
+      "id": "requests.adapters.HTTPAdapter.send",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 592,
+      "name": "send",
+      "line_end": 698
+    },
+    {
+      "id": "requests.adapters._urllib3_request_context",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/adapters.py",
+      "line": 78,
+      "name": "_urllib3_request_context",
+      "line_end": 112
+    },
+    {
+      "id": "requests.api",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/api.py",
+      "line": 1,
+      "name": "api",
+      "line_end": 157
+    },
+    {
+      "id": "requests.api.delete",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/api.py",
+      "line": 148,
+      "name": "delete",
+      "line_end": 157
+    },
+    {
+      "id": "requests.api.get",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/api.py",
+      "line": 62,
+      "name": "get",
+      "line_end": 73
+    },
+    {
+      "id": "requests.api.head",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/api.py",
+      "line": 88,
+      "name": "head",
+      "line_end": 100
+    },
+    {
+      "id": "requests.api.options",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/api.py",
+      "line": 76,
+      "name": "options",
+      "line_end": 85
+    },
+    {
+      "id": "requests.api.patch",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/api.py",
+      "line": 133,
+      "name": "patch",
+      "line_end": 145
+    },
+    {
+      "id": "requests.api.post",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/api.py",
+      "line": 103,
+      "name": "post",
+      "line_end": 115
+    },
+    {
+      "id": "requests.api.put",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/api.py",
+      "line": 118,
+      "name": "put",
+      "line_end": 130
+    },
+    {
+      "id": "requests.api.request",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/api.py",
+      "line": 14,
+      "name": "request",
+      "line_end": 59
+    },
+    {
+      "id": "requests.auth",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 1,
+      "name": "auth",
+      "line_end": 314
+    },
+    {
+      "id": "requests.auth.AuthBase",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 69,
+      "name": "AuthBase",
+      "line_end": 73
+    },
+    {
+      "id": "requests.auth.AuthBase.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 72,
+      "name": "__call__",
+      "line_end": 73
+    },
+    {
+      "id": "requests.auth.HTTPBasicAuth",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 76,
+      "name": "HTTPBasicAuth",
+      "line_end": 96
+    },
+    {
+      "id": "requests.auth.HTTPBasicAuth.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 94,
+      "name": "__call__",
+      "line_end": 96
+    },
+    {
+      "id": "requests.auth.HTTPBasicAuth.__eq__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 83,
+      "name": "__eq__",
+      "line_end": 89
+    },
+    {
+      "id": "requests.auth.HTTPBasicAuth.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 79,
+      "name": "__init__",
+      "line_end": 81
+    },
+    {
+      "id": "requests.auth.HTTPBasicAuth.__ne__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 91,
+      "name": "__ne__",
+      "line_end": 92
+    },
+    {
+      "id": "requests.auth.HTTPDigestAuth",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 107,
+      "name": "HTTPDigestAuth",
+      "line_end": 314
+    },
+    {
+      "id": "requests.auth.HTTPDigestAuth.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 285,
+      "name": "__call__",
+      "line_end": 303
+    },
+    {
+      "id": "requests.auth.HTTPDigestAuth.__eq__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 305,
+      "name": "__eq__",
+      "line_end": 311
+    },
+    {
+      "id": "requests.auth.HTTPDigestAuth.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 110,
+      "name": "__init__",
+      "line_end": 114
+    },
+    {
+      "id": "requests.auth.HTTPDigestAuth.__ne__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 313,
+      "name": "__ne__",
+      "line_end": 314
+    },
+    {
+      "id": "requests.auth.HTTPDigestAuth.build_digest_header",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 126,
+      "name": "build_digest_header",
+      "line_end": 234
+    },
+    {
+      "id": "requests.auth.HTTPDigestAuth.handle_401",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 241,
+      "name": "handle_401",
+      "line_end": 283
+    },
+    {
+      "id": "requests.auth.HTTPDigestAuth.handle_redirect",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 236,
+      "name": "handle_redirect",
+      "line_end": 239
+    },
+    {
+      "id": "requests.auth.HTTPDigestAuth.init_per_thread_state",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 116,
+      "name": "init_per_thread_state",
+      "line_end": 124
+    },
+    {
+      "id": "requests.auth.HTTPProxyAuth",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 99,
+      "name": "HTTPProxyAuth",
+      "line_end": 104
+    },
+    {
+      "id": "requests.auth.HTTPProxyAuth.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 102,
+      "name": "__call__",
+      "line_end": 104
+    },
+    {
+      "id": "requests.auth._basic_auth_str",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/auth.py",
+      "line": 25,
+      "name": "_basic_auth_str",
+      "line_end": 66
+    },
+    {
+      "id": "requests.certs",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/certs.py",
+      "line": 1,
+      "name": "certs",
+      "line_end": 18
+    },
+    {
+      "id": "requests.check_compatibility",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/__init__.py",
+      "line": 58,
+      "name": "check_compatibility",
+      "line_end": 90
+    },
+    {
+      "id": "requests.compat",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/compat.py",
+      "line": 1,
+      "name": "compat",
+      "line_end": 106
+    },
+    {
+      "id": "requests.compat._resolve_char_detection",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/compat.py",
+      "line": 30,
+      "name": "_resolve_char_detection",
+      "line_end": 39
+    },
+    {
+      "id": "requests.cookies",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 1,
+      "name": "cookies",
+      "line_end": 561
+    },
+    {
+      "id": "requests.cookies.CookieConflictError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 170,
+      "name": "CookieConflictError",
+      "line_end": 173
+    },
+    {
+      "id": "requests.cookies.MockRequest",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 23,
+      "name": "MockRequest",
+      "line_end": 100
+    },
+    {
+      "id": "requests.cookies.MockRequest.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 35,
+      "name": "__init__",
+      "line_end": 38
+    },
+    {
+      "id": "requests.cookies.MockRequest.add_header",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 78,
+      "name": "add_header",
+      "line_end": 82
+    },
+    {
+      "id": "requests.cookies.MockRequest.add_unredirected_header",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 84,
+      "name": "add_unredirected_header",
+      "line_end": 85
+    },
+    {
+      "id": "requests.cookies.MockRequest.get_full_url",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 49,
+      "name": "get_full_url",
+      "line_end": 67
+    },
+    {
+      "id": "requests.cookies.MockRequest.get_header",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 75,
+      "name": "get_header",
+      "line_end": 76
+    },
+    {
+      "id": "requests.cookies.MockRequest.get_host",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 43,
+      "name": "get_host",
+      "line_end": 44
+    },
+    {
+      "id": "requests.cookies.MockRequest.get_new_headers",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 87,
+      "name": "get_new_headers",
+      "line_end": 88
+    },
+    {
+      "id": "requests.cookies.MockRequest.get_origin_req_host",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 46,
+      "name": "get_origin_req_host",
+      "line_end": 47
+    },
+    {
+      "id": "requests.cookies.MockRequest.get_type",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 40,
+      "name": "get_type",
+      "line_end": 41
+    },
+    {
+      "id": "requests.cookies.MockRequest.has_header",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 72,
+      "name": "has_header",
+      "line_end": 73
+    },
+    {
+      "id": "requests.cookies.MockRequest.host",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 99,
+      "name": "host",
+      "line_end": 100
+    },
+    {
+      "id": "requests.cookies.MockRequest.is_unverifiable",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 69,
+      "name": "is_unverifiable",
+      "line_end": 70
+    },
+    {
+      "id": "requests.cookies.MockRequest.origin_req_host",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 95,
+      "name": "origin_req_host",
+      "line_end": 96
+    },
+    {
+      "id": "requests.cookies.MockRequest.unverifiable",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 91,
+      "name": "unverifiable",
+      "line_end": 92
+    },
+    {
+      "id": "requests.cookies.MockResponse",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 103,
+      "name": "MockResponse",
+      "line_end": 121
+    },
+    {
+      "id": "requests.cookies.MockResponse.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 110,
+      "name": "__init__",
+      "line_end": 115
+    },
+    {
+      "id": "requests.cookies.MockResponse.getheaders",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 120,
+      "name": "getheaders",
+      "line_end": 121
+    },
+    {
+      "id": "requests.cookies.MockResponse.info",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 117,
+      "name": "info",
+      "line_end": 118
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 176,
+      "name": "RequestsCookieJar",
+      "line_end": 437
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.__contains__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 321,
+      "name": "__contains__",
+      "line_end": 325
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.__delitem__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 343,
+      "name": "__delitem__",
+      "line_end": 347
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.__getitem__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 327,
+      "name": "__getitem__",
+      "line_end": 334
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.__getstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 415,
+      "name": "__getstate__",
+      "line_end": 420
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.__setitem__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 336,
+      "name": "__setitem__",
+      "line_end": 341
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.__setstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 422,
+      "name": "__setstate__",
+      "line_end": 426
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar._find",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 366,
+      "name": "_find",
+      "line_end": 384
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar._find_no_duplicates",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 386,
+      "name": "_find_no_duplicates",
+      "line_end": 413
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.copy",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 428,
+      "name": "copy",
+      "line_end": 433
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.get",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 194,
+      "name": "get",
+      "line_end": 204
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.get_dict",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 306,
+      "name": "get_dict",
+      "line_end": 319
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.get_policy",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 435,
+      "name": "get_policy",
+      "line_end": 437
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.items",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 268,
+      "name": "items",
+      "line_end": 275
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.iteritems",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 259,
+      "name": "iteritems",
+      "line_end": 266
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.iterkeys",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 225,
+      "name": "iterkeys",
+      "line_end": 232
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.itervalues",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 242,
+      "name": "itervalues",
+      "line_end": 249
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.keys",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 234,
+      "name": "keys",
+      "line_end": 240
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.list_domains",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 277,
+      "name": "list_domains",
+      "line_end": 283
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.list_paths",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 285,
+      "name": "list_paths",
+      "line_end": 291
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.multiple_domains",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 293,
+      "name": "multiple_domains",
+      "line_end": 304
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.set",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 206,
+      "name": "set",
+      "line_end": 223
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.set_cookie",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 349,
+      "name": "set_cookie",
+      "line_end": 356
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.update",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 358,
+      "name": "update",
+      "line_end": 364
+    },
+    {
+      "id": "requests.cookies.RequestsCookieJar.values",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 251,
+      "name": "values",
+      "line_end": 257
+    },
+    {
+      "id": "requests.cookies._copy_cookie_jar",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 440,
+      "name": "_copy_cookie_jar",
+      "line_end": 452
+    },
+    {
+      "id": "requests.cookies.cookiejar_from_dict",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 521,
+      "name": "cookiejar_from_dict",
+      "line_end": 539
+    },
+    {
+      "id": "requests.cookies.create_cookie",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 455,
+      "name": "create_cookie",
+      "line_end": 489
+    },
+    {
+      "id": "requests.cookies.extract_cookies_to_jar",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 124,
+      "name": "extract_cookies_to_jar",
+      "line_end": 137
+    },
+    {
+      "id": "requests.cookies.get_cookie_header",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 140,
+      "name": "get_cookie_header",
+      "line_end": 148
+    },
+    {
+      "id": "requests.cookies.merge_cookies",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 542,
+      "name": "merge_cookies",
+      "line_end": 561
+    },
+    {
+      "id": "requests.cookies.morsel_to_cookie",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 492,
+      "name": "morsel_to_cookie",
+      "line_end": 518
+    },
+    {
+      "id": "requests.cookies.remove_cookie_by_name",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/cookies.py",
+      "line": 151,
+      "name": "remove_cookie_by_name",
+      "line_end": 167
+    },
+    {
+      "id": "requests.exceptions",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 1,
+      "name": "exceptions",
+      "line_end": 152
+    },
+    {
+      "id": "requests.exceptions.ChunkedEncodingError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 120,
+      "name": "ChunkedEncodingError",
+      "line_end": 121
+    },
+    {
+      "id": "requests.exceptions.ConnectTimeout",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 81,
+      "name": "ConnectTimeout",
+      "line_end": 85
+    },
+    {
+      "id": "requests.exceptions.ConnectionError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 60,
+      "name": "ConnectionError",
+      "line_end": 61
+    },
+    {
+      "id": "requests.exceptions.ContentDecodingError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 124,
+      "name": "ContentDecodingError",
+      "line_end": 125
+    },
+    {
+      "id": "requests.exceptions.FileModeWarning",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 147,
+      "name": "FileModeWarning",
+      "line_end": 148
+    },
+    {
+      "id": "requests.exceptions.HTTPError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 56,
+      "name": "HTTPError",
+      "line_end": 57
+    },
+    {
+      "id": "requests.exceptions.InvalidHeader",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 112,
+      "name": "InvalidHeader",
+      "line_end": 113
+    },
+    {
+      "id": "requests.exceptions.InvalidJSONError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 28,
+      "name": "InvalidJSONError",
+      "line_end": 29
+    },
+    {
+      "id": "requests.exceptions.InvalidProxyURL",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 116,
+      "name": "InvalidProxyURL",
+      "line_end": 117
+    },
+    {
+      "id": "requests.exceptions.InvalidSchema",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 104,
+      "name": "InvalidSchema",
+      "line_end": 105
+    },
+    {
+      "id": "requests.exceptions.InvalidURL",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 108,
+      "name": "InvalidURL",
+      "line_end": 109
+    },
+    {
+      "id": "requests.exceptions.JSONDecodeError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 32,
+      "name": "JSONDecodeError",
+      "line_end": 53
+    },
+    {
+      "id": "requests.exceptions.JSONDecodeError.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 35,
+      "name": "__init__",
+      "line_end": 43
+    },
+    {
+      "id": "requests.exceptions.JSONDecodeError.__reduce__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 45,
+      "name": "__reduce__",
+      "line_end": 53
+    },
+    {
+      "id": "requests.exceptions.MissingSchema",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 100,
+      "name": "MissingSchema",
+      "line_end": 101
+    },
+    {
+      "id": "requests.exceptions.ProxyError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 64,
+      "name": "ProxyError",
+      "line_end": 65
+    },
+    {
+      "id": "requests.exceptions.ReadTimeout",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 88,
+      "name": "ReadTimeout",
+      "line_end": 89
+    },
+    {
+      "id": "requests.exceptions.RequestException",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 13,
+      "name": "RequestException",
+      "line_end": 25
+    },
+    {
+      "id": "requests.exceptions.RequestException.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 18,
+      "name": "__init__",
+      "line_end": 25
+    },
+    {
+      "id": "requests.exceptions.RequestsDependencyWarning",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 151,
+      "name": "RequestsDependencyWarning",
+      "line_end": 152
+    },
+    {
+      "id": "requests.exceptions.RequestsWarning",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 143,
+      "name": "RequestsWarning",
+      "line_end": 144
+    },
+    {
+      "id": "requests.exceptions.RetryError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 132,
+      "name": "RetryError",
+      "line_end": 133
+    },
+    {
+      "id": "requests.exceptions.SSLError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 68,
+      "name": "SSLError",
+      "line_end": 69
+    },
+    {
+      "id": "requests.exceptions.StreamConsumedError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 128,
+      "name": "StreamConsumedError",
+      "line_end": 129
+    },
+    {
+      "id": "requests.exceptions.Timeout",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 72,
+      "name": "Timeout",
+      "line_end": 78
+    },
+    {
+      "id": "requests.exceptions.TooManyRedirects",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 96,
+      "name": "TooManyRedirects",
+      "line_end": 97
+    },
+    {
+      "id": "requests.exceptions.URLRequired",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 92,
+      "name": "URLRequired",
+      "line_end": 93
+    },
+    {
+      "id": "requests.exceptions.UnrewindableBodyError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/exceptions.py",
+      "line": 136,
+      "name": "UnrewindableBodyError",
+      "line_end": 137
+    },
+    {
+      "id": "requests.help",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/help.py",
+      "line": 1,
+      "name": "help",
+      "line_end": 131
+    },
+    {
+      "id": "requests.help._implementation",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/help.py",
+      "line": 34,
+      "name": "_implementation",
+      "line_end": 63
+    },
+    {
+      "id": "requests.help.info",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/help.py",
+      "line": 66,
+      "name": "info",
+      "line_end": 122
+    },
+    {
+      "id": "requests.help.main",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/help.py",
+      "line": 125,
+      "name": "main",
+      "line_end": 127
+    },
+    {
+      "id": "requests.hooks",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/hooks.py",
+      "line": 1,
+      "name": "hooks",
+      "line_end": 34
+    },
+    {
+      "id": "requests.hooks.default_hooks",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/hooks.py",
+      "line": 16,
+      "name": "default_hooks",
+      "line_end": 17
+    },
+    {
+      "id": "requests.hooks.dispatch_hook",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/hooks.py",
+      "line": 23,
+      "name": "dispatch_hook",
+      "line_end": 34
+    },
+    {
+      "id": "requests.models",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 1,
+      "name": "models",
+      "line_end": 1041
+    },
+    {
+      "id": "requests.models.PreparedRequest",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 315,
+      "name": "PreparedRequest",
+      "line_end": 639
+    },
+    {
+      "id": "requests.models.PreparedRequest.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 336,
+      "name": "__init__",
+      "line_end": 351
+    },
+    {
+      "id": "requests.models.PreparedRequest.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 381,
+      "name": "__repr__",
+      "line_end": 382
+    },
+    {
+      "id": "requests.models.PreparedRequest._get_idna_encoded_host",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 402,
+      "name": "_get_idna_encoded_host",
+      "line_end": 409
+    },
+    {
+      "id": "requests.models.PreparedRequest.copy",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 384,
+      "name": "copy",
+      "line_end": 393
+    },
+    {
+      "id": "requests.models.PreparedRequest.prepare",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 353,
+      "name": "prepare",
+      "line_end": 379
+    },
+    {
+      "id": "requests.models.PreparedRequest.prepare_auth",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 590,
+      "name": "prepare_auth",
+      "line_end": 610
+    },
+    {
+      "id": "requests.models.PreparedRequest.prepare_body",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 496,
+      "name": "prepare_body",
+      "line_end": 572
+    },
+    {
+      "id": "requests.models.PreparedRequest.prepare_content_length",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 574,
+      "name": "prepare_content_length",
+      "line_end": 588
+    },
+    {
+      "id": "requests.models.PreparedRequest.prepare_cookies",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 612,
+      "name": "prepare_cookies",
+      "line_end": 630
+    },
+    {
+      "id": "requests.models.PreparedRequest.prepare_headers",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 485,
+      "name": "prepare_headers",
+      "line_end": 494
+    },
+    {
+      "id": "requests.models.PreparedRequest.prepare_hooks",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 632,
+      "name": "prepare_hooks",
+      "line_end": 639
+    },
+    {
+      "id": "requests.models.PreparedRequest.prepare_method",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 395,
+      "name": "prepare_method",
+      "line_end": 399
+    },
+    {
+      "id": "requests.models.PreparedRequest.prepare_url",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 411,
+      "name": "prepare_url",
+      "line_end": 483
+    },
+    {
+      "id": "requests.models.Request",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 232,
+      "name": "Request",
+      "line_end": 312
+    },
+    {
+      "id": "requests.models.Request.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 260,
+      "name": "__init__",
+      "line_end": 292
+    },
+    {
+      "id": "requests.models.Request.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 294,
+      "name": "__repr__",
+      "line_end": 295
+    },
+    {
+      "id": "requests.models.Request.prepare",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 297,
+      "name": "prepare",
+      "line_end": 312
+    },
+    {
+      "id": "requests.models.RequestEncodingMixin",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 86,
+      "name": "RequestEncodingMixin",
+      "line_end": 205
+    },
+    {
+      "id": "requests.models.RequestEncodingMixin._encode_files",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 139,
+      "name": "_encode_files",
+      "line_end": 205
+    },
+    {
+      "id": "requests.models.RequestEncodingMixin._encode_params",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 109,
+      "name": "_encode_params",
+      "line_end": 136
+    },
+    {
+      "id": "requests.models.RequestEncodingMixin.path_url",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 88,
+      "name": "path_url",
+      "line_end": 106
+    },
+    {
+      "id": "requests.models.RequestHooksMixin",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 208,
+      "name": "RequestHooksMixin",
+      "line_end": 229
+    },
+    {
+      "id": "requests.models.RequestHooksMixin.deregister_hook",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 220,
+      "name": "deregister_hook",
+      "line_end": 229
+    },
+    {
+      "id": "requests.models.RequestHooksMixin.register_hook",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 209,
+      "name": "register_hook",
+      "line_end": 218
+    },
+    {
+      "id": "requests.models.Response",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 642,
+      "name": "Response",
+      "line_end": 1041
+    },
+    {
+      "id": "requests.models.Response.__bool__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 732,
+      "name": "__bool__",
+      "line_end": 740
+    },
+    {
+      "id": "requests.models.Response.__enter__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 707,
+      "name": "__enter__",
+      "line_end": 708
+    },
+    {
+      "id": "requests.models.Response.__exit__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 710,
+      "name": "__exit__",
+      "line_end": 711
+    },
+    {
+      "id": "requests.models.Response.__getstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 713,
+      "name": "__getstate__",
+      "line_end": 719
+    },
+    {
+      "id": "requests.models.Response.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 660,
+      "name": "__init__",
+      "line_end": 705
+    },
+    {
+      "id": "requests.models.Response.__iter__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 752,
+      "name": "__iter__",
+      "line_end": 754
+    },
+    {
+      "id": "requests.models.Response.__nonzero__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 742,
+      "name": "__nonzero__",
+      "line_end": 750
+    },
+    {
+      "id": "requests.models.Response.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 729,
+      "name": "__repr__",
+      "line_end": 730
+    },
+    {
+      "id": "requests.models.Response.__setstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 721,
+      "name": "__setstate__",
+      "line_end": 727
+    },
+    {
+      "id": "requests.models.Response.apparent_encoding",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 792,
+      "name": "apparent_encoding",
+      "line_end": 799
+    },
+    {
+      "id": "requests.models.Response.close",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 1030,
+      "name": "close",
+      "line_end": 1041
+    },
+    {
+      "id": "requests.models.Response.content",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 893,
+      "name": "content",
+      "line_end": 909
+    },
+    {
+      "id": "requests.models.Response.is_permanent_redirect",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 779,
+      "name": "is_permanent_redirect",
+      "line_end": 784
+    },
+    {
+      "id": "requests.models.Response.is_redirect",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 772,
+      "name": "is_redirect",
+      "line_end": 776
+    },
+    {
+      "id": "requests.models.Response.iter_content",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 801,
+      "name": "iter_content",
+      "line_end": 857
+    },
+    {
+      "id": "requests.models.Response.iter_lines",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 859,
+      "name": "iter_lines",
+      "line_end": 890
+    },
+    {
+      "id": "requests.models.Response.json",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 949,
+      "name": "json",
+      "line_end": 982
+    },
+    {
+      "id": "requests.models.Response.links",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 985,
+      "name": "links",
+      "line_end": 999
+    },
+    {
+      "id": "requests.models.Response.next",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 787,
+      "name": "next",
+      "line_end": 789
+    },
+    {
+      "id": "requests.models.Response.ok",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 757,
+      "name": "ok",
+      "line_end": 769
+    },
+    {
+      "id": "requests.models.Response.raise_for_status",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 1001,
+      "name": "raise_for_status",
+      "line_end": 1028
+    },
+    {
+      "id": "requests.models.Response.text",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/models.py",
+      "line": 912,
+      "name": "text",
+      "line_end": 947
+    },
+    {
+      "id": "requests.packages",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/packages.py",
+      "line": 1,
+      "name": "packages",
+      "line_end": 23
+    },
+    {
+      "id": "requests.sessions",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 1,
+      "name": "sessions",
+      "line_end": 834
+    },
+    {
+      "id": "requests.sessions.Session",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 357,
+      "name": "Session",
+      "line_end": 819
+    },
+    {
+      "id": "requests.sessions.Session.__enter__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 454,
+      "name": "__enter__",
+      "line_end": 455
+    },
+    {
+      "id": "requests.sessions.Session.__exit__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 457,
+      "name": "__exit__",
+      "line_end": 458
+    },
+    {
+      "id": "requests.sessions.Session.__getstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 813,
+      "name": "__getstate__",
+      "line_end": 815
+    },
+    {
+      "id": "requests.sessions.Session.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 391,
+      "name": "__init__",
+      "line_end": 452
+    },
+    {
+      "id": "requests.sessions.Session.__setstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 817,
+      "name": "__setstate__",
+      "line_end": 819
+    },
+    {
+      "id": "requests.sessions.Session.close",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 797,
+      "name": "close",
+      "line_end": 800
+    },
+    {
+      "id": "requests.sessions.Session.delete",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 666,
+      "name": "delete",
+      "line_end": 674
+    },
+    {
+      "id": "requests.sessions.Session.get",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 596,
+      "name": "get",
+      "line_end": 605
+    },
+    {
+      "id": "requests.sessions.Session.get_adapter",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 784,
+      "name": "get_adapter",
+      "line_end": 795
+    },
+    {
+      "id": "requests.sessions.Session.head",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 618,
+      "name": "head",
+      "line_end": 627
+    },
+    {
+      "id": "requests.sessions.Session.merge_environment_settings",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 753,
+      "name": "merge_environment_settings",
+      "line_end": 782
+    },
+    {
+      "id": "requests.sessions.Session.mount",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 802,
+      "name": "mount",
+      "line_end": 811
+    },
+    {
+      "id": "requests.sessions.Session.options",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 607,
+      "name": "options",
+      "line_end": 616
+    },
+    {
+      "id": "requests.sessions.Session.patch",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 654,
+      "name": "patch",
+      "line_end": 664
+    },
+    {
+      "id": "requests.sessions.Session.post",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 629,
+      "name": "post",
+      "line_end": 640
+    },
+    {
+      "id": "requests.sessions.Session.prepare_request",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 460,
+      "name": "prepare_request",
+      "line_end": 501
+    },
+    {
+      "id": "requests.sessions.Session.put",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 642,
+      "name": "put",
+      "line_end": 652
+    },
+    {
+      "id": "requests.sessions.Session.request",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 503,
+      "name": "request",
+      "line_end": 594
+    },
+    {
+      "id": "requests.sessions.Session.send",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 676,
+      "name": "send",
+      "line_end": 751
+    },
+    {
+      "id": "requests.sessions.SessionRedirectMixin",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 107,
+      "name": "SessionRedirectMixin",
+      "line_end": 354
+    },
+    {
+      "id": "requests.sessions.SessionRedirectMixin.get_redirect_target",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 108,
+      "name": "get_redirect_target",
+      "line_end": 126
+    },
+    {
+      "id": "requests.sessions.SessionRedirectMixin.rebuild_auth",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 283,
+      "name": "rebuild_auth",
+      "line_end": 301
+    },
+    {
+      "id": "requests.sessions.SessionRedirectMixin.rebuild_method",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 334,
+      "name": "rebuild_method",
+      "line_end": 354
+    },
+    {
+      "id": "requests.sessions.SessionRedirectMixin.rebuild_proxies",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 303,
+      "name": "rebuild_proxies",
+      "line_end": 332
+    },
+    {
+      "id": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 160,
+      "name": "resolve_redirects",
+      "line_end": 281
+    },
+    {
+      "id": "requests.sessions.SessionRedirectMixin.should_strip_auth",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 128,
+      "name": "should_strip_auth",
+      "line_end": 158
+    },
+    {
+      "id": "requests.sessions.merge_hooks",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 92,
+      "name": "merge_hooks",
+      "line_end": 104
+    },
+    {
+      "id": "requests.sessions.merge_setting",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 62,
+      "name": "merge_setting",
+      "line_end": 89
+    },
+    {
+      "id": "requests.sessions.session",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/sessions.py",
+      "line": 822,
+      "name": "session",
+      "line_end": 834
+    },
+    {
+      "id": "requests.status_codes",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/status_codes.py",
+      "line": 1,
+      "name": "status_codes",
+      "line_end": 128
+    },
+    {
+      "id": "requests.status_codes._init",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/status_codes.py",
+      "line": 109,
+      "name": "_init",
+      "line_end": 125
+    },
+    {
+      "id": "requests.structures",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 1,
+      "name": "structures",
+      "line_end": 99
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 13,
+      "name": "CaseInsensitiveDict",
+      "line_end": 80
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.__delitem__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 54,
+      "name": "__delitem__",
+      "line_end": 55
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.__eq__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 67,
+      "name": "__eq__",
+      "line_end": 73
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.__getitem__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 51,
+      "name": "__getitem__",
+      "line_end": 52
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 40,
+      "name": "__init__",
+      "line_end": 44
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.__iter__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 57,
+      "name": "__iter__",
+      "line_end": 58
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.__len__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 60,
+      "name": "__len__",
+      "line_end": 61
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 79,
+      "name": "__repr__",
+      "line_end": 80
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.__setitem__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 46,
+      "name": "__setitem__",
+      "line_end": 49
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.copy",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 76,
+      "name": "copy",
+      "line_end": 77
+    },
+    {
+      "id": "requests.structures.CaseInsensitiveDict.lower_items",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 63,
+      "name": "lower_items",
+      "line_end": 65
+    },
+    {
+      "id": "requests.structures.LookupDict",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 83,
+      "name": "LookupDict",
+      "line_end": 99
+    },
+    {
+      "id": "requests.structures.LookupDict.__getitem__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 93,
+      "name": "__getitem__",
+      "line_end": 96
+    },
+    {
+      "id": "requests.structures.LookupDict.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 86,
+      "name": "__init__",
+      "line_end": 88
+    },
+    {
+      "id": "requests.structures.LookupDict.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 90,
+      "name": "__repr__",
+      "line_end": 91
+    },
+    {
+      "id": "requests.structures.LookupDict.get",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/structures.py",
+      "line": 98,
+      "name": "get",
+      "line_end": 99
+    },
+    {
+      "id": "requests.utils",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 1,
+      "name": "utils",
+      "line_end": 1084
+    },
+    {
+      "id": "requests.utils._parse_content_type_header",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 502,
+      "name": "_parse_content_type_header",
+      "line_end": 524
+    },
+    {
+      "id": "requests.utils._validate_header_part",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 1033,
+      "name": "_validate_header_part",
+      "line_end": 1049
+    },
+    {
+      "id": "requests.utils.add_dict_to_cookiejar",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 466,
+      "name": "add_dict_to_cookiejar",
+      "line_end": 474
+    },
+    {
+      "id": "requests.utils.address_in_network",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 670,
+      "name": "address_in_network",
+      "line_end": 682
+    },
+    {
+      "id": "requests.utils.atomic_open",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 294,
+      "name": "atomic_open",
+      "line_end": 303
+    },
+    {
+      "id": "requests.utils.check_header_validity",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 1022,
+      "name": "check_header_validity",
+      "line_end": 1030
+    },
+    {
+      "id": "requests.utils.default_headers",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 888,
+      "name": "default_headers",
+      "line_end": 899
+    },
+    {
+      "id": "requests.utils.default_user_agent",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 879,
+      "name": "default_user_agent",
+      "line_end": 885
+    },
+    {
+      "id": "requests.utils.dict_from_cookiejar",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 455,
+      "name": "dict_from_cookiejar",
+      "line_end": 463
+    },
+    {
+      "id": "requests.utils.dict_to_sequence",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 125,
+      "name": "dict_to_sequence",
+      "line_end": 131
+    },
+    {
+      "id": "requests.utils.dotted_netmask",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 685,
+      "name": "dotted_netmask",
+      "line_end": 693
+    },
+    {
+      "id": "requests.utils.extract_zipped_paths",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 256,
+      "name": "extract_zipped_paths",
+      "line_end": 290
+    },
+    {
+      "id": "requests.utils.from_key_val_list",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 306,
+      "name": "from_key_val_list",
+      "line_end": 330
+    },
+    {
+      "id": "requests.utils.get_auth_from_url",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 1006,
+      "name": "get_auth_from_url",
+      "line_end": 1019
+    },
+    {
+      "id": "requests.utils.get_encoding_from_headers",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 527,
+      "name": "get_encoding_from_headers",
+      "line_end": 549
+    },
+    {
+      "id": "requests.utils.get_encodings_from_content",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 477,
+      "name": "get_encodings_from_content",
+      "line_end": 499
+    },
+    {
+      "id": "requests.utils.get_environ_proxies",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 814,
+      "name": "get_environ_proxies",
+      "line_end": 823
+    },
+    {
+      "id": "requests.utils.get_netrc_auth",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 205,
+      "name": "get_netrc_auth",
+      "line_end": 246
+    },
+    {
+      "id": "requests.utils.get_unicode_from_response",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 579,
+      "name": "get_unicode_from_response",
+      "line_end": 615
+    },
+    {
+      "id": "requests.utils.guess_filename",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 249,
+      "name": "guess_filename",
+      "line_end": 253
+    },
+    {
+      "id": "requests.utils.guess_json_utf",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 945,
+      "name": "guess_json_utf",
+      "line_end": 974
+    },
+    {
+      "id": "requests.utils.is_ipv4_address",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 696,
+      "name": "is_ipv4_address",
+      "line_end": 704
+    },
+    {
+      "id": "requests.utils.is_valid_cidr",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 707,
+      "name": "is_valid_cidr",
+      "line_end": 728
+    },
+    {
+      "id": "requests.utils.iter_slices",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 569,
+      "name": "iter_slices",
+      "line_end": 576
+    },
+    {
+      "id": "requests.utils.parse_dict_header",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 395,
+      "name": "parse_dict_header",
+      "line_end": 426
+    },
+    {
+      "id": "requests.utils.parse_header_links",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 902,
+      "name": "parse_header_links",
+      "line_end": 936
+    },
+    {
+      "id": "requests.utils.parse_list_header",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 363,
+      "name": "parse_list_header",
+      "line_end": 391
+    },
+    {
+      "id": "requests.utils.prepend_scheme_if_needed",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 977,
+      "name": "prepend_scheme_if_needed",
+      "line_end": 1003
+    },
+    {
+      "id": "requests.utils.requote_uri",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 648,
+      "name": "requote_uri",
+      "line_end": 667
+    },
+    {
+      "id": "requests.utils.resolve_proxies",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 852,
+      "name": "resolve_proxies",
+      "line_end": 876
+    },
+    {
+      "id": "requests.utils.rewind_body",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 1069,
+      "name": "rewind_body",
+      "line_end": 1084
+    },
+    {
+      "id": "requests.utils.select_proxy",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 826,
+      "name": "select_proxy",
+      "line_end": 849
+    },
+    {
+      "id": "requests.utils.set_environ",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 732,
+      "name": "set_environ",
+      "line_end": 750
+    },
+    {
+      "id": "requests.utils.should_bypass_proxies",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 753,
+      "name": "should_bypass_proxies",
+      "line_end": 811
+    },
+    {
+      "id": "requests.utils.stream_decode_response_unicode",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 552,
+      "name": "stream_decode_response_unicode",
+      "line_end": 566
+    },
+    {
+      "id": "requests.utils.super_len",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 134,
+      "name": "super_len",
+      "line_end": 202
+    },
+    {
+      "id": "requests.utils.to_key_val_list",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 333,
+      "name": "to_key_val_list",
+      "line_end": 359
+    },
+    {
+      "id": "requests.utils.unquote_header_value",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 430,
+      "name": "unquote_header_value",
+      "line_end": 452
+    },
+    {
+      "id": "requests.utils.unquote_unreserved",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 624,
+      "name": "unquote_unreserved",
+      "line_end": 645
+    },
+    {
+      "id": "requests.utils.urldefragauth",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/requests/src/requests/utils.py",
+      "line": 1052,
+      "name": "urldefragauth",
+      "line_end": 1066
+    }
+  ],
+  "edges": [
+    {
+      "source": "requests",
+      "target": "warnings",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "urllib3",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.RequestsDependencyWarning",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.check_compatibility",
+      "kind": "defines"
+    },
+    {
+      "source": "requests",
+      "target": "requests._check_cryptography",
+      "kind": "defines"
+    },
+    {
+      "source": "requests",
+      "target": "urllib3.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "urllib3.exceptions.DependencyWarning",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "logging",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "logging",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "logging.NullHandler",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.packages",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__author__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__author_email__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__build__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__cake__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__copyright__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__description__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__license__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__title__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__url__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.__version__.__version__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.api",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.api.delete",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.api.get",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.api.head",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.api.options",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.api.patch",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.api.post",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.api.put",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.api.request",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.ConnectionError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.ConnectTimeout",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.FileModeWarning",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.HTTPError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.JSONDecodeError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.ReadTimeout",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.RequestException",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.Timeout",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.TooManyRedirects",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.exceptions.URLRequired",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.models",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.models.PreparedRequest",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.models.Request",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.models.Response",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.sessions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.sessions.Session",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.sessions.session",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.status_codes",
+      "kind": "imports"
+    },
+    {
+      "source": "requests",
+      "target": "requests.status_codes.codes",
+      "kind": "imports"
+    },
+    {
+      "source": "requests._internal_utils",
+      "target": "re",
+      "kind": "imports"
+    },
+    {
+      "source": "requests._internal_utils",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests._internal_utils",
+      "target": "requests.compat.builtin_str",
+      "kind": "imports"
+    },
+    {
+      "source": "requests._internal_utils",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "defines"
+    },
+    {
+      "source": "requests._internal_utils",
+      "target": "requests._internal_utils.unicode_is_ascii",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "os.path",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "socket",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "warnings",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.ClosedPoolError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.ConnectTimeoutError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.LocationValueError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.MaxRetryError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.NewConnectionError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.ProtocolError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.ReadTimeoutError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.ResponseError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.HTTPError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.InvalidHeader",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.ProxyError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.exceptions.SSLError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.poolmanager",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.poolmanager.PoolManager",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.poolmanager.proxy_from_url",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.util",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.util.Timeout",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.util",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.util.parse_url",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.util.retry",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "urllib3.util.retry.Retry",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.auth",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.auth._basic_auth_str",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.compat.basestring",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.compat.urlparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.cookies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.cookies.extract_cookies_to_jar",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.ConnectionError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.ConnectTimeout",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.InvalidHeader",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.InvalidProxyURL",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.InvalidSchema",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.InvalidURL",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.ProxyError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.ReadTimeout",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.RetryError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.exceptions.SSLError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.models",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.models.Response",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.structures",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.structures.CaseInsensitiveDict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.utils.DEFAULT_CA_BUNDLE_PATH",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.utils.extract_zipped_paths",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.utils.get_auth_from_url",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.utils.get_encoding_from_headers",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.utils.prepend_scheme_if_needed",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.utils.select_proxy",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.utils.urldefragauth",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.adapters._urllib3_request_context",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.adapters.BaseAdapter",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.BaseAdapter",
+      "target": "requests.adapters.BaseAdapter.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.BaseAdapter",
+      "target": "requests.adapters.BaseAdapter.send",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.BaseAdapter",
+      "target": "requests.adapters.BaseAdapter.close",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters",
+      "target": "requests.adapters.HTTPAdapter",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.BaseAdapter",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.__getstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.__setstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.init_poolmanager",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.proxy_manager_for",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.cert_verify",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.build_response",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.build_connection_pool_key_attributes",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.get_connection_with_tls_context",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.get_connection",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.close",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.request_url",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.add_headers",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.proxy_headers",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter",
+      "target": "requests.adapters.HTTPAdapter.send",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests.sessions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests.api.request",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests.api.get",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests.api.options",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests.api.head",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests.api.post",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests.api.put",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests.api.patch",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.api",
+      "target": "requests.api.delete",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth",
+      "target": "hashlib",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "os",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "re",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "threading",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "time",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "warnings",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "base64",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "base64.b64encode",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests._internal_utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.compat.basestring",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.compat.str",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.compat.urlparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.cookies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.cookies.extract_cookies_to_jar",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.utils.parse_dict_header",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.auth._basic_auth_str",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.auth.AuthBase",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.AuthBase",
+      "target": "requests.auth.AuthBase.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.auth.HTTPBasicAuth",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPBasicAuth",
+      "target": "requests.auth.AuthBase",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.auth.HTTPBasicAuth",
+      "target": "requests.auth.HTTPBasicAuth.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPBasicAuth",
+      "target": "requests.auth.HTTPBasicAuth.__eq__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPBasicAuth",
+      "target": "requests.auth.HTTPBasicAuth.__ne__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPBasicAuth",
+      "target": "requests.auth.HTTPBasicAuth.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.auth.HTTPProxyAuth",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPProxyAuth",
+      "target": "requests.auth.HTTPBasicAuth",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.auth.HTTPProxyAuth",
+      "target": "requests.auth.HTTPProxyAuth.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth",
+      "target": "requests.auth.HTTPDigestAuth",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth",
+      "target": "requests.auth.AuthBase",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth",
+      "target": "requests.auth.HTTPDigestAuth.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth",
+      "target": "requests.auth.HTTPDigestAuth.init_per_thread_state",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth",
+      "target": "requests.auth.HTTPDigestAuth.build_digest_header",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth",
+      "target": "requests.auth.HTTPDigestAuth.handle_redirect",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth",
+      "target": "requests.auth.HTTPDigestAuth.handle_401",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth",
+      "target": "requests.auth.HTTPDigestAuth.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth",
+      "target": "requests.auth.HTTPDigestAuth.__eq__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth",
+      "target": "requests.auth.HTTPDigestAuth.__ne__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.certs",
+      "target": "certifi",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.certs",
+      "target": "certifi.where",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "importlib",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib3",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib3.__version__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "requests.compat._resolve_char_detection",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.compat",
+      "target": "collections",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "collections.OrderedDict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "collections.abc.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "collections.abc.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "collections.abc.MutableMapping",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "http",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "http.cookiejar",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "http.cookies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "http.cookies.Morsel",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "io",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "io.StringIO",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.quote",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.quote_plus",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.unquote",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.unquote_plus",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.urldefrag",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.urlencode",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.urljoin",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.urlparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.urlsplit",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.parse.urlunparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.request",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.request.getproxies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.request.getproxies_environment",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.request.parse_http_list",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.request.proxy_bypass",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.compat",
+      "target": "urllib.request.proxy_bypass_environment",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "calendar",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "copy",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "time",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests._internal_utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.compat.Morsel",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.compat.MutableMapping",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.compat.cookielib",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.compat.urlparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.compat.urlunparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.MockRequest",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.get_type",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.get_host",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.get_origin_req_host",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.get_full_url",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.is_unverifiable",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.has_header",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.get_header",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.add_header",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.add_unredirected_header",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.get_new_headers",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.unverifiable",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.origin_req_host",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockRequest",
+      "target": "requests.cookies.MockRequest.host",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.MockResponse",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockResponse",
+      "target": "requests.cookies.MockResponse.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockResponse",
+      "target": "requests.cookies.MockResponse.info",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.MockResponse",
+      "target": "requests.cookies.MockResponse.getheaders",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.extract_cookies_to_jar",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.get_cookie_header",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.remove_cookie_by_name",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.CookieConflictError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.RequestsCookieJar",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.get",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.set",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.iterkeys",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.keys",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.itervalues",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.values",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.iteritems",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.items",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.list_domains",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.list_paths",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.multiple_domains",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.get_dict",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.__contains__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.__getitem__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.__setitem__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.__delitem__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.set_cookie",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.update",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar._find",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar._find_no_duplicates",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.__getstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.__setstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.copy",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar",
+      "target": "requests.cookies.RequestsCookieJar.get_policy",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies._copy_cookie_jar",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.create_cookie",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.morsel_to_cookie",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.cookies",
+      "target": "requests.cookies.merge_cookies",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "urllib3.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "urllib3.exceptions.HTTPError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.compat.JSONDecodeError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.RequestException",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.RequestException",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.InvalidJSONError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.InvalidJSONError",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.JSONDecodeError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.JSONDecodeError",
+      "target": "requests.exceptions.InvalidJSONError",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions.JSONDecodeError",
+      "target": "requests.exceptions.JSONDecodeError.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.JSONDecodeError",
+      "target": "requests.exceptions.JSONDecodeError.__reduce__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.HTTPError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.HTTPError",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.ConnectionError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.ConnectionError",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.ProxyError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.ProxyError",
+      "target": "requests.exceptions.ConnectionError",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.SSLError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.SSLError",
+      "target": "requests.exceptions.ConnectionError",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.Timeout",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.Timeout",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.ConnectTimeout",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.ConnectTimeout",
+      "target": "requests.exceptions.ConnectionError",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions.ConnectTimeout",
+      "target": "requests.exceptions.Timeout",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.ReadTimeout",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.ReadTimeout",
+      "target": "requests.exceptions.Timeout",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.URLRequired",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.URLRequired",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.TooManyRedirects",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.TooManyRedirects",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.MissingSchema",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.MissingSchema",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.InvalidSchema",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.InvalidSchema",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.InvalidURL",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.InvalidURL",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.InvalidHeader",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.InvalidHeader",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.InvalidProxyURL",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.InvalidProxyURL",
+      "target": "requests.exceptions.InvalidURL",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.ChunkedEncodingError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.ChunkedEncodingError",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.ContentDecodingError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.ContentDecodingError",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.StreamConsumedError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.StreamConsumedError",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.RetryError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.RetryError",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.UnrewindableBodyError",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.UnrewindableBodyError",
+      "target": "requests.exceptions.RequestException",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.RequestsWarning",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.FileModeWarning",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.FileModeWarning",
+      "target": "requests.exceptions.RequestsWarning",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.exceptions",
+      "target": "requests.exceptions.RequestsDependencyWarning",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.exceptions.RequestsDependencyWarning",
+      "target": "requests.exceptions.RequestsWarning",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.help",
+      "target": "json",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.help",
+      "target": "platform",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.help",
+      "target": "ssl",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.help",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.help",
+      "target": "idna",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.help",
+      "target": "urllib3",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.help",
+      "target": "requests",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.help",
+      "target": "requests.__version__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.help",
+      "target": "requests.help._implementation",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.help",
+      "target": "requests.help.info",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.help",
+      "target": "requests.help.main",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.hooks",
+      "target": "requests.hooks.default_hooks",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.hooks",
+      "target": "requests.hooks.dispatch_hook",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models",
+      "target": "datetime",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "encodings.idna",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "io",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "io.UnsupportedOperation",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.exceptions.DecodeError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.exceptions.LocationParseError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.exceptions.ProtocolError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.exceptions.ReadTimeoutError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.exceptions.SSLError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.fields",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.fields.RequestField",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.filepost",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.filepost.encode_multipart_formdata",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.util",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "urllib3.util.parse_url",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests._internal_utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests._internal_utils.unicode_is_ascii",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.auth",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.auth.HTTPBasicAuth",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.JSONDecodeError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.basestring",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.builtin_str",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.chardet",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.cookielib",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.urlencode",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.urlsplit",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.urlunparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.compat.json",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.cookies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.cookies._copy_cookie_jar",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.cookies.get_cookie_header",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.ChunkedEncodingError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.ConnectionError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.ContentDecodingError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.HTTPError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.InvalidJSONError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.InvalidURL",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.MissingSchema",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.StreamConsumedError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.JSONDecodeError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.exceptions.SSLError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.hooks",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.hooks.default_hooks",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.status_codes",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.status_codes.codes",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.structures",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.structures.CaseInsensitiveDict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.check_header_validity",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.get_auth_from_url",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.guess_filename",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.guess_json_utf",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.iter_slices",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.parse_header_links",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.requote_uri",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.stream_decode_response_unicode",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.super_len",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.utils.to_key_val_list",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.models.RequestEncodingMixin",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.RequestEncodingMixin",
+      "target": "requests.models.RequestEncodingMixin.path_url",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.RequestEncodingMixin",
+      "target": "requests.models.RequestEncodingMixin._encode_params",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.RequestEncodingMixin",
+      "target": "requests.models.RequestEncodingMixin._encode_files",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.models.RequestHooksMixin",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.RequestHooksMixin",
+      "target": "requests.models.RequestHooksMixin.register_hook",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.RequestHooksMixin",
+      "target": "requests.models.RequestHooksMixin.deregister_hook",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.models.Request",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Request",
+      "target": "requests.models.RequestHooksMixin",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.models.Request",
+      "target": "requests.models.Request.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Request",
+      "target": "requests.models.Request.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Request",
+      "target": "requests.models.Request.prepare",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.models.PreparedRequest",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.RequestEncodingMixin",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.RequestHooksMixin",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.prepare",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.copy",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.prepare_method",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest._get_idna_encoded_host",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.prepare_url",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.prepare_headers",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.prepare_body",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.prepare_content_length",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.prepare_auth",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.prepare_cookies",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.PreparedRequest",
+      "target": "requests.models.PreparedRequest.prepare_hooks",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models",
+      "target": "requests.models.Response",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.__enter__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.__exit__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.__getstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.__setstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.__bool__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.__nonzero__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.__iter__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.ok",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.is_redirect",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.is_permanent_redirect",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.next",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.apparent_encoding",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.iter_content",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.iter_lines",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.content",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.text",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.json",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.links",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.raise_for_status",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.models.Response",
+      "target": "requests.models.Response.close",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.packages",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.packages",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.packages",
+      "target": "requests.compat.chardet",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "os",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "time",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "collections",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "collections.OrderedDict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "datetime",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "datetime.timedelta",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests._internal_utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.adapters",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.adapters.HTTPAdapter",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.auth",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.auth._basic_auth_str",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.compat.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.compat.cookielib",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.compat.urljoin",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.compat.urlparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.cookies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.cookies.RequestsCookieJar",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.cookies.extract_cookies_to_jar",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.cookies.merge_cookies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.exceptions.ChunkedEncodingError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.exceptions.ContentDecodingError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.exceptions.InvalidSchema",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.exceptions.TooManyRedirects",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.hooks",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.hooks.default_hooks",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.hooks.dispatch_hook",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.models",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.models.DEFAULT_REDIRECT_LIMIT",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.models.REDIRECT_STATI",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.models.PreparedRequest",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.models.Request",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.status_codes",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.status_codes.codes",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.structures",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.structures.CaseInsensitiveDict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.DEFAULT_PORTS",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.default_headers",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.get_auth_from_url",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.get_environ_proxies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.get_netrc_auth",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.requote_uri",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.resolve_proxies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.rewind_body",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.should_bypass_proxies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.utils.to_key_val_list",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.sessions.merge_setting",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.sessions.merge_hooks",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.sessions.SessionRedirectMixin",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin",
+      "target": "requests.sessions.SessionRedirectMixin.get_redirect_target",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin",
+      "target": "requests.sessions.SessionRedirectMixin.should_strip_auth",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin",
+      "target": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin",
+      "target": "requests.sessions.SessionRedirectMixin.rebuild_auth",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin",
+      "target": "requests.sessions.SessionRedirectMixin.rebuild_proxies",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin",
+      "target": "requests.sessions.SessionRedirectMixin.rebuild_method",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.sessions.Session",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.SessionRedirectMixin",
+      "kind": "inherits"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.__enter__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.__exit__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.prepare_request",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.request",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.get",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.options",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.head",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.post",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.put",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.patch",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.delete",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.send",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.merge_environment_settings",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.get_adapter",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.close",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.mount",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.__getstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions.Session",
+      "target": "requests.sessions.Session.__setstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.sessions",
+      "target": "requests.sessions.session",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.status_codes",
+      "target": "requests.structures",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.status_codes",
+      "target": "requests.structures.LookupDict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.status_codes",
+      "target": "requests.status_codes._init",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures",
+      "target": "collections",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.structures",
+      "target": "collections.OrderedDict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.structures",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.structures",
+      "target": "requests.compat.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.structures",
+      "target": "requests.compat.MutableMapping",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.structures",
+      "target": "requests.structures.CaseInsensitiveDict",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.__setitem__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.__getitem__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.__delitem__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.__iter__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.__len__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.lower_items",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.__eq__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.copy",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict",
+      "target": "requests.structures.CaseInsensitiveDict.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures",
+      "target": "requests.structures.LookupDict",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.LookupDict",
+      "target": "requests.structures.LookupDict.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.LookupDict",
+      "target": "requests.structures.LookupDict.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.LookupDict",
+      "target": "requests.structures.LookupDict.__getitem__",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.structures.LookupDict",
+      "target": "requests.structures.LookupDict.get",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "codecs",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "contextlib",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "io",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "os",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "re",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "socket",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "struct",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "tempfile",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "warnings",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "zipfile",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "collections",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "collections.OrderedDict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "urllib3.util",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "urllib3.util.make_headers",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "urllib3.util.parse_url",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.certs",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.__version__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.__version__.__version__",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests._internal_utils",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests._internal_utils._HEADER_VALIDATORS_BYTE",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests._internal_utils._HEADER_VALIDATORS_STR",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests._internal_utils.HEADER_VALIDATORS",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.basestring",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.bytes",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.getproxies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.getproxies_environment",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.integer_types",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.is_urllib3_1",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.proxy_bypass",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.proxy_bypass_environment",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.quote",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.str",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.unquote",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.urlparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.urlunparse",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.compat.parse_http_list",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.cookies",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.exceptions.FileModeWarning",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.exceptions.InvalidHeader",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.exceptions.InvalidURL",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.exceptions.UnrewindableBodyError",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.structures",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.structures.CaseInsensitiveDict",
+      "kind": "imports"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.dict_to_sequence",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.super_len",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.get_netrc_auth",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.guess_filename",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.extract_zipped_paths",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.atomic_open",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.from_key_val_list",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.to_key_val_list",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.parse_list_header",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.parse_dict_header",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.unquote_header_value",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.dict_from_cookiejar",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.add_dict_to_cookiejar",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.get_encodings_from_content",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils._parse_content_type_header",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.get_encoding_from_headers",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.stream_decode_response_unicode",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.iter_slices",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.get_unicode_from_response",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.unquote_unreserved",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.requote_uri",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.address_in_network",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.dotted_netmask",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.is_ipv4_address",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.is_valid_cidr",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.set_environ",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.should_bypass_proxies",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.get_environ_proxies",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.select_proxy",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.resolve_proxies",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.default_user_agent",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.default_headers",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.parse_header_links",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.guess_json_utf",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.prepend_scheme_if_needed",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.get_auth_from_url",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.check_header_validity",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils._validate_header_part",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.urldefragauth",
+      "kind": "defines"
+    },
+    {
+      "source": "requests.utils",
+      "target": "requests.utils.rewind_body",
+      "kind": "defines"
+    },
+    {
+      "source": "requests",
+      "target": "requests._check_cryptography",
+      "kind": "calls"
+    },
+    {
+      "source": "requests",
+      "target": "requests.check_compatibility",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.extract_zipped_paths",
+      "target": "requests.utils.atomic_open",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.to_key_val_list",
+      "target": "requests.cookies.RequestsCookieJar.items",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.parse_list_header",
+      "target": "requests.utils.unquote_header_value",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.parse_dict_header",
+      "target": "requests.utils.unquote_header_value",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.add_dict_to_cookiejar",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.cookiejar_from_dict",
+      "target": "requests.cookies.RequestsCookieJar.set_cookie",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.cookiejar_from_dict",
+      "target": "requests.cookies.create_cookie",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.get_encoding_from_headers",
+      "target": "requests.utils._parse_content_type_header",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.get_unicode_from_response",
+      "target": "requests.utils.get_encoding_from_headers",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.unquote_unreserved",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.requote_uri",
+      "target": "requests.utils.unquote_unreserved",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.address_in_network",
+      "target": "requests.utils.dotted_netmask",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.should_bypass_proxies",
+      "target": "requests.utils.address_in_network",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.should_bypass_proxies",
+      "target": "requests.utils.is_ipv4_address",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.should_bypass_proxies",
+      "target": "requests.utils.is_valid_cidr",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.should_bypass_proxies",
+      "target": "requests.utils.set_environ",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.get_environ_proxies",
+      "target": "requests.utils.should_bypass_proxies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.resolve_proxies",
+      "target": "requests.utils.get_environ_proxies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.resolve_proxies",
+      "target": "requests.utils.should_bypass_proxies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.default_headers",
+      "target": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.default_headers",
+      "target": "requests.utils.default_user_agent",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.check_header_validity",
+      "target": "requests.utils._validate_header_part",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils._validate_header_part",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.rewind_body",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.MockRequest.get_origin_req_host",
+      "target": "requests.cookies.MockRequest.get_host",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.MockRequest.get_full_url",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.MockRequest.unverifiable",
+      "target": "requests.cookies.MockRequest.is_unverifiable",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.MockRequest.origin_req_host",
+      "target": "requests.cookies.MockRequest.get_origin_req_host",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.MockRequest.host",
+      "target": "requests.cookies.MockRequest.get_host",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.extract_cookies_to_jar",
+      "target": "requests.cookies.MockRequest.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.extract_cookies_to_jar",
+      "target": "requests.cookies.MockResponse.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.get_cookie_header",
+      "target": "requests.cookies.MockRequest.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.get_cookie_header",
+      "target": "requests.cookies.MockRequest.get_new_headers",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.get",
+      "target": "requests.cookies.RequestsCookieJar._find_no_duplicates",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.set",
+      "target": "requests.cookies.RequestsCookieJar.set_cookie",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.set",
+      "target": "requests.cookies.create_cookie",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.set",
+      "target": "requests.cookies.morsel_to_cookie",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.set",
+      "target": "requests.cookies.remove_cookie_by_name",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.morsel_to_cookie",
+      "target": "requests.cookies.create_cookie",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.create_cookie",
+      "target": "requests.cookies.RequestsCookieJar.set",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.keys",
+      "target": "requests.cookies.RequestsCookieJar.iterkeys",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.values",
+      "target": "requests.cookies.RequestsCookieJar.itervalues",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.items",
+      "target": "requests.cookies.RequestsCookieJar.iteritems",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.__getitem__",
+      "target": "requests.cookies.RequestsCookieJar._find_no_duplicates",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.__setitem__",
+      "target": "requests.cookies.RequestsCookieJar.set",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.__delitem__",
+      "target": "requests.cookies.remove_cookie_by_name",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.update",
+      "target": "requests.cookies.RequestsCookieJar.set_cookie",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.__setstate__",
+      "target": "requests.cookies.RequestsCookieJar.update",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.copy",
+      "target": "requests.cookies.RequestsCookieJar.get_policy",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.RequestsCookieJar.copy",
+      "target": "requests.cookies.RequestsCookieJar.update",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies._copy_cookie_jar",
+      "target": "requests.cookies.RequestsCookieJar.copy",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.merge_cookies",
+      "target": "requests.cookies.RequestsCookieJar.set_cookie",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.merge_cookies",
+      "target": "requests.cookies.RequestsCookieJar.update",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.cookies.merge_cookies",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict.__eq__",
+      "target": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict.__eq__",
+      "target": "requests.structures.CaseInsensitiveDict.lower_items",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.structures.CaseInsensitiveDict.copy",
+      "target": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.merge_setting",
+      "target": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.merge_setting",
+      "target": "requests.utils.to_key_val_list",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.merge_hooks",
+      "target": "requests.sessions.merge_setting",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.get_redirect_target",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.cookies.extract_cookies_to_jar",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.cookies.merge_cookies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.models.PreparedRequest.copy",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.models.PreparedRequest.prepare_cookies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.sessions.Session.send",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.sessions.SessionRedirectMixin.get_redirect_target",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.sessions.SessionRedirectMixin.rebuild_auth",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.sessions.SessionRedirectMixin.rebuild_method",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.sessions.SessionRedirectMixin.rebuild_proxies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.utils.requote_uri",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.utils.rewind_body",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.copy",
+      "target": "requests.cookies._copy_cookie_jar",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.copy",
+      "target": "requests.models.PreparedRequest.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.copy",
+      "target": "requests.structures.CaseInsensitiveDict.copy",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_cookies",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_cookies",
+      "target": "requests.cookies.get_cookie_header",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.rebuild_proxies",
+      "target": "requests.auth._basic_auth_str",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.rebuild_proxies",
+      "target": "requests.utils.get_auth_from_url",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.rebuild_proxies",
+      "target": "requests.utils.resolve_proxies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.rebuild_auth",
+      "target": "requests.models.PreparedRequest.prepare_auth",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.rebuild_auth",
+      "target": "requests.sessions.SessionRedirectMixin.should_strip_auth",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.rebuild_auth",
+      "target": "requests.utils.get_netrc_auth",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.send",
+      "target": "requests.models.Response.next",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.send",
+      "target": "requests.cookies.extract_cookies_to_jar",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.send",
+      "target": "requests.hooks.dispatch_hook",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.send",
+      "target": "requests.sessions.Session.get_adapter",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.send",
+      "target": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.send",
+      "target": "requests.utils.resolve_proxies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_auth",
+      "target": "requests.cookies.RequestsCookieJar.update",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_auth",
+      "target": "requests.models.PreparedRequest.prepare_content_length",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_auth",
+      "target": "requests.auth.HTTPBasicAuth.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_auth",
+      "target": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_auth",
+      "target": "requests.utils.get_auth_from_url",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.auth._basic_auth_str",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.__init__",
+      "target": "requests.adapters.HTTPAdapter.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.__init__",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.__init__",
+      "target": "requests.hooks.default_hooks",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.__init__",
+      "target": "requests.sessions.Session.mount",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.__init__",
+      "target": "requests.utils.default_headers",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.__init__",
+      "target": "requests.adapters.HTTPAdapter.init_poolmanager",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.__exit__",
+      "target": "requests.sessions.Session.close",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.close",
+      "target": "requests.cookies.RequestsCookieJar.values",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.prepare_request",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.prepare_request",
+      "target": "requests.cookies.merge_cookies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.prepare_request",
+      "target": "requests.models.PreparedRequest.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.prepare_request",
+      "target": "requests.models.PreparedRequest.prepare",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.prepare_request",
+      "target": "requests.sessions.merge_hooks",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.prepare_request",
+      "target": "requests.sessions.merge_setting",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.prepare_request",
+      "target": "requests.utils.get_netrc_auth",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.__init__",
+      "target": "requests.hooks.default_hooks",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare",
+      "target": "requests.models.PreparedRequest.prepare_auth",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare",
+      "target": "requests.models.PreparedRequest.prepare_body",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare",
+      "target": "requests.models.PreparedRequest.prepare_cookies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare",
+      "target": "requests.models.PreparedRequest.prepare_headers",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare",
+      "target": "requests.models.PreparedRequest.prepare_hooks",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare",
+      "target": "requests.models.PreparedRequest.prepare_method",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare",
+      "target": "requests.models.PreparedRequest.prepare_url",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.request",
+      "target": "requests.models.Request.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.request",
+      "target": "requests.sessions.Session.merge_environment_settings",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.request",
+      "target": "requests.sessions.Session.prepare_request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.request",
+      "target": "requests.sessions.Session.send",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Request.__init__",
+      "target": "requests.hooks.default_hooks",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Request.__init__",
+      "target": "requests.models.RequestHooksMixin.register_hook",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.merge_environment_settings",
+      "target": "requests.sessions.merge_setting",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.merge_environment_settings",
+      "target": "requests.utils.get_environ_proxies",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.merge_environment_settings",
+      "target": "requests.cookies.RequestsCookieJar.items",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.get",
+      "target": "requests.sessions.Session.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.options",
+      "target": "requests.sessions.Session.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.head",
+      "target": "requests.sessions.Session.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.post",
+      "target": "requests.sessions.Session.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.put",
+      "target": "requests.sessions.Session.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.patch",
+      "target": "requests.sessions.Session.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.delete",
+      "target": "requests.sessions.Session.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.get_adapter",
+      "target": "requests.cookies.RequestsCookieJar.items",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.get_adapter",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.session",
+      "target": "requests.sessions.Session.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.__setstate__",
+      "target": "requests.adapters.HTTPAdapter.init_poolmanager",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.proxy_manager_for",
+      "target": "requests.adapters.HTTPAdapter.proxy_headers",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.proxy_manager_for",
+      "target": "requests.utils.get_auth_from_url",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.proxy_headers",
+      "target": "requests.auth._basic_auth_str",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.proxy_headers",
+      "target": "requests.utils.get_auth_from_url",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.cert_verify",
+      "target": "requests.utils.extract_zipped_paths",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.build_response",
+      "target": "requests.cookies.extract_cookies_to_jar",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.build_response",
+      "target": "requests.models.Response.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.build_response",
+      "target": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.build_response",
+      "target": "requests.utils.get_encoding_from_headers",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.__init__",
+      "target": "requests.cookies.cookiejar_from_dict",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.__init__",
+      "target": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.build_connection_pool_key_attributes",
+      "target": "requests.adapters._urllib3_request_context",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection_with_tls_context",
+      "target": "requests.adapters.HTTPAdapter.build_connection_pool_key_attributes",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection_with_tls_context",
+      "target": "requests.adapters.HTTPAdapter.proxy_manager_for",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection_with_tls_context",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection_with_tls_context",
+      "target": "requests.utils.prepend_scheme_if_needed",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection_with_tls_context",
+      "target": "requests.utils.select_proxy",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection",
+      "target": "requests.adapters.HTTPAdapter.proxy_manager_for",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection",
+      "target": "requests.utils.prepend_scheme_if_needed",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection",
+      "target": "requests.utils.select_proxy",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.request_url",
+      "target": "requests.utils.select_proxy",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.request_url",
+      "target": "requests.utils.urldefragauth",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.send",
+      "target": "requests.adapters.HTTPAdapter.add_headers",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.send",
+      "target": "requests.adapters.HTTPAdapter.build_response",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.send",
+      "target": "requests.adapters.HTTPAdapter.cert_verify",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.send",
+      "target": "requests.adapters.HTTPAdapter.get_connection_with_tls_context",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.send",
+      "target": "requests.adapters.HTTPAdapter.request_url",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.send",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.send",
+      "target": "requests.exceptions.Timeout",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.auth.HTTPBasicAuth.__call__",
+      "target": "requests.auth._basic_auth_str",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.auth.HTTPProxyAuth.__call__",
+      "target": "requests.auth._basic_auth_str",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth.handle_401",
+      "target": "requests.auth.HTTPDigestAuth.build_digest_header",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth.handle_401",
+      "target": "requests.cookies.extract_cookies_to_jar",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth.handle_401",
+      "target": "requests.utils.parse_dict_header",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth.__call__",
+      "target": "requests.auth.HTTPDigestAuth.build_digest_header",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.auth.HTTPDigestAuth.__call__",
+      "target": "requests.auth.HTTPDigestAuth.init_per_thread_state",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.RequestEncodingMixin._encode_params",
+      "target": "requests.utils.to_key_val_list",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.RequestEncodingMixin._encode_files",
+      "target": "requests.utils.guess_filename",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.RequestEncodingMixin._encode_files",
+      "target": "requests.utils.to_key_val_list",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Request.prepare",
+      "target": "requests.models.PreparedRequest.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Request.prepare",
+      "target": "requests.models.PreparedRequest.prepare",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_method",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_url",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_url",
+      "target": "requests._internal_utils.unicode_is_ascii",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_url",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_url",
+      "target": "requests.models.PreparedRequest._get_idna_encoded_host",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_url",
+      "target": "requests.models.RequestEncodingMixin._encode_params",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_url",
+      "target": "requests.utils.requote_uri",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_headers",
+      "target": "requests.cookies.RequestsCookieJar.items",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_headers",
+      "target": "requests._internal_utils.to_native_string",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_headers",
+      "target": "requests.structures.CaseInsensitiveDict.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_headers",
+      "target": "requests.utils.check_header_validity",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_body",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_body",
+      "target": "requests.models.PreparedRequest.prepare_content_length",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_body",
+      "target": "requests.models.RequestEncodingMixin._encode_files",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_body",
+      "target": "requests.models.RequestEncodingMixin._encode_params",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_body",
+      "target": "requests.utils.super_len",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_hooks",
+      "target": "requests.models.RequestHooksMixin.register_hook",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_hooks",
+      "target": "requests.structures.CaseInsensitiveDict.__iter__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.PreparedRequest.prepare_content_length",
+      "target": "requests.utils.super_len",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.__exit__",
+      "target": "requests.models.Response.close",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.__iter__",
+      "target": "requests.models.Response.iter_content",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.iter_content",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.iter_content",
+      "target": "requests.utils.iter_slices",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.iter_content",
+      "target": "requests.utils.stream_decode_response_unicode",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.ok",
+      "target": "requests.models.Response.raise_for_status",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.raise_for_status",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.iter_lines",
+      "target": "requests.models.Response.iter_content",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.content",
+      "target": "requests.models.Response.iter_content",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.json",
+      "target": "requests.exceptions.JSONDecodeError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.json",
+      "target": "requests.utils.guess_json_utf",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.exceptions.JSONDecodeError.__init__",
+      "target": "requests.exceptions.JSONDecodeError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.exceptions.JSONDecodeError.__init__",
+      "target": "requests.exceptions.RequestException.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.models.Response.links",
+      "target": "requests.utils.parse_header_links",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.status_codes",
+      "target": "requests.status_codes._init",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.status_codes",
+      "target": "requests.structures.LookupDict.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.exceptions.JSONDecodeError.__reduce__",
+      "target": "requests.exceptions.JSONDecodeError.__reduce__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.compat",
+      "target": "requests.compat._resolve_char_detection",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.api.request",
+      "target": "requests.sessions.Session.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.api.get",
+      "target": "requests.api.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.api.options",
+      "target": "requests.api.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.api.head",
+      "target": "requests.api.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.api.post",
+      "target": "requests.api.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.api.put",
+      "target": "requests.api.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.api.patch",
+      "target": "requests.api.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.api.delete",
+      "target": "requests.api.request",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.help",
+      "target": "requests.help.main",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.help.info",
+      "target": "requests.help._implementation",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.help.main",
+      "target": "requests.help.info",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.__init__",
+      "target": "requests.adapters.BaseAdapter.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection_with_tls_context",
+      "target": "requests.cookies.MockRequest.host",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.get_connection",
+      "target": "requests.cookies.MockRequest.host",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.adapters.HTTPAdapter.request_url",
+      "target": "requests.models.RequestEncodingMixin.path_url",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.get_redirect_target",
+      "target": "requests.models.Response.is_redirect",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.SessionRedirectMixin.resolve_redirects",
+      "target": "requests.models.Response.content",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.sessions.Session.send",
+      "target": "requests.models.Response.content",
+      "kind": "calls"
+    },
+    {
+      "source": "requests.utils.get_unicode_from_response",
+      "target": "requests.models.Response.content",
+      "kind": "calls"
+    }
+  ]
+}

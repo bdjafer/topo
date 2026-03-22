@@ -10,6 +10,7 @@ path = "src/main.rs"
 
 [dependencies]
 topo-analyzer = { path = "../topo-analyzer", default-features = false }
+topo-benchmark = { path = "../topo-benchmark" }
 topo-cache = { path = "../topo-cache" }
 topo-formatter = { path = "../topo-formatter" }
 topo-parser = { path = "../topo-parser", features = ["rust"] }
@@ -20,6 +21,8 @@ toml = "0.8"
 anyhow = "1"
 walkdir = "2"
 fastembed = { version = "4", optional = true }
+ndarray = "0.17"
+ndarray-npy = "0.10"
 
 [features]
 semantic = ["fastembed"]

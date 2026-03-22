@@ -1,0 +1,4471 @@
+{
+  "nodes": [
+    {
+      "id": "attr",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/__init__.py",
+      "line": 1,
+      "name": "attr",
+      "line_end": 104
+    },
+    {
+      "id": "attr.AttrsInstance",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/__init__.py",
+      "line": 37,
+      "name": "AttrsInstance",
+      "line_end": 38
+    },
+    {
+      "id": "attr._cmp",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_cmp.py",
+      "line": 1,
+      "name": "_cmp",
+      "line_end": 160
+    },
+    {
+      "id": "attr._cmp._check_same_type",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_cmp.py",
+      "line": 156,
+      "name": "_check_same_type",
+      "line_end": 160
+    },
+    {
+      "id": "attr._cmp._is_comparable_to",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_cmp.py",
+      "line": 149,
+      "name": "_is_comparable_to",
+      "line_end": 153
+    },
+    {
+      "id": "attr._cmp._make_init",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_cmp.py",
+      "line": 112,
+      "name": "_make_init",
+      "line_end": 123
+    },
+    {
+      "id": "attr._cmp._make_operator",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_cmp.py",
+      "line": 126,
+      "name": "_make_operator",
+      "line_end": 146
+    },
+    {
+      "id": "attr._cmp.cmp_using",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_cmp.py",
+      "line": 13,
+      "name": "cmp_using",
+      "line_end": 109
+    },
+    {
+      "id": "attr._compat",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_compat.py",
+      "line": 1,
+      "name": "_compat",
+      "line_end": 99
+    },
+    {
+      "id": "attr._compat._AnnotationExtractor",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_compat.py",
+      "line": 40,
+      "name": "_AnnotationExtractor",
+      "line_end": 77
+    },
+    {
+      "id": "attr._compat._AnnotationExtractor.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_compat.py",
+      "line": 48,
+      "name": "__init__",
+      "line_end": 52
+    },
+    {
+      "id": "attr._compat._AnnotationExtractor.get_first_param_type",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_compat.py",
+      "line": 54,
+      "name": "get_first_param_type",
+      "line_end": 65
+    },
+    {
+      "id": "attr._compat._AnnotationExtractor.get_return_type",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_compat.py",
+      "line": 67,
+      "name": "get_return_type",
+      "line_end": 77
+    },
+    {
+      "id": "attr._compat.get_generic_base",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_compat.py",
+      "line": 95,
+      "name": "get_generic_base",
+      "line_end": 99
+    },
+    {
+      "id": "attr._config",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_config.py",
+      "line": 1,
+      "name": "_config",
+      "line_end": 31
+    },
+    {
+      "id": "attr._config.get_run_validators",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_config.py",
+      "line": 23,
+      "name": "get_run_validators",
+      "line_end": 31
+    },
+    {
+      "id": "attr._config.set_run_validators",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_config.py",
+      "line": 8,
+      "name": "set_run_validators",
+      "line_end": 20
+    },
+    {
+      "id": "attr._funcs",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_funcs.py",
+      "line": 1,
+      "name": "_funcs",
+      "line_end": 497
+    },
+    {
+      "id": "attr._funcs._asdict_anything",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_funcs.py",
+      "line": 154,
+      "name": "_asdict_anything",
+      "line_end": 229
+    },
+    {
+      "id": "attr._funcs.asdict",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_funcs.py",
+      "line": 28,
+      "name": "asdict",
+      "line_end": 151
+    },
+    {
+      "id": "attr._funcs.assoc",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_funcs.py",
+      "line": 382,
+      "name": "assoc",
+      "line_end": 422
+    },
+    {
+      "id": "attr._funcs.astuple",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_funcs.py",
+      "line": 232,
+      "name": "astuple",
+      "line_end": 351
+    },
+    {
+      "id": "attr._funcs.has",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_funcs.py",
+      "line": 354,
+      "name": "has",
+      "line_end": 379
+    },
+    {
+      "id": "attr._funcs.resolve_types",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_funcs.py",
+      "line": 425,
+      "name": "resolve_types",
+      "line_end": 497
+    },
+    {
+      "id": "attr._make",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1,
+      "name": "_make",
+      "line_end": 3406
+    },
+    {
+      "id": "attr._make.Attribute",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2429,
+      "name": "Attribute",
+      "line_end": 2667
+    },
+    {
+      "id": "attr._make.Attribute.__getstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2628,
+      "name": "__getstate__",
+      "line_end": 2635
+    },
+    {
+      "id": "attr._make.Attribute.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2498,
+      "name": "__init__",
+      "line_end": 2556
+    },
+    {
+      "id": "attr._make.Attribute.__setattr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2558,
+      "name": "__setattr__",
+      "line_end": 2559
+    },
+    {
+      "id": "attr._make.Attribute.__setstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2637,
+      "name": "__setstate__",
+      "line_end": 2652
+    },
+    {
+      "id": "attr._make.Attribute._setattrs",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2654,
+      "name": "_setattrs",
+      "line_end": 2667
+    },
+    {
+      "id": "attr._make.Attribute.evolve",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2596,
+      "name": "evolve",
+      "line_end": 2625
+    },
+    {
+      "id": "attr._make.Attribute.from_counting_attr",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2562,
+      "name": "from_counting_attr",
+      "line_end": 2593
+    },
+    {
+      "id": "attr._make.ClassProps",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2847,
+      "name": "ClassProps",
+      "line_end": 3006
+    },
+    {
+      "id": "attr._make.ClassProps.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2965,
+      "name": "__init__",
+      "line_end": 2999
+    },
+    {
+      "id": "attr._make.ClassProps.is_hashable",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3002,
+      "name": "is_hashable",
+      "line_end": 3006
+    },
+    {
+      "id": "attr._make.Converter",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3087,
+      "name": "Converter",
+      "line_end": 3182
+    },
+    {
+      "id": "attr._make.Converter.__getstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3167,
+      "name": "__getstate__",
+      "line_end": 3176
+    },
+    {
+      "id": "attr._make.Converter.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3117,
+      "name": "__init__",
+      "line_end": 3140
+    },
+    {
+      "id": "attr._make.Converter.__setstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3178,
+      "name": "__setstate__",
+      "line_end": 3182
+    },
+    {
+      "id": "attr._make.Converter._fmt_converter_call",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3150,
+      "name": "_fmt_converter_call",
+      "line_end": 3165
+    },
+    {
+      "id": "attr._make.Converter._get_global_name",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3143,
+      "name": "_get_global_name",
+      "line_end": 3148
+    },
+    {
+      "id": "attr._make.Factory",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3029,
+      "name": "Factory",
+      "line_end": 3065
+    },
+    {
+      "id": "attr._make.Factory.__getstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3054,
+      "name": "__getstate__",
+      "line_end": 3058
+    },
+    {
+      "id": "attr._make.Factory.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3050,
+      "name": "__init__",
+      "line_end": 3052
+    },
+    {
+      "id": "attr._make.Factory.__setstate__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3060,
+      "name": "__setstate__",
+      "line_end": 3065
+    },
+    {
+      "id": "attr._make._AndValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3314,
+      "name": "_AndValidator",
+      "line_end": 3323
+    },
+    {
+      "id": "attr._make._AndValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3321,
+      "name": "__call__",
+      "line_end": 3323
+    },
+    {
+      "id": "attr._make._Attributes",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 288,
+      "name": "_Attributes",
+      "line_end": 291
+    },
+    {
+      "id": "attr._make._CacheHashWrapper",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 90,
+      "name": "_CacheHashWrapper",
+      "line_end": 103
+    },
+    {
+      "id": "attr._make._CacheHashWrapper.__reduce__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 102,
+      "name": "__reduce__",
+      "line_end": 103
+    },
+    {
+      "id": "attr._make._ClassBuilder",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 645,
+      "name": "_ClassBuilder",
+      "line_end": 1225
+    },
+    {
+      "id": "attr._make._ClassBuilder.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 674,
+      "name": "__init__",
+      "line_end": 773
+    },
+    {
+      "id": "attr._make._ClassBuilder.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 775,
+      "name": "__repr__",
+      "line_end": 776
+    },
+    {
+      "id": "attr._make._ClassBuilder._add_method_dunders_safe",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1212,
+      "name": "_add_method_dunders_safe",
+      "line_end": 1225
+    },
+    {
+      "id": "attr._make._ClassBuilder._add_method_dunders_unsafe",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1198,
+      "name": "_add_method_dunders_unsafe",
+      "line_end": 1210
+    },
+    {
+      "id": "attr._make._ClassBuilder._create_slots_class",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 857,
+      "name": "_create_slots_class",
+      "line_end": 998
+    },
+    {
+      "id": "attr._make._ClassBuilder._eval_snippets",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 778,
+      "name": "_eval_snippets",
+      "line_end": 794
+    },
+    {
+      "id": "attr._make._ClassBuilder._make_getstate_setstate",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1021,
+      "name": "_make_getstate_setstate",
+      "line_end": 1060
+    },
+    {
+      "id": "attr._make._ClassBuilder._patch_original_class",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 821,
+      "name": "_patch_original_class",
+      "line_end": 855
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_attrs_init",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1117,
+      "name": "add_attrs_init",
+      "line_end": 1140
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_eq",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1142,
+      "name": "add_eq",
+      "line_end": 1154
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_hash",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1066,
+      "name": "add_hash",
+      "line_end": 1079
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_init",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1081,
+      "name": "add_init",
+      "line_end": 1104
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_match_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1110,
+      "name": "add_match_args",
+      "line_end": 1115
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_order",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1156,
+      "name": "add_order",
+      "line_end": 1164
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_replace",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1106,
+      "name": "add_replace",
+      "line_end": 1108
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_repr",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1000,
+      "name": "add_repr",
+      "line_end": 1008
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_setattr",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1166,
+      "name": "add_setattr",
+      "line_end": 1196
+    },
+    {
+      "id": "attr._make._ClassBuilder.add_str",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1010,
+      "name": "add_str",
+      "line_end": 1019
+    },
+    {
+      "id": "attr._make._ClassBuilder.build_class",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 796,
+      "name": "build_class",
+      "line_end": 819
+    },
+    {
+      "id": "attr._make._ClassBuilder.make_unhashable",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1062,
+      "name": "make_unhashable",
+      "line_end": 1064
+    },
+    {
+      "id": "attr._make._CountingAttr",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2696,
+      "name": "_CountingAttr",
+      "line_end": 2841
+    },
+    {
+      "id": "attr._make._CountingAttr.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2774,
+      "name": "__init__",
+      "line_end": 2809
+    },
+    {
+      "id": "attr._make._CountingAttr.default",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2825,
+      "name": "default",
+      "line_end": 2841
+    },
+    {
+      "id": "attr._make._CountingAttr.validator",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2811,
+      "name": "validator",
+      "line_end": 2823
+    },
+    {
+      "id": "attr._make._Nothing",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 62,
+      "name": "_Nothing",
+      "line_end": 79
+    },
+    {
+      "id": "attr._make._Nothing.__bool__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 78,
+      "name": "__bool__",
+      "line_end": 79
+    },
+    {
+      "id": "attr._make._Nothing.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 75,
+      "name": "__repr__",
+      "line_end": 76
+    },
+    {
+      "id": "attr._make.__ne__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1697,
+      "name": "__ne__",
+      "line_end": 1706
+    },
+    {
+      "id": "attr._make._add_eq",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1802,
+      "name": "_add_eq",
+      "line_end": 1816
+    },
+    {
+      "id": "attr._make._add_hash",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1683,
+      "name": "_add_hash",
+      "line_end": 1694
+    },
+    {
+      "id": "attr._make._add_repr",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1876,
+      "name": "_add_repr",
+      "line_end": 1888
+    },
+    {
+      "id": "attr._make._assign",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2083,
+      "name": "_assign",
+      "line_end": 2091
+    },
+    {
+      "id": "attr._make._assign_with_converter",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2094,
+      "name": "_assign_with_converter",
+      "line_end": 2104
+    },
+    {
+      "id": "attr._make._attrs_to_init_script",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2154,
+      "name": "_attrs_to_init_script",
+      "line_end": 2415
+    },
+    {
+      "id": "attr._make._collect_base_attrs",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 318,
+      "name": "_collect_base_attrs",
+      "line_end": 348
+    },
+    {
+      "id": "attr._make._collect_base_attrs_broken",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 351,
+      "name": "_collect_base_attrs_broken",
+      "line_end": 376
+    },
+    {
+      "id": "attr._make._compile_and_eval",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 216,
+      "name": "_compile_and_eval",
+      "line_end": 227
+    },
+    {
+      "id": "attr._make._default_init_alias_for",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2418,
+      "name": "_default_init_alias_for",
+      "line_end": 2426
+    },
+    {
+      "id": "attr._make._determine_attrib_eq_order",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1256,
+      "name": "_determine_attrib_eq_order",
+      "line_end": 1296
+    },
+    {
+      "id": "attr._make._determine_attrs_eq_order",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1228,
+      "name": "_determine_attrs_eq_order",
+      "line_end": 1253
+    },
+    {
+      "id": "attr._make._determine_setters",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2107,
+      "name": "_determine_setters",
+      "line_end": 2151
+    },
+    {
+      "id": "attr._make._determine_whether_to_implement",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1299,
+      "name": "_determine_whether_to_implement",
+      "line_end": 1322
+    },
+    {
+      "id": "attr._make._frozen_delattrs",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 576,
+      "name": "_frozen_delattrs",
+      "line_end": 584
+    },
+    {
+      "id": "attr._make._frozen_setattrs",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 559,
+      "name": "_frozen_setattrs",
+      "line_end": 573
+    },
+    {
+      "id": "attr._make._generate_unique_filename",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1601,
+      "name": "_generate_unique_filename",
+      "line_end": 1608
+    },
+    {
+      "id": "attr._make._has_frozen_base_class",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1593,
+      "name": "_has_frozen_base_class",
+      "line_end": 1598
+    },
+    {
+      "id": "attr._make._has_own_attribute",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 311,
+      "name": "_has_own_attribute",
+      "line_end": 315
+    },
+    {
+      "id": "attr._make._is_class_var",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 294,
+      "name": "_is_class_var",
+      "line_end": 308
+    },
+    {
+      "id": "attr._make._is_slot_attr",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1989,
+      "name": "_is_slot_attr",
+      "line_end": 1994
+    },
+    {
+      "id": "attr._make._linecache_and_compile",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 230,
+      "name": "_linecache_and_compile",
+      "line_end": 262
+    },
+    {
+      "id": "attr._make._make_attr_tuple_class",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 265,
+      "name": "_make_attr_tuple_class",
+      "line_end": 283
+    },
+    {
+      "id": "attr._make._make_cached_property_getattr",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 507,
+      "name": "_make_cached_property_getattr",
+      "line_end": 556
+    },
+    {
+      "id": "attr._make._make_eq_script",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1709,
+      "name": "_make_eq_script",
+      "line_end": 1743
+    },
+    {
+      "id": "attr._make._make_hash_script",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1611,
+      "name": "_make_hash_script",
+      "line_end": 1680
+    },
+    {
+      "id": "attr._make._make_init_script",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1997,
+      "name": "_make_init_script",
+      "line_end": 2063
+    },
+    {
+      "id": "attr._make._make_order",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1746,
+      "name": "_make_order",
+      "line_end": 1799
+    },
+    {
+      "id": "attr._make._make_repr_script",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1819,
+      "name": "_make_repr_script",
+      "line_end": 1873
+    },
+    {
+      "id": "attr._make._setattr",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2066,
+      "name": "_setattr",
+      "line_end": 2070
+    },
+    {
+      "id": "attr._make._setattr_with_converter",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 2073,
+      "name": "_setattr_with_converter",
+      "line_end": 2080
+    },
+    {
+      "id": "attr._make._transform_attrs",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 379,
+      "name": "_transform_attrs",
+      "line_end": 504
+    },
+    {
+      "id": "attr._make.and_",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3326,
+      "name": "and_",
+      "line_end": 3346
+    },
+    {
+      "id": "attr._make.attrib",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 106,
+      "name": "attrib",
+      "line_end": 213
+    },
+    {
+      "id": "attr._make.attrs",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1325,
+      "name": "attrs",
+      "line_end": 1583
+    },
+    {
+      "id": "attr._make.evolve",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 587,
+      "name": "evolve",
+      "line_end": 642
+    },
+    {
+      "id": "attr._make.fields",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1891,
+      "name": "fields",
+      "line_end": 1939
+    },
+    {
+      "id": "attr._make.fields_dict",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1942,
+      "name": "fields_dict",
+      "line_end": 1968
+    },
+    {
+      "id": "attr._make.make_class",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3206,
+      "name": "make_class",
+      "line_end": 3306
+    },
+    {
+      "id": "attr._make.pipe",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 3349,
+      "name": "pipe",
+      "line_end": 3406
+    },
+    {
+      "id": "attr._make.validate",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_make.py",
+      "line": 1971,
+      "name": "validate",
+      "line_end": 1986
+    },
+    {
+      "id": "attr._make_getattr",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/__init__.py",
+      "line": 81,
+      "name": "_make_getattr",
+      "line_end": 101
+    },
+    {
+      "id": "attr._next_gen",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_next_gen.py",
+      "line": 1,
+      "name": "_next_gen",
+      "line_end": 674
+    },
+    {
+      "id": "attr._next_gen.asdict",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_next_gen.py",
+      "line": 623,
+      "name": "asdict",
+      "line_end": 636
+    },
+    {
+      "id": "attr._next_gen.astuple",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_next_gen.py",
+      "line": 639,
+      "name": "astuple",
+      "line_end": 648
+    },
+    {
+      "id": "attr._next_gen.define",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_next_gen.py",
+      "line": 23,
+      "name": "define",
+      "line_end": 430
+    },
+    {
+      "id": "attr._next_gen.field",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_next_gen.py",
+      "line": 437,
+      "name": "field",
+      "line_end": 620
+    },
+    {
+      "id": "attr._next_gen.inspect",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_next_gen.py",
+      "line": 651,
+      "name": "inspect",
+      "line_end": 674
+    },
+    {
+      "id": "attr._version_info",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_version_info.py",
+      "line": 1,
+      "name": "_version_info",
+      "line_end": 89
+    },
+    {
+      "id": "attr._version_info.VersionInfo",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_version_info.py",
+      "line": 12,
+      "name": "VersionInfo",
+      "line_end": 89
+    },
+    {
+      "id": "attr._version_info.VersionInfo.__eq__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_version_info.py",
+      "line": 70,
+      "name": "__eq__",
+      "line_end": 76
+    },
+    {
+      "id": "attr._version_info.VersionInfo.__hash__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_version_info.py",
+      "line": 88,
+      "name": "__hash__",
+      "line_end": 89
+    },
+    {
+      "id": "attr._version_info.VersionInfo.__lt__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_version_info.py",
+      "line": 78,
+      "name": "__lt__",
+      "line_end": 86
+    },
+    {
+      "id": "attr._version_info.VersionInfo._ensure_tuple",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_version_info.py",
+      "line": 51,
+      "name": "_ensure_tuple",
+      "line_end": 68
+    },
+    {
+      "id": "attr._version_info.VersionInfo._from_version_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/_version_info.py",
+      "line": 39,
+      "name": "_from_version_string",
+      "line_end": 49
+    },
+    {
+      "id": "attr.converters",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/converters.py",
+      "line": 1,
+      "name": "converters",
+      "line_end": 162
+    },
+    {
+      "id": "attr.converters.default_if_none",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/converters.py",
+      "line": 66,
+      "name": "default_if_none",
+      "line_end": 122
+    },
+    {
+      "id": "attr.converters.optional",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/converters.py",
+      "line": 21,
+      "name": "optional",
+      "line_end": 63
+    },
+    {
+      "id": "attr.converters.to_bool",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/converters.py",
+      "line": 125,
+      "name": "to_bool",
+      "line_end": 162
+    },
+    {
+      "id": "attr.exceptions",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 1,
+      "name": "exceptions",
+      "line_end": 95
+    },
+    {
+      "id": "attr.exceptions.AttrsAttributeNotFoundError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 39,
+      "name": "AttrsAttributeNotFoundError",
+      "line_end": 44
+    },
+    {
+      "id": "attr.exceptions.DefaultAlreadySetError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 55,
+      "name": "DefaultAlreadySetError",
+      "line_end": 61
+    },
+    {
+      "id": "attr.exceptions.FrozenAttributeError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 31,
+      "name": "FrozenAttributeError",
+      "line_end": 36
+    },
+    {
+      "id": "attr.exceptions.FrozenError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 6,
+      "name": "FrozenError",
+      "line_end": 20
+    },
+    {
+      "id": "attr.exceptions.FrozenError.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 17,
+      "name": "__init__",
+      "line_end": 20
+    },
+    {
+      "id": "attr.exceptions.FrozenInstanceError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 23,
+      "name": "FrozenInstanceError",
+      "line_end": 28
+    },
+    {
+      "id": "attr.exceptions.NotAnAttrsClassError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 47,
+      "name": "NotAnAttrsClassError",
+      "line_end": 52
+    },
+    {
+      "id": "attr.exceptions.NotCallableError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 81,
+      "name": "NotCallableError",
+      "line_end": 95
+    },
+    {
+      "id": "attr.exceptions.NotCallableError.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 89,
+      "name": "__init__",
+      "line_end": 92
+    },
+    {
+      "id": "attr.exceptions.NotCallableError.__str__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 94,
+      "name": "__str__",
+      "line_end": 95
+    },
+    {
+      "id": "attr.exceptions.PythonTooOldError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 72,
+      "name": "PythonTooOldError",
+      "line_end": 78
+    },
+    {
+      "id": "attr.exceptions.UnannotatedAttributeError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/exceptions.py",
+      "line": 64,
+      "name": "UnannotatedAttributeError",
+      "line_end": 69
+    },
+    {
+      "id": "attr.filters",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/filters.py",
+      "line": 1,
+      "name": "filters",
+      "line_end": 72
+    },
+    {
+      "id": "attr.filters._split_what",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/filters.py",
+      "line": 10,
+      "name": "_split_what",
+      "line_end": 18
+    },
+    {
+      "id": "attr.filters.exclude",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/filters.py",
+      "line": 48,
+      "name": "exclude",
+      "line_end": 72
+    },
+    {
+      "id": "attr.filters.include",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/filters.py",
+      "line": 21,
+      "name": "include",
+      "line_end": 45
+    },
+    {
+      "id": "attr.setters",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/setters.py",
+      "line": 1,
+      "name": "setters",
+      "line_end": 79
+    },
+    {
+      "id": "attr.setters.convert",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/setters.py",
+      "line": 56,
+      "name": "convert",
+      "line_end": 73
+    },
+    {
+      "id": "attr.setters.frozen",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/setters.py",
+      "line": 29,
+      "name": "frozen",
+      "line_end": 35
+    },
+    {
+      "id": "attr.setters.pipe",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/setters.py",
+      "line": 11,
+      "name": "pipe",
+      "line_end": 26
+    },
+    {
+      "id": "attr.setters.validate",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/setters.py",
+      "line": 38,
+      "name": "validate",
+      "line_end": 53
+    },
+    {
+      "id": "attr.validators",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 1,
+      "name": "validators",
+      "line_end": 750
+    },
+    {
+      "id": "attr.validators._DeepIterable",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 333,
+      "name": "_DeepIterable",
+      "line_end": 358
+    },
+    {
+      "id": "attr.validators._DeepIterable.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 339,
+      "name": "__call__",
+      "line_end": 347
+    },
+    {
+      "id": "attr.validators._DeepIterable.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 349,
+      "name": "__repr__",
+      "line_end": 358
+    },
+    {
+      "id": "attr.validators._DeepMapping",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 388,
+      "name": "_DeepMapping",
+      "line_end": 407
+    },
+    {
+      "id": "attr.validators._DeepMapping.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 393,
+      "name": "__call__",
+      "line_end": 404
+    },
+    {
+      "id": "attr.validators._DeepMapping.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 406,
+      "name": "__repr__",
+      "line_end": 407
+    },
+    {
+      "id": "attr.validators._InValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 236,
+      "name": "_InValidator",
+      "line_end": 256
+    },
+    {
+      "id": "attr.validators._InValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 240,
+      "name": "__call__",
+      "line_end": 253
+    },
+    {
+      "id": "attr.validators._InValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 255,
+      "name": "__repr__",
+      "line_end": 256
+    },
+    {
+      "id": "attr.validators._InstanceOfValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 93,
+      "name": "_InstanceOfValidator",
+      "line_end": 110
+    },
+    {
+      "id": "attr.validators._InstanceOfValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 96,
+      "name": "__call__",
+      "line_end": 107
+    },
+    {
+      "id": "attr.validators._InstanceOfValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 109,
+      "name": "__repr__",
+      "line_end": 110
+    },
+    {
+      "id": "attr.validators._IsCallableValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 295,
+      "name": "_IsCallableValidator",
+      "line_end": 313
+    },
+    {
+      "id": "attr.validators._IsCallableValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 296,
+      "name": "__call__",
+      "line_end": 310
+    },
+    {
+      "id": "attr.validators._IsCallableValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 312,
+      "name": "__repr__",
+      "line_end": 313
+    },
+    {
+      "id": "attr.validators._MatchesReValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 131,
+      "name": "_MatchesReValidator",
+      "line_end": 149
+    },
+    {
+      "id": "attr.validators._MatchesReValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 135,
+      "name": "__call__",
+      "line_end": 146
+    },
+    {
+      "id": "attr.validators._MatchesReValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 148,
+      "name": "__repr__",
+      "line_end": 149
+    },
+    {
+      "id": "attr.validators._MaxLengthValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 539,
+      "name": "_MaxLengthValidator",
+      "line_end": 551
+    },
+    {
+      "id": "attr.validators._MaxLengthValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 542,
+      "name": "__call__",
+      "line_end": 548
+    },
+    {
+      "id": "attr.validators._MaxLengthValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 550,
+      "name": "__repr__",
+      "line_end": 551
+    },
+    {
+      "id": "attr.validators._MinLengthValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 568,
+      "name": "_MinLengthValidator",
+      "line_end": 580
+    },
+    {
+      "id": "attr.validators._MinLengthValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 571,
+      "name": "__call__",
+      "line_end": 577
+    },
+    {
+      "id": "attr.validators._MinLengthValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 579,
+      "name": "__repr__",
+      "line_end": 580
+    },
+    {
+      "id": "attr.validators._NotValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 635,
+      "name": "_NotValidator",
+      "line_end": 668
+    },
+    {
+      "id": "attr.validators._NotValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 650,
+      "name": "__call__",
+      "line_end": 665
+    },
+    {
+      "id": "attr.validators._NotValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 667,
+      "name": "__repr__",
+      "line_end": 668
+    },
+    {
+      "id": "attr.validators._NumberValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 461,
+      "name": "_NumberValidator",
+      "line_end": 475
+    },
+    {
+      "id": "attr.validators._NumberValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 466,
+      "name": "__call__",
+      "line_end": 472
+    },
+    {
+      "id": "attr.validators._NumberValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 474,
+      "name": "__repr__",
+      "line_end": 475
+    },
+    {
+      "id": "attr.validators._OptionalValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 201,
+      "name": "_OptionalValidator",
+      "line_end": 211
+    },
+    {
+      "id": "attr.validators._OptionalValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 204,
+      "name": "__call__",
+      "line_end": 208
+    },
+    {
+      "id": "attr.validators._OptionalValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 210,
+      "name": "__repr__",
+      "line_end": 211
+    },
+    {
+      "id": "attr.validators._OrValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 708,
+      "name": "_OrValidator",
+      "line_end": 724
+    },
+    {
+      "id": "attr.validators._OrValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 711,
+      "name": "__call__",
+      "line_end": 721
+    },
+    {
+      "id": "attr.validators._OrValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 723,
+      "name": "__repr__",
+      "line_end": 724
+    },
+    {
+      "id": "attr.validators._SubclassOfValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 597,
+      "name": "_SubclassOfValidator",
+      "line_end": 614
+    },
+    {
+      "id": "attr.validators._SubclassOfValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 600,
+      "name": "__call__",
+      "line_end": 611
+    },
+    {
+      "id": "attr.validators._SubclassOfValidator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 613,
+      "name": "__repr__",
+      "line_end": 614
+    },
+    {
+      "id": "attr.validators._subclass_of",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 617,
+      "name": "_subclass_of",
+      "line_end": 631
+    },
+    {
+      "id": "attr.validators.deep_iterable",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 361,
+      "name": "deep_iterable",
+      "line_end": 384
+    },
+    {
+      "id": "attr.validators.deep_mapping",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 410,
+      "name": "deep_mapping",
+      "line_end": 457
+    },
+    {
+      "id": "attr.validators.disabled",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 73,
+      "name": "disabled",
+      "line_end": 89
+    },
+    {
+      "id": "attr.validators.ge",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 508,
+      "name": "ge",
+      "line_end": 520
+    },
+    {
+      "id": "attr.validators.get_disabled",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 60,
+      "name": "get_disabled",
+      "line_end": 69
+    },
+    {
+      "id": "attr.validators.gt",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 523,
+      "name": "gt",
+      "line_end": 535
+    },
+    {
+      "id": "attr.validators.in_",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 259,
+      "name": "in_",
+      "line_end": 291
+    },
+    {
+      "id": "attr.validators.instance_of",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 113,
+      "name": "instance_of",
+      "line_end": 127
+    },
+    {
+      "id": "attr.validators.is_callable",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 316,
+      "name": "is_callable",
+      "line_end": 329
+    },
+    {
+      "id": "attr.validators.le",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 493,
+      "name": "le",
+      "line_end": 505
+    },
+    {
+      "id": "attr.validators.lt",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 478,
+      "name": "lt",
+      "line_end": 490
+    },
+    {
+      "id": "attr.validators.matches_re",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 152,
+      "name": "matches_re",
+      "line_end": 197
+    },
+    {
+      "id": "attr.validators.max_len",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 554,
+      "name": "max_len",
+      "line_end": 564
+    },
+    {
+      "id": "attr.validators.min_len",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 583,
+      "name": "min_len",
+      "line_end": 593
+    },
+    {
+      "id": "attr.validators.not_",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 671,
+      "name": "not_",
+      "line_end": 704
+    },
+    {
+      "id": "attr.validators.optional",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 214,
+      "name": "optional",
+      "line_end": 232
+    },
+    {
+      "id": "attr.validators.or_",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 727,
+      "name": "or_",
+      "line_end": 750
+    },
+    {
+      "id": "attr.validators.set_disabled",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/attrs/src/attr/validators.py",
+      "line": 42,
+      "name": "set_disabled",
+      "line_end": 57
+    }
+  ],
+  "edges": [
+    {
+      "source": "attr",
+      "target": "functools",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "functools.partial",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "typing.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "typing.Literal",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "typing.Protocol",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr.converters",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr.filters",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr.setters",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr.validators",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._cmp",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._cmp.cmp_using",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._config",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._config.get_run_validators",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._config.set_run_validators",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._funcs",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._funcs.asdict",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._funcs.assoc",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._funcs.astuple",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._funcs.has",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._funcs.resolve_types",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.NOTHING",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.Attribute",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.Converter",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.Factory",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make._Nothing",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.attrib",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.attrs",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.evolve",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.fields",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.fields_dict",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.make_class",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make.validate",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._next_gen",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._next_gen.define",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._next_gen.field",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._next_gen.frozen",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._next_gen.mutable",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._version_info",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr._version_info.VersionInfo",
+      "kind": "imports"
+    },
+    {
+      "source": "attr",
+      "target": "attr.AttrsInstance",
+      "kind": "defines"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make_getattr",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._cmp",
+      "target": "functools",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._cmp",
+      "target": "types",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._cmp",
+      "target": "attr._make",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._cmp",
+      "target": "attr._make.__ne__",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._cmp",
+      "target": "attr._cmp.cmp_using",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._cmp",
+      "target": "attr._cmp._make_init",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._cmp",
+      "target": "attr._cmp._make_operator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._cmp",
+      "target": "attr._cmp._is_comparable_to",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._cmp",
+      "target": "attr._cmp._check_same_type",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._compat",
+      "target": "inspect",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._compat",
+      "target": "platform",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._compat",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._compat",
+      "target": "threading",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._compat",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._compat",
+      "target": "collections.abc.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._compat",
+      "target": "collections.abc.Sequence",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._compat",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._compat",
+      "target": "typing._GenericAlias",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._compat",
+      "target": "attr._compat._AnnotationExtractor",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._compat._AnnotationExtractor",
+      "target": "attr._compat._AnnotationExtractor.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._compat._AnnotationExtractor",
+      "target": "attr._compat._AnnotationExtractor.get_first_param_type",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._compat._AnnotationExtractor",
+      "target": "attr._compat._AnnotationExtractor.get_return_type",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._compat",
+      "target": "attr._compat.get_generic_base",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._config",
+      "target": "attr._config.set_run_validators",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._config",
+      "target": "attr._config.get_run_validators",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "copy",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._compat",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._compat.get_generic_base",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._make",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._make._OBJ_SETATTR",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._make.NOTHING",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._make.fields",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr.exceptions.AttrsAttributeNotFoundError",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._funcs.asdict",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._funcs._asdict_anything",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._funcs.astuple",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._funcs.has",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._funcs.assoc",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._funcs",
+      "target": "attr._funcs.resolve_types",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "abc",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "contextlib",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "copy",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "enum",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "inspect",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "itertools",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "linecache",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "sys",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "types",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "unicodedata",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "weakref",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "collections.abc.Callable",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "collections.abc.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "functools",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "functools.cached_property",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "typing.Any",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "typing.NamedTuple",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "typing.TypeVar",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._compat",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._config",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr.setters",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._compat",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._compat.PY_3_10_PLUS",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._compat.PY_3_11_PLUS",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._compat.PY_3_13_PLUS",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._compat._AnnotationExtractor",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._compat._get_annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._compat.get_generic_base",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr.exceptions.DefaultAlreadySetError",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr.exceptions.FrozenInstanceError",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr.exceptions.NotAnAttrsClassError",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr.exceptions.UnannotatedAttributeError",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._Nothing",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._Nothing",
+      "target": "attr._make._Nothing.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._Nothing",
+      "target": "attr._make._Nothing.__bool__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._CacheHashWrapper",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._CacheHashWrapper",
+      "target": "attr._make._CacheHashWrapper.__reduce__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.attrib",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._compile_and_eval",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._linecache_and_compile",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._make_attr_tuple_class",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._Attributes",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._is_class_var",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._has_own_attribute",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._collect_base_attrs",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._collect_base_attrs_broken",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._transform_attrs",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._make_cached_property_getattr",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._frozen_setattrs",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._frozen_delattrs",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.evolve",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._ClassBuilder",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder._eval_snippets",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.build_class",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder._patch_original_class",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder._create_slots_class",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_repr",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_str",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder._make_getstate_setstate",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.make_unhashable",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_hash",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_init",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_replace",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_match_args",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_attrs_init",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_eq",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_order",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder.add_setattr",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder._add_method_dunders_unsafe",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._ClassBuilder",
+      "target": "attr._make._ClassBuilder._add_method_dunders_safe",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._determine_attrs_eq_order",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._determine_attrib_eq_order",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._determine_whether_to_implement",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.attrs",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._has_frozen_base_class",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._generate_unique_filename",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._make_hash_script",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._add_hash",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.__ne__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._make_eq_script",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._make_order",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._add_eq",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._make_repr_script",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._add_repr",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.fields",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.fields_dict",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.validate",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._is_slot_attr",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._make_init_script",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._setattr",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._setattr_with_converter",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._assign",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._assign_with_converter",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._determine_setters",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._attrs_to_init_script",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._default_init_alias_for",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.Attribute",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Attribute",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Attribute",
+      "target": "attr._make.Attribute.__setattr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Attribute",
+      "target": "attr._make.Attribute.from_counting_attr",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Attribute",
+      "target": "attr._make.Attribute.evolve",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Attribute",
+      "target": "attr._make.Attribute.__getstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Attribute",
+      "target": "attr._make.Attribute.__setstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Attribute",
+      "target": "attr._make.Attribute._setattrs",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._CountingAttr",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._CountingAttr",
+      "target": "attr._make._CountingAttr.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._CountingAttr",
+      "target": "attr._make._CountingAttr.validator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._CountingAttr",
+      "target": "attr._make._CountingAttr.default",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.ClassProps",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.ClassProps",
+      "target": "attr._make.ClassProps.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.ClassProps",
+      "target": "attr._make.ClassProps.is_hashable",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.Factory",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Factory",
+      "target": "attr._make.Factory.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Factory",
+      "target": "attr._make.Factory.__getstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Factory",
+      "target": "attr._make.Factory.__setstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.Converter",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Converter",
+      "target": "attr._make.Converter.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Converter",
+      "target": "attr._make.Converter._get_global_name",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Converter",
+      "target": "attr._make.Converter._fmt_converter_call",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Converter",
+      "target": "attr._make.Converter.__getstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make.Converter",
+      "target": "attr._make.Converter.__setstate__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.make_class",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._AndValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make._AndValidator",
+      "target": "attr._make._AndValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.and_",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.pipe",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "functools",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "functools.partial",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr.setters",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._funcs",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._funcs.asdict",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._funcs",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._funcs.astuple",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._make",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._make._DEFAULT_ON_SETATTR",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._make.NOTHING",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._make._frozen_setattrs",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._make.attrib",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._make.attrs",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr.exceptions.NotAnAttrsClassError",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr.exceptions.UnannotatedAttributeError",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._next_gen.define",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._next_gen.field",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._next_gen.asdict",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._next_gen.astuple",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._next_gen",
+      "target": "attr._next_gen.inspect",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._version_info",
+      "target": "functools",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._version_info",
+      "target": "functools.total_ordering",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._version_info",
+      "target": "attr._funcs",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._version_info",
+      "target": "attr._funcs.astuple",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._version_info",
+      "target": "attr._make",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._version_info",
+      "target": "attr._make.attrib",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._version_info",
+      "target": "attr._make.attrs",
+      "kind": "imports"
+    },
+    {
+      "source": "attr._version_info",
+      "target": "attr._version_info.VersionInfo",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._version_info.VersionInfo",
+      "target": "attr._version_info.VersionInfo._from_version_string",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._version_info.VersionInfo",
+      "target": "attr._version_info.VersionInfo._ensure_tuple",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._version_info.VersionInfo",
+      "target": "attr._version_info.VersionInfo.__eq__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._version_info.VersionInfo",
+      "target": "attr._version_info.VersionInfo.__lt__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr._version_info.VersionInfo",
+      "target": "attr._version_info.VersionInfo.__hash__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.converters",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr._compat",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr._compat._AnnotationExtractor",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr._make",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr._make.NOTHING",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr._make.Converter",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr._make.Factory",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr._make.pipe",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr.converters.optional",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr.converters.default_if_none",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.converters",
+      "target": "attr.converters.to_bool",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "attr.exceptions.FrozenError",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions.FrozenError",
+      "target": "attr.exceptions.FrozenError.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "attr.exceptions.FrozenInstanceError",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions.FrozenInstanceError",
+      "target": "attr.exceptions.FrozenError",
+      "kind": "inherits"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "attr.exceptions.FrozenAttributeError",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions.FrozenAttributeError",
+      "target": "attr.exceptions.FrozenError",
+      "kind": "inherits"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "attr.exceptions.AttrsAttributeNotFoundError",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "attr.exceptions.NotAnAttrsClassError",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "attr.exceptions.DefaultAlreadySetError",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "attr.exceptions.UnannotatedAttributeError",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "attr.exceptions.PythonTooOldError",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions",
+      "target": "attr.exceptions.NotCallableError",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions.NotCallableError",
+      "target": "attr.exceptions.NotCallableError.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.exceptions.NotCallableError",
+      "target": "attr.exceptions.NotCallableError.__str__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.filters",
+      "target": "attr._make",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.filters",
+      "target": "attr._make.Attribute",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.filters",
+      "target": "attr.filters._split_what",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.filters",
+      "target": "attr.filters.include",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.filters",
+      "target": "attr.filters.exclude",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.setters",
+      "target": "attr",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.setters",
+      "target": "attr._config",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.setters",
+      "target": "attr.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.setters",
+      "target": "attr.exceptions.FrozenAttributeError",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.setters",
+      "target": "attr.setters.pipe",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.setters",
+      "target": "attr.setters.frozen",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.setters",
+      "target": "attr.setters.validate",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.setters",
+      "target": "attr.setters.convert",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "operator",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "re",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "contextlib",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "contextlib.contextmanager",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "re",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "re.Pattern",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr._config",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr._config.get_run_validators",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr._config.set_run_validators",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr._make",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr._make._AndValidator",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr._make.and_",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr._make.attrib",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr._make.attrs",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.converters",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.converters.default_if_none",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.exceptions.NotCallableError",
+      "kind": "imports"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.set_disabled",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.get_disabled",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.disabled",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._InstanceOfValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._InstanceOfValidator",
+      "target": "attr.validators._InstanceOfValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._InstanceOfValidator",
+      "target": "attr.validators._InstanceOfValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.instance_of",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._MatchesReValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._MatchesReValidator",
+      "target": "attr.validators._MatchesReValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._MatchesReValidator",
+      "target": "attr.validators._MatchesReValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.matches_re",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._OptionalValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._OptionalValidator",
+      "target": "attr.validators._OptionalValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._OptionalValidator",
+      "target": "attr.validators._OptionalValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.optional",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._InValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._InValidator",
+      "target": "attr.validators._InValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._InValidator",
+      "target": "attr.validators._InValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.in_",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._IsCallableValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._IsCallableValidator",
+      "target": "attr.validators._IsCallableValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._IsCallableValidator",
+      "target": "attr.validators._IsCallableValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.is_callable",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._DeepIterable",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._DeepIterable",
+      "target": "attr.validators._DeepIterable.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._DeepIterable",
+      "target": "attr.validators._DeepIterable.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.deep_iterable",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._DeepMapping",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._DeepMapping",
+      "target": "attr.validators._DeepMapping.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._DeepMapping",
+      "target": "attr.validators._DeepMapping.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.deep_mapping",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._NumberValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._NumberValidator",
+      "target": "attr.validators._NumberValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._NumberValidator",
+      "target": "attr.validators._NumberValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.lt",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.le",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.ge",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.gt",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._MaxLengthValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._MaxLengthValidator",
+      "target": "attr.validators._MaxLengthValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._MaxLengthValidator",
+      "target": "attr.validators._MaxLengthValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.max_len",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._MinLengthValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._MinLengthValidator",
+      "target": "attr.validators._MinLengthValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._MinLengthValidator",
+      "target": "attr.validators._MinLengthValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.min_len",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._SubclassOfValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._SubclassOfValidator",
+      "target": "attr.validators._SubclassOfValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._SubclassOfValidator",
+      "target": "attr.validators._SubclassOfValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._subclass_of",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._NotValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._NotValidator",
+      "target": "attr.validators._NotValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._NotValidator",
+      "target": "attr.validators._NotValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.not_",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators._OrValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._OrValidator",
+      "target": "attr.validators._OrValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators._OrValidator",
+      "target": "attr.validators._OrValidator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "attr.validators",
+      "target": "attr.validators.or_",
+      "kind": "defines"
+    },
+    {
+      "source": "attr",
+      "target": "attr._make_getattr",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.filters.include",
+      "target": "attr.filters._split_what",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.filters.exclude",
+      "target": "attr.filters._split_what",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators.set_disabled",
+      "target": "attr._config.set_run_validators",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators.get_disabled",
+      "target": "attr._config.get_run_validators",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators.disabled",
+      "target": "attr._config.get_run_validators",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators.disabled",
+      "target": "attr._config.set_run_validators",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._InstanceOfValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.attrib",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.attrib",
+      "target": "attr._make._determine_attrib_eq_order",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.attrib",
+      "target": "attr._make.and_",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.attrib",
+      "target": "attr._make.pipe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.attrib",
+      "target": "attr.setters.pipe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._MatchesReValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._MatchesReValidator.__call__",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Attribute.__init__",
+      "target": "attr._make._determine_attrib_eq_order",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._OptionalValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._OptionalValidator.__call__",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._InValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._IsCallableValidator.__call__",
+      "target": "attr.exceptions.NotCallableError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepIterable",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepIterable",
+      "target": "attr.validators.is_callable",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepIterable",
+      "target": "attr.validators.optional",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepIterable.__call__",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators.deep_iterable",
+      "target": "attr._make.and_",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepMapping",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepMapping",
+      "target": "attr.validators.is_callable",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepMapping",
+      "target": "attr.validators.optional",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepMapping.__call__",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators.deep_mapping",
+      "target": "attr._make.and_",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NumberValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NumberValidator.__call__",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._MaxLengthValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._MinLengthValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._SubclassOfValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NotValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NotValidator",
+      "target": "attr.converters.default_if_none",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NotValidator",
+      "target": "attr.validators._subclass_of",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NotValidator",
+      "target": "attr.validators.deep_iterable",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NotValidator",
+      "target": "attr.validators.instance_of",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.converters.default_if_none",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NotValidator.__call__",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._OrValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._OrValidator.__call__",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.converters.optional",
+      "target": "attr._compat._AnnotationExtractor.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.converters.optional",
+      "target": "attr._compat._AnnotationExtractor.get_first_param_type",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.converters.optional",
+      "target": "attr._compat._AnnotationExtractor.get_return_type",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.converters.optional",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._add_eq",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._add_hash",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._add_repr",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr._make._default_init_alias_for",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make",
+      "target": "attr.setters.pipe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.pipe",
+      "target": "attr._compat._AnnotationExtractor.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.pipe",
+      "target": "attr._compat._AnnotationExtractor.get_first_param_type",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.pipe",
+      "target": "attr._compat._AnnotationExtractor.get_return_type",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.pipe",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._linecache_and_compile",
+      "target": "attr._make._compile_and_eval",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._transform_attrs",
+      "target": "attr._make.Attribute.evolve",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._transform_attrs",
+      "target": "attr._make.Attribute.from_counting_attr",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._transform_attrs",
+      "target": "attr._make._collect_base_attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._transform_attrs",
+      "target": "attr._make._collect_base_attrs_broken",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._transform_attrs",
+      "target": "attr._make._default_init_alias_for",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._transform_attrs",
+      "target": "attr._make._is_class_var",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._transform_attrs",
+      "target": "attr._make._make_attr_tuple_class",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._transform_attrs",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Attribute.from_counting_attr",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Attribute.evolve",
+      "target": "attr._make._default_init_alias_for",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._make_cached_property_getattr",
+      "target": "attr._make._generate_unique_filename",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._make_cached_property_getattr",
+      "target": "attr._make._linecache_and_compile",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._frozen_setattrs",
+      "target": "attr.exceptions.FrozenError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._frozen_delattrs",
+      "target": "attr.exceptions.FrozenError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.evolve",
+      "target": "attr._make.fields",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.fields",
+      "target": "attr._compat.get_generic_base",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.fields",
+      "target": "attr._make.fields",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.__init__",
+      "target": "attr._make._ClassBuilder._make_getstate_setstate",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.__init__",
+      "target": "attr._make._transform_attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder._eval_snippets",
+      "target": "attr._make._generate_unique_filename",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder._eval_snippets",
+      "target": "attr._make._linecache_and_compile",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.build_class",
+      "target": "attr._make._ClassBuilder._create_slots_class",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.build_class",
+      "target": "attr._make._ClassBuilder._eval_snippets",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.build_class",
+      "target": "attr._make._ClassBuilder._patch_original_class",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder._create_slots_class",
+      "target": "attr._make._make_cached_property_getattr",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_repr",
+      "target": "attr._make._make_repr_script",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_str",
+      "target": "attr._make._ClassBuilder._add_method_dunders_safe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_str",
+      "target": "attr._make._ClassBuilder._add_method_dunders_unsafe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_hash",
+      "target": "attr._make._make_hash_script",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._make_hash_script",
+      "target": "attr._make._generate_unique_filename",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_init",
+      "target": "attr._make._make_init_script",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._make_init_script",
+      "target": "attr._make._attrs_to_init_script",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_replace",
+      "target": "attr._make._ClassBuilder._add_method_dunders_safe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_replace",
+      "target": "attr._make._ClassBuilder._add_method_dunders_unsafe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_attrs_init",
+      "target": "attr._make._make_init_script",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_eq",
+      "target": "attr._make._make_eq_script",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_order",
+      "target": "attr._make._ClassBuilder._add_method_dunders_safe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_order",
+      "target": "attr._make._ClassBuilder._add_method_dunders_unsafe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_order",
+      "target": "attr._make._make_order",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_setattr",
+      "target": "attr._make._ClassBuilder._add_method_dunders_safe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._ClassBuilder.add_setattr",
+      "target": "attr._make._ClassBuilder._add_method_dunders_unsafe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._determine_whether_to_implement",
+      "target": "attr._make._has_own_attribute",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.attrs",
+      "target": "attr._make._determine_attrs_eq_order",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.attrs",
+      "target": "attr.setters.pipe",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._add_hash",
+      "target": "attr._make._compile_and_eval",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._add_hash",
+      "target": "attr._make._generate_unique_filename",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._add_hash",
+      "target": "attr._make._make_hash_script",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._add_eq",
+      "target": "attr._make._compile_and_eval",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._add_eq",
+      "target": "attr._make._generate_unique_filename",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._add_eq",
+      "target": "attr._make._make_eq_script",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._add_repr",
+      "target": "attr._make._compile_and_eval",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._add_repr",
+      "target": "attr._make._generate_unique_filename",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._add_repr",
+      "target": "attr._make._make_repr_script",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.validate",
+      "target": "attr._make.fields",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._attrs_to_init_script",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._attrs_to_init_script",
+      "target": "attr._make._determine_setters",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._assign",
+      "target": "attr._make._setattr",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._assign_with_converter",
+      "target": "attr._make._setattr_with_converter",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Attribute.__setattr__",
+      "target": "attr.exceptions.FrozenError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Attribute.__setstate__",
+      "target": "attr._make.Attribute._setattrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Attribute.__setstate__",
+      "target": "attr._make._default_init_alias_for",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._CountingAttr",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._CountingAttr",
+      "target": "attr._make._default_init_alias_for",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._CountingAttr.validator",
+      "target": "attr._make.and_",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._CountingAttr.default",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Converter.__init__",
+      "target": "attr._compat._AnnotationExtractor.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Converter.__init__",
+      "target": "attr._compat._AnnotationExtractor.get_first_param_type",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Converter.__init__",
+      "target": "attr._compat._AnnotationExtractor.get_return_type",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.Converter.__setstate__",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.make_class",
+      "target": "attr._make._determine_attrs_eq_order",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.make_class",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.make_class",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._AndValidator",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._AndValidator.__call__",
+      "target": "attr._make.Attribute.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.setters.frozen",
+      "target": "attr.exceptions.FrozenError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._version_info.VersionInfo",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._version_info.VersionInfo._ensure_tuple",
+      "target": "attr._funcs.astuple",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.astuple",
+      "target": "attr._funcs.astuple",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.astuple",
+      "target": "attr._funcs.has",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.astuple",
+      "target": "attr._make.fields",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._version_info.VersionInfo.__eq__",
+      "target": "attr._version_info.VersionInfo._ensure_tuple",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._version_info.VersionInfo.__lt__",
+      "target": "attr._version_info.VersionInfo._ensure_tuple",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._cmp.cmp_using",
+      "target": "attr._cmp._make_init",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._cmp.cmp_using",
+      "target": "attr._cmp._make_operator",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._next_gen.field",
+      "target": "attr._make.attrib",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._next_gen.asdict",
+      "target": "attr._funcs.asdict",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.asdict",
+      "target": "attr._funcs._asdict_anything",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.asdict",
+      "target": "attr._funcs.asdict",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.asdict",
+      "target": "attr._funcs.has",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.asdict",
+      "target": "attr._make.fields",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._next_gen.astuple",
+      "target": "attr._funcs.astuple",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.has",
+      "target": "attr._compat.get_generic_base",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs._asdict_anything",
+      "target": "attr._funcs._asdict_anything",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs._asdict_anything",
+      "target": "attr._funcs.asdict",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.assoc",
+      "target": "attr._make.fields",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._funcs.resolve_types",
+      "target": "attr._make.fields",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make.attrs",
+      "target": "attr._make.ClassProps.is_hashable",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._make._AndValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr._version_info.VersionInfo",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._InstanceOfValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._MatchesReValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._OptionalValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._InValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._IsCallableValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepIterable",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._DeepMapping",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NumberValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._MaxLengthValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._MinLengthValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._SubclassOfValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._NotValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    },
+    {
+      "source": "attr.validators._OrValidator",
+      "target": "attr._make.attrs",
+      "kind": "calls"
+    }
+  ]
+}

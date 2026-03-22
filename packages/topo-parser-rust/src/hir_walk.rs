@@ -214,7 +214,7 @@ fn extract_enum(
     });
 }
 
-/// Extract a trait as a "class" node, including its declared methods.
+/// Extract a trait as an "interface" node, including its declared methods.
 fn extract_trait(
     db: &RootDatabase,
     vfs: &Vfs,
@@ -231,7 +231,7 @@ fn extract_trait(
 
     graph.add_node(Node {
         id: trait_id.clone(),
-        kind: "class",
+        kind: "interface",
         file: file_str,
         line,
         line_end,

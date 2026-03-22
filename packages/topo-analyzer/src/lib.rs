@@ -10,9 +10,11 @@ pub mod issues;
 pub mod graph;
 pub mod modules;
 pub mod roles;
+pub mod rwpe;
 pub mod semantic;
 pub mod spectral;
 pub mod stats;
+pub mod tree;
 pub mod types;
 
 #[cfg(all(not(target_arch = "wasm32"), feature = "python"))]

@@ -10,11 +10,49 @@ This is the calendar-time bottleneck of Phase 3. PHASE_3.md calls preprocessing 
 
 ---
 
+## Current state (as of 2026-03-22)
+
+Steps 1-2 (curation and checkout/parse) are **partially implemented**:
+
+- **`examples/registry.toml`** is the single source of truth for all repos. Currently 50 repos (22 Python, 28 Rust) with pinned commits. This replaces the previously planned `repos.jsonl`.
+- **`benchmark/scripts/harvest_corpus.py`** clones and parses repos, writing `graph.json` to `examples/<name>/`. Resumable (skips cached). Uses the pre-built `topo` binary.
+- **`examples/scripts/fetch_and_analyze.sh`** does the full pipeline (clone → parse → analyze) for curated examples.
+- **12 repos are parsed** with cached `graph.json` files. 2 (ripgrep, tantivy) have full analysis artifacts committed.
+
+**Not yet implemented:** embedding pipeline, NPZ export orchestration, quality filters, train/val/test splits, PyG data loading (`topo-dataset` package).
+
+---
+
 ## 1. Repository Curation
 
-### Source
+### Source: `examples/registry.toml`
 
-GitHub API via `gh` CLI. The query targets repos that will produce useful training graphs.
+The registry is the single manifest for all repos. Each entry is an `[[example]]` block:
+
+```toml
+[[example]]
+name = "flask"
+repo = "https://github.com/pallets/flask"
+commit = "2f8c0e3"   # pinned SHA for reproducibility
+ref = "3.1.0"         # git tag (for cloning)
+language = "python"
+entrypoint = "src/flask"
+description = "Python micro web framework."
+
+[example.tags]
+size = "small"
+quality = "clean"
+pattern = ["layered", "sansio", "plugin-system"]
+
+[example.cli_overrides]
+exclude = "testing"   # dirs to skip during parsing
+```
+
+To scale to 500-2000 repos, add entries to registry.toml. Repos without tags are valid — tags are for curation metadata, not pipeline requirements.
+
+### Scaling via automated curation
+
+To reach 500+ repos, build `packages/topo-dataset/scripts/curate_repos.py` that queries the GitHub API and appends qualifying repos to `registry.toml`.
 
 ### Filter Criteria
 
@@ -44,14 +82,6 @@ To ensure architectural diversity, target these proportions:
 
 **Stratification is approximate.** A repo may fit multiple categories. Use the primary framework dependency as the tiebreaker. The goal is coverage, not precise percentages.
 
-### GitHub API Limitations
-
-`gh search repos` returns a maximum of **1000 results per query** (GitHub API limit). To curate 2000+ candidates:
-- Run separate queries per language (`language:python`, `language:rust`).
-- Further segment by star ranges (`stars:100..500`, `stars:500..2000`, `stars:>2000`).
-- Paginate with `--limit 100` per page, respecting 30 requests/minute rate limit.
-- Total curation time: ~2-3 hours of API queries.
-
 ### Parser Language Coverage
 
 **Rust repos:** Parsed by `topo-parser-rust` (native, uses rust-analyzer HIR). Extracts all 4 edge types (calls, imports, inherits, defines). High fidelity.
@@ -66,99 +96,54 @@ To ensure architectural diversity, target these proportions:
 
 **Memory warning for Rust parsing:** The Rust parser loads the full workspace into rust-analyzer, consuming 4-8GB RAM for large projects (tokio, serde). With `--workers 4`, peak memory can hit 16-32GB. Set `--workers 2` for Rust repos or process them sequentially. The preprocessing script should detect language and adjust parallelism accordingly.
 
-### Curation Script
-
-```bash
-# packages/topo-dataset/scripts/curate_repos.py
-```
-
-**Output:** `repos.jsonl` — one JSON object per repo:
-
-```json
-{"owner": "pallets", "repo": "flask", "language": "python", "stars": 68000, "style": "web_application", "url": "https://github.com/pallets/flask"}
-```
-
-### Implementation
-
-```python
-# curate_repos.py
-
-import subprocess, json
-
-def search_repos(language: str, min_stars: int = 100, per_page: int = 100) -> list[dict]:
-    """Use gh CLI to search GitHub repos matching criteria."""
-    query = f"language:{language} stars:>={min_stars} fork:false archived:false"
-    result = subprocess.run(
-        ["gh", "search", "repos", query,
-         "--limit", str(per_page),
-         "--json", "owner,name,stargazersCount,licenseInfo,url,primaryLanguage"],
-        capture_output=True, text=True
-    )
-    return json.loads(result.stdout)
-
-def filter_repo(repo: dict) -> bool:
-    """Apply quality filters beyond what GitHub search supports."""
-    # Check contributor count or active years via gh api
-    # Check CI/CD presence via .github/workflows or .travis.yml
-    # Check license is OSI-approved
-    ...
-
-def classify_style(repo: dict) -> str:
-    """Classify architectural style from dependency files."""
-    # Fetch requirements.txt / Cargo.toml via gh api
-    # Match against framework/library heuristics
-    ...
-```
-
-**Rate limiting:** GitHub API allows 30 search requests/minute for authenticated users. Paginate with `--limit` and add delays. Full curation of 2000 repos takes ~2-3 hours of API queries.
-
-**Manual review:** After automated curation, manually inspect the top 20 repos per style category. Remove repos with known parser-hostile patterns (heavy metaprogramming, code generation, vendored dependencies).
-
 ---
 
-## 2. Repository Checkout
+## 2. Repository Checkout & Parse
 
-### Shallow Clones
+### Already implemented
 
-Each repo is cloned at a specific commit (HEAD of default branch at curation time) for reproducibility.
+`benchmark/scripts/harvest_corpus.py` handles clone + parse:
 
 ```bash
-git clone --depth 1 --branch <default_branch> <url> repos/<owner>__<repo>/
+# Parse specific repos
+make harvest REPOS="flask click requests"
+
+# Parse all 50 registered repos
+make harvest-all
+
+# Force re-parse (ignore cache)
+python3 benchmark/scripts/harvest_corpus.py flask --force
 ```
 
-**Storage estimate:** ~500MB-2GB per 1000 repos (shallow clones, source only). Total: ~5-20GB. Manageable on a single machine.
+Clones go to `/tmp/topo-corpus/` (ephemeral). Parsed graphs go to `examples/<name>/graph.json` (cached, re-used by all downstream consumers).
 
 ### Pinning
 
-Record the exact commit SHA in `repos.jsonl`:
-
-```json
-{"owner": "pallets", "repo": "flask", ..., "commit": "abc123def"}
-```
-
-This ensures the dataset is reproducible. If re-running preprocessing, the same commit is checked out.
+Commit SHAs are pinned in `registry.toml`. The harvest script checks out the exact commit before parsing. Repos with `commit = "HEAD"` use the latest default branch — these should be pinned to a specific SHA before a dataset release.
 
 ### Workspace Layout
 
 ```
-datasets/
-  repos.jsonl              # Curated repo list with metadata
-  repos/                   # Shallow clones
-    pallets__flask/
-    tokio-rs__tokio/
+examples/
+  registry.toml              # Single manifest (replaces repos.jsonl)
+  flask/
+    graph.json               # Parsed graph (from harvest)
+    analysis.json            # Full analysis (from fetch_and_analyze.sh, optional)
+    features.npz             # Exported features (from preprocess.py, Step 1)
+    features.meta.json       # Feature metadata sidecar
+    embeddings.json          # Semantic embeddings (optional)
+  ripgrep/
+    graph.json
+    analysis.json
     ...
-  features/                # Exported NPZ + metadata (output of Step 1)
-    pallets__flask.npz
-    pallets__flask.meta.json
-    tokio-rs__tokio.npz
-    tokio-rs__tokio.meta.json
-    ...
-  splits/                  # Train/val/test splits
-    train.txt              # List of repo keys
+  splits/                    # Train/val/test splits (from split.py, Step 1)
+    train.txt
     val.txt
     test.txt
-  quality_report.json      # Preprocessing quality metrics
+  quality_report.json        # Preprocessing quality metrics
 ```
+
+All per-repo artifacts live alongside the repo's `graph.json` in `examples/<name>/`. This keeps the cache layer unified — downstream consumers (`benchmark/`, `packages/topo-dataset/`) read from `examples/` and never write to it.
 
 ---
 
@@ -167,7 +152,7 @@ datasets/
 ### Overview
 
 For each repo, the pipeline:
-1. **Parse** → CodeGraph JSON
+1. **Parse** → `graph.json` *(already implemented via harvest_corpus.py)*
 2. **Embed** → 768d CodeLM vectors per node
 3. **Analyze** → Spectral decomposition, modules, roles
 4. **Export** → NPZ + metadata (using `topo export-features` from Step 0)
@@ -178,53 +163,55 @@ For each repo, the pipeline:
 # packages/topo-dataset/scripts/preprocess.py
 
 """
-Batch preprocessing: parse, embed, analyze, and export features for all repos.
+Batch preprocessing: embed and export features for all parsed repos.
 
 Usage:
-    python preprocess.py --repos repos.jsonl --output-dir features/ --workers 4
-    python preprocess.py --repos repos.jsonl --output-dir features/ --resume  # skip already-processed
+    python preprocess.py --workers 4
+    python preprocess.py --resume            # skip already-processed
+    python preprocess.py --repos flask,click  # specific repos only
 """
 ```
+
+The orchestrator reads `examples/registry.toml` for the repo list and checks `examples/<name>/graph.json` exists (must be parsed first via `make harvest`).
 
 ### Per-Repo Pipeline
 
 ```python
-def process_repo(repo: dict, output_dir: Path) -> dict:
-    """Process one repo end-to-end. Returns quality metrics or error."""
-    repo_key = f"{repo['owner']}__{repo['repo']}"
-    repo_path = Path("repos") / repo_key
-    output_npz = output_dir / f"{repo_key}.npz"
-    output_meta = output_dir / f"{repo_key}.meta.json"
+def process_repo(name: str, examples_dir: Path) -> dict:
+    """Process one repo: embed + export. Returns quality metrics or error."""
+    repo_dir = examples_dir / name
+    graph_path = repo_dir / "graph.json"
+    output_npz = repo_dir / "features.npz"
+    output_meta = repo_dir / "features.meta.json"
 
     # Skip if already processed (resume mode)
     if output_npz.exists() and output_meta.exists():
-        return {"repo": repo_key, "status": "skipped"}
+        return {"repo": name, "status": "skipped"}
+
+    if not graph_path.exists():
+        return {"repo": name, "status": "not_parsed"}
 
     try:
-        # 1. Parse
-        graph_json = run_topo_parse(repo_path, language=repo["language"])
+        with open(graph_path) as f:
+            graph = json.load(f)
 
-        # 2. Validate graph size
-        graph = json.loads(graph_json)
         n_nodes = len(graph["nodes"])
         if n_nodes < 50:
-            return {"repo": repo_key, "status": "too_small", "n_nodes": n_nodes}
+            return {"repo": name, "status": "too_small", "n_nodes": n_nodes}
         if n_nodes > 50000:
-            return {"repo": repo_key, "status": "too_large", "n_nodes": n_nodes}
+            return {"repo": name, "status": "too_large", "n_nodes": n_nodes}
 
-        # 3. Embed (CodeLM)
-        embeddings = compute_embeddings(graph, repo_path)
+        # Export features (calls topo export-features, which handles
+        # spectral PE, RWPE, tree features, and optionally embeddings)
+        run_topo_export(graph_path, output_npz)
 
-        # 4. Export features (calls topo export-features)
-        run_topo_export(graph_json, embeddings, output_npz, output_meta)
-
-        # 5. Validate output
+        # Validate output
         validate_npz(output_npz, n_nodes)
 
-        return {"repo": repo_key, "status": "ok", "n_nodes": n_nodes}
+        return {"repo": name, "status": "ok", "n_nodes": n_nodes}
 
     except Exception as e:
-        return {"repo": repo_key, "status": "error", "error": str(e)}
+        return {"repo": name, "status": "error", "error": str(e)}
 ```
 
 ### Parallelization
@@ -278,10 +265,10 @@ This requires the node's file path, line number, and line_end (or byte span) fro
 
 The pipeline must be **idempotent and resumable**:
 
-- Each repo produces an independent NPZ + meta.json file.
-- If a file already exists, skip it (`--resume` flag).
+- Each repo produces independent files in `examples/<name>/` (features.npz, features.meta.json).
+- If files already exist, skip (`--resume` flag).
 - If processing fails, log the error and continue to the next repo.
-- A `quality_report.json` summarizes all outcomes (ok, skipped, too_small, too_large, error).
+- A `examples/quality_report.json` summarizes all outcomes (ok, skipped, too_small, too_large, error).
 
 **Error handling:** Log and skip failures. Record status per repo in `quality_report.json`.
 
@@ -331,7 +318,7 @@ Expect ~10-20% loss from quality filters (parse failures, too small, degenerate)
 
 ### Stratification
 
-Split is **stratified by architectural style** to ensure each set has representative coverage. Use scikit-learn's `StratifiedShuffleSplit` or manual proportional sampling.
+Split is **stratified by architectural style** (from `[example.tags]` in registry.toml) to ensure each set has representative coverage. Use scikit-learn's `StratifiedShuffleSplit` or manual proportional sampling.
 
 ### Constraints
 
@@ -342,9 +329,9 @@ Split is **stratified by architectural style** to ensure each set has representa
 ### Output
 
 ```
-splits/train.txt    # One repo key per line: "pallets__flask"
-splits/val.txt
-splits/test.txt
+examples/splits/train.txt    # One repo name per line: "flask"
+examples/splits/val.txt
+examples/splits/test.txt
 ```
 
 ---
@@ -360,8 +347,11 @@ import numpy as np
 import torch
 from torch_geometric.data import HeteroData
 
-def load_graph(npz_path: Path, meta_path: Path) -> HeteroData:
+def load_graph(repo_dir: Path) -> HeteroData:
     """Load a preprocessed graph as a PyG HeteroData object."""
+    npz_path = repo_dir / "features.npz"
+    meta_path = repo_dir / "features.meta.json"
+
     arrays = np.load(npz_path)
     meta = json.loads(meta_path.read_text())
 
@@ -387,10 +377,10 @@ def load_graph(npz_path: Path, meta_path: Path) -> HeteroData:
             data["node", edge_type, "node"].edge_index = edge_index
 
     # Metadata
-    data.repo = meta["repo"]
+    data.repo = meta.get("repo", repo_dir.name)
     data.n_nodes = meta["n_nodes"]
     data.node_ids = meta.get("node_ids", [])
-    data.metadata = meta  # Full metadata (modules, roles, phase2_health) for eval pipeline
+    data.metadata = meta
 
     return data
 ```
@@ -403,19 +393,17 @@ def load_graph(npz_path: Path, meta_path: Path) -> HeteroData:
 from torch_geometric.data import Dataset
 
 class TopoDataset(Dataset):
-    def __init__(self, features_dir: Path, split_file: Path, transform=None):
-        self.repo_keys = split_file.read_text().strip().split("\n")
-        self.features_dir = features_dir
-        super().__init__(root=str(features_dir), transform=transform)
+    def __init__(self, examples_dir: Path, split_file: Path, transform=None):
+        self.repo_names = split_file.read_text().strip().split("\n")
+        self.examples_dir = examples_dir
+        super().__init__(root=str(examples_dir), transform=transform)
 
     def len(self) -> int:
-        return len(self.repo_keys)
+        return len(self.repo_names)
 
     def get(self, idx: int) -> HeteroData:
-        key = self.repo_keys[idx]
-        npz = self.features_dir / f"{key}.npz"
-        meta = self.features_dir / f"{key}.meta.json"
-        return load_graph(npz, meta)
+        name = self.repo_names[idx]
+        return load_graph(self.examples_dir / name)
 ```
 
 ### Batching
@@ -425,7 +413,7 @@ PyG's `DataLoader` handles variable-size graph batching via index offsetting. Ea
 ```python
 from torch_geometric.loader import DataLoader
 
-train_dataset = TopoDataset(features_dir, splits_dir / "train.txt")
+train_dataset = TopoDataset(examples_dir, examples_dir / "splits" / "train.txt")
 train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 ```
 
@@ -465,7 +453,7 @@ Expect ~10-30 GB disk total, ~3-5 hours preprocessing for 1000 repos (dominated 
 
 ## 9. Reproducibility
 
-Pin repo commit SHAs in `repos.jsonl`, topo binary version, and CodeLM model version. **Test set is frozen** — new repos go to train/val only. Incremental updates via `preprocess.py --resume`.
+Pin repo commit SHAs in `examples/registry.toml`, topo binary version, and CodeLM model version. **Test set is frozen** — new repos go to train/val only. Incremental updates via `preprocess.py --resume`.
 
 ---
 
@@ -475,13 +463,13 @@ Pin repo commit SHAs in `repos.jsonl`, topo binary version, and CodeLM model ver
 packages/topo-dataset/
   pyproject.toml           # Python package config (uv/pip)
   scripts/
-    curate_repos.py        # GitHub search + filter + classify
-    preprocess.py          # Batch parse + embed + export
+    curate_repos.py        # GitHub search → append to registry.toml
+    preprocess.py          # Batch embed + export (reads examples/*/graph.json)
     split.py               # Train/val/test split generation
     validate.py            # Post-processing quality checks
   src/topo_dataset/
     __init__.py
-    loader.py              # NPZ → PyG HeteroData
+    loader.py              # NPZ → PyG HeteroData (reads examples/<name>/)
     dataset.py             # PyG Dataset class
     transforms.py          # Data augmentation (subgraph sampling, etc.)
     utils.py               # Shared utilities
@@ -556,9 +544,10 @@ Masking is applied during training, not during data loading. The mask ratio (60-
 
 ## 12. Definition of Done
 
-- [ ] `curate_repos.py` produces `repos.jsonl` with 600-2500 repos passing all filters.
-- [ ] `preprocess.py` processes repos end-to-end: parse → embed → export → NPZ.
-- [ ] Pipeline is resumable (`--resume` skips already-processed repos).
+- [x] Registry manifest with 50+ repos, pinned commits. *(examples/registry.toml — 50 repos)*
+- [x] Clone + parse pipeline, resumable. *(harvest_corpus.py)*
+- [ ] `curate_repos.py` scales registry to 600-2500 repos via GitHub API.
+- [ ] `preprocess.py` processes repos end-to-end: embed → export → NPZ.
 - [ ] Pipeline is parallelized (`--workers N`).
 - [ ] Quality filters remove degenerate graphs.
 - [ ] `quality_report.json` records per-repo status and metrics.

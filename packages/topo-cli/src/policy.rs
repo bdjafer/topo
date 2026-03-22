@@ -14,6 +14,14 @@ pub struct Policy {
     #[serde(default)]
     pub level: Option<String>,
     #[serde(default)]
+    pub edge_kind: Option<String>,
+    #[serde(default)]
+    pub language: Option<String>,
+    #[serde(default)]
+    pub exclude: Option<Vec<String>>,
+    #[serde(default)]
+    pub n_modules: Option<usize>,
+    #[serde(default)]
     pub ignores: HashMap<String, String>,
 }
 

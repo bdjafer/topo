@@ -234,24 +234,30 @@ mod tests {
         let input = make_test_graph();
         let clean = topo_analyzer::analyze_full(&input);
 
-        // Clean should not have circular_dependency
-        let clean_has = clean.issues.iter().any(|i| i.kind == "circular_dependency");
+        let clean_count = clean
+            .issues
+            .iter()
+            .filter(|i| i.kind == "circular_dependency")
+            .count();
 
         let result = mutate(&input, &clean, 2, 42).expect("mutation should succeed");
         let mutated = topo_analyzer::analyze_full(&result.graph);
 
-        let mutated_has = mutated
+        let mutated_count = mutated
             .issues
             .iter()
-            .any(|i| i.kind == "circular_dependency");
+            .filter(|i| i.kind == "circular_dependency")
+            .count();
 
-        // If clean didn't have it, mutated should.
-        if !clean_has {
-            assert!(
-                mutated_has,
-                "inject_cycle should trigger circular_dependency. Issues: {:?}",
-                mutated.issues.iter().map(|i| &i.kind).collect::<Vec<_>>()
-            );
-        }
+        // Mutated graph must have at least one circular_dependency,
+        // and strictly more than the clean graph (if clean had zero).
+        assert!(
+            mutated_count > 0 && (clean_count == 0 || mutated_count > 0),
+            "inject_cycle should trigger circular_dependency. \
+             Clean had {}, mutated has {}. Issues: {:?}",
+            clean_count,
+            mutated_count,
+            mutated.issues.iter().map(|i| &i.kind).collect::<Vec<_>>()
+        );
     }
 }

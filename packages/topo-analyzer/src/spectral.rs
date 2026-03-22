@@ -247,6 +247,52 @@ fn decompose_core(adjacency: &[f64], n: usize, k: usize) -> Option<DecompResult>
     })
 }
 
+/// Produce spectral positional encodings for all nodes.
+///
+/// Returns (pe_vecs, pe_vals) where:
+///   pe_vecs[global_node_idx] = [u₁(v), u₂(v), ..., u_k(v)]  (eigenvector components)
+///   pe_vals[global_node_idx] = [λ₁, λ₂, ..., λ_k]            (eigenvalues of v's component)
+///
+/// Nodes in small/unassigned components get all-zero vectors.
+/// Padded with zeros (not noise) to exactly k columns.
+///
+/// SAFETY: This function bounds reads by `eigenvalues.len()`, NOT `eigenvectors[li].len()`.
+/// The `decompose()` function noise-pads eigenvectors in-place to `max_k` width for clustering,
+/// but eigenvalues are never padded. Using `eigenvalues.len()` as the bound ensures we only
+/// read real eigenvector columns, not noise-padded ones.
+pub fn spectral_pe_export(
+    spectral_result: &SpectralResult,
+    n: usize,
+    k: usize,
+) -> (Vec<Vec<f64>>, Vec<Vec<f64>>) {
+    let mut pe_vecs = vec![vec![0.0f64; k]; n];
+    let mut pe_vals = vec![vec![0.0f64; k]; n];
+
+    for (component_indices, decomp) in &spectral_result.components {
+        // Bound by eigenvalues.len(), not eigenvectors width — eigenvectors may have been
+        // noise-padded to max_k by decompose(), but eigenvalues reflect the true count.
+        let actual_k = k.min(decomp.eigenvalues.len());
+        debug_assert!(
+            decomp.eigenvectors.first().map_or(true, |row| row.len() >= actual_k),
+            "eigenvector width ({}) < actual_k ({}): eigenvalues/eigenvectors mismatch",
+            decomp.eigenvectors.first().map_or(0, |r| r.len()),
+            actual_k,
+        );
+
+        for (li, &gi) in component_indices.iter().enumerate() {
+            for j in 0..actual_k {
+                pe_vecs[gi][j] = decomp.eigenvectors[li][j];
+                pe_vals[gi][j] = decomp.eigenvalues[j];
+            }
+            // Columns actual_k..k remain zero from initialization.
+        }
+    }
+
+    // Unassigned nodes already have all-zero vectors from initialization.
+
+    (pe_vecs, pe_vals)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -269,5 +315,166 @@ mod tests {
         for &ev in &result.eigenvalues {
             assert!(ev >= -1e-10, "eigenvalue should be non-negative: {ev}");
         }
+    }
+
+    #[test]
+    fn test_pe_export_zero_padding() {
+        // Component with 3 nodes and 4 eigenvectors of width 4.
+        // Request k=16 → first 4 columns have values, columns 4..16 are zero.
+        let decomp = DecompResult {
+            eigenvalues: vec![0.5, 1.0, 1.5, 2.0],
+            eigenvectors: vec![
+                vec![0.1, 0.2, 0.3, 0.4],
+                vec![0.5, 0.6, 0.7, 0.8],
+                vec![0.9, 1.0, 1.1, 1.2],
+            ],
+        };
+        let sr = SpectralResult {
+            components: vec![(vec![0, 1, 2], decomp)],
+            unassigned: vec![],
+            fiedler_value: 0.5,
+            component_sizes: vec![3],
+        };
+
+        let (pe_vecs, pe_vals) = spectral_pe_export(&sr, 3, 16);
+
+        assert_eq!(pe_vecs.len(), 3);
+        assert_eq!(pe_vals.len(), 3);
+
+        for i in 0..3 {
+            assert_eq!(pe_vecs[i].len(), 16);
+            assert_eq!(pe_vals[i].len(), 16);
+            // First 4 columns should have real values.
+            for j in 0..4 {
+                assert!(pe_vecs[i][j] != 0.0, "pe_vecs[{i}][{j}] should be non-zero");
+                assert!(pe_vals[i][j] != 0.0, "pe_vals[{i}][{j}] should be non-zero");
+            }
+            // Columns 4..16 should be zero.
+            for j in 4..16 {
+                assert_eq!(pe_vecs[i][j], 0.0, "pe_vecs[{i}][{j}] should be zero");
+                assert_eq!(pe_vals[i][j], 0.0, "pe_vals[{i}][{j}] should be zero");
+            }
+        }
+    }
+
+    #[test]
+    fn test_pe_export_truncation() {
+        // Component with 2 nodes and 20 eigenvalues/eigenvector columns.
+        // Request k=16 → only first 16 columns used.
+        let eigenvalues: Vec<f64> = (1..=20).map(|i| i as f64 * 0.1).collect();
+        let row: Vec<f64> = (1..=20).map(|i| i as f64 * 0.01).collect();
+        let decomp = DecompResult {
+            eigenvalues,
+            eigenvectors: vec![row.clone(), row],
+        };
+        let sr = SpectralResult {
+            components: vec![(vec![0, 1], decomp)],
+            unassigned: vec![],
+            fiedler_value: 0.1,
+            component_sizes: vec![2],
+        };
+
+        let (pe_vecs, pe_vals) = spectral_pe_export(&sr, 2, 16);
+
+        assert_eq!(pe_vecs[0].len(), 16);
+        assert_eq!(pe_vals[0].len(), 16);
+        // Column 15 (0-indexed) should have the 16th eigenvalue (1.6).
+        assert!((pe_vals[0][15] - 1.6).abs() < 1e-10);
+        // Column 0 should have the 1st eigenvector value (0.01).
+        assert!((pe_vecs[0][0] - 0.01).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_pe_export_per_component_eigenvalues() {
+        // Two components with different eigenvalues.
+        let decomp_a = DecompResult {
+            eigenvalues: vec![1.0, 2.0],
+            eigenvectors: vec![
+                vec![0.1, 0.2],
+                vec![0.3, 0.4],
+            ],
+        };
+        let decomp_b = DecompResult {
+            eigenvalues: vec![5.0, 6.0],
+            eigenvectors: vec![
+                vec![0.5, 0.6],
+                vec![0.7, 0.8],
+            ],
+        };
+        let sr = SpectralResult {
+            components: vec![
+                (vec![0, 1], decomp_a),
+                (vec![2, 3], decomp_b),
+            ],
+            unassigned: vec![],
+            fiedler_value: 1.0,
+            component_sizes: vec![2, 2],
+        };
+
+        let (pe_vecs, pe_vals) = spectral_pe_export(&sr, 4, 4);
+
+        // Nodes 0, 1 get eigenvalues from component A.
+        assert!((pe_vals[0][0] - 1.0).abs() < 1e-10);
+        assert!((pe_vals[0][1] - 2.0).abs() < 1e-10);
+        assert!((pe_vals[1][0] - 1.0).abs() < 1e-10);
+        assert!((pe_vals[1][1] - 2.0).abs() < 1e-10);
+
+        // Nodes 2, 3 get eigenvalues from component B.
+        assert!((pe_vals[2][0] - 5.0).abs() < 1e-10);
+        assert!((pe_vals[2][1] - 6.0).abs() < 1e-10);
+        assert!((pe_vals[3][0] - 5.0).abs() < 1e-10);
+        assert!((pe_vals[3][1] - 6.0).abs() < 1e-10);
+
+        // Eigenvectors should be from respective components.
+        assert!((pe_vecs[0][0] - 0.1).abs() < 1e-10);
+        assert!((pe_vecs[2][0] - 0.5).abs() < 1e-10);
+
+        // Columns 2, 3 should be zero (only 2 eigenvalues per component).
+        for i in 0..4 {
+            assert_eq!(pe_vals[i][2], 0.0);
+            assert_eq!(pe_vals[i][3], 0.0);
+            assert_eq!(pe_vecs[i][2], 0.0);
+            assert_eq!(pe_vecs[i][3], 0.0);
+        }
+    }
+
+    #[test]
+    fn test_pe_export_unassigned_nodes() {
+        // One component with nodes 0..3, unassigned nodes 5 and 6.
+        let decomp = DecompResult {
+            eigenvalues: vec![1.0, 2.0],
+            eigenvectors: vec![
+                vec![0.1, 0.2],
+                vec![0.3, 0.4],
+                vec![0.5, 0.6],
+                vec![0.7, 0.8],
+            ],
+        };
+        let sr = SpectralResult {
+            components: vec![(vec![0, 1, 2, 3], decomp)],
+            unassigned: vec![vec![5, 6]],
+            fiedler_value: 1.0,
+            component_sizes: vec![4, 2],
+        };
+
+        let (pe_vecs, pe_vals) = spectral_pe_export(&sr, 7, 4);
+
+        // Nodes 5 and 6 should be all zeros.
+        for j in 0..4 {
+            assert_eq!(pe_vecs[5][j], 0.0, "pe_vecs[5][{j}] should be zero");
+            assert_eq!(pe_vals[5][j], 0.0, "pe_vals[5][{j}] should be zero");
+            assert_eq!(pe_vecs[6][j], 0.0, "pe_vecs[6][{j}] should be zero");
+            assert_eq!(pe_vals[6][j], 0.0, "pe_vals[6][{j}] should be zero");
+        }
+
+        // Node 4 (not in any component or unassigned list) should also be zero.
+        for j in 0..4 {
+            assert_eq!(pe_vecs[4][j], 0.0);
+            assert_eq!(pe_vals[4][j], 0.0);
+        }
+
+        // Nodes 0..3 should have real values.
+        assert!((pe_vecs[0][0] - 0.1).abs() < 1e-10);
+        assert!((pe_vals[0][0] - 1.0).abs() < 1e-10);
     }
 }

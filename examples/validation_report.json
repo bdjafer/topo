@@ -1,0 +1,70 @@
+{
+  "total": 1,
+  "pass": 0,
+  "fail": 1,
+  "repos": [
+    {
+      "repo": "flask",
+      "checks": {
+        "npz_exists": true,
+        "meta_exists": true,
+        "readable": true,
+        "node_count_min": true,
+        "node_count_max": true,
+        "array_semantic": true,
+        "array_spectral_vecs": true,
+        "array_spectral_vals": true,
+        "array_rwpe": true,
+        "array_tree_features": true,
+        "array_node_types": true,
+        "semantic_shape": true,
+        "spectral_vecs_shape": true,
+        "rwpe_shape": true,
+        "tree_features_shape": true,
+        "node_types_shape": true,
+        "edge_count_min": true,
+        "component_ratio": "unknown",
+        "spectral_k_min": true,
+        "semantic_coverage": false,
+        "finite_semantic": true,
+        "finite_spectral_vecs": true,
+        "finite_spectral_vals": true,
+        "finite_rwpe": true,
+        "finite_tree_features": true,
+        "finite_node_types": true
+      },
+      "metrics": {
+        "n_nodes": 402,
+        "semantic_shape": [
+          402,
+          768
+        ],
+        "spectral_k": 16,
+        "edge_counts": {
+          "calls": 259,
+          "imports": 211,
+          "inherits": 17
+        },
+        "n_edges_total": 487,
+        "n_components": 131,
+        "fiedler_value": 0.010913975975298163,
+        "spectral_k_actual": 16,
+        "semantic_coverage": 0.0,
+        "n_embedded": 0,
+        "edge_types_present": 3,
+        "has_all_edge_types": true,
+        "node_type_distribution": {
+          "0": 332,
+          "1": 24,
+          "2": 46
+        },
+        "edge_type_pct": {
+          "calls": 53.2,
+          "imports": 43.3,
+          "inherits": 3.5
+        }
+      },
+      "pass": false
+    }
+  ]
+}

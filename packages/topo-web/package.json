@@ -1,39 +1,32 @@
 {
-  "name": "@topo/core",
-  "version": "0.1.0",
-  "description": "Structural analysis for codebases — spectral decomposition, clustering, role classification. Powered by WASM.",
+  "name": "@topo/web",
+  "version": "0.2.0",
+  "description": "Structural intelligence for codebases — interactive visualization of domains, health, and issues.",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./wasm": "./wasm/topo_analyzer_bg.wasm"
-  },
-  "files": [
-    "dist/",
-    "wasm/"
-  ],
-  "bin": {
-    "topo-wasm": "./bin/topo-wasm.mjs"
-  },
+  "private": true,
   "scripts": {
     "build:wasm": "cd ../topo-analyzer && wasm-pack build --target web --features wasm --no-default-features --out-dir pkg && cp pkg/topo_analyzer_bg.wasm ../topo-web/wasm/ && cp pkg/topo_analyzer.js ../topo-web/wasm/ && cp pkg/topo_analyzer.d.ts ../topo-web/wasm/",
-    "build:ts": "tsc",
-    "build:site": "vite build",
-    "build": "npm run build:ts && npm run build:site",
     "dev": "vite",
-    "preview": "vite preview",
-    "analyze": "node bin/topo-wasm.mjs",
-    "test:e2e": "node bin/test-e2e.mjs"
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@tanstack/react-router": "^1.114.0",
+    "d3": "^7.9.0",
+    "lucide-react": "^0.468.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.6.0"
+  },
   "devDependencies": {
     "typescript": "^5.7.0",
-    "vite": "^6.0.0"
-  },
-  "keywords": ["code-analysis", "spectral", "wasm", "structural-analysis", "architecture"],
-  "license": "MIT"
+    "vite": "^6.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/d3": "^7.4.0",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/vite": "^4.0.0"
+  }
 }

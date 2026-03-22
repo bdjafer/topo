@@ -17,7 +17,12 @@
       "Bash(cargo clean:*)",
       "Bash(/Users/bryandjafer/Documents/personal/topo/.venv/bin/pytest tests/test_validation/test_real_codebase_benchmarks.py::test_reverse_flow_fixture_reports_layer_violation -v)",
       "Bash(ls -la /Users/bryandjafer/Documents/personal/topo/packages/topo-parser*/src/)",
-      "Bash(git -C /Users/bryandjafer/Documents/personal/topo log --oneline --all)"
+      "Bash(git -C /Users/bryandjafer/Documents/personal/topo log --oneline --all)",
+      "Bash(grep -E \"\\\\.\\(rs|py\\)$\")",
+      "Bash(grep -l \"pub mod\\\\|pub use\" /Users/bryandjafer/Documents/personal/topo/packages/topo-cli/src/*.rs)",
+      "Bash(pkill -f \"mutation_triggers\")",
+      "Bash(./target/release/topo --help)",
+      "Bash(cargo clippy:*)"
     ],
     "additionalDirectories": [
       "/Users/bryandjafer/Documents/personal/topo/target/release/build"

@@ -21,8 +21,8 @@
           },
           "kind": {
             "type": "string",
-            "enum": ["module", "class", "function"],
-            "description": "Structural kind of the entity."
+            "enum": ["module", "class", "function", "interface"],
+            "description": "Structural kind of the entity. module=container, class=concrete type (struct/enum/class), function=behavioral unit, interface=abstract contract (trait/interface/protocol)."
           },
           "file": {
             "type": "string",

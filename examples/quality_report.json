@@ -1,0 +1,14 @@
+{
+  "total": 1,
+  "summary": {
+    "ok": 1
+  },
+  "repos": [
+    {
+      "repo": "flask",
+      "status": "ok",
+      "n_nodes": 402,
+      "n_edges": 1257
+    }
+  ]
+}

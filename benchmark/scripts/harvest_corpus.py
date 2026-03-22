@@ -13,17 +13,32 @@ Cached parsed graphs are stored in benchmark/corpus/<name>/graph.json (gitignore
 import json
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-MANIFEST = PROJECT_ROOT / "benchmark" / "corpus_manifest.json"
-CORPUS_DIR = PROJECT_ROOT / "benchmark" / "corpus"
+REGISTRY = PROJECT_ROOT / "examples" / "registry.toml"
+EXAMPLES_DIR = PROJECT_ROOT / "examples"
 CLONE_DIR = Path("/tmp/topo-corpus")
+TOPO_BIN = PROJECT_ROOT / "target" / "release" / "topo"
 
 
 def load_manifest() -> list[dict]:
-    with open(MANIFEST) as f:
-        return json.load(f)
+    """Load repos from the unified registry.toml."""
+    with open(REGISTRY, "rb") as f:
+        reg = tomllib.load(f)
+    # Normalize field names: registry uses "repo", harvest expects "url"
+    entries = []
+    for ex in reg.get("example", []):
+        entries.append({
+            "name": ex["name"],
+            "url": ex["repo"],
+            "language": ex["language"],
+            "commit": ex.get("commit", "HEAD"),
+            "entrypoint": ex.get("entrypoint", "."),
+            "exclude": ex.get("cli_overrides", {}).get("exclude", ""),
+        })
+    return entries
 
 
 def clone_repo(entry: dict) -> Path | None:
@@ -64,16 +79,20 @@ def parse_repo(entry: dict, clone_path: Path) -> bool:
     name = entry["name"]
     language = entry["language"]
     entrypoint = entry.get("entrypoint", ".")
-    out_dir = CORPUS_DIR / name
+    out_dir = EXAMPLES_DIR / name
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "graph.json"
 
     src_path = clone_path if entrypoint == "." else clone_path / entrypoint
 
+    exclude = entry.get("exclude", "")
+    cmd = [str(TOPO_BIN), "parse", str(src_path), "--language", language, "-o", str(out_path)]
+    if exclude:
+        cmd.extend(["--exclude", exclude])
+
     try:
         result = subprocess.run(
-            ["cargo", "run", "-p", "topo-cli", "--", "parse",
-             str(src_path), "--language", language, "-o", str(out_path)],
+            cmd,
             cwd=PROJECT_ROOT,
             capture_output=True, text=True, timeout=300,
         )
@@ -104,7 +123,7 @@ def parse_repo(entry: dict, clone_path: Path) -> bool:
 
 def show_stats():
     """Show corpus statistics."""
-    if not CORPUS_DIR.exists():
+    if not EXAMPLES_DIR.exists():
         print("No corpus directory found. Run harvest first.")
         return
 
@@ -113,7 +132,7 @@ def show_stats():
     total_nodes = 0
     total_edges = 0
 
-    for meta_path in sorted(CORPUS_DIR.glob("*/metadata.json")):
+    for meta_path in sorted(EXAMPLES_DIR.glob("*/metadata.json")):
         with open(meta_path) as f:
             meta = json.load(f)
         total += 1
@@ -144,7 +163,7 @@ def main():
             sys.exit(1)
 
     CLONE_DIR.mkdir(parents=True, exist_ok=True)
-    CORPUS_DIR.mkdir(parents=True, exist_ok=True)
+    EXAMPLES_DIR.mkdir(parents=True, exist_ok=True)
 
     ok_count = 0
     fail_count = 0
@@ -153,7 +172,7 @@ def main():
         name = entry["name"]
 
         # Skip if already parsed
-        cached = CORPUS_DIR / name / "graph.json"
+        cached = EXAMPLES_DIR / name / "graph.json"
         if cached.exists() and "--force" not in sys.argv:
             print(f"[skip] {name} (cached)")
             ok_count += 1

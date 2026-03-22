@@ -19,6 +19,7 @@ class NodeKind(Enum):
     MODULE = "module"
     CLASS = "class"
     FUNCTION = "function"
+    INTERFACE = "interface"
 
 
 class EdgeKind(Enum):

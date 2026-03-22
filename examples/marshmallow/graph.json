@@ -1,0 +1,5550 @@
+{
+  "nodes": [
+    {
+      "id": "marshmallow",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/__init__.py",
+      "line": 1,
+      "name": "marshmallow",
+      "line_end": 30
+    },
+    {
+      "id": "marshmallow.class_registry",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/class_registry.py",
+      "line": 1,
+      "name": "class_registry",
+      "line_end": 103
+    },
+    {
+      "id": "marshmallow.class_registry.get_class",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/class_registry.py",
+      "line": 82,
+      "name": "get_class",
+      "line_end": 103
+    },
+    {
+      "id": "marshmallow.class_registry.register",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/class_registry.py",
+      "line": 30,
+      "name": "register",
+      "line_end": 69
+    },
+    {
+      "id": "marshmallow.constants",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/constants.py",
+      "line": 1,
+      "name": "constants",
+      "line_end": 25
+    },
+    {
+      "id": "marshmallow.constants._Missing",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/constants.py",
+      "line": 8,
+      "name": "_Missing",
+      "line_end": 22
+    },
+    {
+      "id": "marshmallow.constants._Missing.__bool__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/constants.py",
+      "line": 9,
+      "name": "__bool__",
+      "line_end": 10
+    },
+    {
+      "id": "marshmallow.constants._Missing.__copy__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/constants.py",
+      "line": 12,
+      "name": "__copy__",
+      "line_end": 13
+    },
+    {
+      "id": "marshmallow.constants._Missing.__deepcopy__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/constants.py",
+      "line": 15,
+      "name": "__deepcopy__",
+      "line_end": 16
+    },
+    {
+      "id": "marshmallow.constants._Missing.__len__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/constants.py",
+      "line": 21,
+      "name": "__len__",
+      "line_end": 22
+    },
+    {
+      "id": "marshmallow.constants._Missing.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/constants.py",
+      "line": 18,
+      "name": "__repr__",
+      "line_end": 19
+    },
+    {
+      "id": "marshmallow.decorators",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/decorators.py",
+      "line": 1,
+      "name": "decorators",
+      "line_end": 254
+    },
+    {
+      "id": "marshmallow.decorators.MarshmallowHook",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/decorators.py",
+      "line": 82,
+      "name": "MarshmallowHook",
+      "line_end": 83
+    },
+    {
+      "id": "marshmallow.decorators.post_dump",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/decorators.py",
+      "line": 152,
+      "name": "post_dump",
+      "line_end": 172
+    },
+    {
+      "id": "marshmallow.decorators.post_load",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/decorators.py",
+      "line": 196,
+      "name": "post_load",
+      "line_end": 218
+    },
+    {
+      "id": "marshmallow.decorators.pre_dump",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/decorators.py",
+      "line": 133,
+      "name": "pre_dump",
+      "line_end": 149
+    },
+    {
+      "id": "marshmallow.decorators.pre_load",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/decorators.py",
+      "line": 175,
+      "name": "pre_load",
+      "line_end": 193
+    },
+    {
+      "id": "marshmallow.decorators.set_hook",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/decorators.py",
+      "line": 221,
+      "name": "set_hook",
+      "line_end": 254
+    },
+    {
+      "id": "marshmallow.decorators.validates",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/decorators.py",
+      "line": 86,
+      "name": "validates",
+      "line_end": 94
+    },
+    {
+      "id": "marshmallow.decorators.validates_schema",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/decorators.py",
+      "line": 97,
+      "name": "validates_schema",
+      "line_end": 130
+    },
+    {
+      "id": "marshmallow.error_store",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/error_store.py",
+      "line": 1,
+      "name": "error_store",
+      "line_end": 71
+    },
+    {
+      "id": "marshmallow.error_store.ErrorStore",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/error_store.py",
+      "line": 12,
+      "name": "ErrorStore",
+      "line_end": 26
+    },
+    {
+      "id": "marshmallow.error_store.ErrorStore.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/error_store.py",
+      "line": 13,
+      "name": "__init__",
+      "line_end": 15
+    },
+    {
+      "id": "marshmallow.error_store.ErrorStore.store_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/error_store.py",
+      "line": 17,
+      "name": "store_error",
+      "line_end": 26
+    },
+    {
+      "id": "marshmallow.error_store.copy_containers",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/error_store.py",
+      "line": 29,
+      "name": "copy_containers",
+      "line_end": 34
+    },
+    {
+      "id": "marshmallow.error_store.merge_errors",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/error_store.py",
+      "line": 37,
+      "name": "merge_errors",
+      "line_end": 71
+    },
+    {
+      "id": "marshmallow.exceptions",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/exceptions.py",
+      "line": 1,
+      "name": "exceptions",
+      "line_end": 70
+    },
+    {
+      "id": "marshmallow.exceptions.MarshmallowError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/exceptions.py",
+      "line": 11,
+      "name": "MarshmallowError",
+      "line_end": 12
+    },
+    {
+      "id": "marshmallow.exceptions.RegistryError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/exceptions.py",
+      "line": 59,
+      "name": "RegistryError",
+      "line_end": 62
+    },
+    {
+      "id": "marshmallow.exceptions.StringNotCollectionError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/exceptions.py",
+      "line": 65,
+      "name": "StringNotCollectionError",
+      "line_end": 66
+    },
+    {
+      "id": "marshmallow.exceptions.ValidationError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/exceptions.py",
+      "line": 15,
+      "name": "ValidationError",
+      "line_end": 56
+    },
+    {
+      "id": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/exceptions.py",
+      "line": 27,
+      "name": "__init__",
+      "line_end": 42
+    },
+    {
+      "id": "marshmallow.exceptions.ValidationError.messages_dict",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/exceptions.py",
+      "line": 50,
+      "name": "messages_dict",
+      "line_end": 56
+    },
+    {
+      "id": "marshmallow.exceptions.ValidationError.normalized_messages",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/exceptions.py",
+      "line": 44,
+      "name": "normalized_messages",
+      "line_end": 47
+    },
+    {
+      "id": "marshmallow.exceptions._FieldInstanceResolutionError",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/exceptions.py",
+      "line": 69,
+      "name": "_FieldInstanceResolutionError",
+      "line_end": 70
+    },
+    {
+      "id": "marshmallow.experimental.context",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/experimental/context.py",
+      "line": 1,
+      "name": "context",
+      "line_end": 73
+    },
+    {
+      "id": "marshmallow.experimental.context.Context",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/experimental/context.py",
+      "line": 47,
+      "name": "Context",
+      "line_end": 73
+    },
+    {
+      "id": "marshmallow.experimental.context.Context.__enter__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/experimental/context.py",
+      "line": 57,
+      "name": "__enter__",
+      "line_end": 59
+    },
+    {
+      "id": "marshmallow.experimental.context.Context.__exit__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/experimental/context.py",
+      "line": 61,
+      "name": "__exit__",
+      "line_end": 62
+    },
+    {
+      "id": "marshmallow.experimental.context.Context.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/experimental/context.py",
+      "line": 53,
+      "name": "__init__",
+      "line_end": 55
+    },
+    {
+      "id": "marshmallow.experimental.context.Context.get",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/experimental/context.py",
+      "line": 65,
+      "name": "get",
+      "line_end": 73
+    },
+    {
+      "id": "marshmallow.fields",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1,
+      "name": "fields",
+      "line_end": 2085
+    },
+    {
+      "id": "marshmallow.fields.AwareDateTime",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1349,
+      "name": "AwareDateTime",
+      "line_end": 1383
+    },
+    {
+      "id": "marshmallow.fields.AwareDateTime.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1363,
+      "name": "__init__",
+      "line_end": 1371
+    },
+    {
+      "id": "marshmallow.fields.AwareDateTime._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1373,
+      "name": "_deserialize",
+      "line_end": 1383
+    },
+    {
+      "id": "marshmallow.fields.Boolean",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1110,
+      "name": "Boolean",
+      "line_end": 1196
+    },
+    {
+      "id": "marshmallow.fields.Boolean.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1166,
+      "name": "__init__",
+      "line_end": 1178
+    },
+    {
+      "id": "marshmallow.fields.Boolean._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1180,
+      "name": "_deserialize",
+      "line_end": 1196
+    },
+    {
+      "id": "marshmallow.fields.Constant",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 2057,
+      "name": "Constant",
+      "line_end": 2077
+    },
+    {
+      "id": "marshmallow.fields.Constant.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 2067,
+      "name": "__init__",
+      "line_end": 2071
+    },
+    {
+      "id": "marshmallow.fields.Constant._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 2076,
+      "name": "_deserialize",
+      "line_end": 2077
+    },
+    {
+      "id": "marshmallow.fields.Constant._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 2073,
+      "name": "_serialize",
+      "line_end": 2074
+    },
+    {
+      "id": "marshmallow.fields.Date",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1417,
+      "name": "Date",
+      "line_end": 1449
+    },
+    {
+      "id": "marshmallow.fields.Date._make_object_from_format",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1448,
+      "name": "_make_object_from_format",
+      "line_end": 1449
+    },
+    {
+      "id": "marshmallow.fields.DateTime",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1266,
+      "name": "DateTime",
+      "line_end": 1308
+    },
+    {
+      "id": "marshmallow.fields.DateTime._make_object_from_format",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1307,
+      "name": "_make_object_from_format",
+      "line_end": 1308
+    },
+    {
+      "id": "marshmallow.fields.Decimal",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1027,
+      "name": "Decimal",
+      "line_end": 1107
+    },
+    {
+      "id": "marshmallow.fields.Decimal.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1069,
+      "name": "__init__",
+      "line_end": 1083
+    },
+    {
+      "id": "marshmallow.fields.Decimal._format_num",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1086,
+      "name": "_format_num",
+      "line_end": 1093
+    },
+    {
+      "id": "marshmallow.fields.Decimal._to_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1106,
+      "name": "_to_string",
+      "line_end": 1107
+    },
+    {
+      "id": "marshmallow.fields.Decimal._validated",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1096,
+      "name": "_validated",
+      "line_end": 1103
+    },
+    {
+      "id": "marshmallow.fields.Dict",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1681,
+      "name": "Dict",
+      "line_end": 1693
+    },
+    {
+      "id": "marshmallow.fields.Email",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1736,
+      "name": "Email",
+      "line_end": 1750
+    },
+    {
+      "id": "marshmallow.fields.Email.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1746,
+      "name": "__init__",
+      "line_end": 1750
+    },
+    {
+      "id": "marshmallow.fields.Enum",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1869,
+      "name": "Enum",
+      "line_end": 1943
+    },
+    {
+      "id": "marshmallow.fields.Enum.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1887,
+      "name": "__init__",
+      "line_end": 1918
+    },
+    {
+      "id": "marshmallow.fields.Enum._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1931,
+      "name": "_deserialize",
+      "line_end": 1943
+    },
+    {
+      "id": "marshmallow.fields.Enum._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1920,
+      "name": "_serialize",
+      "line_end": 1929
+    },
+    {
+      "id": "marshmallow.fields.Field",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 115,
+      "name": "Field",
+      "line_end": 434
+    },
+    {
+      "id": "marshmallow.fields.Field.__deepcopy__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 243,
+      "name": "__deepcopy__",
+      "line_end": 244
+    },
+    {
+      "id": "marshmallow.fields.Field.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 178,
+      "name": "__init__",
+      "line_end": 231
+    },
+    {
+      "id": "marshmallow.fields.Field.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 233,
+      "name": "__repr__",
+      "line_end": 241
+    },
+    {
+      "id": "marshmallow.fields.Field._bind_to_schema",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 380,
+      "name": "_bind_to_schema",
+      "line_end": 391
+    },
+    {
+      "id": "marshmallow.fields.Field._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 415,
+      "name": "_deserialize",
+      "line_end": 434
+    },
+    {
+      "id": "marshmallow.fields.Field._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 393,
+      "name": "_serialize",
+      "line_end": 413
+    },
+    {
+      "id": "marshmallow.fields.Field._validate",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 266,
+      "name": "_validate",
+      "line_end": 270
+    },
+    {
+      "id": "marshmallow.fields.Field._validate_all",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 273,
+      "name": "_validate_all",
+      "line_end": 274
+    },
+    {
+      "id": "marshmallow.fields.Field._validate_missing",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 293,
+      "name": "_validate_missing",
+      "line_end": 300
+    },
+    {
+      "id": "marshmallow.fields.Field.deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 350,
+      "name": "deserialize",
+      "line_end": 376
+    },
+    {
+      "id": "marshmallow.fields.Field.get_value",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 246,
+      "name": "get_value",
+      "line_end": 264
+    },
+    {
+      "id": "marshmallow.fields.Field.make_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 276,
+      "name": "make_error",
+      "line_end": 291
+    },
+    {
+      "id": "marshmallow.fields.Field.serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 302,
+      "name": "serialize",
+      "line_end": 328
+    },
+    {
+      "id": "marshmallow.fields.Float",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 993,
+      "name": "Float",
+      "line_end": 1024
+    },
+    {
+      "id": "marshmallow.fields.Float.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1009,
+      "name": "__init__",
+      "line_end": 1017
+    },
+    {
+      "id": "marshmallow.fields.Float._validated",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1019,
+      "name": "_validated",
+      "line_end": 1024
+    },
+    {
+      "id": "marshmallow.fields.Function",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 2001,
+      "name": "Function",
+      "line_end": 2051
+    },
+    {
+      "id": "marshmallow.fields.Function.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 2024,
+      "name": "__init__",
+      "line_end": 2043
+    },
+    {
+      "id": "marshmallow.fields.Function._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 2048,
+      "name": "_deserialize",
+      "line_end": 2051
+    },
+    {
+      "id": "marshmallow.fields.Function._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 2045,
+      "name": "_serialize",
+      "line_end": 2046
+    },
+    {
+      "id": "marshmallow.fields.IP",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1753,
+      "name": "IP",
+      "line_end": 1785
+    },
+    {
+      "id": "marshmallow.fields.IP.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1766,
+      "name": "__init__",
+      "line_end": 1768
+    },
+    {
+      "id": "marshmallow.fields.IP._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1777,
+      "name": "_deserialize",
+      "line_end": 1785
+    },
+    {
+      "id": "marshmallow.fields.IP._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1770,
+      "name": "_serialize",
+      "line_end": 1775
+    },
+    {
+      "id": "marshmallow.fields.IPInterface",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1810,
+      "name": "IPInterface",
+      "line_end": 1847
+    },
+    {
+      "id": "marshmallow.fields.IPInterface.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1828,
+      "name": "__init__",
+      "line_end": 1830
+    },
+    {
+      "id": "marshmallow.fields.IPInterface._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1839,
+      "name": "_deserialize",
+      "line_end": 1847
+    },
+    {
+      "id": "marshmallow.fields.IPInterface._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1832,
+      "name": "_serialize",
+      "line_end": 1837
+    },
+    {
+      "id": "marshmallow.fields.IPv4",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1788,
+      "name": "IPv4",
+      "line_end": 1796
+    },
+    {
+      "id": "marshmallow.fields.IPv4Interface",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1850,
+      "name": "IPv4Interface",
+      "line_end": 1855
+    },
+    {
+      "id": "marshmallow.fields.IPv6",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1799,
+      "name": "IPv6",
+      "line_end": 1807
+    },
+    {
+      "id": "marshmallow.fields.IPv6Interface",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1858,
+      "name": "IPv6Interface",
+      "line_end": 1863
+    },
+    {
+      "id": "marshmallow.fields.Integer",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 963,
+      "name": "Integer",
+      "line_end": 990
+    },
+    {
+      "id": "marshmallow.fields.Integer.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 976,
+      "name": "__init__",
+      "line_end": 984
+    },
+    {
+      "id": "marshmallow.fields.Integer._validated",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 987,
+      "name": "_validated",
+      "line_end": 990
+    },
+    {
+      "id": "marshmallow.fields.List",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 693,
+      "name": "List",
+      "line_end": 756
+    },
+    {
+      "id": "marshmallow.fields.List.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 711,
+      "name": "__init__",
+      "line_end": 726
+    },
+    {
+      "id": "marshmallow.fields.List._bind_to_schema",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 728,
+      "name": "_bind_to_schema",
+      "line_end": 734
+    },
+    {
+      "id": "marshmallow.fields.List._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 741,
+      "name": "_deserialize",
+      "line_end": 756
+    },
+    {
+      "id": "marshmallow.fields.List._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 736,
+      "name": "_serialize",
+      "line_end": 739
+    },
+    {
+      "id": "marshmallow.fields.Mapping",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1547,
+      "name": "Mapping",
+      "line_end": 1678
+    },
+    {
+      "id": "marshmallow.fields.Mapping.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1569,
+      "name": "__init__",
+      "line_end": 1598
+    },
+    {
+      "id": "marshmallow.fields.Mapping._bind_to_schema",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1600,
+      "name": "_bind_to_schema",
+      "line_end": 1610
+    },
+    {
+      "id": "marshmallow.fields.Mapping._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1638,
+      "name": "_deserialize",
+      "line_end": 1678
+    },
+    {
+      "id": "marshmallow.fields.Mapping._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1612,
+      "name": "_serialize",
+      "line_end": 1636
+    },
+    {
+      "id": "marshmallow.fields.Method",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1946,
+      "name": "Method",
+      "line_end": 1998
+    },
+    {
+      "id": "marshmallow.fields.Method.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1962,
+      "name": "__init__",
+      "line_end": 1975
+    },
+    {
+      "id": "marshmallow.fields.Method._bind_to_schema",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1977,
+      "name": "_bind_to_schema",
+      "line_end": 1988
+    },
+    {
+      "id": "marshmallow.fields.Method._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1995,
+      "name": "_deserialize",
+      "line_end": 1998
+    },
+    {
+      "id": "marshmallow.fields.Method._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1990,
+      "name": "_serialize",
+      "line_end": 1993
+    },
+    {
+      "id": "marshmallow.fields.NaiveDateTime",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1311,
+      "name": "NaiveDateTime",
+      "line_end": 1346
+    },
+    {
+      "id": "marshmallow.fields.NaiveDateTime.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1326,
+      "name": "__init__",
+      "line_end": 1334
+    },
+    {
+      "id": "marshmallow.fields.NaiveDateTime._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1336,
+      "name": "_deserialize",
+      "line_end": 1346
+    },
+    {
+      "id": "marshmallow.fields.Nested",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 441,
+      "name": "Nested",
+      "line_end": 628
+    },
+    {
+      "id": "marshmallow.fields.Nested.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 496,
+      "name": "__init__",
+      "line_end": 525
+    },
+    {
+      "id": "marshmallow.fields.Nested._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 611,
+      "name": "_deserialize",
+      "line_end": 628
+    },
+    {
+      "id": "marshmallow.fields.Nested._load",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 598,
+      "name": "_load",
+      "line_end": 609
+    },
+    {
+      "id": "marshmallow.fields.Nested._nested_normalized_option",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 576,
+      "name": "_nested_normalized_option",
+      "line_end": 582
+    },
+    {
+      "id": "marshmallow.fields.Nested._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 584,
+      "name": "_serialize",
+      "line_end": 591
+    },
+    {
+      "id": "marshmallow.fields.Nested._test_collection",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 593,
+      "name": "_test_collection",
+      "line_end": 596
+    },
+    {
+      "id": "marshmallow.fields.Nested.schema",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 528,
+      "name": "schema",
+      "line_end": 574
+    },
+    {
+      "id": "marshmallow.fields.Number",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 910,
+      "name": "Number",
+      "line_end": 960
+    },
+    {
+      "id": "marshmallow.fields.Number.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 929,
+      "name": "__init__",
+      "line_end": 931
+    },
+    {
+      "id": "marshmallow.fields.Number._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 959,
+      "name": "_deserialize",
+      "line_end": 960
+    },
+    {
+      "id": "marshmallow.fields.Number._format_num",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 933,
+      "name": "_format_num",
+      "line_end": 935
+    },
+    {
+      "id": "marshmallow.fields.Number._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 952,
+      "name": "_serialize",
+      "line_end": 957
+    },
+    {
+      "id": "marshmallow.fields.Number._to_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 949,
+      "name": "_to_string",
+      "line_end": 950
+    },
+    {
+      "id": "marshmallow.fields.Number._validated",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 937,
+      "name": "_validated",
+      "line_end": 947
+    },
+    {
+      "id": "marshmallow.fields.Pluck",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 631,
+      "name": "Pluck",
+      "line_end": 690
+    },
+    {
+      "id": "marshmallow.fields.Pluck.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 657,
+      "name": "__init__",
+      "line_end": 669
+    },
+    {
+      "id": "marshmallow.fields.Pluck._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 684,
+      "name": "_deserialize",
+      "line_end": 690
+    },
+    {
+      "id": "marshmallow.fields.Pluck._field_data_key",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 672,
+      "name": "_field_data_key",
+      "line_end": 674
+    },
+    {
+      "id": "marshmallow.fields.Pluck._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 676,
+      "name": "_serialize",
+      "line_end": 682
+    },
+    {
+      "id": "marshmallow.fields.Raw",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 437,
+      "name": "Raw",
+      "line_end": 438
+    },
+    {
+      "id": "marshmallow.fields.String",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 855,
+      "name": "String",
+      "line_end": 878
+    },
+    {
+      "id": "marshmallow.fields.String._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 872,
+      "name": "_deserialize",
+      "line_end": 878
+    },
+    {
+      "id": "marshmallow.fields.String._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 867,
+      "name": "_serialize",
+      "line_end": 870
+    },
+    {
+      "id": "marshmallow.fields.Time",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1386,
+      "name": "Time",
+      "line_end": 1414
+    },
+    {
+      "id": "marshmallow.fields.Time._make_object_from_format",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1413,
+      "name": "_make_object_from_format",
+      "line_end": 1414
+    },
+    {
+      "id": "marshmallow.fields.TimeDelta",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1452,
+      "name": "TimeDelta",
+      "line_end": 1541
+    },
+    {
+      "id": "marshmallow.fields.TimeDelta.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1504,
+      "name": "__init__",
+      "line_end": 1517
+    },
+    {
+      "id": "marshmallow.fields.TimeDelta._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1528,
+      "name": "_deserialize",
+      "line_end": 1541
+    },
+    {
+      "id": "marshmallow.fields.TimeDelta._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1519,
+      "name": "_serialize",
+      "line_end": 1526
+    },
+    {
+      "id": "marshmallow.fields.Tuple",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 759,
+      "name": "Tuple",
+      "line_end": 852
+    },
+    {
+      "id": "marshmallow.fields.Tuple.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 782,
+      "name": "__init__",
+      "line_end": 804
+    },
+    {
+      "id": "marshmallow.fields.Tuple._bind_to_schema",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 806,
+      "name": "_bind_to_schema",
+      "line_end": 814
+    },
+    {
+      "id": "marshmallow.fields.Tuple._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 827,
+      "name": "_deserialize",
+      "line_end": 852
+    },
+    {
+      "id": "marshmallow.fields.Tuple._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 816,
+      "name": "_serialize",
+      "line_end": 825
+    },
+    {
+      "id": "marshmallow.fields.UUID",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 881,
+      "name": "UUID",
+      "line_end": 904
+    },
+    {
+      "id": "marshmallow.fields.UUID._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 903,
+      "name": "_deserialize",
+      "line_end": 904
+    },
+    {
+      "id": "marshmallow.fields.UUID._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 898,
+      "name": "_serialize",
+      "line_end": 901
+    },
+    {
+      "id": "marshmallow.fields.UUID._validated",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 887,
+      "name": "_validated",
+      "line_end": 896
+    },
+    {
+      "id": "marshmallow.fields.Url",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1696,
+      "name": "Url",
+      "line_end": 1733
+    },
+    {
+      "id": "marshmallow.fields.Url.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1711,
+      "name": "__init__",
+      "line_end": 1733
+    },
+    {
+      "id": "marshmallow.fields._BaseFieldKwargs",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 87,
+      "name": "_BaseFieldKwargs",
+      "line_end": 98
+    },
+    {
+      "id": "marshmallow.fields._TemporalField",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1202,
+      "name": "_TemporalField",
+      "line_end": 1263
+    },
+    {
+      "id": "marshmallow.fields._TemporalField.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1218,
+      "name": "__init__",
+      "line_end": 1227
+    },
+    {
+      "id": "marshmallow.fields._TemporalField._bind_to_schema",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1229,
+      "name": "_bind_to_schema",
+      "line_end": 1235
+    },
+    {
+      "id": "marshmallow.fields._TemporalField._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1246,
+      "name": "_deserialize",
+      "line_end": 1259
+    },
+    {
+      "id": "marshmallow.fields._TemporalField._make_object_from_format",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1263,
+      "name": "_make_object_from_format",
+      "line_end": 1263
+    },
+    {
+      "id": "marshmallow.fields._TemporalField._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 1237,
+      "name": "_serialize",
+      "line_end": 1244
+    },
+    {
+      "id": "marshmallow.fields._resolve_field_instance",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/fields.py",
+      "line": 101,
+      "name": "_resolve_field_instance",
+      "line_end": 112
+    },
+    {
+      "id": "marshmallow.orderedset",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 1,
+      "name": "orderedset",
+      "line_end": 89
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 26,
+      "name": "OrderedSet",
+      "line_end": 81
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.__contains__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 37,
+      "name": "__contains__",
+      "line_end": 38
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.__eq__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 78,
+      "name": "__eq__",
+      "line_end": 81
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 27,
+      "name": "__init__",
+      "line_end": 32
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.__iter__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 52,
+      "name": "__iter__",
+      "line_end": 57
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.__len__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 34,
+      "name": "__len__",
+      "line_end": 35
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 73,
+      "name": "__repr__",
+      "line_end": 76
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.__reversed__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 59,
+      "name": "__reversed__",
+      "line_end": 64
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.add",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 40,
+      "name": "add",
+      "line_end": 44
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.discard",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 46,
+      "name": "discard",
+      "line_end": 50
+    },
+    {
+      "id": "marshmallow.orderedset.OrderedSet.pop",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/orderedset.py",
+      "line": 66,
+      "name": "pop",
+      "line_end": 71
+    },
+    {
+      "id": "marshmallow.schema",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 1,
+      "name": "schema",
+      "line_end": 1249
+    },
+    {
+      "id": "marshmallow.schema.Schema",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 224,
+      "name": "Schema",
+      "line_end": 1246
+    },
+    {
+      "id": "marshmallow.schema.Schema.__apply_nested_option",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 959,
+      "name": "__apply_nested_option",
+      "line_end": 976
+    },
+    {
+      "id": "marshmallow.schema.Schema.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 403,
+      "name": "__init__",
+      "line_end": 443
+    },
+    {
+      "id": "marshmallow.schema.Schema.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 445,
+      "name": "__repr__",
+      "line_end": 446
+    },
+    {
+      "id": "marshmallow.schema.Schema._bind_field",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 1058,
+      "name": "_bind_field",
+      "line_end": 1070
+    },
+    {
+      "id": "marshmallow.schema.Schema._call_and_store",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 506,
+      "name": "_call_and_store",
+      "line_end": 523
+    },
+    {
+      "id": "marshmallow.schema.Schema._deserialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 592,
+      "name": "_deserialize",
+      "line_end": 701
+    },
+    {
+      "id": "marshmallow.schema.Schema._do_load",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 838,
+      "name": "_do_load",
+      "line_end": 940
+    },
+    {
+      "id": "marshmallow.schema.Schema._init_fields",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 978,
+      "name": "_init_fields",
+      "line_end": 1049
+    },
+    {
+      "id": "marshmallow.schema.Schema._invoke_dump_processors",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 1072,
+      "name": "_invoke_dump_processors",
+      "line_end": 1087
+    },
+    {
+      "id": "marshmallow.schema.Schema._invoke_field_validators",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 1120,
+      "name": "_invoke_field_validators",
+      "line_end": 1168
+    },
+    {
+      "id": "marshmallow.schema.Schema._invoke_load_processors",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 1089,
+      "name": "_invoke_load_processors",
+      "line_end": 1118
+    },
+    {
+      "id": "marshmallow.schema.Schema._invoke_processors",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 1217,
+      "name": "_invoke_processors",
+      "line_end": 1246
+    },
+    {
+      "id": "marshmallow.schema.Schema._invoke_schema_validators",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 1170,
+      "name": "_invoke_schema_validators",
+      "line_end": 1215
+    },
+    {
+      "id": "marshmallow.schema.Schema._normalize_nested_options",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 942,
+      "name": "_normalize_nested_options",
+      "line_end": 957
+    },
+    {
+      "id": "marshmallow.schema.Schema._run_validator",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 769,
+      "name": "_run_validator",
+      "line_end": 809
+    },
+    {
+      "id": "marshmallow.schema.Schema._serialize",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 525,
+      "name": "_serialize",
+      "line_end": 541
+    },
+    {
+      "id": "marshmallow.schema.Schema.dump",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 543,
+      "name": "dump",
+      "line_end": 574
+    },
+    {
+      "id": "marshmallow.schema.Schema.dumps",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 576,
+      "name": "dumps",
+      "line_end": 590
+    },
+    {
+      "id": "marshmallow.schema.Schema.from_dict",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 449,
+      "name": "from_dict",
+      "line_end": 477
+    },
+    {
+      "id": "marshmallow.schema.Schema.get_attribute",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 495,
+      "name": "get_attribute",
+      "line_end": 501
+    },
+    {
+      "id": "marshmallow.schema.Schema.handle_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 481,
+      "name": "handle_error",
+      "line_end": 493
+    },
+    {
+      "id": "marshmallow.schema.Schema.load",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 703,
+      "name": "load",
+      "line_end": 732
+    },
+    {
+      "id": "marshmallow.schema.Schema.loads",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 734,
+      "name": "loads",
+      "line_end": 767
+    },
+    {
+      "id": "marshmallow.schema.Schema.on_bind_field",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 1051,
+      "name": "on_bind_field",
+      "line_end": 1056
+    },
+    {
+      "id": "marshmallow.schema.Schema.validate",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 811,
+      "name": "validate",
+      "line_end": 834
+    },
+    {
+      "id": "marshmallow.schema.SchemaMeta",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 88,
+      "name": "SchemaMeta",
+      "line_end": 198
+    },
+    {
+      "id": "marshmallow.schema.SchemaMeta.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 151,
+      "name": "__init__",
+      "line_end": 155
+    },
+    {
+      "id": "marshmallow.schema.SchemaMeta.__new__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 100,
+      "name": "__new__",
+      "line_end": 129
+    },
+    {
+      "id": "marshmallow.schema.SchemaMeta.get_declared_fields",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 132,
+      "name": "get_declared_fields",
+      "line_end": 149
+    },
+    {
+      "id": "marshmallow.schema.SchemaMeta.resolve_hooks",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 157,
+      "name": "resolve_hooks",
+      "line_end": 198
+    },
+    {
+      "id": "marshmallow.schema.SchemaOpts",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 201,
+      "name": "SchemaOpts",
+      "line_end": 221
+    },
+    {
+      "id": "marshmallow.schema.SchemaOpts.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 204,
+      "name": "__init__",
+      "line_end": 221
+    },
+    {
+      "id": "marshmallow.schema._get_fields",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 45,
+      "name": "_get_fields",
+      "line_end": 60
+    },
+    {
+      "id": "marshmallow.schema._get_fields_by_mro",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/schema.py",
+      "line": 65,
+      "name": "_get_fields_by_mro",
+      "line_end": 85
+    },
+    {
+      "id": "marshmallow.types",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/types.py",
+      "line": 1,
+      "name": "types",
+      "line_end": 41
+    },
+    {
+      "id": "marshmallow.types.RenderModule",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/types.py",
+      "line": 34,
+      "name": "RenderModule",
+      "line_end": 41
+    },
+    {
+      "id": "marshmallow.types.RenderModule.dumps",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/types.py",
+      "line": 35,
+      "name": "dumps",
+      "line_end": 37
+    },
+    {
+      "id": "marshmallow.types.RenderModule.loads",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/types.py",
+      "line": 39,
+      "name": "loads",
+      "line_end": 41
+    },
+    {
+      "id": "marshmallow.types.SchemaValidator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/types.py",
+      "line": 22,
+      "name": "SchemaValidator",
+      "line_end": 31
+    },
+    {
+      "id": "marshmallow.types.SchemaValidator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/types.py",
+      "line": 23,
+      "name": "__call__",
+      "line_end": 31
+    },
+    {
+      "id": "marshmallow.utils",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 1,
+      "name": "utils",
+      "line_end": 164
+    },
+    {
+      "id": "marshmallow.utils._get_value_for_key",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 119,
+      "name": "_get_value_for_key",
+      "line_end": 126
+    },
+    {
+      "id": "marshmallow.utils._get_value_for_keys",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 111,
+      "name": "_get_value_for_keys",
+      "line_end": 116
+    },
+    {
+      "id": "marshmallow.utils.callable_or_raise",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 152,
+      "name": "callable_or_raise",
+      "line_end": 156
+    },
+    {
+      "id": "marshmallow.utils.ensure_text_type",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 75,
+      "name": "ensure_text_type",
+      "line_end": 78
+    },
+    {
+      "id": "marshmallow.utils.from_timestamp",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 40,
+      "name": "from_timestamp",
+      "line_end": 54
+    },
+    {
+      "id": "marshmallow.utils.from_timestamp_ms",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 57,
+      "name": "from_timestamp_ms",
+      "line_end": 59
+    },
+    {
+      "id": "marshmallow.utils.get_value",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 95,
+      "name": "get_value",
+      "line_end": 108
+    },
+    {
+      "id": "marshmallow.utils.is_aware",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 34,
+      "name": "is_aware",
+      "line_end": 37
+    },
+    {
+      "id": "marshmallow.utils.is_collection",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 28,
+      "name": "is_collection",
+      "line_end": 30
+    },
+    {
+      "id": "marshmallow.utils.is_generator",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 13,
+      "name": "is_generator",
+      "line_end": 15
+    },
+    {
+      "id": "marshmallow.utils.is_iterable_but_not_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 18,
+      "name": "is_iterable_but_not_string",
+      "line_end": 20
+    },
+    {
+      "id": "marshmallow.utils.is_sequence_but_not_string",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 23,
+      "name": "is_sequence_but_not_string",
+      "line_end": 25
+    },
+    {
+      "id": "marshmallow.utils.pluck",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 81,
+      "name": "pluck",
+      "line_end": 89
+    },
+    {
+      "id": "marshmallow.utils.set_value",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 129,
+      "name": "set_value",
+      "line_end": 149
+    },
+    {
+      "id": "marshmallow.utils.timedelta_to_microseconds",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 159,
+      "name": "timedelta_to_microseconds",
+      "line_end": 164
+    },
+    {
+      "id": "marshmallow.utils.timestamp",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 62,
+      "name": "timestamp",
+      "line_end": 68
+    },
+    {
+      "id": "marshmallow.utils.timestamp_ms",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/utils.py",
+      "line": 71,
+      "name": "timestamp_ms",
+      "line_end": 72
+    },
+    {
+      "id": "marshmallow.validate",
+      "kind": "module",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 1,
+      "name": "validate",
+      "line_end": 685
+    },
+    {
+      "id": "marshmallow.validate.And",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 45,
+      "name": "And",
+      "line_end": 85
+    },
+    {
+      "id": "marshmallow.validate.And.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 71,
+      "name": "__call__",
+      "line_end": 85
+    },
+    {
+      "id": "marshmallow.validate.And.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 65,
+      "name": "__init__",
+      "line_end": 66
+    },
+    {
+      "id": "marshmallow.validate.And._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 68,
+      "name": "_repr_args",
+      "line_end": 69
+    },
+    {
+      "id": "marshmallow.validate.ContainsNoneOf",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 664,
+      "name": "ContainsNoneOf",
+      "line_end": 685
+    },
+    {
+      "id": "marshmallow.validate.ContainsNoneOf.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 681,
+      "name": "__call__",
+      "line_end": 685
+    },
+    {
+      "id": "marshmallow.validate.ContainsNoneOf._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 677,
+      "name": "_format_error",
+      "line_end": 679
+    },
+    {
+      "id": "marshmallow.validate.ContainsOnly",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 634,
+      "name": "ContainsOnly",
+      "line_end": 661
+    },
+    {
+      "id": "marshmallow.validate.ContainsOnly.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 656,
+      "name": "__call__",
+      "line_end": 661
+    },
+    {
+      "id": "marshmallow.validate.ContainsOnly._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 652,
+      "name": "_format_error",
+      "line_end": 654
+    },
+    {
+      "id": "marshmallow.validate.Email",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 228,
+      "name": "Email",
+      "line_end": 285
+    },
+    {
+      "id": "marshmallow.validate.Email.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 263,
+      "name": "__call__",
+      "line_end": 285
+    },
+    {
+      "id": "marshmallow.validate.Email.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 257,
+      "name": "__init__",
+      "line_end": 258
+    },
+    {
+      "id": "marshmallow.validate.Email._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 260,
+      "name": "_format_error",
+      "line_end": 261
+    },
+    {
+      "id": "marshmallow.validate.Equal",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 434,
+      "name": "Equal",
+      "line_end": 458
+    },
+    {
+      "id": "marshmallow.validate.Equal.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 455,
+      "name": "__call__",
+      "line_end": 458
+    },
+    {
+      "id": "marshmallow.validate.Equal.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 445,
+      "name": "__init__",
+      "line_end": 447
+    },
+    {
+      "id": "marshmallow.validate.Equal._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 452,
+      "name": "_format_error",
+      "line_end": 453
+    },
+    {
+      "id": "marshmallow.validate.Equal._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 449,
+      "name": "_repr_args",
+      "line_end": 450
+    },
+    {
+      "id": "marshmallow.validate.Length",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 368,
+      "name": "Length",
+      "line_end": 431
+    },
+    {
+      "id": "marshmallow.validate.Length.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 415,
+      "name": "__call__",
+      "line_end": 431
+    },
+    {
+      "id": "marshmallow.validate.Length.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 388,
+      "name": "__init__",
+      "line_end": 405
+    },
+    {
+      "id": "marshmallow.validate.Length._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 410,
+      "name": "_format_error",
+      "line_end": 413
+    },
+    {
+      "id": "marshmallow.validate.Length._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 407,
+      "name": "_repr_args",
+      "line_end": 408
+    },
+    {
+      "id": "marshmallow.validate.NoneOf",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 543,
+      "name": "NoneOf",
+      "line_end": 571
+    },
+    {
+      "id": "marshmallow.validate.NoneOf.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 564,
+      "name": "__call__",
+      "line_end": 571
+    },
+    {
+      "id": "marshmallow.validate.NoneOf.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 553,
+      "name": "__init__",
+      "line_end": 556
+    },
+    {
+      "id": "marshmallow.validate.NoneOf._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 561,
+      "name": "_format_error",
+      "line_end": 562
+    },
+    {
+      "id": "marshmallow.validate.NoneOf._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 558,
+      "name": "_repr_args",
+      "line_end": 559
+    },
+    {
+      "id": "marshmallow.validate.OneOf",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 574,
+      "name": "OneOf",
+      "line_end": 631
+    },
+    {
+      "id": "marshmallow.validate.OneOf.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 606,
+      "name": "__call__",
+      "line_end": 613
+    },
+    {
+      "id": "marshmallow.validate.OneOf.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 585,
+      "name": "__init__",
+      "line_end": 596
+    },
+    {
+      "id": "marshmallow.validate.OneOf._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 601,
+      "name": "_format_error",
+      "line_end": 604
+    },
+    {
+      "id": "marshmallow.validate.OneOf._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 598,
+      "name": "_repr_args",
+      "line_end": 599
+    },
+    {
+      "id": "marshmallow.validate.OneOf.options",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 615,
+      "name": "options",
+      "line_end": 631
+    },
+    {
+      "id": "marshmallow.validate.Predicate",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 509,
+      "name": "Predicate",
+      "line_end": 540
+    },
+    {
+      "id": "marshmallow.validate.Predicate.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 534,
+      "name": "__call__",
+      "line_end": 540
+    },
+    {
+      "id": "marshmallow.validate.Predicate.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 523,
+      "name": "__init__",
+      "line_end": 526
+    },
+    {
+      "id": "marshmallow.validate.Predicate._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 531,
+      "name": "_format_error",
+      "line_end": 532
+    },
+    {
+      "id": "marshmallow.validate.Predicate._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 528,
+      "name": "_repr_args",
+      "line_end": 529
+    },
+    {
+      "id": "marshmallow.validate.Range",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 288,
+      "name": "Range",
+      "line_end": 362
+    },
+    {
+      "id": "marshmallow.validate.Range.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 349,
+      "name": "__call__",
+      "line_end": 362
+    },
+    {
+      "id": "marshmallow.validate.Range.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 316,
+      "name": "__init__",
+      "line_end": 341
+    },
+    {
+      "id": "marshmallow.validate.Range._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 346,
+      "name": "_format_error",
+      "line_end": 347
+    },
+    {
+      "id": "marshmallow.validate.Range._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 343,
+      "name": "_repr_args",
+      "line_end": 344
+    },
+    {
+      "id": "marshmallow.validate.Regexp",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 461,
+      "name": "Regexp",
+      "line_end": 506
+    },
+    {
+      "id": "marshmallow.validate.Regexp.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 502,
+      "name": "__call__",
+      "line_end": 506
+    },
+    {
+      "id": "marshmallow.validate.Regexp.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 478,
+      "name": "__init__",
+      "line_end": 488
+    },
+    {
+      "id": "marshmallow.validate.Regexp._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 493,
+      "name": "_format_error",
+      "line_end": 494
+    },
+    {
+      "id": "marshmallow.validate.Regexp._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 490,
+      "name": "_repr_args",
+      "line_end": 491
+    },
+    {
+      "id": "marshmallow.validate.URL",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 88,
+      "name": "URL",
+      "line_end": 225
+    },
+    {
+      "id": "marshmallow.validate.URL.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 199,
+      "name": "__call__",
+      "line_end": 225
+    },
+    {
+      "id": "marshmallow.validate.URL.__init__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 174,
+      "name": "__init__",
+      "line_end": 191
+    },
+    {
+      "id": "marshmallow.validate.URL._format_error",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 196,
+      "name": "_format_error",
+      "line_end": 197
+    },
+    {
+      "id": "marshmallow.validate.URL._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 193,
+      "name": "_repr_args",
+      "line_end": 194
+    },
+    {
+      "id": "marshmallow.validate.Validator",
+      "kind": "class",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 19,
+      "name": "Validator",
+      "line_end": 42
+    },
+    {
+      "id": "marshmallow.validate.Validator.__call__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 42,
+      "name": "__call__",
+      "line_end": 42
+    },
+    {
+      "id": "marshmallow.validate.Validator.__repr__",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 29,
+      "name": "__repr__",
+      "line_end": 33
+    },
+    {
+      "id": "marshmallow.validate.Validator._repr_args",
+      "kind": "function",
+      "file": "/private/tmp/topo-corpus/marshmallow/src/marshmallow/validate.py",
+      "line": 35,
+      "name": "_repr_args",
+      "line_end": 39
+    }
+  ],
+  "edges": [
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.constants",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.constants.EXCLUDE",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.constants.INCLUDE",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.constants.RAISE",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.constants.missing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.decorators",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.decorators.post_dump",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.decorators.post_load",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.decorators.pre_dump",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.decorators.pre_load",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.decorators.validates",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.decorators.validates_schema",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.exceptions.ValidationError",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.schema",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.schema.Schema",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.schema.SchemaOpts",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow",
+      "target": "marshmallow.fields",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.class_registry",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.class_registry",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.class_registry",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.class_registry",
+      "target": "marshmallow.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.class_registry",
+      "target": "marshmallow.exceptions.RegistryError",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.class_registry",
+      "target": "marshmallow.class_registry.register",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.class_registry",
+      "target": "marshmallow.class_registry.get_class",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.class_registry",
+      "target": "marshmallow.class_registry.get_class",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.class_registry",
+      "target": "marshmallow.class_registry.get_class",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.constants",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.constants",
+      "target": "marshmallow.constants._Missing",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.constants._Missing",
+      "target": "marshmallow.constants._Missing.__bool__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.constants._Missing",
+      "target": "marshmallow.constants._Missing.__copy__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.constants._Missing",
+      "target": "marshmallow.constants._Missing.__deepcopy__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.constants._Missing",
+      "target": "marshmallow.constants._Missing.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.constants._Missing",
+      "target": "marshmallow.constants._Missing.__len__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "functools",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "collections",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "collections.defaultdict",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "marshmallow.decorators.MarshmallowHook",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "marshmallow.decorators.validates",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "marshmallow.decorators.validates_schema",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "marshmallow.decorators.pre_dump",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "marshmallow.decorators.post_dump",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "marshmallow.decorators.pre_load",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "marshmallow.decorators.post_load",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.decorators",
+      "target": "marshmallow.decorators.set_hook",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.error_store",
+      "target": "marshmallow.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.error_store",
+      "target": "marshmallow.exceptions.SCHEMA",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.error_store",
+      "target": "marshmallow.error_store.ErrorStore",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.error_store.ErrorStore",
+      "target": "marshmallow.error_store.ErrorStore.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.error_store.ErrorStore",
+      "target": "marshmallow.error_store.ErrorStore.store_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.error_store",
+      "target": "marshmallow.error_store.copy_containers",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.error_store",
+      "target": "marshmallow.error_store.merge_errors",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.exceptions",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.exceptions",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.exceptions",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.exceptions",
+      "target": "marshmallow.exceptions.MarshmallowError",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.exceptions",
+      "target": "marshmallow.exceptions.ValidationError",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.exceptions.ValidationError",
+      "target": "marshmallow.exceptions.MarshmallowError",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.exceptions.ValidationError",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.exceptions.ValidationError",
+      "target": "marshmallow.exceptions.ValidationError.normalized_messages",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.exceptions.ValidationError",
+      "target": "marshmallow.exceptions.ValidationError.messages_dict",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.exceptions",
+      "target": "marshmallow.exceptions.RegistryError",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.exceptions",
+      "target": "marshmallow.exceptions.StringNotCollectionError",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.exceptions.StringNotCollectionError",
+      "target": "marshmallow.exceptions.MarshmallowError",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.exceptions",
+      "target": "marshmallow.exceptions._FieldInstanceResolutionError",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.exceptions._FieldInstanceResolutionError",
+      "target": "marshmallow.exceptions.MarshmallowError",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.experimental.context",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.experimental.context",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.experimental.context",
+      "target": "contextlib",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.experimental.context",
+      "target": "contextvars",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.experimental.context",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.experimental.context",
+      "target": "marshmallow.experimental.context.Context",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.experimental.context.Context",
+      "target": "marshmallow.experimental.context.Context.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.experimental.context.Context",
+      "target": "marshmallow.experimental.context.Context.__enter__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.experimental.context.Context",
+      "target": "marshmallow.experimental.context.Context.__exit__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.experimental.context.Context",
+      "target": "marshmallow.experimental.context.Context.get",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "abc",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "collections",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "copy",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "datetime",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "decimal",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "email.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "ipaddress",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "math",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "numbers",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "uuid",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "collections.abc.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "enum",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "enum.Enum",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.class_registry",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.types",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.validate",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.constants",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.constants.missing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.exceptions.StringNotCollectionError",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.exceptions.ValidationError",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.exceptions._FieldInstanceResolutionError",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.validate",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.validate.And",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.validate.Length",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields._BaseFieldKwargs",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields._resolve_field_instance",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Field",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field.__deepcopy__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field.get_value",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field._validate",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field._validate_all",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field.make_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field._validate_missing",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field.serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field.deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field.deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field.deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field._bind_to_schema",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Field",
+      "target": "marshmallow.fields.Field._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Raw",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Nested",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Nested",
+      "target": "marshmallow.fields.Field",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields.Nested",
+      "target": "marshmallow.fields.Nested.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Nested",
+      "target": "marshmallow.fields.Nested.schema",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Nested",
+      "target": "marshmallow.fields.Nested._nested_normalized_option",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Nested",
+      "target": "marshmallow.fields.Nested._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Nested",
+      "target": "marshmallow.fields.Nested._test_collection",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Nested",
+      "target": "marshmallow.fields.Nested._load",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Nested",
+      "target": "marshmallow.fields.Nested._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Pluck",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Pluck",
+      "target": "marshmallow.fields.Nested",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields.Pluck",
+      "target": "marshmallow.fields.Pluck.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Pluck",
+      "target": "marshmallow.fields.Pluck._field_data_key",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Pluck",
+      "target": "marshmallow.fields.Pluck._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Pluck",
+      "target": "marshmallow.fields.Pluck._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.List",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.List",
+      "target": "marshmallow.fields.List.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.List",
+      "target": "marshmallow.fields.List._bind_to_schema",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.List",
+      "target": "marshmallow.fields.List._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.List",
+      "target": "marshmallow.fields.List._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Tuple",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Tuple",
+      "target": "marshmallow.fields.Tuple.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Tuple",
+      "target": "marshmallow.fields.Tuple._bind_to_schema",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Tuple",
+      "target": "marshmallow.fields.Tuple._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Tuple",
+      "target": "marshmallow.fields.Tuple._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.String",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.String",
+      "target": "marshmallow.fields.String._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.String",
+      "target": "marshmallow.fields.String._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.UUID",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.UUID",
+      "target": "marshmallow.fields.UUID._validated",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.UUID",
+      "target": "marshmallow.fields.UUID._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.UUID",
+      "target": "marshmallow.fields.UUID._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Number",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Number",
+      "target": "marshmallow.fields.Number.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Number",
+      "target": "marshmallow.fields.Number._format_num",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Number",
+      "target": "marshmallow.fields.Number._validated",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Number",
+      "target": "marshmallow.fields.Number._to_string",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Number",
+      "target": "marshmallow.fields.Number._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Number",
+      "target": "marshmallow.fields.Number._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Integer",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Integer",
+      "target": "marshmallow.fields.Integer.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Integer",
+      "target": "marshmallow.fields.Integer._validated",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Float",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Float",
+      "target": "marshmallow.fields.Float.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Float",
+      "target": "marshmallow.fields.Float._validated",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Decimal",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Decimal",
+      "target": "marshmallow.fields.Decimal.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Decimal",
+      "target": "marshmallow.fields.Decimal._format_num",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Decimal",
+      "target": "marshmallow.fields.Decimal._validated",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Decimal",
+      "target": "marshmallow.fields.Decimal._to_string",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Boolean",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Boolean",
+      "target": "marshmallow.fields.Boolean.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Boolean",
+      "target": "marshmallow.fields.Boolean._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields._TemporalField",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields._TemporalField",
+      "target": "marshmallow.fields._TemporalField.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields._TemporalField",
+      "target": "marshmallow.fields._TemporalField._bind_to_schema",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields._TemporalField",
+      "target": "marshmallow.fields._TemporalField._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields._TemporalField",
+      "target": "marshmallow.fields._TemporalField._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields._TemporalField",
+      "target": "marshmallow.fields._TemporalField._make_object_from_format",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.DateTime",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.DateTime",
+      "target": "marshmallow.fields.DateTime._make_object_from_format",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.NaiveDateTime",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.NaiveDateTime",
+      "target": "marshmallow.fields.DateTime",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields.NaiveDateTime",
+      "target": "marshmallow.fields.NaiveDateTime.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.NaiveDateTime",
+      "target": "marshmallow.fields.NaiveDateTime._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.AwareDateTime",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.AwareDateTime",
+      "target": "marshmallow.fields.DateTime",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields.AwareDateTime",
+      "target": "marshmallow.fields.AwareDateTime.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.AwareDateTime",
+      "target": "marshmallow.fields.AwareDateTime._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Time",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Time",
+      "target": "marshmallow.fields.Time._make_object_from_format",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Date",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Date",
+      "target": "marshmallow.fields.Date._make_object_from_format",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.TimeDelta",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.TimeDelta",
+      "target": "marshmallow.fields.TimeDelta.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.TimeDelta",
+      "target": "marshmallow.fields.TimeDelta._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.TimeDelta",
+      "target": "marshmallow.fields.TimeDelta._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Mapping",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Mapping",
+      "target": "marshmallow.fields.Mapping.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Mapping",
+      "target": "marshmallow.fields.Mapping._bind_to_schema",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Mapping",
+      "target": "marshmallow.fields.Mapping._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Mapping",
+      "target": "marshmallow.fields.Mapping._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Dict",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Url",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Url",
+      "target": "marshmallow.fields.String",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields.Url",
+      "target": "marshmallow.fields.Url.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Email",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Email",
+      "target": "marshmallow.fields.String",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields.Email",
+      "target": "marshmallow.fields.Email.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.IP",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IP",
+      "target": "marshmallow.fields.IP.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IP",
+      "target": "marshmallow.fields.IP._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IP",
+      "target": "marshmallow.fields.IP._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.IPv4",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IPv4",
+      "target": "marshmallow.fields.IP",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.IPv6",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IPv6",
+      "target": "marshmallow.fields.IP",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.IPInterface",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IPInterface",
+      "target": "marshmallow.fields.IPInterface.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IPInterface",
+      "target": "marshmallow.fields.IPInterface._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IPInterface",
+      "target": "marshmallow.fields.IPInterface._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.IPv4Interface",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IPv4Interface",
+      "target": "marshmallow.fields.IPInterface",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.IPv6Interface",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.IPv6Interface",
+      "target": "marshmallow.fields.IPInterface",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Enum",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Enum",
+      "target": "marshmallow.fields.Enum.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Enum",
+      "target": "marshmallow.fields.Enum._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Enum",
+      "target": "marshmallow.fields.Enum._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Method",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Method",
+      "target": "marshmallow.fields.Field",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields.Method",
+      "target": "marshmallow.fields.Method.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Method",
+      "target": "marshmallow.fields.Method._bind_to_schema",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Method",
+      "target": "marshmallow.fields.Method._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Method",
+      "target": "marshmallow.fields.Method._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Function",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Function",
+      "target": "marshmallow.fields.Field",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.fields.Function",
+      "target": "marshmallow.fields.Function.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Function",
+      "target": "marshmallow.fields.Function._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Function",
+      "target": "marshmallow.fields.Function._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields",
+      "target": "marshmallow.fields.Constant",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Constant",
+      "target": "marshmallow.fields.Constant.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Constant",
+      "target": "marshmallow.fields.Constant._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.fields.Constant",
+      "target": "marshmallow.fields.Constant._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.orderedset",
+      "target": "collections.abc.MutableSet",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.orderedset",
+      "target": "marshmallow.orderedset.OrderedSet",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.__len__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.__contains__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.add",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.discard",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.__iter__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.__reversed__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.pop",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet",
+      "target": "marshmallow.orderedset.OrderedSet.__eq__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "copy",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "datetime",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "decimal",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "functools",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "inspect",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "json",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "operator",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "uuid",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "abc",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "abc.ABCMeta",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "collections",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "collections.defaultdict",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "collections.abc.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "collections.abc.Sequence",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "itertools",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "itertools.zip_longest",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.class_registry",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.types",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.fields",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.constants",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.constants.EXCLUDE",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.constants.INCLUDE",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.constants.RAISE",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.constants.missing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.decorators",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.decorators.POST_DUMP",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.decorators.POST_LOAD",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.decorators.PRE_DUMP",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.decorators.PRE_LOAD",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.decorators.VALIDATES",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.decorators.VALIDATES_SCHEMA",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.error_store",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.error_store.ErrorStore",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.exceptions.SCHEMA",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.exceptions.StringNotCollectionError",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.exceptions.ValidationError",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.orderedset",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.orderedset.OrderedSet",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.utils",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.utils.get_value",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.utils.is_collection",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.utils.is_sequence_but_not_string",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.utils.set_value",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.schema._get_fields",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.schema._get_fields_by_mro",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.schema.SchemaMeta",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.SchemaMeta",
+      "target": "marshmallow.schema.SchemaMeta.__new__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.SchemaMeta",
+      "target": "marshmallow.schema.SchemaMeta.get_declared_fields",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.SchemaMeta",
+      "target": "marshmallow.schema.SchemaMeta.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.SchemaMeta",
+      "target": "marshmallow.schema.SchemaMeta.resolve_hooks",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.schema.SchemaOpts",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.SchemaOpts",
+      "target": "marshmallow.schema.SchemaOpts.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema",
+      "target": "marshmallow.schema.Schema",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.from_dict",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.handle_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.get_attribute",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._call_and_store",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._serialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.dump",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.dumps",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._deserialize",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.load",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.loads",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._run_validator",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.validate",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._do_load",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._normalize_nested_options",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.__apply_nested_option",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._init_fields",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema.on_bind_field",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._bind_field",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._invoke_dump_processors",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._invoke_load_processors",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._invoke_field_validators",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._invoke_schema_validators",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema.Schema",
+      "target": "marshmallow.schema.Schema._invoke_processors",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.types",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.types",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.types",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.types",
+      "target": "marshmallow.types.SchemaValidator",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.types.SchemaValidator",
+      "target": "marshmallow.types.SchemaValidator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.types",
+      "target": "marshmallow.types.RenderModule",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.types.RenderModule",
+      "target": "marshmallow.types.RenderModule.dumps",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.types.RenderModule",
+      "target": "marshmallow.types.RenderModule.loads",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "datetime",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "inspect",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "collections.abc",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "collections.abc.Mapping",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "collections.abc.Sequence",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.constants",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.constants.missing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.is_generator",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.is_iterable_but_not_string",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.is_sequence_but_not_string",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.is_collection",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.is_aware",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.from_timestamp",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.from_timestamp_ms",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.timestamp",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.timestamp_ms",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.ensure_text_type",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.pluck",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.get_value",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils._get_value_for_keys",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils._get_value_for_key",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.set_value",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.callable_or_raise",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.utils",
+      "target": "marshmallow.utils.timedelta_to_microseconds",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "__future__",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "__future__.annotations",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "re",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "typing",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "abc",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "abc.ABC",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "abc.abstractmethod",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "itertools",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "itertools.zip_longest",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "operator",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "operator.attrgetter",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.exceptions",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.exceptions.ValidationError",
+      "kind": "imports"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.Validator",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Validator",
+      "target": "marshmallow.validate.Validator.__repr__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Validator",
+      "target": "marshmallow.validate.Validator._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Validator",
+      "target": "marshmallow.validate.Validator.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.And",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.And",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.And",
+      "target": "marshmallow.validate.And.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.And",
+      "target": "marshmallow.validate.And._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.And",
+      "target": "marshmallow.validate.And.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.URL",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.URL",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.URL",
+      "target": "marshmallow.validate.URL.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.URL",
+      "target": "marshmallow.validate.URL._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.URL",
+      "target": "marshmallow.validate.URL._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.URL",
+      "target": "marshmallow.validate.URL.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.Email",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Email",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.Email",
+      "target": "marshmallow.validate.Email.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Email",
+      "target": "marshmallow.validate.Email._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Email",
+      "target": "marshmallow.validate.Email.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.Range",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Range",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.Range",
+      "target": "marshmallow.validate.Range.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Range",
+      "target": "marshmallow.validate.Range._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Range",
+      "target": "marshmallow.validate.Range._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Range",
+      "target": "marshmallow.validate.Range.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.Length",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Length",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.Length",
+      "target": "marshmallow.validate.Length.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Length",
+      "target": "marshmallow.validate.Length._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Length",
+      "target": "marshmallow.validate.Length._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Length",
+      "target": "marshmallow.validate.Length.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.Equal",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Equal",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.Equal",
+      "target": "marshmallow.validate.Equal.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Equal",
+      "target": "marshmallow.validate.Equal._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Equal",
+      "target": "marshmallow.validate.Equal._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Equal",
+      "target": "marshmallow.validate.Equal.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.Regexp",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Regexp",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.Regexp",
+      "target": "marshmallow.validate.Regexp.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Regexp",
+      "target": "marshmallow.validate.Regexp._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Regexp",
+      "target": "marshmallow.validate.Regexp._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Regexp",
+      "target": "marshmallow.validate.Regexp.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Regexp",
+      "target": "marshmallow.validate.Regexp.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Regexp",
+      "target": "marshmallow.validate.Regexp.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.Predicate",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Predicate",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.Predicate",
+      "target": "marshmallow.validate.Predicate.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Predicate",
+      "target": "marshmallow.validate.Predicate._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Predicate",
+      "target": "marshmallow.validate.Predicate._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.Predicate",
+      "target": "marshmallow.validate.Predicate.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.NoneOf",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.NoneOf",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.NoneOf",
+      "target": "marshmallow.validate.NoneOf.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.NoneOf",
+      "target": "marshmallow.validate.NoneOf._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.NoneOf",
+      "target": "marshmallow.validate.NoneOf._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.NoneOf",
+      "target": "marshmallow.validate.NoneOf.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.OneOf",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.OneOf",
+      "target": "marshmallow.validate.Validator",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.OneOf",
+      "target": "marshmallow.validate.OneOf.__init__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.OneOf",
+      "target": "marshmallow.validate.OneOf._repr_args",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.OneOf",
+      "target": "marshmallow.validate.OneOf._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.OneOf",
+      "target": "marshmallow.validate.OneOf.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.OneOf",
+      "target": "marshmallow.validate.OneOf.options",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.ContainsOnly",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.ContainsOnly",
+      "target": "marshmallow.validate.OneOf",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.ContainsOnly",
+      "target": "marshmallow.validate.ContainsOnly._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.ContainsOnly",
+      "target": "marshmallow.validate.ContainsOnly.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate",
+      "target": "marshmallow.validate.ContainsNoneOf",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.ContainsNoneOf",
+      "target": "marshmallow.validate.NoneOf",
+      "kind": "inherits"
+    },
+    {
+      "source": "marshmallow.validate.ContainsNoneOf",
+      "target": "marshmallow.validate.ContainsNoneOf._format_error",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.validate.ContainsNoneOf",
+      "target": "marshmallow.validate.ContainsNoneOf.__call__",
+      "kind": "defines"
+    },
+    {
+      "source": "marshmallow.schema._get_fields_by_mro",
+      "target": "marshmallow.schema._get_fields",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.SchemaMeta.__new__",
+      "target": "marshmallow.schema.SchemaMeta.get_declared_fields",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.SchemaMeta.__new__",
+      "target": "marshmallow.schema._get_fields",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.SchemaMeta.__new__",
+      "target": "marshmallow.schema._get_fields_by_mro",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.SchemaMeta.__init__",
+      "target": "marshmallow.class_registry.register",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.SchemaMeta.__init__",
+      "target": "marshmallow.schema.SchemaMeta.resolve_hooks",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.__init__",
+      "target": "marshmallow.schema.Schema._init_fields",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.__init__",
+      "target": "marshmallow.schema.Schema._normalize_nested_options",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.__init__",
+      "target": "marshmallow.utils.is_collection",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils.is_collection",
+      "target": "marshmallow.utils.is_iterable_but_not_string",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._normalize_nested_options",
+      "target": "marshmallow.orderedset.OrderedSet.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._normalize_nested_options",
+      "target": "marshmallow.schema.Schema.__apply_nested_option",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._init_fields",
+      "target": "marshmallow.orderedset.OrderedSet.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._init_fields",
+      "target": "marshmallow.orderedset.OrderedSet.__iter__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._init_fields",
+      "target": "marshmallow.schema.Schema._bind_field",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.get_attribute",
+      "target": "marshmallow.utils.get_value",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils.get_value",
+      "target": "marshmallow.utils._get_value_for_key",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils.get_value",
+      "target": "marshmallow.utils._get_value_for_keys",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._call_and_store",
+      "target": "marshmallow.error_store.ErrorStore.store_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.error_store.ErrorStore.store_error",
+      "target": "marshmallow.error_store.copy_containers",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.error_store.ErrorStore.store_error",
+      "target": "marshmallow.error_store.merge_errors",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._serialize",
+      "target": "marshmallow.schema.Schema._serialize",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.dump",
+      "target": "marshmallow.schema.Schema._invoke_dump_processors",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.dump",
+      "target": "marshmallow.schema.Schema._serialize",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._invoke_dump_processors",
+      "target": "marshmallow.schema.Schema._invoke_processors",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.dumps",
+      "target": "marshmallow.schema.Schema.dump",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._deserialize",
+      "target": "marshmallow.error_store.ErrorStore.store_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._deserialize",
+      "target": "marshmallow.schema.Schema._call_and_store",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._deserialize",
+      "target": "marshmallow.schema.Schema._deserialize",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._deserialize",
+      "target": "marshmallow.utils.is_collection",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._deserialize",
+      "target": "marshmallow.utils.is_sequence_but_not_string",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._deserialize",
+      "target": "marshmallow.utils.set_value",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils.set_value",
+      "target": "marshmallow.utils.set_value",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.load",
+      "target": "marshmallow.schema.Schema._do_load",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._do_load",
+      "target": "marshmallow.error_store.ErrorStore.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._do_load",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._do_load",
+      "target": "marshmallow.schema.Schema._deserialize",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._do_load",
+      "target": "marshmallow.schema.Schema._invoke_field_validators",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._do_load",
+      "target": "marshmallow.schema.Schema._invoke_load_processors",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._do_load",
+      "target": "marshmallow.schema.Schema._invoke_schema_validators",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._do_load",
+      "target": "marshmallow.schema.Schema.handle_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._run_validator",
+      "target": "marshmallow.error_store.ErrorStore.store_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.validate",
+      "target": "marshmallow.schema.Schema._do_load",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._invoke_load_processors",
+      "target": "marshmallow.schema.Schema._invoke_processors",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._invoke_field_validators",
+      "target": "marshmallow.schema.Schema._call_and_store",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._invoke_schema_validators",
+      "target": "marshmallow.schema.Schema._run_validator",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema.__apply_nested_option",
+      "target": "marshmallow.orderedset.OrderedSet.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.schema.Schema._bind_field",
+      "target": "marshmallow.schema.Schema.on_bind_field",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field.__init__",
+      "target": "marshmallow.utils.is_iterable_but_not_string",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils.is_iterable_but_not_string",
+      "target": "marshmallow.utils.is_generator",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field._validate",
+      "target": "marshmallow.fields.Field._validate_all",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field._validate_all",
+      "target": "marshmallow.validate.And.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field.make_error",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field._validate_missing",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field._validate_missing",
+      "target": "marshmallow.fields.Field.make_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field.serialize",
+      "target": "marshmallow.fields.Field._serialize",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field.serialize",
+      "target": "marshmallow.fields.Field.get_value",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field.deserialize",
+      "target": "marshmallow.fields.Field._deserialize",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field.deserialize",
+      "target": "marshmallow.fields.Field._validate",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Field.deserialize",
+      "target": "marshmallow.fields.Field._validate_missing",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested.__init__",
+      "target": "marshmallow.utils.is_sequence_but_not_string",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested.schema",
+      "target": "marshmallow.class_registry.get_class",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested.schema",
+      "target": "marshmallow.fields.Nested._nested_normalized_option",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested.schema",
+      "target": "marshmallow.schema.Schema.from_dict",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested._test_collection",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested._test_collection",
+      "target": "marshmallow.fields.Field.make_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested._test_collection",
+      "target": "marshmallow.utils.is_collection",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested._load",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested._deserialize",
+      "target": "marshmallow.fields.Nested._load",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested._deserialize",
+      "target": "marshmallow.fields.Nested._test_collection",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Pluck._serialize",
+      "target": "marshmallow.utils.pluck",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Pluck._deserialize",
+      "target": "marshmallow.fields.Nested._load",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Pluck._deserialize",
+      "target": "marshmallow.fields.Nested._test_collection",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.List.__init__",
+      "target": "marshmallow.fields._resolve_field_instance",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.List._deserialize",
+      "target": "marshmallow.fields.Field.deserialize",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.List._deserialize",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.List._deserialize",
+      "target": "marshmallow.utils.is_collection",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Tuple.__init__",
+      "target": "marshmallow.fields._resolve_field_instance",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Tuple.__init__",
+      "target": "marshmallow.utils.is_collection",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Tuple.__init__",
+      "target": "marshmallow.validate.Length.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Tuple._deserialize",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Tuple._deserialize",
+      "target": "marshmallow.utils.is_sequence_but_not_string",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Tuple._deserialize",
+      "target": "marshmallow.validate.Length.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.String._serialize",
+      "target": "marshmallow.utils.ensure_text_type",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.String._deserialize",
+      "target": "marshmallow.utils.ensure_text_type",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.UUID._validated",
+      "target": "marshmallow.fields.UUID",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.UUID._deserialize",
+      "target": "marshmallow.fields.UUID._validated",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Number._validated",
+      "target": "marshmallow.fields.Number._format_num",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Number._serialize",
+      "target": "marshmallow.fields.Number._format_num",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Number._serialize",
+      "target": "marshmallow.fields.Number._to_string",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Number._deserialize",
+      "target": "marshmallow.fields.Number._validated",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Decimal.__init__",
+      "target": "marshmallow.fields.Decimal",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Decimal._format_num",
+      "target": "marshmallow.fields.Decimal",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields._TemporalField._deserialize",
+      "target": "marshmallow.fields._TemporalField._make_object_from_format",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.NaiveDateTime._deserialize",
+      "target": "marshmallow.utils.is_aware",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.AwareDateTime._deserialize",
+      "target": "marshmallow.utils.is_aware",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.TimeDelta._serialize",
+      "target": "marshmallow.utils.timedelta_to_microseconds",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Mapping.__init__",
+      "target": "marshmallow.fields._resolve_field_instance",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Mapping._deserialize",
+      "target": "marshmallow.fields.Field.deserialize",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Mapping._deserialize",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Url.__init__",
+      "target": "marshmallow.validate.URL.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Email.__init__",
+      "target": "marshmallow.validate.Email.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.IP._deserialize",
+      "target": "marshmallow.utils.ensure_text_type",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.IPInterface._deserialize",
+      "target": "marshmallow.utils.ensure_text_type",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Enum.__init__",
+      "target": "marshmallow.fields._resolve_field_instance",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Method._bind_to_schema",
+      "target": "marshmallow.utils.callable_or_raise",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Function.__init__",
+      "target": "marshmallow.utils.callable_or_raise",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Validator.__repr__",
+      "target": "marshmallow.validate.And._repr_args",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Validator.__repr__",
+      "target": "marshmallow.validate.Length._repr_args",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Validator.__repr__",
+      "target": "marshmallow.validate.URL._repr_args",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Validator.__repr__",
+      "target": "marshmallow.validate.Validator._repr_args",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.And.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.URL.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.URL.__call__",
+      "target": "marshmallow.validate.URL._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Email.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Email.__call__",
+      "target": "marshmallow.validate.Email._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Range.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Range.__call__",
+      "target": "marshmallow.validate.Range._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Length.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Length.__call__",
+      "target": "marshmallow.validate.Length._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Equal.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Equal.__call__",
+      "target": "marshmallow.validate.Equal._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Regexp.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Regexp.__call__",
+      "target": "marshmallow.validate.Regexp._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Predicate.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.Predicate.__call__",
+      "target": "marshmallow.validate.Predicate._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.NoneOf.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.NoneOf.__call__",
+      "target": "marshmallow.validate.NoneOf._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.OneOf.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.OneOf.__call__",
+      "target": "marshmallow.validate.OneOf._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.ContainsOnly.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.ContainsOnly.__call__",
+      "target": "marshmallow.validate.ContainsOnly._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.ContainsNoneOf.__call__",
+      "target": "marshmallow.exceptions.ValidationError.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.ContainsNoneOf.__call__",
+      "target": "marshmallow.validate.ContainsNoneOf._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils.from_timestamp_ms",
+      "target": "marshmallow.utils.from_timestamp",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils.timestamp",
+      "target": "marshmallow.utils.is_aware",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils.timestamp_ms",
+      "target": "marshmallow.utils.timestamp",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils._get_value_for_keys",
+      "target": "marshmallow.utils._get_value_for_key",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.utils._get_value_for_keys",
+      "target": "marshmallow.utils._get_value_for_keys",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.orderedset",
+      "target": "marshmallow.orderedset.OrderedSet.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.orderedset.OrderedSet.pop",
+      "target": "marshmallow.orderedset.OrderedSet.discard",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.error_store.copy_containers",
+      "target": "marshmallow.error_store.copy_containers",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.error_store.merge_errors",
+      "target": "marshmallow.error_store.merge_errors",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Nested.__init__",
+      "target": "marshmallow.fields.Field.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Pluck.__init__",
+      "target": "marshmallow.fields.Nested.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Pluck._serialize",
+      "target": "marshmallow.fields.Nested._serialize",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Method.__init__",
+      "target": "marshmallow.fields.Field.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Method._bind_to_schema",
+      "target": "marshmallow.fields.Field._bind_to_schema",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.fields.Function.__init__",
+      "target": "marshmallow.fields.Field.__init__",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.ContainsOnly._format_error",
+      "target": "marshmallow.validate.OneOf._format_error",
+      "kind": "calls"
+    },
+    {
+      "source": "marshmallow.validate.ContainsNoneOf._format_error",
+      "target": "marshmallow.validate.NoneOf._format_error",
+      "kind": "calls"
+    }
+  ]
+}

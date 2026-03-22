@@ -23,20 +23,19 @@ from pathlib import Path
 from typing import Any
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-CORPUS_DIR = PROJECT_ROOT / "benchmark" / "corpus"
+TOPO_BIN = PROJECT_ROOT / "target" / "release" / "topo"
+EXAMPLES_DIR = PROJECT_ROOT / "examples"
 RESULTS_DIR = PROJECT_ROOT / "benchmark" / "results" / "mutation_sensitivity"
 
-# Mutation types and their expected diagnostics
+# Mutation types and their expected diagnostics.
+# Only the 5 implemented ones — 4 more (misplaced_concern, incoherent_module,
+# shadow_dependency, redundant_api) are designed but not yet implemented.
 MUTATIONS = {
     "inject_cycle": "circular_dependency",
-    "wide_interface": "wide_interface",
-    "misplaced_concern": "misplaced_concern",
-    "incoherent_module": "incoherent_module",
-    "shadow_dependency": "shadow_dependency",
     "layer_violation": "layer_violation",
-    "near_disconnect": "near_disconnect",
     "overloaded_utility": "overloaded_utility",
-    "redundant_api": "redundant_api",
+    "wide_interface": "wide_interface",
+    "near_disconnect": "near_disconnect",
 }
 
 SEVERITY_LEVELS = [1, 2, 3]
@@ -112,12 +111,7 @@ def get_max_severity_for_kind(analysis: dict, kind: str) -> float:
 
 
 def analyze_graph(graph: dict) -> dict:
-    """Run topo analysis on a graph dict. Returns analysis output.
-
-    TODO: Replace with PyO3 call to topo_analyzer.analyze_full()
-    when the Python bindings expose the analyze function.
-    Currently uses subprocess as a bridge.
-    """
+    """Run topo analysis on a graph dict. Returns analysis output."""
     import subprocess
     import tempfile
 
@@ -127,10 +121,8 @@ def analyze_graph(graph: dict) -> dict:
 
     try:
         result = subprocess.run(
-            ["cargo", "run", "-p", "topo-cli", "--", "analyze",
-             "--input", input_path, "--format", "json"],
-            cwd=PROJECT_ROOT,
-            capture_output=True, text=True, timeout=60,
+            [str(TOPO_BIN), "analyze-raw", "--input", input_path],
+            capture_output=True, text=True, timeout=120,
         )
         if result.returncode != 0:
             return {"issues": [], "error": result.stderr[:200]}
@@ -141,16 +133,49 @@ def analyze_graph(graph: dict) -> dict:
         Path(input_path).unlink(missing_ok=True)
 
 
-def apply_mutation(graph: dict, mutation_type: str, severity: int) -> dict | None:
-    """Apply a mutation to a graph.
+def apply_mutation(
+    graph: dict, mutation_type: str, severity: int, seed: int = 42,
+) -> dict | None:
+    """Apply a mutation to a graph via the topo CLI.
 
-    TODO: Replace with Rust mutation operators via PyO3.
-    This is a placeholder that demonstrates the interface.
-    The real operators will be in packages/topo-benchmark/src/mutations/.
+    Returns the mutated graph dict, or None if the mutation can't be applied
+    (graph lacks preconditions for this mutation type).
     """
-    # Placeholder — real implementation will use Rust operators
-    # For now, return None to indicate "not yet implemented"
-    return None
+    import subprocess
+    import tempfile
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+        json.dump(graph, f)
+        input_path = f.name
+
+    try:
+        result = subprocess.run(
+            [
+                str(TOPO_BIN),
+                "mutate",
+                "--input", input_path,
+                "--type", mutation_type,
+                "--severity", str(severity),
+                "--seed", str(seed),
+            ],
+            cwd=PROJECT_ROOT,
+            capture_output=True, text=True, timeout=120,
+        )
+
+        if result.returncode == 2:
+            # Exit code 2 = mutation returned None (preconditions not met).
+            return None
+        if result.returncode != 0:
+            print(f"    WARN: mutate failed: {result.stderr[:200]}", file=sys.stderr)
+            return None
+
+        output = json.loads(result.stdout)
+        return output.get("graph")
+    except Exception as e:
+        print(f"    WARN: mutate error: {e}", file=sys.stderr)
+        return None
+    finally:
+        Path(input_path).unlink(missing_ok=True)
 
 
 def evaluate_corpus(
@@ -165,16 +190,14 @@ def evaluate_corpus(
         m: MutationScorecard(m, MUTATIONS[m]) for m in mutations
     }
 
-    # Discover available repos
+    # Discover available repos from examples/ (single source for all cached graphs).
     available = []
-    for meta_path in sorted(CORPUS_DIR.glob("*/metadata.json")):
-        with open(meta_path) as f:
-            meta = json.load(f)
-        name = meta["name"]
+    for graph_path in sorted(EXAMPLES_DIR.glob("*/graph.json")):
+        name = graph_path.parent.name
+        if name == "scripts":
+            continue
         if repos is None or name in repos:
-            graph_path = meta_path.parent / "graph.json"
-            if graph_path.exists():
-                available.append((name, graph_path))
+            available.append((name, graph_path))
 
     print(f"Evaluating {len(available)} repos × {len(mutations)} mutations × {len(SEVERITY_LEVELS)} levels")
     print(f"Total test cases: {len(available) * len(mutations) * len(SEVERITY_LEVELS)}")
@@ -185,11 +208,16 @@ def evaluate_corpus(
         with open(graph_path) as f:
             graph = json.load(f)
 
-        # Clean analysis (once per repo)
-        clean_analysis = analyze_graph(graph)
-        if "error" in clean_analysis:
-            print(f"  SKIP: analysis failed: {clean_analysis['error']}")
-            continue
+        # Clean analysis: reuse cached analysis.json if available, otherwise run fresh.
+        cached_analysis = graph_path.parent / "analysis.json"
+        if cached_analysis.exists():
+            with open(cached_analysis) as f:
+                clean_analysis = json.load(f)
+        else:
+            clean_analysis = analyze_graph(graph)
+            if "error" in clean_analysis:
+                print(f"  SKIP: analysis failed: {clean_analysis['error']}")
+                continue
 
         clean_kinds = get_issue_kinds(clean_analysis)
 
@@ -197,7 +225,8 @@ def evaluate_corpus(
             expected = MUTATIONS[mutation_type]
 
             for severity in SEVERITY_LEVELS:
-                mutated_graph = apply_mutation(graph, mutation_type, severity)
+                seed = hash((repo_name, mutation_type, severity)) % (2**32)
+                mutated_graph = apply_mutation(graph, mutation_type, severity, seed=seed)
                 if mutated_graph is None:
                     continue
 

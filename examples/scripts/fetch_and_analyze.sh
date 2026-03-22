@@ -116,14 +116,14 @@ process_example() {
 
     # Analyze (JSON)
     log "  Analyzing (JSON)..."
-    (cd "$PROJECT_ROOT" && $TOPO analyze --input "$out_dir/graph.json" --format json > "$out_dir/analysis.json") || {
+    (cd "$PROJECT_ROOT" && $TOPO analyze-raw --input "$out_dir/graph.json" --format json > "$out_dir/analysis.json") || {
         err "  Analysis failed for $name"
         return 1
     }
 
     # Analyze (text)
     log "  Analyzing (text)..."
-    (cd "$PROJECT_ROOT" && $TOPO analyze --input "$out_dir/graph.json" > "$out_dir/analysis.txt") || {
+    (cd "$PROJECT_ROOT" && $TOPO analyze-raw --input "$out_dir/graph.json" > "$out_dir/analysis.txt") || {
         err "  Text analysis failed for $name"
         return 1
     }

@@ -1,6 +1,6 @@
-//! Text formatter for topo structural analysis output.
+//! Text formatters for topo structural analysis output.
 //!
-//! Consumes analysis.schema.json dicts and produces human/LLM-readable text.
+//! Three capability-focused formatters plus domain model and LLM context.
 
 pub mod context;
 pub mod dag;
@@ -12,4 +12,4 @@ pub mod style;
 mod python;
 
 pub use context::format_context;
-pub use format::format_text;
+pub use format::{format_health, format_issues};
