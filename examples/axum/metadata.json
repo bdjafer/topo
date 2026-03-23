@@ -1,0 +1,8 @@
+{
+  "name": "axum",
+  "language": "rust",
+  "url": "https://github.com/tokio-rs/axum",
+  "commit": "HEAD",
+  "nodes": 1470,
+  "edges": 2123
+}

@@ -57,3 +57,28 @@ packages/topo-web/wasm/
 # Generated embeddings (large binary files)
 **/embeddings.json
 
+# Curation cache (API results, skip logs)
+examples/.cache/
+
+# Coverage report (regenerated)
+examples/coverage_report.json
+
+# Model checkpoints (large binaries)
+checkpoints/
+
+# Evaluation results (generated)
+eval_results/
+
+# Dataset splits (generated)
+examples/splits/
+
+# Generated feature files
+**/features.npz
+**/features.meta.json
+
+# Generated reports
+examples/embedding_report.json
+examples/health_report.json
+
+# Environment variables
+.env

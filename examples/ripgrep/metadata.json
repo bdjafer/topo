@@ -1,0 +1,8 @@
+{
+  "name": "ripgrep",
+  "language": "rust",
+  "url": "https://github.com/BurntSushi/ripgrep",
+  "commit": "4649aa9",
+  "nodes": 2502,
+  "edges": 4865
+}

@@ -92,6 +92,30 @@ validate-dataset:
 split-dataset:
 	python3 packages/topo-dataset/scripts/split.py
 
+# ── Registry Curation ────────────────────────────────────────────
+
+.PHONY: curate curate-dry-run curate-fill pin-registry coverage-report
+
+## Expand registry by one batch (200 repos)
+curate:
+	python3 packages/topo-dataset/scripts/curate_repos.py --batch-size 200
+
+## Preview what curate would add without modifying registry
+curate-dry-run:
+	python3 packages/topo-dataset/scripts/curate_repos.py --batch-size 200 --dry-run
+
+## Fill a specific domain gap: make curate-fill DOMAIN=data_ml
+curate-fill:
+	python3 packages/topo-dataset/scripts/curate_repos.py --fill-domain $(DOMAIN) --batch-size 50
+
+## Pin all HEAD commits to concrete SHAs
+pin-registry:
+	python3 packages/topo-dataset/scripts/pin_existing.py
+
+## Show distributional coverage of current registry
+coverage-report:
+	python3 packages/topo-dataset/scripts/coverage_report.py
+
 # ── Python ────────────────────────────────────────────────────────
 
 .PHONY: test

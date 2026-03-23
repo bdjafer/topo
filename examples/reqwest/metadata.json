@@ -1,0 +1,8 @@
+{
+  "name": "reqwest",
+  "language": "rust",
+  "url": "https://github.com/seanmonstar/reqwest",
+  "commit": "HEAD",
+  "nodes": 1263,
+  "edges": 2410
+}

@@ -1,0 +1,8 @@
+{
+  "name": "starship",
+  "language": "rust",
+  "url": "https://github.com/starship/starship",
+  "commit": "HEAD",
+  "nodes": 1077,
+  "edges": 3937
+}

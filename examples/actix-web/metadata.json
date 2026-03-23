@@ -1,0 +1,8 @@
+{
+  "name": "actix-web",
+  "language": "rust",
+  "url": "https://github.com/actix/actix-web",
+  "commit": "HEAD",
+  "nodes": 3452,
+  "edges": 9224
+}

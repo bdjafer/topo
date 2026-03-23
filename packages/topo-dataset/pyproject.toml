@@ -12,10 +12,12 @@ dependencies = [
 
 [project.optional-dependencies]
 embed = ["fastembed>=0.2"]
+curate = ["tomlkit>=0.12"]
 
 [dependency-groups]
 dev = [
     "pytest>=7.0",
+    "tomlkit>=0.12",
 ]
 
 [build-system]

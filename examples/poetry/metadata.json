@@ -1,0 +1,8 @@
+{
+  "name": "poetry",
+  "language": "python",
+  "url": "https://github.com/python-poetry/poetry",
+  "commit": "HEAD",
+  "nodes": 1500,
+  "edges": 4740
+}

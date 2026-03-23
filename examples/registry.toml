@@ -64,28 +64,28 @@ pattern = ["flat-library", "facade"]
 [[example]]
 name = "attrs"
 repo = "https://github.com/python-attrs/attrs"
-commit = "HEAD"
+commit = "25b74d6a4274"
 language = "python"
 entrypoint = "src/attr"
 
 [[example]]
 name = "marshmallow"
 repo = "https://github.com/marshmallow-code/marshmallow"
-commit = "HEAD"
+commit = "546be2f728fa"
 language = "python"
 entrypoint = "src/marshmallow"
 
 [[example]]
 name = "jinja"
 repo = "https://github.com/pallets/jinja"
-commit = "HEAD"
+commit = "5ef70112a1ff"
 language = "python"
 entrypoint = "src/jinja2"
 
 [[example]]
 name = "typer"
 repo = "https://github.com/fastapi/typer"
-commit = "HEAD"
+commit = "5111ed578c9a"
 language = "python"
 entrypoint = "typer"
 
@@ -124,28 +124,28 @@ pattern = ["pipeline", "visitor-pattern"]
 [[example]]
 name = "httpx"
 repo = "https://github.com/encode/httpx"
-commit = "HEAD"
+commit = "b5addb64f016"
 language = "python"
 entrypoint = "httpx"
 
 [[example]]
 name = "rich"
 repo = "https://github.com/Textualize/rich"
-commit = "HEAD"
+commit = "fc41075a3206"
 language = "python"
 entrypoint = "rich"
 
 [[example]]
 name = "pydantic"
 repo = "https://github.com/pydantic/pydantic"
-commit = "HEAD"
+commit = "0e4be5e64777"
 language = "python"
 entrypoint = "pydantic"
 
 [[example]]
 name = "tornado"
 repo = "https://github.com/tornadoweb/tornado"
-commit = "HEAD"
+commit = "6d326fa4757a"
 language = "python"
 entrypoint = "tornado"
 
@@ -187,49 +187,49 @@ pattern = ["monolith", "god-modules", "plugin-system"]
 [[example]]
 name = "django-rest-framework"
 repo = "https://github.com/encode/django-rest-framework"
-commit = "HEAD"
+commit = "30d58a75eeef"
 language = "python"
 entrypoint = "rest_framework"
 
 [[example]]
 name = "textual"
 repo = "https://github.com/Textualize/textual"
-commit = "HEAD"
+commit = "0f0849fd37fb"
 language = "python"
 entrypoint = "src/textual"
 
 [[example]]
 name = "pytest"
 repo = "https://github.com/pytest-dev/pytest"
-commit = "HEAD"
+commit = "2ca0f8ad7c0b"
 language = "python"
 entrypoint = "src/_pytest"
 
 [[example]]
 name = "poetry"
 repo = "https://github.com/python-poetry/poetry"
-commit = "HEAD"
+commit = "157715887a0c"
 language = "python"
 entrypoint = "src/poetry"
 
 [[example]]
 name = "scrapy"
 repo = "https://github.com/scrapy/scrapy"
-commit = "HEAD"
+commit = "c148ec443327"
 language = "python"
 entrypoint = "scrapy"
 
 [[example]]
-name = "boto3"
+name = "botocore"
 repo = "https://github.com/boto/botocore"
-commit = "HEAD"
+commit = "6de5cea495cc"
 language = "python"
 entrypoint = "botocore"
 
 [[example]]
 name = "mypy"
 repo = "https://github.com/python/mypy"
-commit = "HEAD"
+commit = "ac071665b305"
 language = "python"
 entrypoint = "mypy"
 
@@ -254,35 +254,35 @@ pattern = ["single-crate", "cli-tool"]
 [[example]]
 name = "fd"
 repo = "https://github.com/sharkdp/fd"
-commit = "HEAD"
+commit = "0336452b969d"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "hyperfine"
 repo = "https://github.com/sharkdp/hyperfine"
-commit = "HEAD"
+commit = "327d5f4d9107"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "zoxide"
 repo = "https://github.com/ajeetdsouza/zoxide"
-commit = "HEAD"
+commit = "f74ed040fed9"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "tokei"
 repo = "https://github.com/XAMPPRocky/tokei"
-commit = "HEAD"
+commit = "505d6481c98c"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "exa"
 repo = "https://github.com/ogham/exa"
-commit = "HEAD"
+commit = "3d1edbb47052"
 language = "rust"
 entrypoint = "."
 
@@ -307,63 +307,63 @@ pattern = ["workspace", "trait-abstraction", "layered"]
 [[example]]
 name = "delta"
 repo = "https://github.com/dandavison/delta"
-commit = "HEAD"
+commit = "12ef3ef0be4a"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "starship"
 repo = "https://github.com/starship/starship"
-commit = "HEAD"
+commit = "6d0a1263fcc7"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "clap"
 repo = "https://github.com/clap-rs/clap"
-commit = "HEAD"
+commit = "70f3bb31874f"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "serde"
 repo = "https://github.com/serde-rs/serde"
-commit = "HEAD"
+commit = "fa7da4a93567"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "reqwest"
 repo = "https://github.com/seanmonstar/reqwest"
-commit = "HEAD"
+commit = "c5e50f004de3"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "axum"
 repo = "https://github.com/tokio-rs/axum"
-commit = "HEAD"
+commit = "907ba35b5bcf"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "warp"
 repo = "https://github.com/seanmonstar/warp"
-commit = "HEAD"
+commit = "de1ccd83e2b6"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "regex"
 repo = "https://github.com/rust-lang/regex"
-commit = "HEAD"
+commit = "839d16bc65b6"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "rayon"
 repo = "https://github.com/rayon-rs/rayon"
-commit = "HEAD"
+commit = "a6b82fca094b"
 language = "rust"
 entrypoint = "."
 
@@ -419,62 +419,62 @@ exclude = "tests,benches"
 [[example]]
 name = "ruff"
 repo = "https://github.com/astral-sh/ruff"
-commit = "HEAD"
+commit = "2e65d7134b36"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "nushell"
 repo = "https://github.com/nushell/nushell"
-commit = "HEAD"
+commit = "a184d5d3dd9b"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "helix"
 repo = "https://github.com/helix-editor/helix"
-commit = "HEAD"
+commit = "3d68e0a32617"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "alacritty"
 repo = "https://github.com/alacritty/alacritty"
-commit = "HEAD"
+commit = "48ff32f7c6bb"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "actix-web"
 repo = "https://github.com/actix/actix-web"
-commit = "HEAD"
+commit = "1398919140b6"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "diesel"
 repo = "https://github.com/diesel-rs/diesel"
-commit = "HEAD"
+commit = "f66ffce70968"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "tower"
 repo = "https://github.com/tower-rs/tower"
-commit = "HEAD"
+commit = "251296dc54a0"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "tracing"
 repo = "https://github.com/tokio-rs/tracing"
-commit = "HEAD"
+commit = "54ede4d5d85a"
 language = "rust"
 entrypoint = "."
 
 [[example]]
 name = "hyper"
 repo = "https://github.com/hyperium/hyper"
-commit = "HEAD"
+commit = "28e73ccd230c"
 language = "rust"
 entrypoint = "."

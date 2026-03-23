@@ -1,0 +1,8 @@
+{
+  "name": "regex",
+  "language": "rust",
+  "url": "https://github.com/rust-lang/regex",
+  "commit": "HEAD",
+  "nodes": 4089,
+  "edges": 12163
+}

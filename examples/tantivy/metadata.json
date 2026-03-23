@@ -1,0 +1,8 @@
+{
+  "name": "tantivy",
+  "language": "rust",
+  "url": "https://github.com/quickwit-oss/tantivy",
+  "commit": "af5b5e3",
+  "nodes": 5400,
+  "edges": 14549
+}

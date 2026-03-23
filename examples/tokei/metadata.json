@@ -1,0 +1,8 @@
+{
+  "name": "tokei",
+  "language": "rust",
+  "url": "https://github.com/XAMPPRocky/tokei",
+  "commit": "HEAD",
+  "nodes": 161,
+  "edges": 321
+}

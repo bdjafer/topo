@@ -1,0 +1,8 @@
+{
+  "name": "cargo",
+  "language": "rust",
+  "url": "https://github.com/rust-lang/cargo",
+  "commit": "a4a23b1",
+  "nodes": 10369,
+  "edges": 58816
+}

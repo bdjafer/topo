@@ -1,0 +1,8 @@
+{
+  "name": "delta",
+  "language": "rust",
+  "url": "https://github.com/dandavison/delta",
+  "commit": "HEAD",
+  "nodes": 662,
+  "edges": 1637
+}

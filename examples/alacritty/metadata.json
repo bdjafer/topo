@@ -1,0 +1,8 @@
+{
+  "name": "alacritty",
+  "language": "rust",
+  "url": "https://github.com/alacritty/alacritty",
+  "commit": "HEAD",
+  "nodes": 1456,
+  "edges": 3726
+}

@@ -1046,6 +1046,11 @@ pub fn analyze_full(input: &AnalyzerInput) -> types::AnalysisOutput {
                     eigenvalues: r.energy_eigenvalues.iter().map(|&v| round4(v)).collect(),
                     semantic_energy: r.energy_values.iter().map(|&v| round4(v)).collect(),
                 }),
+            // Phase 3 THS fields — populated by Python model inference pipeline.
+            // Currently None; set externally when R-GIN outputs are available.
+            topo_health_score: None,
+            coherence: None,
+            flow: None,
         }),
         semantic_enabled,
     }

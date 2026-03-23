@@ -1,0 +1,8 @@
+{
+  "name": "clap",
+  "language": "rust",
+  "url": "https://github.com/clap-rs/clap",
+  "commit": "HEAD",
+  "nodes": 1816,
+  "edges": 5192
+}

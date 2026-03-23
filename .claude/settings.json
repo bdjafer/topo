@@ -22,10 +22,43 @@
       "Bash(grep -l \"pub mod\\\\|pub use\" /Users/bryandjafer/Documents/personal/topo/packages/topo-cli/src/*.rs)",
       "Bash(pkill -f \"mutation_triggers\")",
       "Bash(./target/release/topo --help)",
-      "Bash(cargo clippy:*)"
+      "Bash(cargo clippy:*)",
+      "Bash(ls -la /Users/bryandjafer/Documents/personal/topo/examples/*/features.npz)",
+      "Bash(grep -o \"\"text\"\":\"\"[^\"\"]*\"\" /private/tmp/claude-501/-Users-bryandjafer-Documents-personal-topo/3861dace-e081-4ddb-9baa-c88fb82825d2/tasks/ae6552944b157b8fc.output)",
+      "Bash(uv run python3 -c \":*)",
+      "Bash(find examples/ripgrep -name \"*.rs\" -exec grep -l \"^pub trait\\\\|^trait \" {})",
+      "Bash(find examples/ -name *.rs -path *ripgrep*)",
+      "Bash(/tmp/test_abc.py:*)",
+      "Bash(__NEW_LINE_5c596c02b0238456__ python3 -c \":*)",
+      "Bash(PYTHONPATH=\"../topo-model/src:../topo-dataset/src:src\" uv run --isolated pytest tests/ -v)",
+      "Bash(echo '=== Python Testing \\(stars>=500\\) ===' gh api \"search/repositories?q=language:python+stars:>=500+archived:false+fork:false+topic:testing&sort=stars&order=desc&per_page=20\")",
+      "Bash(echo '=== Python Async \\(stars>=500\\) ===' gh api \"search/repositories?q=language:python+stars:>=500+archived:false+fork:false+topic:async&sort=stars&order=desc&per_page=20\")",
+      "Bash(echo '=== Rust Web/Networking \\(stars>=500\\) ===' gh api \"search/repositories?q=language:rust+stars:>=500+archived:false+fork:false+topic:web&sort=stars&order=desc&per_page=20\")",
+      "Bash(echo '=== Rust Database/Storage \\(stars>=300\\) ===' gh api \"search/repositories?q=language:rust+stars:>=300+archived:false+fork:false+topic:database&sort=stars&order=desc&per_page=20\")",
+      "Bash(packages/topo-model/.venv/bin/python -c \"import torch; import torch_geometric; print\\(f''torch={torch.__version__}, pyg={torch_geometric.__version__}''\\)\")",
+      "Bash(ls -d /Users/bryandjafer/Documents/personal/topo/examples/*/graph.json)",
+      "Bash(PYTHONDONTWRITEBYTECODE=1 .venv/bin/python3 /Users/bryandjafer/Documents/personal/topo/packages/topo-model/scripts/clone_all.py)",
+      "Bash(cat /Users/bryandjafer/Documents/personal/topo/examples/splits/*.txt)",
+      "Bash(python packages/topo-model/scripts/run_health.py --checkpoint checkpoints/rgin_v2 --data-dir examples --split-dir examples/splits)",
+      "Bash(find /Users/bryandjafer/Documents/personal/topo -name python* -path */bin/*)",
+      "Bash(ls /Users/bryandjafer/Documents/personal/topo/packages/topo-model/.venv/bin/python*)",
+      "Bash(/Users/bryandjafer/Documents/personal/topo/packages/topo-model/.venv/bin/python -c \"import torch; print\\(torch.__version__\\); import torch_geometric; print\\(''pyg ok''\\)\")",
+      "Bash(/Users/bryandjafer/Documents/personal/topo/packages/topo-model/.venv/bin/python packages/topo-model/scripts/run_health.py --checkpoint checkpoints/rgin_v2 --data-dir examples --split-dir examples/splits --force)",
+      "Bash(PYTHONDONTWRITEBYTECODE=1 .venv/bin/python3 /Users/bryandjafer/Documents/personal/topo/packages/topo-model/scripts/compute_embeddings.py --force)",
+      "Bash(pip install:*)",
+      "WebFetch(domain:jina.ai)",
+      "Bash(source /Users/bryandjafer/Documents/personal/topo/.env)",
+      "Bash(curl -s -w \"\\\\nHTTP_CODE: %{http_code}\" https://api.jina.ai/v1/embeddings -H \"Content-Type: application/json\" -H \"Authorization: Bearer $JINA_API_KEY\" -d '{\"\"\"\"input\"\"\"\": [\"\"\"\"def hello\\(\\): return 42\"\"\"\"], \"\"\"\"model\"\"\"\": \"\"\"\"jina-embeddings-v2-base-code\"\"\"\"}')",
+      "Skill(test)",
+      "Skill(test:*)",
+      "Bash(gh auth:*)",
+      "Bash(PYTHONDONTWRITEBYTECODE=1 .venv/bin/python3 -c \":*)",
+      "Bash(git rm:*)",
+      "Bash(PYTHONDONTWRITEBYTECODE=1 .venv/bin/python3 /Users/bryandjafer/Documents/personal/topo/packages/topo-model/scripts/compute_embeddings.py --repos clap,click,poetry,sqlalchemy,tantivy,tokei,tokio,tower,tracing,typer,warp,zoxide)"
     ],
     "additionalDirectories": [
-      "/Users/bryandjafer/Documents/personal/topo/target/release/build"
+      "/Users/bryandjafer/Documents/personal/topo/target/release/build",
+      "/Users/bryandjafer/Documents/personal/topo/.claude/skills"
     ]
   }
 }

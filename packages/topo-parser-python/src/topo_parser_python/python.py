@@ -190,12 +190,55 @@ def _extract_from_file(
             _extract_import(graph, node, mod_id, file)
 
 
+def _is_interface(node: ast.ClassDef) -> bool:
+    """Check if a class is an abstract contract (ABC, Protocol, or pure abstract)."""
+    # 1. Check base classes for ABC or Protocol
+    for base in node.bases:
+        name = _base_name(base)
+        if name in {"ABC", "abc.ABC", "Protocol", "typing.Protocol",
+                     "typing_extensions.Protocol"}:
+            return True
+
+    # 2. Check for metaclass=ABCMeta
+    for kw in node.keywords:
+        if kw.arg == "metaclass":
+            name = _base_name(kw.value)
+            if name in {"ABCMeta", "abc.ABCMeta"}:
+                return True
+
+    # 3. Check if ALL methods are abstract
+    methods = [n for n in node.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
+    if methods and all(_has_abstractmethod(m) for m in methods):
+        return True
+
+    return False
+
+
+def _base_name(node: ast.expr) -> str:
+    """Extract name from a base class AST node."""
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        return f"{_base_name(node.value)}.{node.attr}"
+    return ""
+
+
+def _has_abstractmethod(func: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
+    """Check if a function has an @abstractmethod or @abstractproperty decorator."""
+    return any(
+        _base_name(d) in {"abstractmethod", "abc.abstractmethod",
+                           "abstractproperty", "abc.abstractproperty"}
+        for d in func.decorator_list
+    )
+
+
 def _extract_class(
     graph: CodeGraph, node: ast.ClassDef, parent_id: str, file: Path
 ) -> None:
     """Extract a class node, its methods, and inheritance edges."""
     class_id = f"{parent_id}.{node.name}"
-    graph.add_node(Node(id=class_id, kind=NodeKind.CLASS, file=str(file), line=node.lineno, name=node.name, line_end=getattr(node, "end_lineno", None)))
+    kind = NodeKind.INTERFACE if _is_interface(node) else NodeKind.CLASS
+    graph.add_node(Node(id=class_id, kind=kind, file=str(file), line=node.lineno, name=node.name, line_end=getattr(node, "end_lineno", None)))
     graph.add_edge(Edge(source=parent_id, target=class_id, kind=EdgeKind.DEFINES))
 
     # Inheritance (raw names, resolved later by _resolve_inherits_edges)

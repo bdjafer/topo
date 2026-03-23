@@ -1,0 +1,8 @@
+{
+  "name": "fastapi",
+  "language": "python",
+  "url": "https://github.com/fastapi/fastapi",
+  "commit": "d0b0a7e",
+  "nodes": 400,
+  "edges": 1664
+}

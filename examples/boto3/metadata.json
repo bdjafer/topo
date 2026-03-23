@@ -1,0 +1,8 @@
+{
+  "name": "boto3",
+  "language": "python",
+  "url": "https://github.com/boto/botocore",
+  "commit": "HEAD",
+  "nodes": 2763,
+  "edges": 6774
+}

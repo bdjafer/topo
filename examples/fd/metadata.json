@@ -1,0 +1,8 @@
+{
+  "name": "fd",
+  "language": "rust",
+  "url": "https://github.com/sharkdp/fd",
+  "commit": "HEAD",
+  "nodes": 218,
+  "edges": 463
+}

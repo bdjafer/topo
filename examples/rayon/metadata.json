@@ -1,0 +1,8 @@
+{
+  "name": "rayon",
+  "language": "rust",
+  "url": "https://github.com/rayon-rs/rayon",
+  "commit": "HEAD",
+  "nodes": 2689,
+  "edges": 8528
+}

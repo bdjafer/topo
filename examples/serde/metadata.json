@@ -1,0 +1,8 @@
+{
+  "name": "serde",
+  "language": "rust",
+  "url": "https://github.com/serde-rs/serde",
+  "commit": "HEAD",
+  "nodes": 3423,
+  "edges": 5242
+}

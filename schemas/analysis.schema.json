@@ -183,7 +183,10 @@
             "eigenvalues": { "type": "array", "items": { "type": "number" } },
             "semantic_energy": { "type": "array", "items": { "type": "number" } }
           }
-        }
+        },
+        "topo_health_score": { "type": "number", "description": "Phase 3 THS = coherence^α × flow^(1-α). Headline structural health score ∈ [0, 1]. Present only when R-GIN model outputs are available." },
+        "coherence": { "type": "number", "description": "Phase 3 coherence sub-score: 1 - median(reconstruction_error). Measures how well structure predicts semantics ∈ [0, 1]." },
+        "flow": { "type": "number", "description": "Phase 3 flow sub-score: cycle_freedom × layer_conformance. Measures dependency direction correctness ∈ [0, 1]." }
       }
     },
 

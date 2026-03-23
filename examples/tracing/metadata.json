@@ -1,0 +1,8 @@
+{
+  "name": "tracing",
+  "language": "rust",
+  "url": "https://github.com/tokio-rs/tracing",
+  "commit": "HEAD",
+  "nodes": 2882,
+  "edges": 6072
+}

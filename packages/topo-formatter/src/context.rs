@@ -36,6 +36,11 @@ pub fn format_context(data: &Value) -> String {
     let q = health.and_then(|h| h.get("modularity_q")).and_then(|v| v.as_f64());
     let fiedler = spectral.and_then(|s| s.get("fiedler_value")).and_then(|v| v.as_f64());
 
+    // Phase 3 THS takes precedence as the headline health number
+    let ths = health.and_then(|h| h.get("topo_health_score")).and_then(|v| v.as_f64());
+    let coherence_val = health.and_then(|h| h.get("coherence")).and_then(|v| v.as_f64());
+    let flow_val = health.and_then(|h| h.get("flow")).and_then(|v| v.as_f64());
+
     let mut health_parts = Vec::new();
     if let Some(q) = q {
         health_parts.push(format!("Q={q:.2}"));
@@ -56,7 +61,20 @@ pub fn format_context(data: &Value) -> String {
     lines.push(format!(
         "## {arch_type} ({mod_count} modules, {node_count} nodes)"
     ));
-    if !health_parts.is_empty() {
+
+    // THS leads, raw metrics follow on the same line
+    if let Some(ths) = ths {
+        let sub = match (coherence_val, flow_val) {
+            (Some(c), Some(f)) => format!(" (coherence: {c:.2}, flow: {f:.2})"),
+            _ => String::new(),
+        };
+        let raw = if health_parts.is_empty() {
+            String::new()
+        } else {
+            format!(" | {}", health_parts.join(", "))
+        };
+        lines.push(format!("Health: {ths:.2}{sub}{raw}"));
+    } else if !health_parts.is_empty() {
         lines.push(format!("Health: {}", health_parts.join(", ")));
     }
     lines.push(String::new());

@@ -67,6 +67,17 @@ fn relative_path(file_path: &str, project_root: Option<&Path>) -> String {
     file_path.to_string()
 }
 
+/// Render a progress bar: ████████░░ for a [0, 1] value.
+fn health_bar(value: f64, width: usize) -> String {
+    let clamped = value.clamp(0.0, 1.0);
+    let filled = (clamped * width as f64).round() as usize;
+    format!(
+        "{}{}",
+        "\u{2588}".repeat(filled),
+        "\u{2591}".repeat(width - filled)
+    )
+}
+
 // ── Issues Formatter ──
 
 /// Format diagnostic issues as linter output.
@@ -236,6 +247,34 @@ pub fn format_health(data: &Value, color: bool) -> String {
     lines.push(String::new());
 
     if let Some(health) = health {
+        // Phase 3: THS headline score
+        if let Some(ths) = health.get("topo_health_score").and_then(|v| v.as_f64()) {
+            lines.push(format!("  {}", s.bold(&format!("Health: {ths:.2}"))));
+            lines.push(String::new());
+            if let Some(coherence) = health.get("coherence").and_then(|v| v.as_f64()) {
+                let bar = health_bar(coherence, 10);
+                lines.push(format!(
+                    "    Coherence: {coherence:.2}  {bar}  structure explains semantics"
+                ));
+            }
+            if let Some(flow) = health.get("flow").and_then(|v| v.as_f64()) {
+                let bar = health_bar(flow, 10);
+                let label = if flow >= 0.9 {
+                    "clean dependency flow"
+                } else if flow >= 0.7 {
+                    "minor flow problems"
+                } else if flow >= 0.5 {
+                    "significant flow problems"
+                } else {
+                    "deeply tangled dependencies"
+                };
+                lines.push(format!(
+                    "    Flow:      {flow:.2}  {bar}  {label}"
+                ));
+            }
+            lines.push(String::new());
+        }
+
         let q = health.get("modularity_q").and_then(|v| v.as_f64());
         let q_str = q
             .map(|v| format!("{v:.3}"))
@@ -255,8 +294,6 @@ pub fn format_health(data: &Value, color: bool) -> String {
                 "  Structural-semantic AMI: {ami:.3} (higher = better alignment)"
             ));
         }
-
-        // Phase 3: coherence, flow, THS from R-GIN
     } else {
         lines.push(s.dim("  No health metrics available."));
     }
@@ -367,6 +404,24 @@ mod tests {
         let output = format_health(&data, false);
 
         assert!(output.contains("No health metrics available."));
+    }
+
+    #[test]
+    fn test_format_health_with_ths() {
+        let mut data = minimal_analysis();
+        data["health"] = json!({
+            "modularity_q": 0.74,
+            "topo_health_score": 0.72,
+            "coherence": 0.78,
+            "flow": 0.61
+        });
+        let output = format_health(&data, false);
+
+        assert!(output.contains("Health: 0.72"), "should display THS headline: {output}");
+        assert!(output.contains("Coherence: 0.78"), "should display coherence: {output}");
+        assert!(output.contains("Flow:      0.61"), "should display flow: {output}");
+        // Should also still show modularity
+        assert!(output.contains("Modularity Q: 0.740"), "should display modularity Q: {output}");
     }
 
 }

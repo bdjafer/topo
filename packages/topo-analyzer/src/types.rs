@@ -388,6 +388,18 @@ pub struct HealthOutput {
     /// GFT energy profile: semantic energy at each structural scale.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub semantic_energy_profile: Option<SemanticEnergyProfile>,
+
+    // --- Phase 3: Topo Health Score (THS) ---
+
+    /// THS = coherence^α × flow^(1-α). The headline structural health number.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub topo_health_score: Option<f64>,
+    /// Coherence: does structure predict semantics? 1 - median(reconstruction_error).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub coherence: Option<f64>,
+    /// Flow: do dependencies go in sensible directions? cycle_freedom × layer_conformance.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub flow: Option<f64>,
 }
 
 /// Complete analysis output matching analysis.schema.json.

@@ -17,7 +17,7 @@ dev = [
 
 [tool.uv.workspace]
 members = ["packages/*"]
-exclude = ["packages/topo-web", "packages/topo-cli", "packages/topo-parser", "packages/topo-parser-rust", "packages/topo-cache", "packages/topo-formatter", "packages/topo-benchmark", "packages/topo-dataset"]
+exclude = ["packages/topo-web", "packages/topo-cli", "packages/topo-parser", "packages/topo-parser-rust", "packages/topo-cache", "packages/topo-formatter", "packages/topo-benchmark", "packages/topo-dataset", "packages/topo-model"]
 
 [tool.uv.sources]
 pycg = { workspace = true }
